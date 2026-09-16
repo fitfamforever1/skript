@@ -1,0 +1,17 @@
+on consume of dried kelp:
+    set {_item} to event-item
+    cancel event
+    remove 1 of {_item} from player's tool
+    set {_hun} to number data tag "stat:hun" of {_item}
+    set {_sat} to number data tag "stat:sat" of {_item}
+    set {_foodtoadd} to {_hun} / 2
+    
+    wait 1 tick
+    
+    set {_newfood} to (player's food level) + {_foodtoadd}
+    
+    if {_newfood} > 20:
+        set {_newfood} to 20
+    
+    set player's food level to {_newfood}
+    set player's saturation to {_sat}

@@ -1,0 +1,85 @@
+# Phoenix | pet20
+every 5 seconds:
+    loop all players:
+        if {petid::%loop-player%::pet20} is "active":
+            apply fire resistance 1 to loop-player for 6 seconds:
+                hide particles
+                hide icon
+
+            set {_maxhp} to max health of loop-player
+            set {_heal} to {_maxhp} * 0.1
+            heal loop-player by {_heal}
+
+
+on damage:
+    attacker is a player
+    if {petid::%attacker%::pet20} is "active":
+        ignite victim for 3 seconds
+
+
+on death of player:
+    if {petid::%victim%::pet20} is "active":
+        if {pet20_rebirth_used::%victim%} is not true:
+
+            set {pet20_rebirth_used::%victim%} to true
+
+            cancel event
+
+            set health of victim to max health of victim * 0.5
+
+            extinguish victim
+
+            send action bar "&7Rebirth" to victim
+            play sound "entity.blaze.hurt" with volume 1 and pitch 0.5 at victim
+            apply fire resistance to victim for 10 seconds
+
+
+on respawn:
+    delete {pet20_rebirth_used::%player%}
+
+# Kraken | pet21
+on damage of entity by player:
+    if {petid::%attacker%::pet21} is "active":
+
+        set {_victim} to entity
+        set {_attacker} to attacker
+
+        apply slowness 3 to {_victim} for 3 seconds
+        apply blindness 2 to {_victim} for 3 seconds
+
+
+        if {_victim} is in water:
+            set damage to damage * 4
+
+on swim toggle:
+    if {petid::%player%::pet21} is "active":
+        if player's pose is swimming pose:
+            remove water breathing from player
+            remove dolphin's grace from player
+        else:
+            apply infinite water breathing 1 to player 
+            apply infinite dolphin's grace 6 to player
+
+on entity knockback:
+    set {_attacker} to knockback attacker
+    if {_attacker} is a player:
+        if {petid::%{_attacker}%::pet21} is "active":
+            set knockback velocity to knockback velocity * -1
+
+
+# Qilin | pet22
+
+on sneak toggle:
+    if {petid::%player%::pet22} is "active":
+        if player is sneaking:
+            remove levitation from player
+        else:
+            apply infinite levitation 8 to player:
+                hide particles
+                hide icon
+
+on damage:
+    victim is a player
+    damage cause is fall
+    if {petid::%victim%::pet22} is "active":
+        set damage to damage * 0

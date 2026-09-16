@@ -1,0 +1,40 @@
+on right click with stick:
+    name of player's tool is "&fAbyssal Wand"
+
+    set {_uuid} to uuid of player
+
+    if {cooldown_abyssal::%{_uuid}%} is set:
+        if {cooldown_abyssal::%{_uuid}%} > now:
+            stop
+
+    if {mana::%{_uuid}%} is not set:
+        set {mana::%{_uuid}%} to 0
+
+    if {mana::%{_uuid}%} < 30:
+        send action bar "&cNot enough mana." to player
+        stop
+
+    set {_target} to targeted entity of player
+    if {_target} is not set:
+        stop
+    if {_target} is a player:
+        if {_target} is player:
+            stop
+
+    set {cooldown_abyssal::%{_uuid}%} to now + 0.5 seconds
+
+    set {_source} to damage source from magic
+    damage {_target} by 20 with {_source}
+
+    apply weakness to {_target} for 5 seconds
+    apply blindness to {_target} for 2 seconds
+
+    set {_loc} to location of {_target}
+    draw 30 soul fire flame particles with a distribution of vector(0.5, 1, 0.5) at {_loc}
+    draw 1 explosion particle at {_loc}
+
+    remove 30 from {mana::%{_uuid}%}
+    clampMana(player)
+    saveMana(player)
+
+    send action bar "&fAbyssal Impact fired! &b-30 Mana" to player

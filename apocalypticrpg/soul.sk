@@ -1,0 +1,9 @@
+on right click with phantom membrane:
+    if display name of player's tool is "&fSoul Knife":
+        damage player by 4
+        execute console command "si give soul 1 %player% true"
+        apply potion effect of weakness of tier 2 for 5 minutes to player
+        
+on resurrect attempt:
+    entity is player
+    set {bones::%player%} to 7

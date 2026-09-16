@@ -1,0 +1,40 @@
+command /scrapconvert:
+    trigger:
+        set {_iron} to 0
+        set {_copper} to 0
+        set {_cloth} to 0
+        set {_total} to 0
+        loop integers from 0 to 35:
+            set {_item} to slot loop-value of player's inventory
+            if {_item} is air:
+                continue
+            if {_item} is not set:
+                continue
+            set {_tag} to data tag "craft:scrap" of {_item}
+            if {_tag} is not set:
+                continue
+            if {_tag} is "1":
+                set {_stack} to amount of {_item}
+                loop {_stack} times:
+                    set {_roll} to random integer from 1 to 100
+                    if {_roll} <= 60:
+                        add 1 to {_iron}
+                    else:
+                        add 1 to {_copper}
+                add {_stack} to {_total}
+                clear slot loop-value of player's inventory
+            else if {_tag} is "2":
+                set {_stack} to amount of {_item}
+                add {_stack} to {_cloth}
+                add {_stack} to {_total}
+                clear slot loop-value of player's inventory
+        if {_total} is 0:
+            send "&8[&4SYSTEM&8] &cNo scrap found in your inventory."
+            stop
+        if {_iron} > 0:
+            execute console command "si give iron1 %{_iron}% %player% true"
+        if {_copper} > 0:
+            execute console command "si give copper1 %{_copper}% %player% true"
+        if {_cloth} > 0:
+            execute console command "si give cloth %{_cloth}% %player% true"
+        send "&8[&4SYSTEM&8] &7Converted &f%{_total}% &7scrap!"

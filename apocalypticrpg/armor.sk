@@ -1,0 +1,12 @@
+on armor change:
+    set {_helm} to text data tag "armor:passive" of player's helmet
+    set {_chest} to text data tag "armor:passive" of player's chestplate
+    set {_legs} to text data tag "armor:passive" of player's leggings
+    set {_boots} to text data tag "armor:passive" of player's boots
+    if {_helm} is "3":
+        if {_chest} is "3":
+            if {_legs} is "3":
+                if {_boots} is "3":
+                    apply permanent potion effect of invisibility to player
+    else:
+        remove invisibility from player

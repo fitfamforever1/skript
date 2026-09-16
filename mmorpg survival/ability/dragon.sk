@@ -1,0 +1,45 @@
+on right click with bow:
+    name of player's held item is "&fDragon Long Bow"
+    set {dragonbow.drawstart::%player%} to now
+
+on shoot:
+    shooter is a player
+    projectile is an arrow
+    name of shooter's held item is "&fDragon Long Bow"
+
+    set {_elapsed} to elapsed item use time of shooter
+    if {_elapsed} < 1.1 second:
+        cancel event
+        send action bar "&cYou must fully charge the long bow!" to shooter
+        delete {dragonbow.drawstart::%shooter%}
+        stop
+
+    delete {dragonbow.drawstart::%shooter%}
+
+    set {dragonbow::%uuid of projectile%} to true
+
+
+on damage:
+    damage cause is projectile
+    event-projectile is an arrow
+    attacker is a player
+    set {_bow} to attacker's tool
+    if display name of {_bow} is "&fDragon Long Bow":
+        set {_arrow} to event-projectile
+        set {_loc} to location of {_arrow}
+        cancel event
+        delete projectile
+        set {_source} to damage source from arrow
+        damage victim by 14 with {_source}
+
+        if chance of 10%:
+            spawn dragon fireball at {_loc}
+            set {_fireball} to last spawned dragon fireball
+            set velocity of {_fireball} to vector(0, -1, 0)
+            wait 3 ticks
+            delete {_fireball}
+
+        delete {dragonbow::%uuid of {_arrow}%}
+        delete {_arrow}
+        wait 3 ticks
+        delete {_arrow}

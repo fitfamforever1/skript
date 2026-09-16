@@ -1,0 +1,61 @@
+function getRarityLine(rarity: text) :: text:
+    if {_rarity} is "special":
+        return "&cꜱᴘᴇᴄɪᴀʟ"
+    if {_rarity} is "divine":
+        return "&bᴅɪᴠɪɴᴇ"
+    if {_rarity} is "mythic":
+        return "&dᴍʏᴛʜɪᴄᴀʟ"
+    if {_rarity} is "legendary":
+        return "&6ʟᴇɢᴇɴᴅᴀʀʏ"
+    if {_rarity} is "epic":
+        return "&5ᴇᴘɪᴄ"
+    if {_rarity} is "rare":
+        return "&9ʀᴀʀᴇ"
+    if {_rarity} is "uncommon":
+        return "&aᴜɴᴄᴏᴍᴍᴏɴ"
+    if {_rarity} is "common":
+        return "&fᴄᴏᴍᴍᴏɴ"
+    return ""
+
+command /modifyitem [<text>] [<text>]:
+    permission: admin.create
+
+    trigger:
+        if arg-1 is not set:
+            send "&cUsage: /modifyitem <rarity> <type>"
+            stop
+        set {_rarity} to arg-1
+        set {_type} to arg-2
+
+        set {_rarityLine} to getRarityLine({_rarity})
+        set {_typeLine} to SmallCaps({_type})
+
+        set player's held item to unbreakable tool
+        set item flags of player's tool to all item flags
+        force the player's held item to stop glinting
+
+        set line 1 of lore of player's tool to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
+        set line 2 of lore of player's tool to "&8┃ &7ᴛʏᴘᴇ &8» &e%{_typeLine}%"
+        set line 3 of lore of player's tool to "&8┃ &7ʀᴀʀɪᴛʏ &8» %{_rarityLine}%"
+
+        send "&aItem modified"
+    
+command /saveitem <text>:
+    permission: admin.save
+    usage: /saveitem <id>
+    trigger:
+        if player's tool is air:
+            send "&cYou're not holding anything!" to player
+            stop
+        set {loot::%arg-1%} to player's tool
+        send "&aSaved item as &e%arg-1%" to player
+
+command /giveitem <text>:
+    permission: admin.save
+    usage: /giveitem <id>
+    trigger:
+        if {loot::%arg-1%} is set:
+            give {loot::%arg-1%} to player
+            send "&aGave you item &e%arg-1%" to player
+        else:
+            send "&cNo item found with id &e%arg-1%" to player

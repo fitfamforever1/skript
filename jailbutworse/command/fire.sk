@@ -1,0 +1,28 @@
+command /fire [<player>]:
+    trigger:
+        if player does not have permission "warden":
+            send "<##FE7300>[SYSTEM] &cYou do not have permission to run this command." to player
+            stop
+        if arg-1 is not set:
+            send "<##FE7300>[SYSTEM] &cUsage: /fire <player>" to player
+            stop
+        set {_p} to arg-1
+        if {_p} has permission "guard":
+            execute console command "clearall %{_p}%"
+            execute console command "lp user %{_p}% parent remove guard"
+            send "<##FE7300>[SYSTEM] &7You have been fired from <##4BA5BF>Guard&7." to {_p}
+            send "<##FE7300>[SYSTEM] &7You fired &e%{_p}% &7from <##4BA5BF>Guard&7." to player
+            stop
+        if {_p} has permission "nurse":
+            execute console command "clearall %{_p}%"
+            execute console command "lp user %{_p}% parent remove nurse"
+            send "<##FE7300>[SYSTEM] &7You have been fired from <##F862D5>Nurse&7." to {_p}
+            send "<##FE7300>[SYSTEM] &7You fired &e%{_p}% &7from <##F862D5>Nurse&7." to player
+            stop
+        if {_p} has permission "swat":
+            execute console command "clearall %{_p}%"
+            execute console command "lp user %{_p}% parent remove swat"
+            send "<##FE7300>[SYSTEM] &7You have been fired from <##09853A>SWAT&7." to {_p}
+            send "<##FE7300>[SYSTEM] &7You fired &e%{_p}% &7from <##09853A>SWAT&7." to player
+            stop
+        send "<##FE7300>[SYSTEM] &c%{_p}% &cis not a guard, nurse or swat." to player

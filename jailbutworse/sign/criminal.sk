@@ -1,0 +1,53 @@
+on right click on oak wall sign:
+    cancel event
+    if {criminal::sign1} is set:
+        if distance between player and {criminal::sign1} < 6:
+            if player is not op:
+                if player has permission "guard":
+                    send "<##FE7300>[SYSTEM] &e%player% &calready has a role." to player
+                    stop
+                if player has permission "swat":
+                    send "<##FE7300>[SYSTEM] &e%player% &calready has a role." to player
+                    stop
+                if player has permission "nurse":
+                    send "<##FE7300>[SYSTEM] &e%player% &calready has a role." to player
+                    stop
+                if player has permission "warden":
+                    send "<##FE7300>[SYSTEM] &e%player% &calready has a role." to player
+                    stop
+                if player has permission "criminal":
+                    send "<##FE7300>[SYSTEM] &7You are already a <##C20C0C>Criminal&7." to player
+                    stop
+            execute console command "lp user %player% parent add criminal"
+            play sound "block.anvil.place" at player
+            send "<##FE7300>[SYSTEM] &7You are now a <##C20C0C>Criminal&7, &e%player%&7!" to player
+            send "<##C20C0C>%player% &7has joined the criminals!" to all players
+            execute console command "glow dark_red %player%"
+            execute console command "kit give criminal %player%"
+            stop
+    if {criminal::sign2} is set:
+        if distance between player and {criminal::sign2} < 6:
+            if player is not op:
+                if player has permission "guard":
+                    send "<##FE7300>[SYSTEM] &e%player% &cis already a Guard." to player
+                    stop
+                if player has permission "swat":
+                    send "<##FE7300>[SYSTEM] &e%player% &cis already a SWAT." to player
+                    stop
+                if player has permission "nurse":
+                    send "<##FE7300>[SYSTEM] &e%player% &cis already a Nurse." to player
+                    stop
+                if player has permission "warden":
+                    send "<##FE7300>[SYSTEM] &e%player% &cis already has a Warden." to player
+                    stop
+                if player has permission "criminal":
+                    send "<##FE7300>[SYSTEM] &7You are already a <##C20C0C>Criminal&7." to player
+                    stop
+            execute console command "lp user %player% parent add criminal"
+            play sound "block.anvil.place" at player
+            send "<##FE7300>[SYSTEM] &7You are now a <##C20C0C>Criminal&7, &e%player%&7!" to player
+            send "<##C20C0C>%player% &7has joined the criminals!" to all players
+            execute console command "glow dark_red %player%"
+            execute console command "kit give criminal %player%"
+            stop
+

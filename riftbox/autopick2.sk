@@ -1,0 +1,52 @@
+on mine:
+    if event-block is wheat:
+        stop
+    if event-block is carrots:
+        stop
+    if event-block is potatoes:
+        stop
+    cancel drops
+    set {_p} to player's name
+    set {_fortune} to level of fortune of player's tool
+    set {_efficiency} to level of efficiency of player's tool ? 0
+
+    # Block → [item, amount, reqEff]
+    set {_data::*} to "mine1|4|0" if event-block is oak log
+    set {_data::*} to "mine1|1|0" if event-block is oak planks
+    set {_data::*} to "mine2|1|1" if event-block is stone
+    set {_data::*} to "mine2|4|1" if event-block is stone bricks
+    set {_data::*} to "mine3|1|2" if event-block is coal ore
+    set {_data::*} to "mine4|1|3" if event-block is copper ore
+    set {_data::*} to "mine5|1|4" if event-block is iron ore
+    set {_data::*} to "mine6|1|5" if event-block is gold ore
+    set {_data::*} to "mine7|1|6" if event-block is deepslate lapis ore
+    set {_data::*} to "mine8|1|7" if event-block is deepslate redstone ore
+    set {_data::*} to "mine9|1|8" if event-block is deepslate diamond ore
+    set {_data::*} to "mine10|1|9" if event-block is deepslate emerald ore
+    set {_data::*} to "mine3|9|2" if event-block is coal block
+    set {_data::*} to "mine4|9|3" if event-block is copper block
+    set {_data::*} to "mine5|9|4" if event-block is iron block
+    set {_data::*} to "mine6|9|5" if event-block is gold block
+    set {_data::*} to "mine7|9|6" if event-block is lapis block
+    set {_data::*} to "mine8|9|7" if event-block is redstone block
+    set {_data::*} to "mine9|9|8" if event-block is diamond block
+    set {_data::*} to "mine10|9|9" if event-block is emerald block
+
+    if {_data::*} is not set:
+        stop
+
+    set {_split::*} to {_data::1} split at "|"
+    set {_tier} to {_split::1}
+    set {_base} to {_split::2} parsed as integer
+    set {_reqEff} to {_split::3} parsed as integer
+
+    if {_efficiency} < {_reqEff}:
+        send action bar "&cRequires Toughness %{_reqEff}% to mine this!" to player
+        stop
+
+    set {_chance} to 100 - (100 / (1 + {_fortune} * 1.5 * 0.15))
+    set {_final} to {_base}
+    if chance of {_chance}%:
+        add {_base} to {_final}
+
+    execute console command "/si give %{_tier}% %{_final}% %{_p}% true"

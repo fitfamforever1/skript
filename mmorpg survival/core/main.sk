@@ -1,0 +1,31 @@
+on script load:
+    set {_item} to nether star named "&eIsland Menu"
+    set the maximum stack size of {_item} to 1
+    set {menu} to {_item}
+
+on join:
+    set slot 8 of player's inventory to {menu}
+
+on respawn:
+    set slot 8 of player's inventory to {menu}
+
+on item spawn:
+    if display name of event-item is "&eIsland Menu":
+        cancel event
+
+on right click:
+    if display name of event-item is "&eIsland Menu":
+        cancel event
+        execute console command "dm open main %player%"
+
+on inventory click:
+    if display name of event-item is "&eIsland Menu":
+        cancel event
+        loop 36 times:
+            if display name of slot (loop-number - 1) of player's inventory is "&eIsland Menu":
+                set slot (loop-number - 1) of player's inventory to air
+        set slot 8 of player's inventory to {menu}
+
+on drop:
+    if display name of event-item is "&eIsland Menu":
+        cancel event

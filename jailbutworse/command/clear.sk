@@ -1,0 +1,5 @@
+command /clearall [<player>]:
+    trigger:
+        if arg-1 is set:
+            clear arg-1's inventory
+            clear arg-1's armor

@@ -1,0 +1,69 @@
+
+command /warn <offline player>:
+    permission: warn.use
+    permission message: &cYou don't have permission to use this command.
+    trigger:
+        if {warns::%uuid of arg-1%} is not set:
+            set {warns::%uuid of arg-1%} to 0
+        add 1 to {warns::%uuid of arg-1%}
+        set {_w} to {warns::%uuid of arg-1%}
+        set {_name} to name of arg-1
+        broadcast "&8[&4SYSTEM&8] &e%{_name}% &7has been warned by &e%player%&7. &8(Warn %{_w}%/7)"
+        if {_w} is 1:
+            kick arg-1 due to "&c&lApocalypticRPG &r&7| Warned by staff.&r&f&oThis is your 1st warning. Further violations will result in a ban."
+        else if {_w} is 2:
+            ban and kick arg-1 due to "&c&lApocalypticRPG &r&7| 2nd warning — 10 minute ban." for 10 minutes
+        else if {_w} is 3:
+            ban and kick arg-1 due to "&c&lApocalypticRPG &r&7| 3rd warning — 1 hour ban." for 1 hour
+        else if {_w} is 4:
+            ban and kick arg-1 due to "&c&lApocalypticRPG &r&7| 4th warning — 1 day ban." for 1 day
+        else if {_w} is 5:
+            ban and kick arg-1 due to "&c&lApocalypticRPG &r&7| 5th warning — 7 day ban." for 7 days
+        else if {_w} is 6:
+            ban and kick arg-1 due to "&c&lApocalypticRPG &r&7| 6th warning — 1 month ban." for 30 days
+        else if {_w} >= 7:
+            ban and kick arg-1 due to "&c&lApocalypticRPG &r&7| Permanently banned. Repeated violations of server rules."
+
+command /unwarn <offline player>:
+    permission: warn.use
+    permission message: &cYou don't have permission to use this command.
+    trigger:
+        if {warns::%uuid of arg-1%} is not set:
+            send "&e%name of arg-1% &7has no warnings." to player
+            stop
+        if {warns::%uuid of arg-1%} <= 0:
+            send "&e%name of arg-1% &7has no warnings." to player
+            stop
+        subtract 1 from {warns::%uuid of arg-1%}
+        send "&a&8[&4SYSTEM&8] &e%name of arg-1%&7's warns reduced to &e%{warns::%uuid of arg-1%}%&7." to player
+
+command /warnlist [<offline player>]:
+    permission: warn.use
+    permission message: &cYou don't have permission to use this command.
+    trigger:
+        set {_target} to arg-1 if arg-1 is set, else player
+        set {_w} to {warns::%uuid of {_target}%} if {warns::%uuid of {_target}%} is set, else 0
+        send "&8&m──────────────────────" to player
+        send "&c&lWARN LIST &8| &e%name of {_target}%" to player
+        send "&7Warnings: &e%{_w}%&7/7" to player
+        send "&8&m──────────────────────" to player
+
+command /hack <offline player>:
+    permission: warn.use
+    permission message: &cYou don't have permission to use this command.
+    trigger:
+        if {hacks::%uuid of arg-1%} is not set:
+            set {hacks::%uuid of arg-1%} to 0
+        add 1 to {hacks::%uuid of arg-1%}
+        set {_h} to {hacks::%uuid of arg-1%}
+        set {_name} to name of arg-1
+        if {_h} is 1:
+            add 1 to {warns::%uuid of arg-1%}
+            broadcast "&8[&4SYSTEM&8] &e%{_name}% &7flagged for hacking by &e%player%&7. &8(Offence 1 — warn issued)"
+            kick arg-1 due to "&c&lApocalypticRPG &r&7| Flagged for hacking.&r&f&oFirst offence: warning issued. Next will be a ban."
+        else if {_h} is 2:
+            broadcast "&8[&4SYSTEM&8] &e%{_name}% &7flagged for hacking again by &e%player%&7. &8(Offence 2 — 1 day ban)"
+            ban and kick arg-1 due to "&c&lApocalypticRPG &r&7| Banned for hacking. Second offence (1 day ban)." for 1 day
+        else if {_h} >= 3:
+            broadcast "&8[&4SYSTEM&8] &e%{_name}% &7permanently banned for hacking by &e%player%&7."
+            ban and kick arg-1 due to "&c&lApocalypticRPG &r&7| Permanently banned for hacking. Third offence."

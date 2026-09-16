@@ -1,0 +1,17 @@
+on armor change:
+    wait 1 tick
+    updateWeight(player)
+
+function updateWeight(p: player):
+    set {_totalWei} to 0.0
+    loop {_p}'s helmet, {_p}'s chestplate, {_p}'s leggings and {_p}'s boots:
+        if loop-value is not air:
+            set {_val} to data tag "stat:wei" of loop-value parsed as a number
+            if {_val} is set:
+                add {_val} to {_totalWei}
+
+    set {_totalWei} to max(0, min({_totalWei}, 10))
+
+    set {_speedMod} to 0.1 - ({_totalWei} / 150)
+
+    set {_p}'s generic movement speed attribute to {_speedMod}

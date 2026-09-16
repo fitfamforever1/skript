@@ -1,0 +1,360 @@
+function getRarityFromLevel(lvl: integer) :: text:
+    if {_lvl} >= 22:
+        return "divine"
+    if {_lvl} >= 19:
+        return "mythic"
+    if {_lvl} >= 16:
+        return "legendary"
+    if {_lvl} >= 13:
+        return "epic"
+    if {_lvl} >= 10:
+        return "rare"
+    if {_lvl} >= 4:
+        return "uncommon"
+    return "common"
+
+function getRarityColor(rarity: text) :: text:
+    if {_rarity} is "special":
+        return "&c"
+    if {_rarity} is "divine":
+        return "&b"
+    if {_rarity} is "mythic":
+        return "&d"
+    if {_rarity} is "legendary":
+        return "&6"
+    if {_rarity} is "epic":
+        return "&5"
+    if {_rarity} is "rare":
+        return "&9"
+    if {_rarity} is "uncommon":
+        return "&a"
+    if {_rarity} is "common":
+        return "&f"
+    return "&f"
+    
+    
+function getNameFromLevel(lvl: integer) :: text:
+    if {_lvl} >= 21:
+        return "Divine Hoe III"
+    else if {_lvl} >= 20:
+        return "Divine Hoe II"
+    else if {_lvl} >= 19:
+        return "Divine Hoe I"
+
+    else if {_lvl} >= 18:
+        return "Mythic Hoe III"
+    else if {_lvl} >= 17:
+        return "Mythic Hoe II"
+    else if {_lvl} >= 16:
+        return "Mythic Hoe I"
+
+    else if {_lvl} >= 15:
+        return "Legendary Hoe III"
+    else if {_lvl} >= 14:
+        return "Legendary Hoe II"
+    else if {_lvl} >= 13:
+        return "Legendary Hoe I"
+
+    else if {_lvl} >= 12:
+        return "Epic Hoe III"
+    else if {_lvl} >= 11:
+        return "Epic Hoe II"
+    else if {_lvl} >= 10:
+        return "Epic Hoe I"
+
+    else if {_lvl} >= 9:
+        return "Rare Hoe III"
+    else if {_lvl} >= 8:
+        return "Rare Hoe II"
+    else if {_lvl} >= 7:
+        return "Rare Hoe I"
+
+    else if {_lvl} >= 6:
+        return "Uncommon Hoe III"
+    else if {_lvl} >= 5:
+        return "Uncommon Hoe II"
+    else if {_lvl} >= 4:
+        return "Uncommon Hoe I"
+
+    else if {_lvl} >= 3:
+        return "Rookie Hoe III"
+    else if {_lvl} >= 2:
+        return "Rookie Hoe II"
+
+    return "Rookie Hoe I"
+
+
+function applyHoeData(p: player, lvl: integer):
+    set {_rarity} to getRarityFromLevel({_lvl})
+    set {_rarityLine} to getRarityLine({_rarity})
+    set {_color} to getRarityColor({_rarity})
+    set {_luckStat} to floor({_lvl} * 2.5)
+    set {_name} to getNameFromLevel({_lvl})
+    loop items in {_p}'s inventory:
+        if loop-item is an iron hoe:
+            set {_item} to loop-item
+            set number data tag "hoe:level" of {_item} to {_lvl}
+            set number data tag "itemstat:farming_luck" of {_item} to {_luckStat}
+            set name of {_item} to "&f%{_name}% &8[%{_color}%%{_lvl}%&8]"
+            set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
+            set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &eᴛᴏᴏʟ"
+            set line 3 of lore of {_item} to "&8┃ &7ʀᴀʀɪᴛʏ &8» %{_rarityLine}%"
+            set line 4 of lore of {_item} to "&8┃ &7ʟᴇᴠᴇʟ &8» &e%{_lvl}%"
+            set line 5 of lore of {_item} to ""
+            set line 6 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
+            set line 7 of lore of {_item} to "&8┃ &7ꜰᴀʀᴍɪɴɢ ʟᴜᴄᴋ &8» &6+%{_luckStat}%"
+            set {_item} to unbreakable {_item}
+            set item flags of {_item} to all item flags
+            force {_item} to stop glinting
+            set loop-item to {_item}
+            stop loop
+
+
+command /upgradehoe [<player>]:
+    permission: admin
+    trigger:
+        if arg-1 is not set:
+            send "&cUsage: /upgradehoe <player>"
+            stop
+        set {_target} to arg-1
+        set {_found} to false
+        loop items in {_target}'s inventory:
+            if loop-item is an iron hoe:
+                set {_lvl} to number data tag "hoe:level" of loop-item
+                if {_lvl} is not set:
+                    set {_lvl} to 0
+                add 1 to {_lvl}
+                set loop-item to air
+                set {_found} to true
+                stop loop
+        if {_found} is false:
+            send "&cThat player has no iron hoe."
+            stop
+        execute console command "minecraft:give %{_target}% iron_hoe[item_model='hoe/hoe%{_lvl}%'] 1"
+        wait 2 ticks
+        applyHoeData({_target}, {_lvl})
+        send "&8[&4SYSTEM&8] &aHoe upgraded to &eLevel %{_lvl}%&a." to {_target}
+        
+        
+# ============================================================
+function getMilestoneReq(tier: number) :: number:
+    if {_tier} is 1:
+        return 100
+    else if {_tier} is 2:
+        return 250
+    else if {_tier} is 3:
+        return 500
+    else if {_tier} is 4:
+        return 1000
+    else if {_tier} is 5:
+        return 2000
+    else if {_tier} is 6:
+        return 3500
+    else if {_tier} is 7:
+        return 5500
+    else if {_tier} is 8:
+        return 8000
+    else if {_tier} is 9:
+        return 11000
+    else if {_tier} is 10:
+        return 15000
+    else if {_tier} is 11:
+        return 20000
+    else if {_tier} is 12:
+        return 27000
+    else if {_tier} is 13:
+        return 35000
+    else if {_tier} is 14:
+        return 45000
+    else if {_tier} is 15:
+        return 57000
+    else if {_tier} is 16:
+        return 72000
+    else if {_tier} is 17:
+        return 90000
+    else if {_tier} is 18:
+        return 112000
+    else if {_tier} is 19:
+        return 140000
+    else if {_tier} is 20:
+        return 175000
+    else if {_tier} is 21:
+        return 220000
+    return 0
+
+
+on break of wheat:
+    set {_age} to maximum age of targeted block
+    if age of event-block is not {_age}:
+        cancel event
+        stop
+    cancel drops
+
+    set {_uuid} to uuid of player
+    set {_fortune} to {farmingfortune::%{_uuid}%}
+    if {_fortune} is not set:
+        set {_fortune} to 1
+    set {_bonus} to random integer between 0 and {_fortune}
+    set {_drops} to 1 + {_bonus}
+
+    loop {_drops} times:
+        set {_item} to 1 of wheat
+        set name of {_item} to "&fWheat"
+        set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
+        set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &eᴄᴏɴꜱᴜᴍᴀʙʟᴇ"
+        set line 3 of lore of {_item} to "&8┃ &7ʀᴀʀɪᴛʏ &8» &fᴄᴏᴍᴍᴏɴ"
+        set item flags of {_item} to all item flags
+        give {_item} to player
+
+    if {farm::harvested::%player%::total} is not set:
+        set {farm::harvested::%player%::total} to 0
+    add {_drops} to {farm::harvested::%player%::total}
+    set {_total} to {farm::harvested::%player%::total}
+
+    set {_currentTier} to number data tag "stat:milestone" of player
+    if {_currentTier} is not set:
+        set {_currentTier} to 0
+
+    if {_currentTier} < 21:
+        set {_nextTier} to {_currentTier} + 1
+        set {_req} to getMilestoneReq({_nextTier})
+        if {_total} >= {_req}:
+            set number data tag "stat:milestone" of player to {_currentTier} + 1
+            set {_currentTier} to {_currentTier} + 1
+            send "" to player
+            send "&6&l★ FARMING MILESTONE ★" to player
+            send "&e  Reached &fTier %{_currentTier}% &e(%{_req}% total harvested)" to player
+            send "" to player
+            play sound "entity.player.levelup" at player
+            execute console command "upgradehoe %player%"
+            add 2 to player's max health
+
+    if {_currentTier} >= 21:
+        send action bar "&6✦ MAX TIER &8| &f%{_total}% harvested" to player
+        stop
+
+    set {_nextTier}   to {_currentTier} + 1
+    set {_nextReq}    to getMilestoneReq({_nextTier})
+    set {_currentReq} to getMilestoneReq({_currentTier})
+    set {_progress}   to {_total} - {_currentReq}
+    set {_needed}     to {_nextReq} - {_currentReq}
+    set {_pct}        to floor({_progress} / {_needed} * 100)
+    send action bar "&a&lFARMING &8» &f%{_pct}%&7%% &8[&7T&f%{_currentTier}% &8→ &7T&f%{_nextTier}%&8]" to player
+
+
+on break of carrots:
+    set {_age} to maximum age of targeted block
+    if age of event-block is not {_age}:
+        cancel event
+        stop
+    cancel drops
+
+    set {_uuid} to uuid of player
+    set {_fortune} to {farmingfortune::%{_uuid}%}
+    if {_fortune} is not set:
+        set {_fortune} to 1
+    set {_bonus} to random integer between 0 and {_fortune}
+    set {_drops} to 1 + {_bonus}
+
+    loop {_drops} times:
+        set {_item} to 1 of carrot
+        set name of {_item} to "&fCarrot"
+        set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
+        set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &eᴄᴏɴꜱᴜᴍᴀʙʟᴇ"
+        set line 3 of lore of {_item} to "&8┃ &7ʀᴀʀɪᴛʏ &8» &fᴄᴏᴍᴍᴏɴ"
+        set item flags of {_item} to all item flags
+        give {_item} to player
+
+    if {farm::harvested::%player%::total} is not set:
+        set {farm::harvested::%player%::total} to 0
+    add {_drops} to {farm::harvested::%player%::total}
+    set {_total} to {farm::harvested::%player%::total}
+
+    set {_currentTier} to number data tag "stat:milestone" of player
+    if {_currentTier} is not set:
+        set {_currentTier} to 0
+
+    if {_currentTier} < 21:
+        set {_nextTier} to {_currentTier} + 1
+        set {_req} to getMilestoneReq({_nextTier})
+        if {_total} >= {_req}:
+            set number data tag "stat:milestone" of player to {_currentTier} + 1
+            set {_currentTier} to {_currentTier} + 1
+            send "" to player
+            send "&6&l★ FARMING MILESTONE ★" to player
+            send "&e  Reached &fTier %{_currentTier}% &e(%{_req}% total harvested)" to player
+            send "" to player
+            play sound "entity.player.levelup" at player
+            execute console command "upgradehoe %player%"
+            add 2 to player's max health
+
+    if {_currentTier} >= 21:
+        send action bar "&6✦ MAX TIER &8| &f%{_total}% harvested" to player
+        stop
+
+    set {_nextTier}   to {_currentTier} + 1
+    set {_nextReq}    to getMilestoneReq({_nextTier})
+    set {_currentReq} to getMilestoneReq({_currentTier})
+    set {_progress}   to {_total} - {_currentReq}
+    set {_needed}     to {_nextReq} - {_currentReq}
+    set {_pct}        to floor({_progress} / {_needed} * 100)
+    send action bar "&a&lFARMING &8» &f%{_pct}%&7%% &8[&7T&f%{_currentTier}% &8→ &7T&f%{_nextTier}%&8]" to player
+
+
+on break of potatoes:
+    set {_age} to maximum age of targeted block
+    if age of event-block is not {_age}:
+        cancel event
+        stop
+    cancel drops
+
+    set {_uuid} to uuid of player
+    set {_fortune} to {farmingfortune::%{_uuid}%}
+    if {_fortune} is not set:
+        set {_fortune} to 1
+    set {_bonus} to random integer between 0 and {_fortune}
+    set {_drops} to 1 + {_bonus}
+
+    loop {_drops} times:
+        set {_item} to 1 of potato
+        set name of {_item} to "&fPotato"
+        set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
+        set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &eᴄᴏɴꜱᴜᴍᴀʙʟᴇ"
+        set line 3 of lore of {_item} to "&8┃ &7ʀᴀʀɪᴛʏ &8» &fᴄᴏᴍᴍᴏɴ"
+        set item flags of {_item} to all item flags
+        give {_item} to player
+
+    if {farm::harvested::%player%::total} is not set:
+        set {farm::harvested::%player%::total} to 0
+    add {_drops} to {farm::harvested::%player%::total}
+    set {_total} to {farm::harvested::%player%::total}
+
+    set {_currentTier} to number data tag "stat:milestone" of player
+    if {_currentTier} is not set:
+        set {_currentTier} to 0
+
+    if {_currentTier} < 21:
+        set {_nextTier} to {_currentTier} + 1
+        set {_req} to getMilestoneReq({_nextTier})
+        if {_total} >= {_req}:
+            set number data tag "stat:milestone" of player to {_currentTier} + 1
+            set {_currentTier} to {_currentTier} + 1
+            send "" to player
+            send "&6&l★ FARMING MILESTONE ★" to player
+            send "&e  Reached &fTier %{_currentTier}% &e(%{_req}% total harvested)" to player
+            send "" to player
+            play sound "entity.player.levelup" at player
+            execute console command "upgradehoe %player%"
+            add 2 to player's max health
+
+    if {_currentTier} >= 21:
+        send action bar "&6✦ MAX TIER &8| &f%{_total}% harvested" to player
+        stop
+
+    set {_nextTier}   to {_currentTier} + 1
+    set {_nextReq}    to getMilestoneReq({_nextTier})
+    set {_currentReq} to getMilestoneReq({_currentTier})
+    set {_progress}   to {_total} - {_currentReq}
+    set {_needed}     to {_nextReq} - {_currentReq}
+    set {_pct}        to floor({_progress} / {_needed} * 100)
+    send action bar "&a&lFARMING &8» &f%{_pct}%&7%% &8[&7T&f%{_currentTier}% &8→ &7T&f%{_nextTier}%&8]" to player

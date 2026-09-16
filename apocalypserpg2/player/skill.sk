@@ -1,0 +1,166 @@
+options:
+    prefix: &8[<##3a9424>ꜱᴋɪʟʟ ᴘᴏɪɴᴛ&8]
+    health_per_point: 0.5
+    damage_per_point: 1
+    speed_per_point: 0.01
+    base_max_health: 10
+    base_attack_damage: 1
+    base_movement_attr: 0.1        
+    min_movement_attr: 0.01        
+    max_movement_attr: 0.3       
+
+
+on join:
+    if data tag "level:fix" of player is not set:
+        set {_lvl} to GetLevel(player)
+        set {_sp} to {_lvl} * 2
+        set data tag "level:sp" of player to {_sp}
+        set data tag "level:health" of player to 0
+        set data tag "level:damage" of player to 0
+        set data tag "level:speed" of player to 0
+        set data tag "level:fix" of player to true
+        send "{@prefix} ʏᴏᴜ ʜᴀᴠᴇ %{_sp}% ꜱᴋɪʟʟꜱ ᴘᴏɪɴᴛꜱ ᴛᴏ ʙᴇ ᴜꜱᴇᴅ." to player
+    if data tag "level:sp" of player is not set:
+        set {_lvl} to GetLevel(player)
+        set {_sp} to {_lvl} * 2
+        set data tag "level:sp" of player to {_sp}
+        set data tag "level:health" of player to 0
+        set data tag "level:damage" of player to 0
+        set data tag "level:speed" of player to 0
+        send "{@prefix} ʏᴏᴜ ʜᴀᴠᴇ %{_sp}% ꜱᴋɪʟʟꜱ ᴘᴏɪɴᴛꜱ ᴛᴏ ʙᴇ ᴜꜱᴇᴅ." to player
+    applyHealth(player)
+    applyDamage(player)
+    updateMovementSpeed(player)
+
+on armor change:
+    wait 1 tick
+    updateMovementSpeed(player)
+
+function applyHealth(p: player):
+    set {_hp} to data tag "level:health" of {_p}
+    set max health of {_p} to ({@base_max_health} + {_hp})
+
+function applyDamage(p: player):
+    set {_dp} to data tag "level:damage" of {_p}
+    set {_dmgvalue} to {@base_attack_damage} + ({_dp} * {@damage_per_point})
+    set {_p}'s attack damage attribute to {_dmgvalue}
+
+function updateMovementSpeed(p: player):
+    set {_totalWei} to 0.0
+    loop {_p}'s helmet, {_p}'s chestplate, {_p}'s leggings and {_p}'s boots:
+        if loop-value is not air:
+            set {_val} to data tag "stat:wei" of loop-value
+            if {_val} is set:
+                add {_val} to {_totalWei}
+
+    set {_totalWei} to max(0, min({_totalWei}, 10))
+    set {_weightPenalty} to {_totalWei} / 150
+
+    set {_spd} to data tag "level:speed" of {_p}
+    set {_skillBonus} to {_spd} * {@speed_per_point}
+
+    set {_final} to {@base_movement_attr} - {_weightPenalty} + {_skillBonus}
+    set {_final} to max({@min_movement_attr}, min({_final}, {@max_movement_attr}))
+    set {_p}'s generic movement speed attribute to {_final}
+
+
+function spendSkillPoint(p: player, stat: text):
+    set {_sp} to data tag "level:sp" of {_p}
+    if {_sp} >= 1:
+        remove 1 from data tag "level:sp" of {_p}
+        add 1 to data tag "level:%{_stat}%" of {_p}
+        set {_left} to data tag "level:sp" of {_p}
+
+        if {_stat} is "health":
+            applyHealth({_p})
+            send "{@prefix} &a+1 ❤ ᴍᴀx ʜᴇᴀʟᴛʜ! &7ᴘᴏɪɴᴛꜱ ʟᴇꜰᴛ: &f%{_left}%" to {_p}
+        else if {_stat} is "damage":
+            applyDamage({_p})
+            send "{@prefix} &c+1 ⚔ ᴀᴛᴛᴀᴄᴋ ᴅᴀᴍᴀɢᴇ! &7ᴘᴏɪɴᴛꜱ ʟᴇꜰᴛ: &f%{_left}%" to {_p}
+        else if {_stat} is "speed":
+            updateMovementSpeed({_p})
+            send "{@prefix} &b+0.01 ➤ ᴍᴏᴠᴇᴍᴇɴᴛ ꜱᴘᴇᴇᴅ! &7ᴘᴏɪɴᴛꜱ ʟᴇꜰᴛ: &f%{_left}%" to {_p}
+    else:
+        send "{@prefix} &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴀɴʏ ꜱᴋɪʟʟ ᴘᴏɪɴᴛꜱ ʟᴇꜰᴛ!" to {_p}
+
+function openSkillGUI(p: player):
+    set {_sp} to data tag "level:sp" of {_p}
+    set {_hp} to data tag "level:health" of {_p}
+    set {_dp} to data tag "level:damage" of {_p}
+    set {_spd} to data tag "level:speed" of {_p}
+    set {_inv} to a chest inventory with 3 rows named "<##4ed62d>ᴀʟʟᴏᴄᴀᴛᴇ ꜱᴋɪʟʟ ᴘᴏɪɴᴛꜱ"
+    # health item — amount = points allocated
+    set {_item1} to {loot::skill1}
+    set amount of {_item1} to max(1, min(64, {_hp}))
+    set data tag "skill:id" of {_item1} to "1"
+    set slot 11 of {_inv} to {_item1}
+    # damage item — amount = points allocated
+    set {_item2} to {loot::skill2}
+    set amount of {_item2} to max(1, min(64, {_dp}))
+    set data tag "skill:id" of {_item2} to "2"
+    set slot 13 of {_inv} to {_item2}
+    # speed item — amount = points allocated
+    set {_item3} to {loot::skill3}
+    set amount of {_item3} to max(1, min(64, {_spd}))
+    set data tag "skill:id" of {_item3} to "3"
+    set slot 15 of {_inv} to {_item3}
+    # reset item — amount = points left
+    set {_item4} to {loot::skill4}
+    set amount of {_item4} to max(1, min(64, {_sp}))
+    set data tag "skill:id" of {_item4} to "4"
+    set slot 18 of {_inv} to {_item4}
+    # leave item
+    set {_item5} to {loot::skill5}
+    set amount of {_item5} to 1
+    set data tag "skill:id" of {_item5} to "5"
+    set slot 26 of {_inv} to {_item5}
+    open {_inv} to {_p}
+    
+function refreshSkillGUI(p: player, inv: inventory):
+    set {_sp} to data tag "level:sp" of {_p}
+    set {_hp} to data tag "level:health" of {_p}
+    set {_dp} to data tag "level:damage" of {_p}
+    set {_spd} to data tag "level:speed" of {_p}
+    set {_item1} to item in slot 11 of {_inv}
+    set amount of {_item1} to max(1, min(64, {_hp}))
+    set slot 11 of {_inv} to {_item1}
+    set {_item2} to item in slot 13 of {_inv}
+    set amount of {_item2} to max(1, min(64, {_dp}))
+    set slot 13 of {_inv} to {_item2}
+    set {_item3} to item in slot 15 of {_inv}
+    set amount of {_item3} to max(1, min(64, {_spd}))
+    set slot 15 of {_inv} to {_item3}
+    set {_item4} to item in slot 18 of {_inv}
+    set amount of {_item4} to max(1, min(64, {_sp}))
+    set slot 18 of {_inv} to {_item4}
+
+
+on inventory click:
+    if name of event-inventory is "<##4ed62d>ᴀʟʟᴏᴄᴀᴛᴇ ꜱᴋɪʟʟ ᴘᴏɪɴᴛꜱ":
+        cancel event
+        set {_tag} to data tag "skill:id" of event-item
+        if {_tag} is not set:
+            stop
+        if {_tag} is "1":
+            spendSkillPoint(player, "health")
+            refreshSkillGUI(player, event-inventory)
+        else if {_tag} is "2":
+            spendSkillPoint(player, "damage")
+            refreshSkillGUI(player, event-inventory)
+        else if {_tag} is "3":
+            spendSkillPoint(player, "speed")
+            refreshSkillGUI(player, event-inventory)
+        else if {_tag} is "4":
+            set {_lvl} to GetLevel(player)
+            set {_sp} to {_lvl} * 2
+            set data tag "level:sp" of player to {_sp}
+            set data tag "level:health" of player to 0
+            set data tag "level:damage" of player to 0
+            set data tag "level:speed" of player to 0
+            applyHealth(player)
+            applyDamage(player)
+            updateMovementSpeed(player)
+            send "&8[<##3a9424>ꜱᴋɪʟʟ ᴘᴏɪɴᴛ&8] &cᴀʟʟ ꜱᴋɪʟʟ ᴘᴏɪɴᴛꜱ ʜᴀᴠᴇ ʙᴇᴇɴ ʀᴇꜱᴇᴛ." to player
+            refreshSkillGUI(player, event-inventory)
+        else if {_tag} is "5":
+            close inventory of player

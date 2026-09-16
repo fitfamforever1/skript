@@ -1,0 +1,159 @@
+command /startfarmingevent:
+    permission: admin
+    permission message: "&7You don't have permission to run this command."
+    trigger:
+        if {smallfarms.event.active} is true:
+            send "&8[<##208c0d>FARMING&8] &cA farming event is already running!" to sender
+            stop
+
+        set {smallfarms.event.active} to true
+        delete {smallfarms.points::*}
+        delete {smallfarms.event.warned}
+        broadcast ""
+        broadcast "&8&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+        broadcast "   <##208c0d>FARMING CONTEST &7has begin!"
+        broadcast ""
+        broadcast "   &7Duration: &e20 minutes"
+        broadcast "&8&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+        broadcast ""
+        play sound "entity.experience_orb.pickup" at all players
+
+
+        set {smallfarms.event.ticks} to 1200
+        while {smallfarms.event.active} is true:
+            wait 5 seconds
+            remove 5 from {smallfarms.event.ticks}
+            set {_mins} to floor({smallfarms.event.ticks} / 60)
+            set {_secs} to {smallfarms.event.ticks} - ({_mins} * 60)
+            set {_secStr} to "%{_secs}%"
+            if {_secs} < 10:
+                set {_secStr} to "0%{_secs}%"
+            set {_timeStr} to "%{_mins}%:%{_secStr}%"
+            set {_progress} to ({smallfarms.event.ticks} / 1200) * 100
+
+
+            if {smallfarms.event.ticks} <= 300:
+                if {smallfarms.event.warned} is not set:
+                    set {smallfarms.event.warned} to true
+                    broadcast "&8[<##208c0d>FARMING&8] &75 minutes remaining in the Farming Event!"
+                    play sound "block.note_block.bell" at all players
+
+            if {smallfarms.event.ticks} <= 0:
+                stop
+
+command /endfarmingevent:
+    permission: admin
+    trigger:
+        if {smallfarms.event.active} is not true:
+            send "&8[<##208c0d>FARMING&8] &cNo farming event is currently running." to sender
+            stop
+
+        set {smallfarms.event.active} to false
+
+        broadcast ""
+        broadcast "&8&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+        broadcast "<##208c0d>   &lFARMING CONTEST &r&7— Results!"
+        broadcast ""
+
+        set {_first.uuid} to ""
+        set {_first.pts} to 0
+        set {_second.uuid} to ""
+        set {_second.pts} to 0
+        set {_third.uuid} to ""
+        set {_third.pts} to 0
+        
+
+        loop {smallfarms.points::*}:
+            set {_uuid} to loop-index
+            set {_pts} to loop-value
+            if {_pts} > {_first.pts}:
+                set {_third.uuid} to {_second.uuid}
+                set {_third.pts} to {_second.pts}
+                set {_second.uuid} to {_first.uuid}
+                set {_second.pts} to {_first.pts}
+                set {_first.uuid} to {_uuid}
+                set {_first.pts} to {_pts}
+            else if {_pts} > {_second.pts}:
+                set {_third.uuid} to {_second.uuid}
+                set {_third.pts} to {_second.pts}
+                set {_second.uuid} to {_uuid}
+                set {_second.pts} to {_pts}
+            else if {_pts} > {_third.pts}:
+                set {_third.uuid} to {_uuid}
+                set {_third.pts} to {_pts}
+
+        if {_first.pts} is 0:
+            broadcast "   &7No one farmed....!"
+        else:
+            if {_first.uuid} is not "":
+                set {_name} to {smallfarms.names::%{_first.uuid}%}
+                set {_reward} to {_first.pts} * 50
+                broadcast "   &6&l#1 &f%{_name}% &8— &b%{_first.pts}% pts &7| Total: &a$%{_payout}%&8"
+                execute console command "eco give %{_name}% %{_reward}%"
+            if {_second.uuid} is not "":
+                set {_name} to {smallfarms.names::%{_second.uuid}%}
+                set {_reward} to {_second.pts} * 40
+                broadcast "   &6&l#1 &f%{_name}% &8— &b%{_second.pts}% pts &7| Total: &a$%{_payout}%&8"
+                execute console command "eco give %{_name}% %{_reward}%"
+            if {_third.uuid} is not "":
+                set {_name} to {smallfarms.names::%{_third.uuid}%}
+                set {_reward} to {_third.pts} * 30
+                broadcast "   &6&l#1 &f%{_name}% &8— &b%{_third.pts}% pts &7| Total: &a$%{_payout}%&8"
+                execute console command "eco give %{_name}% %{_reward}%"
+
+        loop all players:
+            remove loop-player from {smallfarms.bar.%loop-player's uuid%}
+            delete {smallfarms.bar.%loop-player's uuid%}
+
+        broadcast "&8&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+        broadcast ""
+        play sound "ui.toast.challenge_complete" at all players
+        delete {smallfarms.points::*}
+
+on load: 
+    set {smallfarms.event.active} to false
+    delete {smallfarms.points::*}
+
+on break of wheat or carrots or potatoes or beetroots or melon or pumpkin or nether wart or cocoa or sugar cane:
+    if {smallfarms.event.active} is not true:
+        stop
+    if age of event-block < maximum age of event-block:
+        stop
+
+    set {_pts} to 0
+    set {_block} to event-block's location
+
+    if event-block is wheat:
+        set {_pts} to 1
+    if event-block is carrots:
+        set {_pts} to 1
+    if event-block is potatoes:
+        set {_pts} to 2
+    if event-block is beetroots:
+        set {_pts} to 2
+    if event-block is melon:
+        set {_pts} to 3
+    if event-block is pumpkin:
+        set {_pts} to 3
+    if event-block is nether wart:
+        set {_pts} to 3
+    if event-block is sugar cane:
+        set {_pts} to 5
+
+    if {_pts} <= 0:
+        stop
+
+    add {_pts} to {smallfarms.points::%player's uuid%}
+    set {smallfarms.names::%player's uuid%} to player's name
+    send action bar "&8[<##208c0d>FARMING&8] &a+%{_pts}%pt &7| &7Total: &e%{smallfarms.points::%player's uuid%}% pts &a✔" to player
+
+on join:
+    if {smallfarms.event.active} is true:
+        set {_pts} to {smallfarms.points::%player's uuid%} ? 0
+        set {_progress} to ({smallfarms.event.ticks} / 1200) * 100
+        add player to {smallfarms.bar.%player's uuid%}
+
+on quit:
+    if {smallfarms.event.active} is true:
+        remove player from {smallfarms.bar.%player's uuid%}
+        delete {smallfarms.bar.%player's uuid%}

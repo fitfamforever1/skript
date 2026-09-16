@@ -1,0 +1,20 @@
+placeholderapi placeholder with the prefix "self":
+    if the identifier is "collection":
+        set {_farming} to placeholder "aurora_collections_category_farming_completed_percent_raw" of player parsed as number ? 0
+        set {_mining} to placeholder "aurora_collections_category_mining_completed_percent_raw" of player parsed as number ? 0
+        set {_combat} to placeholder "aurora_collections_category_combat_completed_percent_raw" of player parsed as number ? 0
+        set {_foraging} to placeholder "aurora_collections_category_foraging_completed_percent_raw" of player parsed as number ? 0
+        set {_fishing} to placeholder "aurora_collections_category_fishing_completed_percent_raw" of player parsed as number ? 0
+        set {_slayer} to placeholder "aurora_collections_category_slayer_completed_percent_raw" of player parsed as number ? 0
+
+        set {_farming} to {_farming} * 100
+        set {_mining} to {_mining} * 100
+        set {_combat} to {_combat} * 100
+        set {_foraging} to {_foraging} * 100
+        set {_fishing} to {_fishing} * 100
+        set {_slayer} to {_slayer} * 100
+
+        set {_overall} to ({_farming} + {_mining} + {_combat} + {_foraging} + {_fishing} + {_slayer}) / 6
+        set {_overall} to min(100, {_overall})
+        set {_rounded} to round({_overall} * 10) / 10
+        set the result to "%{_rounded}%"

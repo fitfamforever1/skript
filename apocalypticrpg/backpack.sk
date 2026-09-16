@@ -1,0 +1,80 @@
+# ─────────────────────────────────────────
+#  BACKPACK ITEM - Right-click to open
+on right click:
+    set {_item} to player's tool
+    if {_item} is not set:
+        stop
+    set {_tier} to data tag "backpack:passive" of {_item}
+    if {_tier} is not set:
+        stop
+    set {_tier} to {_tier} parsed as number
+    cancel event
+    if data tag "backpack:vstorage_open" of player is set:
+        send "&8[&4SYSTEM&8] &cClose your current backpack first." to player
+        stop
+    if data tag "backpack:uid" of {_item} is not set:
+        set data tag "backpack:uid" of {_item} to join (16 random alphanumeric characters between "a" and "z") with ""
+        set player's tool to {_item}
+    set {_bag} to data tag "backpack:uid" of {_item}
+    if {_tier} is 1:
+        set {_rows} to 3
+        set {_slots} to 27
+        set {_label} to "&a&lʙᴀᴄᴋᴘᴀᴄᴋ &7[ꜱᴍᴀʟʟ]"
+    else:
+        set {_rows} to 6
+        set {_slots} to 54
+        set {_label} to "&a&lʙᴀᴄᴋᴘᴀᴄᴋ &7[ʟᴀʀɢᴇ]"
+    set metadata tag "vstorage_bp_%{_bag}%" of player to chest inventory with {_rows} rows named {_label}
+    loop {_slots} times:
+        set {_s} to loop-number - 1
+        if {vstorage::bp::%{_bag}%::%{_s}%} is set:
+            set slot {_s} of (metadata tag "vstorage_bp_%{_bag}%" of player) to {vstorage::bp::%{_bag}%::%{_s}%}
+    set data tag "backpack:vstorage_open" of player to {_bag}
+    set data tag "backpack:vstorage_slots" of player to {_slots}
+    open (metadata tag "vstorage_bp_%{_bag}%" of player) to player
+
+# ─────────────────────────────────────────
+#  INVENTORY EVENTS
+# ─────────────────────────────────────────
+on inventory click:
+    set {_bag} to data tag "backpack:vstorage_open" of player
+    if {_bag} is set:
+        if event-inventory = (metadata tag "vstorage_bp_%{_bag}%" of player):
+            stop
+
+on inventory close:
+    set {_bag} to data tag "backpack:vstorage_open" of player
+    if {_bag} is not set:
+        stop
+    if event-inventory = (metadata tag "vstorage_bp_%{_bag}%" of player):
+        set {_slots} to data tag "backpack:vstorage_slots" of player
+        loop {_slots} times:
+            set {_s} to loop-number - 1
+            set {_it} to slot {_s} of (metadata tag "vstorage_bp_%{_bag}%" of player)
+            if {_it} is set:
+                set {vstorage::bp::%{_bag}%::%{_s}%} to {_it}
+            else:
+                delete {vstorage::bp::%{_bag}%::%{_s}%}
+        delete metadata tag "vstorage_bp_%{_bag}%" of player
+        delete data tag "backpack:vstorage_open" of player
+        delete data tag "backpack:vstorage_slots" of player
+
+on quit:
+    set {_bag} to data tag "backpack:vstorage_open" of player
+    if {_bag} is not set:
+        stop
+    set {_slots} to data tag "backpack:vstorage_slots" of player
+    loop {_slots} times:
+        set {_s} to loop-number - 1
+        set {_it} to slot {_s} of (metadata tag "vstorage_bp_%{_bag}%" of player)
+        if {_it} is set:
+            set {vstorage::bp::%{_bag}%::%{_s}%} to {_it}
+        else:
+            delete {vstorage::bp::%{_bag}%::%{_s}%}
+    delete metadata tag "vstorage_bp_%{_bag}%" of player
+    delete data tag "backpack:vstorage_open" of player
+    delete data tag "backpack:vstorage_slots" of player
+
+on join:
+    delete data tag "backpack:vstorage_open" of player
+    delete data tag "backpack:vstorage_slots" of player

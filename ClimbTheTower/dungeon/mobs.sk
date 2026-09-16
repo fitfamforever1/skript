@@ -1,0 +1,174 @@
+function getCategoryStat(category: text, stat: text, level: number) :: number:
+    if {_category} is "balanced":
+        if {_stat} is "health":
+            return 90 + (({_level} - 1) * 10)
+        else if {_stat} is "speed":
+            return 0.25
+        else if {_stat} is "damage":
+            return 8 + (({_level} - 1) * 1.2)
+    else if {_category} is "tank":
+        if {_stat} is "health":
+            return 180 + (({_level} - 1) * 20)
+        else if {_stat} is "speed":
+            return 0.2
+        else if {_stat} is "damage":
+            return 18 + (({_level} - 1) * 2.5)
+    else if {_category} is "ranged":
+        if {_stat} is "health":
+            return 70 + (({_level} - 1) * 8)
+        else if {_stat} is "speed":
+            return 0.18
+        else if {_stat} is "damage":
+            return 10 + (({_level} - 1) * 1.5)
+    else if {_category} is "boss":
+        if {_stat} is "health":
+            return 400 + (({_level} - 1) * 50)
+        else if {_stat} is "speed":
+            return 0.3
+        else if {_stat} is "damage":
+            return 40 + (({_level} - 1) * 5)
+    return 0
+
+function spawn(loc: location, mob: text, roomId: number, floorId: number):
+    if {_mob} is "undead1":
+        spawnUndead1({_loc}, {_roomId}, {_floorId})
+    else if {_mob} is "undead2":
+        spawnUndead2({_loc}, {_roomId}, {_floorId})
+    else if {_mob} is "undead3":
+        spawnUndead3({_loc}, {_roomId}, {_floorId})
+    else if {_mob} is "undead4":
+        spawnUndead4({_loc}, {_roomId}, {_floorId})
+    else if {_mob} is "goblin1":
+        spawnGoblin1({_loc}, {_roomId}, {_floorId})
+    else if {_mob} is "goblin2":
+        spawnGoblin2({_loc}, {_roomId}, {_floorId})
+    else if {_mob} is "goblin3":
+        spawnGoblin3({_loc}, {_roomId}, {_floorId})
+    else if {_mob} is "goblin4":
+        spawnGoblin4({_loc}, {_roomId}, {_floorId})
+
+function applyMobStats(e: entity, mobName: text, category: text, health: number, speed: number, damage: number, roomId: number, floorId: number, level: number):
+    set custom name of {_e} to "%{_mobName}% &8[&a%{_level}%&8]"
+    set max health of {_e} to {_health}
+    set health of {_e} to {_health}
+    set movement speed attribute of {_e} to {_speed}
+    set age of {_e} to 0
+    set knockback resistance attribute of {_e} to 100
+    set entity interaction range attribute of {_e} to 5
+    set block interaction range attribute of {_e} to 5
+    set number data tag "mobstat:damage" of {_e} to {_damage}
+    set number data tag "mobstat:level" of {_e} to {_level}
+    set text data tag "mobstat:category" of {_e} to {_category}
+    set number data tag "mob:floor" of {_e} to {_floorId}
+    set number data tag "mob:room" of {_e} to {_roomId}
+
+
+function spawnUndead1(loc: location, roomId: number, floorId: number) :: entity:
+    set {_level} to {_floorId}
+    set {_category} to "balanced"
+    set {_health} to getCategoryStat({_category}, "health", {_level})
+    set {_speed} to getCategoryStat({_category}, "speed", {_level})
+    set {_damage} to getCategoryStat({_category}, "damage", {_level})
+
+    spawn zombie at {_loc}
+    set {_e} to last spawned entity
+    set tool of {_e} to air
+    applyMobStats({_e}, "&cZombie", {_category}, {_health}, {_speed}, {_damage}, {_roomId}, {_floorId}, {_level})
+    return {_e}
+
+function spawnUndead2(loc: location, roomId: number, floorId: number) :: entity:
+    set {_level} to {_floorId}
+    set {_category} to "ranged"
+    set {_health} to getCategoryStat({_category}, "health", {_level})
+    set {_speed} to getCategoryStat({_category}, "speed", {_level})
+    set {_damage} to getCategoryStat({_category}, "damage", {_level})
+
+    spawn skeleton at {_loc}
+    set {_e} to last spawned entity
+    set tool of {_e} to bow
+    applyMobStats({_e}, "&cSkeleton", {_category}, {_health}, {_speed}, {_damage}, {_roomId}, {_floorId}, {_level})
+    return {_e}
+
+function spawnUndead3(loc: location, roomId: number, floorId: number) :: entity:
+    set {_level} to {_floorId}
+    set {_category} to "tank"
+    set {_health} to getCategoryStat({_category}, "health", {_level})
+    set {_speed} to getCategoryStat({_category}, "speed", {_level})
+    set {_damage} to getCategoryStat({_category}, "damage", {_level})
+
+    spawn zombie at {_loc}
+    set {_e} to last spawned entity
+    set tool of {_e} to air
+    set scale attribute of {_e} to 1.4
+    applyMobStats({_e}, "&cBrute", {_category}, {_health}, {_speed}, {_damage}, {_roomId}, {_floorId}, {_level})
+    return {_e}
+
+function spawnUndead4(loc: location, roomId: number, floorId: number) :: entity:
+    set {_level} to {_floorId}
+    set {_category} to "boss"
+    set {_health} to getCategoryStat({_category}, "health", {_level})
+    set {_speed} to getCategoryStat({_category}, "speed", {_level})
+    set {_damage} to getCategoryStat({_category}, "damage", {_level})
+
+    spawn zombie at {_loc}
+    set {_e} to last spawned entity
+    set tool of {_e} to air
+    set scale attribute of {_e} to 1.2
+    applyMobStats({_e}, "&cZombie Lord", {_category}, {_health}, {_speed}, {_damage}, {_roomId}, {_floorId}, {_level})
+    return {_e}
+
+function clearRoomMobs(room: number):
+    loop all entities in world "world":
+        if loop-entity is not a player:
+            if (number data tag "mob:room" of loop-entity) is {_room}:
+                delete loop-entity
+
+on shoot:
+    if projectile is an arrow:
+        if shooter is not a player:
+            set {_arrow} to event-projectile
+            set number data tag "mobstat:damage" of {_arrow} to number data tag "mobstat:damage" of shooter
+            wait 10 seconds
+            delete {_arrow}
+
+on projectile hit:
+    if projectile is an arrow:
+        if (number data tag "mobstat:damage" of projectile) is set:
+            delete projectile
+                
+
+on death:
+    if attacker is player:
+        set {_floorId} to number data tag "mob:floor" of victim
+        set {_room} to number data tag "room:id" of attacker
+        set {_floor} to number data tag "room%{_room}%:floor" of attacker
+        cancel drops
+        
+        if {_floor} = {_floorId}:
+            set {_current} to (number data tag "floor:current" of attacker) + 1
+            set number data tag "floor:current" of attacker to {_current}
+            
+            
+            chance of 10%:
+                lootroll(attacker, {_floorId})
+            
+            set {_target} to number data tag "floor%{_floorId}%:max" of world "world"
+            set {_target2} to number data tag "floor%{_floorId}%:min" of world "world"
+            if {_current} is set:
+                if {_current} = {_target2}:
+                    send title "" with subtitle "&cᴛʜᴇ ʙᴏꜱꜱ ʜᴀꜱ ʙᴇᴇɴ ꜱᴘᴀᴡɴᴇᴅ." to attacker for 0.8 seconds with fadein 0.2 second and fade out 0.2 second
+                    wait 1 second
+                    StartBoss({_room}, {_floor})
+            if {_current} = {_target}:
+                EndRoom(attacker, {_room}, {_floor})
+                send "&aYou have completed the run." to attacker
+                set {_temp} to text data tag "mobstat:category" of victim
+                lootroll(attacker, {_floorId})
+                if {_temp} is "boss":
+                    set {_floorId} to {_floorId} + 1
+                    lootroll(attacker, {_floorId})
+                    
+on target:
+    if entity's target is not a player:
+        cancel event
+

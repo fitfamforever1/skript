@@ -1,0 +1,160 @@
+function placeRandomItem(gui: inventory, item: item, slots: number):
+    set {_slot} to a random integer between 0 and ({_slots} - 1)
+    while slot {_slot} of {_gui} is not air:
+        set {_slot} to a random integer between 0 and ({_slots} - 1)
+    set slot {_slot} of {_gui} to {_item}
+
+function rollMelee() :: item:
+    set {_r} to a random integer between 1 and 100
+    if {_r} <= 70:
+        return a random element out of {loot::pool::melee_common::*}
+    else if {_r} <= 95:
+        return a random element out of {loot::pool::melee_uncommon::*}
+    else:
+        return a random element out of {loot::pool::melee_rare::*}
+
+function rollGun() :: item:
+    set {_r} to a random integer between 1 and 100
+    if {_r} <= 50:
+        return a random element out of {loot::pool::gun_uncommon::*}
+    else if {_r} <= 85:
+        return a random element out of {loot::pool::gun_rare::*}
+    else if {_r} <= 97:
+        return a random element out of {loot::pool::gun_epic::*}
+    else:
+        return a random element out of {loot::pool::gun_legendary::*}
+
+function rollAmmo() :: item:
+    set {_r} to a random integer between 1 and 100
+    if {_r} <= 60:
+        return a random element out of {loot::pool::ammo_common::*}
+    else if {_r} <= 95:
+        return a random element out of {loot::pool::ammo_uncommon::*}
+    else:
+        return a random element out of {loot::pool::ammo_rare::*}
+
+function rollArmor() :: item:
+    set {_r} to a random integer between 1 and 100
+    if {_r} <= 65:
+        return a random element out of {loot::pool::armor_common::*}
+    else if {_r} <= 92:
+        return a random element out of {loot::pool::armor_uncommon::*}
+    else:
+        return a random element out of {loot::pool::armor_rare::*}
+
+function rollFood() :: item:
+    set {_r} to a random integer between 1 and 100
+    if {_r} <= 90:
+        return a random element out of {loot::pool::food_common::*}
+    else:
+        return {loot::food9}
+
+
+function openSmallCrate(p: player):
+    set {_gui} to chest inventory with 1 row named "&8&lꜱᴍᴀʟʟ ᴄʀᴀᴛᴇ"
+    GainXP({_p}, 10)
+    open {_gui} to {_p}
+    wait 1 tick
+    
+    loop 2 times:
+        placeRandomItem({_gui}, a random element out of {loot::pool::junk::*}, 9)
+
+function openMedicalCrate(p: player):
+    set {_gui} to chest inventory with 1 row named "&8&lᴍᴇᴅɪᴄᴀʟ ᴄʀᴀᴛᴇ"
+    GainXP({_p}, 30)
+    open {_gui} to {_p}
+    wait 1 tick
+    loop 2 times:
+        placeRandomItem({_gui}, a random element out of {loot::pool::med::*}, 9)
+
+function openLargeCrate(p: player):
+    set {_gui} to chest inventory with 2 rows named "&8&lʟᴀʀɢᴇ ᴄʀᴀᴛᴇ"
+    GainXP({_p}, 40)
+    open {_gui} to {_p}
+    wait 1 tick
+    loop 5 times:
+        placeRandomItem({_gui}, a random element out of {loot::pool::junk::*}, 18)
+
+function openFoodCrate(p: player):
+    set {_gui} to chest inventory with 1 row named "&8&lғᴏᴏᴅ ᴄʀᴀᴛᴇ"
+    GainXP({_p}, 20)
+    open {_gui} to {_p}
+    wait 1 tick
+    loop 3 times:
+        placeRandomItem({_gui}, rollFood(), 9)
+
+function openToolCrate(p: player):
+    set {_gui} to chest inventory with 2 rows named "&8&lᴛᴏᴏʟ ᴄʀᴀᴛᴇ"
+    GainXP({_p}, 50)
+    open {_gui} to {_p}
+    wait 1 tick
+    placeRandomItem({_gui}, rollMelee(), 18)
+    placeRandomItem({_gui}, rollAmmo(), 18)
+    loop 2 times:
+        placeRandomItem({_gui}, a random element out of {loot::pool::junk::*}, 18)
+
+function openMilitaryCrate(p: player):
+    set {_gui} to chest inventory with 3 rows named "&8&lᴍɪʟɪᴛᴀʀʏ ᴄʀᴀᴛᴇ"
+    GainXP({_p}, 100)
+    open {_gui} to {_p}
+    wait 1 tick
+    placeRandomItem({_gui}, rollGun(), 27)
+    placeRandomItem({_gui}, rollArmor(), 27)
+    loop 2 times:
+        placeRandomItem({_gui}, rollAmmo(), 27)
+    placeRandomItem({_gui}, {loot::food9}, 27)
+
+
+function openLootGUI(p: player):
+    set {_roll} to a random integer between 1 and 100
+    if {_roll} <= 35:
+        openSmallCrate({_p})
+    else if {_roll} <= 45:
+        openMedicalCrate({_p})
+    else if {_roll} <= 60:
+        openLargeCrate({_p})
+    else if {_roll} <= 80:
+        openFoodCrate({_p})
+    else if {_roll} <= 90:
+        openToolCrate({_p})
+    else:
+        openMilitaryCrate({_p})
+
+
+every 10 minutes:
+    loop {loot::cooldown::*}:
+        if difference between loop-value and now is more than 10 minutes:
+            delete {loot::cooldown::%loop-index%}
+
+
+on right click on a barrel:
+    cancel event
+    if {loot::cooldown::%player%::%location of event-block%} is set:
+        if difference between {loot::cooldown::%player%::%location of event-block%} and now is less than 10 minutes:
+            send action bar "&cᴛʜɪꜱ ʙᴀʀʀᴇʟ ʜᴀꜱ ᴀʟʀᴇᴀᴅʏ ʙᴇᴇɴ ʟᴏᴏᴛᴇᴅ. ᴛʀʏ ᴀɢᴀɪɴ ʟᴀᴛᴇʀ." to player
+            stop
+    set {loot::cooldown::%player%::%location of event-block%} to now
+    openLootGUI(player)
+    play sound "sound:sound.player.loot.stereo" with volume 1 to the player
+
+
+command /loot [<text>]:
+    permission: admin
+    trigger:
+        if arg-1 is not set:
+            openLootGUI(player)
+            stop
+        if arg-1 is "small":
+            openSmallCrate(player)
+        else if arg-1 is "med":
+            openMedicalCrate(player)
+        else if arg-1 is "large":
+            openLargeCrate(player)
+        else if arg-1 is "food":
+            openFoodCrate(player)
+        else if arg-1 is "tool":
+            openToolCrate(player)
+        else if arg-1 is "military":
+            openMilitaryCrate(player)
+        else:
+            send "&cUnknown crate type. Use: small, med, large, food, tool, military" to player

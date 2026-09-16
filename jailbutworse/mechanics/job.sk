@@ -1,0 +1,174 @@
+# ===== PLUMBING =====
+on right click on iron trapdoor:
+    if player is holding stick:
+        cancel event
+        if {plumbing::cooldown::%player%} is set:
+            stop
+        set {plumbing::cooldown::%player%} to true
+        execute console command "eco give %player% 3"
+        send action bar "&a+$3" to player
+        play sound "block.iron_trapdoor.close" at player
+        play sound "block.water.ambient" at player
+        play sound "block.wet_sponge.place" at player
+        wait 4 ticks
+        delete {plumbing::cooldown::%player%}
+
+# ===== LUMBERJACK =====
+on break of jungle log:
+    if player is holding stone axe:
+        cancel event
+        if {lumberjack::cooldown::%player%} is set:
+            stop
+        set {lumberjack::cooldown::%player%} to true
+        set {_loc} to location of event-block
+        set block at {_loc} to bedrock
+        execute console command "eco give %player% 3"
+        send action bar "&a+$3" to player
+        wait 5 seconds
+        set block at {_loc} to jungle log
+        wait 80 ticks
+        delete {lumberjack::cooldown::%player%}
+
+on break of oak log:
+    if player is holding stone axe:
+        cancel event
+        set {_loc} to location of event-block
+        if {lumberjack::log::%{_loc}%} is set:
+            stop
+        set {lumberjack::log::%{_loc}%} to true
+        set block at {_loc} to bedrock
+        execute console command "eco give %player% 15"
+        send action bar "&a+$15 &7(Oak Log)" to player
+        wait 4 seconds
+        set block at {_loc} to oak log[axis=y]
+        delete {lumberjack::log::%{_loc}%}
+
+# ===== MINER =====
+on break:
+    if event-block is coal ore:
+        if player is holding stone pickaxe:
+            set {_loc} to location of event-block
+            if {miner::ore::%{_loc}%} is set:
+                stop
+            set {miner::ore::%{_loc}%} to true
+            cancel event
+            set block at {_loc} to bedrock
+            execute console command "eco give %player% 5"
+            send action bar "&a+$5 &7(Coal)" to player
+            wait 10 seconds
+            set block at {_loc} to coal ore
+            delete {miner::ore::%{_loc}%}
+
+    if event-block is iron ore:
+        if player is holding stone pickaxe:
+            set {_loc} to location of event-block
+            if {miner::ore::%{_loc}%} is set:
+                stop
+            set {miner::ore::%{_loc}%} to true
+            cancel event
+            set block at {_loc} to bedrock
+            execute console command "eco give %player% 10"
+            send action bar "&a+$10 &7(Iron)" to player
+            wait 30 seconds
+            set block at {_loc} to iron ore
+            delete {miner::ore::%{_loc}%}
+
+    if event-block is redstone ore:
+        if player is holding stone pickaxe:
+            set {_loc} to location of event-block
+            if {miner::ore::%{_loc}%} is set:
+                stop
+            set {miner::ore::%{_loc}%} to true
+            cancel event
+            set block at {_loc} to bedrock
+            execute console command "eco give %player% 12"
+            send action bar "&a+$12 &7(Redstone)" to player
+            wait 40 seconds
+            set block at {_loc} to redstone ore
+            delete {miner::ore::%{_loc}%}
+
+    if event-block is lapis ore:
+        if player is holding stone pickaxe:
+            set {_loc} to location of event-block
+            if {miner::ore::%{_loc}%} is set:
+                stop
+            set {miner::ore::%{_loc}%} to true
+            cancel event
+            set block at {_loc} to bedrock
+            execute console command "eco give %player% 12"
+            send action bar "&a+$12 &7(Lapis)" to player
+            wait 40 seconds
+            set block at {_loc} to lapis ore
+            delete {miner::ore::%{_loc}%}
+
+    if event-block is gold ore:
+        if player is holding stone pickaxe:
+            set {_loc} to location of event-block
+            if {miner::ore::%{_loc}%} is set:
+                stop
+            set {miner::ore::%{_loc}%} to true
+            cancel event
+            set block at {_loc} to bedrock
+            execute console command "eco give %player% 18"
+            send action bar "&a+$18 &7(Gold)" to player
+            wait 60 seconds
+            set block at {_loc} to gold ore
+            delete {miner::ore::%{_loc}%}
+
+    if event-block is diamond ore:
+        if player is holding stone pickaxe:
+            set {_loc} to location of event-block
+            if {miner::ore::%{_loc}%} is set:
+                stop
+            set {miner::ore::%{_loc}%} to true
+            cancel event
+            set block at {_loc} to bedrock
+            execute console command "eco give %player% 25"
+            send action bar "&a+$25 &7(Diamond)" to player
+            wait 120 seconds
+            set block at {_loc} to diamond ore
+            delete {miner::ore::%{_loc}%}
+
+    if event-block is emerald ore:
+        if player is holding stone pickaxe:
+            set {_loc} to location of event-block
+            if {miner::ore::%{_loc}%} is set:
+                stop
+            set {miner::ore::%{_loc}%} to true
+            cancel event
+            set block at {_loc} to bedrock
+            execute console command "eco give %player% 30"
+            send action bar "&a+$30 &7(Emerald)" to player
+            wait 150 seconds
+            set block at {_loc} to emerald ore
+            delete {miner::ore::%{_loc}%}
+
+# ===== SHOVELER =====
+on mine:
+    if event-block is gravel:
+        if player is holding stone shovel:
+            set {_loc} to location of event-block
+            if {shoveler::block::%{_loc}%} is set:
+                stop
+            set {shoveler::block::%{_loc}%} to true
+            cancel event
+            set block at {_loc} to bedrock
+            execute console command "eco give %player% 5"
+            send action bar "&a+$5 &7(Gravel)" to player
+            wait 15 seconds
+            set block at {_loc} to gravel
+            delete {shoveler::block::%{_loc}%}
+
+    if event-block is coarse dirt:
+        if player is holding stone shovel:
+            set {_loc} to location of event-block
+            if {shoveler::block::%{_loc}%} is set:
+                stop
+            set {shoveler::block::%{_loc}%} to true
+            cancel event
+            set block at {_loc} to bedrock
+            execute console command "eco give %player% 8"
+            send action bar "&a+$8 &7(Coarse Dirt)" to player
+            wait 20 seconds
+            set block at {_loc} to coarse dirt
+            delete {shoveler::block::%{_loc}%}

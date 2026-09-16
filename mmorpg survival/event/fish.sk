@@ -1,0 +1,255 @@
+options:
+    FISH_COOLDOWN: 2
+    BASE_MIN_WAIT: 100
+    BASE_MAX_WAIT: 600
+
+on fish catch:
+    if fish state is caught fish:
+        set {_player} to player
+        if {fishing.cooldown::%player's uuid%} is set:
+            stop
+        set {fishing.cooldown::%player's uuid%} to true
+        set item of fishing caught entity to air
+        runFishing({_player})
+        wait {@FISH_COOLDOWN} seconds
+        delete {fishing.cooldown::%player's uuid%}
+        send title "" with subtitle "" to player for 1 second
+
+on fish bite:
+    play sound "entity.fishing_bobber.splash" at all players
+    send title "&3FISH CAUGHT!" with subtitle "&7Reel it in..." to player for 0.5 second
+
+on fishing line cast:
+    set {_rod} to player's tool
+    if {_rod} is a fishing rod:
+        set {_lure} to lure enchantment level of {_rod}
+        if {_lure} is not set:
+            set {_lure} to 0
+        set {_wait} to 30 - ({_lure} * 2)
+        if {_wait} < 5:
+            set {_wait} to 5
+        set min fish waiting time to ({_wait} * 1 second)
+        set max fish waiting time to ({_wait} * 1 second)
+
+        set {_lotsLevel} to luck of the sea enchantment level of {_rod}
+        if {_lotsLevel} is not set:
+            set {_lotsLevel} to 0
+        if {_lotsLevel} > 3:
+            set {_lotsLevel} to 3
+
+        set {fishing.extluck::%player's uuid%} to ({_lotsLevel} * 2) + ({_luckPotion} * 3)
+
+on entity hook:
+    cancel event
+
+on fish escape:
+    cancel event
+
+on bobber in ground:
+    cancel event
+
+function runFishing(p: player):
+    set {_rod} to {_p}'s tool
+    set {_luck} to 0
+
+    if {_rod} is a fishing rod:
+        set {_nbt} to custom nbt of {_rod}
+        if {_nbt} is set:
+            set {_luck} to int tag "fishing_luck" of {_nbt}
+            if {_luck} is not set:
+                set {_luck} to 0
+            if {_luck} < 0:
+                set {_luck} to 0
+            if {_luck} > 20:
+                set {_luck} to 20
+
+    set {_extLuck} to {fishing.extluck::%{_p}'s uuid%}
+    if {_extLuck} is not set:
+        set {_extLuck} to 0
+    delete {fishing.extluck::%{_p}'s uuid%}
+
+    set {_totalLuck} to {_luck} + {_extLuck}
+    if {_totalLuck} > 20:
+        set {_totalLuck} to 20
+    if {_totalLuck} < 0:
+        set {_totalLuck} to 0
+
+    set {_fishId} to getFishId({_totalLuck})
+    giveFish({_p}, {_fishId})
+
+function getFishId(luck: integer) :: text:
+    set {_wCommon} to 50
+    set {_wUncommon} to 40
+    set {_wRare} to 5
+    set {_wEpic} to 4
+    set {_wLegendary} to 1
+
+    if {_luck} < 0:
+        set {_luck} to 0
+    if {_luck} > 20:
+        set {_luck} to 20
+
+    set {_wCommon} to {_wCommon} - ({_luck} * 2)
+    set {_wUncommon} to {_wUncommon} - ({_luck} * 1)
+    set {_wRare} to {_wRare} + ({_luck} * 1)
+    set {_wEpic} to {_wEpic} + ({_luck} * 1)
+    set {_wLegendary} to {_wLegendary} + ({_luck} * 1)
+
+    if {_wCommon} < 1:
+        set {_wCommon} to 1
+    if {_wUncommon} < 1:
+        set {_wUncommon} to 1
+    if {_wRare} < 1:
+        set {_wRare} to 1
+    if {_wEpic} < 1:
+        set {_wEpic} to 1
+    if {_wLegendary} < 1:
+        set {_wLegendary} to 1
+
+    set {_total} to {_wCommon} + {_wUncommon} + {_wRare} + {_wEpic} + {_wLegendary}
+    set {_roll} to random integer between 1 and {_total}
+
+    set {_t1} to {_wCommon}
+    set {_t2} to {_t1} + {_wUncommon}
+    set {_t3} to {_t2} + {_wRare}
+    set {_t4} to {_t3} + {_wEpic}
+
+    if {_roll} <= {_t1}:
+        set {_tier} to "common"
+    else if {_roll} <= {_t2}:
+        set {_tier} to "uncommon"
+    else if {_roll} <= {_t3}:
+        set {_tier} to "rare"
+    else if {_roll} <= {_t4}:
+        set {_tier} to "epic"
+    else:
+        set {_tier} to "legendary"
+
+    if {_tier} is "common":
+        return "fish%random integer between 1 and 5%"
+    if {_tier} is "uncommon":
+        return "fish%random integer between 6 and 9%"
+    if {_tier} is "rare":
+        return "fish%random integer between 10 and 13%"
+    if {_tier} is "epic":
+        return "fish%random integer between 14 and 17%"
+    if {_tier} is "legendary":
+        return "fish%random integer between 18 and 20%"
+
+    return "fish1"
+
+function giveFish(p: player, fishId: text):
+    execute console command "si give %{_fishId}% 1 %{_p}% true"
+    execute console command "collection add %{_p}% fishing %{_fishId}% 1 true"
+
+    set {_rawId} to {_fishId}
+    replace "fish" with "" in {_rawId}
+    set {_num} to {_rawId} parsed as integer
+
+    set {_rarity} to ""
+    if {_num} <= 5:
+        set {_rarity} to "&f&lᴄᴏᴍᴍᴏɴ"
+    else if {_num} <= 9:
+        set {_rarity} to "&a&lᴜɴᴄᴏᴍᴍᴏɴ"
+    else if {_num} <= 13:
+        set {_rarity} to "&9&lʀᴀʀᴇ"
+    else if {_num} <= 17:
+        set {_rarity} to "&5&lᴇᴘɪᴄ"
+    else:
+        set {_rarity} to "&6&lʟᴇɢᴇɴᴅᴀʀʏ"
+
+    set {_name} to getFishName({_fishId})
+    send "&8[<##00E3E3>FISHING&8] &7You caught %{_rarity}%&r &e%{_name}%&7." to {_p}
+
+    if {fishing.contest.active} is true:
+        set {_pts} to 0
+        if {_num} <= 5:
+            set {_pts} to 1
+        else if {_num} <= 9:
+            set {_pts} to 5
+        else if {_num} <= 13:
+            set {_pts} to 25
+        else if {_num} <= 17:
+            set {_pts} to 50
+        else:
+            set {_pts} to 100
+        add {_pts} to {fishing.contest.points::%{_p}'s uuid%}
+        set {_total} to {fishing.contest.points::%{_p}'s uuid%}
+        send action bar "&8[<##00E3E3>FISHING CONTEST&8] &7+&b%{_pts}% &7pt&7| &7Total: &e%{_total}% pts &a✔" to {_p}
+
+        set {_xp} to 0
+
+    if {_num} <= 5: 
+        set {_xp} to 50
+    else if {_num} <= 9: 
+        set {_xp} to 150
+    else if {_num} <= 13: 
+        set {_xp} to 800
+    else if {_num} <= 17: 
+        set {_xp} to 1700
+    else: 
+        set {_xp} to 3000
+
+    execute console command "level addxp %{_xp}% %{_p}% true"
+
+function getFishName(fishId: text) :: text:
+    if {_fishId} is "fish1":
+        return "Gudgeon"
+    if {_fishId} is "fish2":
+        return "Minnow"
+    if {_fishId} is "fish3":
+        return "Trout"
+    if {_fishId} is "fish4":
+        return "Salmon"
+    if {_fishId} is "fish5":
+        return "Carp"
+    if {_fishId} is "fish6":
+        return "Perch"
+    if {_fishId} is "fish7":
+        return "Herring"
+    if {_fishId} is "fish8":
+        return "Sardine"
+    if {_fishId} is "fish9":
+        return "Anchovy"
+    if {_fishId} is "fish10":
+        return "Pufferfish"
+    if {_fishId} is "fish11":
+        return "Lionfish"
+    if {_fishId} is "fish12":
+        return "Mackerel"
+    if {_fishId} is "fish13":
+        return "Snapper"
+    if {_fishId} is "fish14":
+        return "Koi"
+    if {_fishId} is "fish15":
+        return "Golden Carp"
+    if {_fishId} is "fish16":
+        return "Electric Eel"
+    if {_fishId} is "fish17":
+        return "Icefish"
+    if {_fishId} is "fish18":
+        return "Mythic Salmon"
+    if {_fishId} is "fish19":
+        return "Phantom Ray"
+    if {_fishId} is "fish20":
+        return "Lavafish"
+    return "Unknown Fish"
+
+
+command /fishrod [<text>] [<integer>]:
+    permission: fishsystem.admin
+    trigger:
+        if player's tool is not a fishing rod:
+            send "&8[<##00E3E3>FISHING&8] &cHold a fishing rod first!" to player
+            stop
+        if arg 1 is not set:
+            send "&8[<##00E3E3>FISHING&8] &7Usage: /fishrod <fishing_luck> <value>" to player
+            stop
+        if arg 2 is not set:
+            send "&8[<##00E3E3>FISHING&8] &7Provide a value." to player
+            stop
+        if arg 1 is not "fishing_luck":
+            send "&8[<##00E3E3>FISHING&8] &cInvalid key. Use: fishing_luck" to player
+            stop
+        set int tag "fishing_luck" of custom nbt of player's tool to arg 2
+        send "&8[<##00E3E3>FISHING&8] &7Set &efishing_luck &7to &b%arg 2% &7on your fishing rod. &a✔" to player

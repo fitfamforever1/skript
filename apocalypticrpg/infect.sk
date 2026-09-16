@@ -1,0 +1,26 @@
+on entity potion effect of unluck removed:
+    if {infect::safe::%player's uuid%} is true:
+        delete {infect::safe::%player's uuid%}
+        stop
+    kill player
+    send "&8[&4SYSTEM&8] &7You have turned into a zombie!"
+
+on entity potion effect of unluck added:
+    set {_helm} to text data tag "armor:passive" of player's helmet
+    set {_chest} to text data tag "armor:passive" of player's chestplate
+    set {_legs} to text data tag "armor:passive" of player's leggings
+    set {_boots} to text data tag "armor:passive" of player's boots
+    if {_helm} is "2":
+        if {_chest} is "2":
+            if {_legs} is "2":
+                if {_boots} is "2":
+                    wait 1 tick
+                    set {infect::safe::%player's uuid%} to true
+                    remove unluck from player
+                    stop
+    send "&8[&4SYSTEM&8] &7You have been <##06400E>⚠ infected&7. You have 20 minutes before transforming into a zombie&7."
+    send title "<##06400E>⚠ INFECTED" with subtitle "" to player for 1 seconds with fade in 0.3 seconds and fade out 0.5 seconds
+    
+on consume of golden apple:
+    set {infect::safe::%player's uuid%} to true
+    remove unluck from player

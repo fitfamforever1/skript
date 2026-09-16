@@ -1,0 +1,401 @@
+command /saveitem <text>:
+    permission: admin.save
+    trigger:
+        if player's tool is air:
+            send "&cYou're not holding anything!" to player
+            stop
+        set {item::%arg-1%} to player's tool
+        send "&aSaved item as &e%arg-1%" to player
+
+command /giveitem <text>:
+    permission: admin.save
+    trigger:
+        if {item::%arg-1%} is set:
+            give {item::%arg-1%} to player
+            send "&aGave you item &e%arg-1%" to player
+        else:
+            send "&cNo item found with id &e%arg-1%" to player
+            
+command /pdcset [<text>] [<text>]:
+    permission: admin.create
+    trigger:
+        set {_item} to player's held item
+        set {_key} to arg-1
+        set {_val} to arg-2
+        set data tag {_key} of {_item} to {_val}
+        set player's held item to {_item}
+        send "&aSet &e%{_key}% &a= &e%{_val}%&a on held item."
+
+function getQualityLine(quality: number) :: text:
+    if {_quality} is 1:
+        return "&eᴄʀᴜᴅᴇ"
+    if {_quality} is 2:
+        return "&eꜰʟᴀᴡᴇᴅ"
+    if {_quality} is 3:
+        return "&eꜱᴛᴀɴᴅᴀʀᴅ"
+    if {_quality} is 4:
+        return "&eꜰɪɴᴇ"
+    if {_quality} is 5:
+        return "&eᴘᴇʀꜰᴇᴄᴛ"
+    return ""
+
+function getQualityStat(stat: number, quality: number) :: number:
+    if {_quality} is 1:
+        return {_stat} * 0.5
+    if {_quality} is 2:
+        return {_stat} * 0.8
+    if {_quality} is 3:
+        return {_stat}
+    if {_quality} is 4:
+        return {_stat} * 1.2
+    if {_quality} is 5:
+        return {_stat} * 1.5
+
+function sword(mat1min: number, mat2max: number):: item:
+    set {_item} to iron sword
+    
+    set {_quality} to random integer between 1 and 5
+    
+    set {_level} to random integer between {_mat1min} and {_mat2max}
+    
+    set {_modelId} to random integer between 1 and 112
+    
+    set {_damage} to round(5 + ({_level} * 2.8))
+    set {_critchance} to round(5 + ({_level} * 0.3))
+    set {_critdamage} to round(50 + ({_level} * 1.0))
+    
+    set name of {_item} to generateitem("Sword")
+    set item model of {_item} to "minecraft:sword/sword%{_modelId}%"
+    
+    set {_qualityLine} to getQualityLine({_quality})
+    set {_damage} to round(getQualityStat({_damage}, {_quality}))
+    set {_critdamage} to round(getQualityStat({_critdamage}, {_quality}))
+    
+    set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
+    set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &eꜱᴡᴏʀᴅ"
+    set line 3 of lore of {_item} to "&8┃ &7ǫᴜᴀʟɪᴛʏ &8» %{_qualityLine}%"
+    set line 4 of lore of {_item} to "&8┃ &7ʟᴇᴠᴇʟ &8» &c%{_level}%"
+    set line 5 of lore of {_item} to ""
+    set line 6 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
+    set line 7 of lore of {_item} to "&8┃ &7ᴅᴀᴍᴀɢᴇ &8» &c+%{_damage}%"
+    set line 8 of lore of {_item} to "&8┃ &7ᴄʀɪᴛ ᴄʜᴀɴᴄᴇ &8» &9+%{_critchance}%%%"
+    set line 9 of lore of {_item} to "&8┃ &7ᴄʀɪᴛ ᴅᴀᴍᴀɢᴇ &8» &9+%{_critdamage}%%%"
+    
+    set {_item} to unbreakable {_item}
+    set item flags of {_item} to all item flags
+    
+    set data tag "itemstat:type" of {_item} to "sword"
+    set number data tag "itemstat:level" of {_item} to {_level}
+    set number data tag "itemstat:damage" of {_item} to {_damage}
+    set number data tag "itemstat:crit_chance" of {_item} to {_critchance}
+    set number data tag "itemstat:crit_damage" of {_item} to {_critdamage}
+    
+    return {_item}
+    
+command /givesword <number> <number>:
+    permission: admin.item
+    permission message: &8[<##E9BF35>ɪᴛᴇᴍ&8] &cʏᴏᴜ ᴅᴏ ɴᴏᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪssɪᴏɴ ᴛᴏ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ.
+    trigger:
+        set {_item} to sword(arg-1, arg-2)
+        give {_item} to player
+        send "&8[<##E9BF35>ɪᴛᴇᴍ&8]&7 ʏᴏᴜ ʜᴀᴠᴇ ᴜꜱᴇᴅ ꜰᴏʟʟᴏᴡɪɴɢ ᴍᴀᴛᴇʀɪᴀʟ ᴄᴏɴꜰɪɢᴜʀᴀᴛɪᴏɴ:" to player
+        send "&8[<##E9BF35>ɪᴛᴇᴍ&8]&7 ᴍᴀᴛᴇʀɪᴀʟ ᴏɴᴇ ᴛᴡᴏ: ᴍɪɴ [%arg-1%] ᴀɴᴅ ᴍᴀx [%arg-2%]" to player
+        
+command /giveaxe <number> <number>:
+    permission: admin.item
+    permission message: &8[<##E9BF35>ɪᴛᴇᴍ&8] &cʏᴏᴜ ᴅᴏ ɴᴏᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪssɪᴏɴ ᴛᴏ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ.
+    trigger:
+        set {_item} to axe(arg-1, arg-2)
+        give {_item} to player
+        send "&8[<##E9BF35>ɪᴛᴇᴍ&8]&7 ʏᴏᴜ ʜᴀᴠᴇ ᴜꜱᴇᴅ ꜰᴏʟʟᴏᴡɪɴɢ ᴍᴀᴛᴇʀɪᴀʟ ᴄᴏɴꜰɪɢᴜʀᴀᴛɪᴏɴ:" to player
+        send "&8[<##E9BF35>ɪᴛᴇᴍ&8]&7 ᴍᴀᴛᴇʀɪᴀʟ: ᴍɪɴ [%arg-1%] ᴀɴᴅ ᴍᴀx [%arg-2%]" to player
+  
+function axe(mat1min: number, mat2max: number):: item:
+    set {_item} to iron axe
+    
+    set {_quality} to random integer between 1 and 5
+    
+    set {_level} to random integer between {_mat1min} and {_mat2max}
+    
+    set {_modelId} to random integer between 1 and 86
+    
+    set {_damage} to round((5 + ({_level} * 2.8)) * 1.15)
+    set {_critchance} to round(2 + ({_level} * 0.08))
+    set {_critdamage} to round(35 + ({_level} * 0.5))
+    
+    set name of {_item} to generateitem("Axe")
+    set item model of {_item} to "minecraft:axe/axe%{_modelId}%"
+    
+    set {_qualityLine} to getQualityLine({_quality})
+    set {_damage} to round(getQualityStat({_damage}, {_quality}))
+    set {_critdamage} to round(getQualityStat({_critdamage}, {_quality}))
+    
+    set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
+    set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &eᴀxᴇ"
+    set line 3 of lore of {_item} to "&8┃ &7ǫᴜᴀʟɪᴛʏ &8» %{_qualityLine}%"
+    set line 4 of lore of {_item} to "&8┃ &7ʟᴇᴠᴇʟ &8» &c%{_level}%"
+    set line 5 of lore of {_item} to ""
+    set line 6 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
+    set line 7 of lore of {_item} to "&8┃ &7ᴅᴀᴍᴀɢᴇ &8» &c+%{_damage}%"
+    set line 8 of lore of {_item} to "&8┃ &7ᴄʀɪᴛ ᴄʜᴀɴᴄᴇ &8» &9+%{_critchance}%%%"
+    set line 9 of lore of {_item} to "&8┃ &7ᴄʀɪᴛ ᴅᴀᴍᴀɢᴇ &8» &9+%{_critdamage}%%%"
+    
+    set {_item} to unbreakable {_item}
+    set item flags of {_item} to all item flags
+    
+    set data tag "itemstat:type" of {_item} to "sword"
+    set number data tag "itemstat:level" of {_item} to {_level}
+    set number data tag "itemstat:damage" of {_item} to {_damage}
+    set number data tag "itemstat:crit_chance" of {_item} to {_critchance}
+    set number data tag "itemstat:crit_damage" of {_item} to {_critdamage}
+    
+    return {_item}
+
+
+
+function helmet(mat1min: number, mat2max: number):: item:
+    set {_item} to leather helmet
+    
+    set {_quality} to random integer between 1 and 5
+    
+    set {_level} to random integer between {_mat1min} and {_mat2max}
+    
+    set {_modelId} to random integer between 1 and 51
+
+    
+    set {_health} to round((30 + ({_level} * 3)) * 1.15)
+    set {_defense} to round(8 + ({_level} * 1.2))
+    set {_mana} to round(15 + ({_level} * 2))
+    
+    set name of {_item} to generateitem("Helmet")
+    set item model of {_item} to "minecraft:armor/helmet/%{_modelId}%"
+    set {_item} to applyHexColor({_item}, color({_colorId}))
+    
+    set {_qualityLine} to getQualityLine({_quality})
+    set {_health} to round(getQualityStat({_health}, {_quality}))
+    set {_defense} to round(getQualityStat({_defense}, {_quality}))
+    set {_mana} to round(getQualityStat({_mana}, {_quality}))
+    
+    set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
+    set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &eʜᴇʟᴍᴇᴛ"
+    set line 3 of lore of {_item} to "&8┃ &7ǫᴜᴀʟɪᴛʏ &8» %{_qualityLine}%"
+    set line 4 of lore of {_item} to "&8┃ &7ʟᴇᴠᴇʟ &8» &c%{_level}%"
+    set line 5 of lore of {_item} to ""
+    set line 6 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
+    set line 7 of lore of {_item} to "&8┃ &7ʜᴇᴀʟᴛʜ &8» &c+%{_health}%"
+    set line 8 of lore of {_item} to "&8┃ &7ᴅᴇғᴇɴꜱᴇ &8» &a+%{_defense}%"
+    set line 9 of lore of {_item} to "&8┃ &7ᴍᴀɴᴀ &8» &b+%{_mana}%"
+    
+    set {_item} to unbreakable {_item}
+    set item flags of {_item} to all item flags
+    
+    set data tag "itemstat:type" of {_item} to "helmet"
+    set number data tag "itemstat:level" of {_item} to {_level}
+    set number data tag "itemstat:health" of {_item} to {_health}
+    set number data tag "itemstat:defense" of {_item} to {_defense}
+    set number data tag "itemstat:mana" of {_item} to {_mana}
+    
+    return {_item}
+
+command /givehelmet <number> <number>:
+    permission: admin.item
+    permission message: &8[<##E9BF35>ɪᴛᴇᴍ&8] &cʏᴏᴜ ᴅᴏ ɴᴏᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪssɪᴏɴ ᴛᴏ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ.
+    trigger:
+        set {_item} to helmet(arg-1, arg-2)
+        give {_item} to player
+        send "&8[<##E9BF35>ɪᴛᴇᴍ&8]&7 ʏᴏᴜ ʜᴀᴠᴇ ᴜꜱᴇᴅ ꜰᴏʟʟᴏᴡɪɴɢ ᴍᴀᴛᴇʀɪᴀʟ ᴄᴏɴꜰɪɢᴜʀᴀᴛɪᴏɴ:" to player
+        send "&8[<##E9BF35>ɪᴛᴇᴍ&8]&7 ᴍᴀᴛᴇʀɪᴀʟ: ᴍɪɴ [%arg-1%] ᴀɴᴅ ᴍᴀx [%arg-2%]" to player
+
+
+function chestplate(mat1min: number, mat2max: number):: item:
+    set {_item} to leather chestplate
+    
+    set {_quality} to random integer between 1 and 5
+    
+    set {_level} to random integer between {_mat1min} and {_mat2max}
+    
+    set {_modelId} to random integer between 1 and 51
+
+    
+    set {_health} to round((40 + ({_level} * 3.5)) * 1.15)
+    set {_defense} to round(12 + ({_level} * 1.8))
+    
+    set name of {_item} to generateitem("Chestplate")
+    set item model of {_item} to "minecraft:armor/chestplate/%{_modelId}%"
+    set {_item} to applyHexColor({_item}, color({_colorId}))
+    
+    set {_qualityLine} to getQualityLine({_quality})
+    set {_health} to round(getQualityStat({_health}, {_quality}))
+    set {_defense} to round(getQualityStat({_defense}, {_quality}))
+    
+    set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
+    set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &eᴄʜᴇꜱᴛᴘʟᴀᴛᴇ"
+    set line 3 of lore of {_item} to "&8┃ &7ǫᴜᴀʟɪᴛʏ &8» %{_qualityLine}%"
+    set line 4 of lore of {_item} to "&8┃ &7ʟᴇᴠᴇʟ &8» &c%{_level}%"
+    set line 5 of lore of {_item} to ""
+    set line 6 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
+    set line 7 of lore of {_item} to "&8┃ &7ʜᴇᴀʟᴛʜ &8» &c+%{_health}%"
+    set line 8 of lore of {_item} to "&8┃ &7ᴅᴇғᴇɴꜱᴇ &8» &a+%{_defense}%"
+    
+    set {_item} to unbreakable {_item}
+    set item flags of {_item} to all item flags
+    
+    set data tag "itemstat:type" of {_item} to "chestplate"
+    set number data tag "itemstat:level" of {_item} to {_level}
+    set number data tag "itemstat:health" of {_item} to {_health}
+    set number data tag "itemstat:defense" of {_item} to {_defense}
+    
+    return {_item}
+
+command /givechestplate <number> <number>:
+    permission: admin.item
+    permission message: &8[<##E9BF35>ɪᴛᴇᴍ&8] &cʏᴏᴜ ᴅᴏ ɴᴏᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪssɪᴏɴ ᴛᴏ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ.
+    trigger:
+        set {_item} to chestplate(arg-1, arg-2)
+        give {_item} to player
+        send "&8[<##E9BF35>ɪᴛᴇᴍ&8]&7 ʏᴏᴜ ʜᴀᴠᴇ ᴜꜱᴇᴅ ꜰᴏʟʟᴏᴡɪɴɢ ᴍᴀᴛᴇʀɪᴀʟ ᴄᴏɴꜰɪɢᴜʀᴀᴛɪᴏɴ:" to player
+        send "&8[<##E9BF35>ɪᴛᴇᴍ&8]&7 ᴍᴀᴛᴇʀɪᴀʟ: ᴍɪɴ [%arg-1%] ᴀɴᴅ ᴍᴀx [%arg-2%]" to player
+
+
+function leggings(mat1min: number, mat2max: number):: item:
+    set {_item} to leather leggings
+    
+    set {_quality} to random integer between 1 and 5
+    
+    set {_level} to random integer between {_mat1min} and {_mat2max}
+    
+    set {_modelId} to random integer between 1 and 51
+
+    
+    set {_health} to round((35 + ({_level} * 3)) * 1.15)
+    set {_damage} to round(3 + ({_level} * 0.8))
+    set {_critdamage} to round(10 + ({_level} * 0.3))
+    
+    set name of {_item} to generateitem("Leggings")
+    set item model of {_item} to "minecraft:armor/leggings/%{_modelId}%"
+    set {_color} to color({_modelId})
+    set {_item} to applyHexColor({_item}, {_color})
+    
+    set {_qualityLine} to getQualityLine({_quality})
+    set {_health} to round(getQualityStat({_health}, {_quality}))
+    set {_damage} to round(getQualityStat({_damage}, {_quality}))
+    set {_critdamage} to round(getQualityStat({_critdamage}, {_quality}))
+    
+    set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
+    set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &eʟᴇɢɢɪɴɢꜱ"
+    set line 3 of lore of {_item} to "&8┃ &7ǫᴜᴀʟɪᴛʏ &8» %{_qualityLine}%"
+    set line 4 of lore of {_item} to "&8┃ &7ʟᴇᴠᴇʟ &8» &c%{_level}%"
+    set line 5 of lore of {_item} to ""
+    set line 6 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
+    set line 7 of lore of {_item} to "&8┃ &7ʜᴇᴀʟᴛʜ &8» &c+%{_health}%"
+    set line 8 of lore of {_item} to "&8┃ &7ᴅᴀᴍᴀɢᴇ &8» &c+%{_damage}%"
+    set line 9 of lore of {_item} to "&8┃ &7ᴄʀɪᴛ ᴅᴀᴍᴀɢᴇ &8» &9+%{_critdamage}%%%"
+    
+    set {_item} to unbreakable {_item}
+    set item flags of {_item} to all item flags
+    
+    set data tag "itemstat:type" of {_item} to "leggings"
+    set number data tag "itemstat:level" of {_item} to {_level}
+    set number data tag "itemstat:health" of {_item} to {_health}
+    set number data tag "itemstat:damage" of {_item} to {_damage}
+    set number data tag "itemstat:crit_damage" of {_item} to {_critdamage}
+    
+    return {_item}
+
+command /giveleggings <number> <number>:
+    permission: admin.item
+    permission message: &8[<##E9BF35>ɪᴛᴇᴍ&8] &cʏᴏᴜ ᴅᴏ ɴᴏᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪssɪᴏɴ ᴛᴏ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ.
+    trigger:
+        set {_item} to leggings(arg-1, arg-2)
+        give {_item} to player
+        send "&8[<##E9BF35>ɪᴛᴇᴍ&8]&7 ʏᴏᴜ ʜᴀᴠᴇ ᴜꜱᴇᴅ ꜰᴏʟʟᴏᴡɪɴɢ ᴍᴀᴛᴇʀɪᴀʟ ᴄᴏɴꜰɪɢᴜʀᴀᴛɪᴏɴ:" to player
+        send "&8[<##E9BF35>ɪᴛᴇᴍ&8]&7 ᴍᴀᴛᴇʀɪᴀʟ: ᴍɪɴ [%arg-1%] ᴀɴᴅ ᴍᴀx [%arg-2%]" to player
+
+
+function boots(mat1min: number, mat2max: number):: item:
+    set {_item} to leather boots
+    
+    set {_quality} to random integer between 1 and 5
+    
+    set {_level} to random integer between {_mat1min} and {_mat2max}
+    
+    set {_modelId} to random integer between 1 and 51
+
+    
+    set {_health} to round((25 + ({_level} * 2.5)) * 1.15)
+    set {_speed} to round(2 + ({_level} * 0.15))
+    set {_critchance} to round(1 + ({_level} * 0.06))
+    
+    set name of {_item} to generateitem("Boots")
+    set item model of {_item} to "minecraft:armor/boots/%{_modelId}%"
+    set {_item} to applyHexColor({_item}, color({_colorId}))
+    
+    set {_qualityLine} to getQualityLine({_quality})
+    set {_health} to round(getQualityStat({_health}, {_quality}))
+    set {_speed} to round(getQualityStat({_speed}, {_quality}))
+    set {_critchance} to round(getQualityStat({_critchance}, {_quality}))
+    
+    set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
+    set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &eʙᴏᴏᴛꜱ"
+    set line 3 of lore of {_item} to "&8┃ &7ǫᴜᴀʟɪᴛʏ &8» %{_qualityLine}%"
+    set line 4 of lore of {_item} to "&8┃ &7ʟᴇᴠᴇʟ &8» &c%{_level}%"
+    set line 5 of lore of {_item} to ""
+    set line 6 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
+    set line 7 of lore of {_item} to "&8┃ &7ʜᴇᴀʟᴛʜ &8» &c+%{_health}%"
+    set line 8 of lore of {_item} to "&8┃ &7ꜱᴘᴇᴇᴅ &8» &f+%{_speed}%"
+    set line 9 of lore of {_item} to "&8┃ &7ᴄʀɪᴛ ᴄʜᴀɴᴄᴇ &8» &9+%{_critchance}%%%"
+    
+    set {_item} to unbreakable {_item}
+    set item flags of {_item} to all item flags
+    
+    set data tag "itemstat:type" of {_item} to "boots"
+    set number data tag "itemstat:level" of {_item} to {_level}
+    set number data tag "itemstat:health" of {_item} to {_health}
+    set number data tag "itemstat:speed" of {_item} to {_speed}
+    set number data tag "itemstat:crit_chance" of {_item} to {_critchance}
+    
+    return {_item}
+
+command /giveboots <number> <number>:
+    permission: admin.item
+    permission message: &8[<##E9BF35>ɪᴛᴇᴍ&8] &cʏᴏᴜ ᴅᴏ ɴᴏᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪssɪᴏɴ ᴛᴏ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ.
+    trigger:
+        set {_item} to boots(arg-1, arg-2)
+        give {_item} to player
+        send "&8[<##E9BF35>ɪᴛᴇᴍ&8]&7 ʏᴏᴜ ʜᴀᴠᴇ ᴜꜱᴇᴅ ꜰᴏʟʟᴏᴡɪɴɢ ᴍᴀᴛᴇʀɪᴀʟ ᴄᴏɴꜰɪɢᴜʀᴀᴛɪᴏɴ:" to player
+        send "&8[<##E9BF35>ɪᴛᴇᴍ&8]&7 ᴍᴀᴛᴇʀɪᴀʟ: ᴍɪɴ [%arg-1%] ᴀɴᴅ ᴍᴀx [%arg-2%]" to player
+        
+function material(level: number):: item:
+    set {_item} to paper
+    
+    set {_max} to {_level} * 5
+    
+    set {_min} to {_max} - 5
+    
+    if {_min} is 0:
+        set {_min} to 1
+    
+    set name of {_item} to matname({_level})
+    set item model of {_item} to "minecraft:mat/%{_level}%"
+    
+    set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
+    set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &eᴏʀᴇ"
+    set line 3 of lore of {_item} to "&8┃ &7ʟᴇᴠᴇʟ &8» &c%{_max}%"
+    
+    set {_item} to unbreakable {_item}
+    set item flags of {_item} to all item flags
+    
+    set data tag "itemstat:type" of {_item} to "ore"
+    set number data tag "itemstat:max" of {_item} to {_max}
+    set number data tag "itemstat:min" of {_item} to {_min}
+    
+    return {_item}
+    
+command /givemat <number>:
+    permission: admin.item
+    permission message: &8[<##E9BF35>ɪᴛᴇᴍ&8] &cʏᴏᴜ ᴅᴏ ɴᴏᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪssɪᴏɴ ᴛᴏ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ.
+    trigger:
+        set {_item} to material(arg-1)
+        give {_item} to player
+        send "&8[<##E9BF35>ɪᴛᴇᴍ&8]&7 ʏᴏᴜ ʜᴀᴠᴇ ᴜꜱᴇᴅ ꜰᴏʟʟᴏᴡɪɴɢ ᴍᴀᴛᴇʀɪᴀʟ ᴄᴏɴꜰɪɢᴜʀᴀᴛɪᴏɴ:" to player
+        send "&8[<##E9BF35>ɪᴛᴇᴍ&8]&7 ᴍᴀᴛᴇʀɪᴀʟ ɪᴅ: ᴍɪɴ [%arg-1%]" to player

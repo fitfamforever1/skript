@@ -1,0 +1,291 @@
+function getRarityLine(rarity: text) :: text:
+    if {_rarity} is "trash":
+        return "&8ᴛʀᴀꜱʜ "
+    if {_rarity} is "common":
+        return "&fᴄᴏᴍᴍᴏɴ "
+    if {_rarity} is "uncommon":
+        return "&aᴜɴᴄᴏᴍᴍᴏɴ "
+    if {_rarity} is "rare":
+        return "&9ʀᴀʀᴇ "
+    if {_rarity} is "epic":
+        return "&5ᴇᴘɪᴄ "
+    if {_rarity} is "legendary":
+        return "&6ʟᴇɢᴇɴᴅᴀʀʏ"
+    if {_rarity} is "mythic":
+        return "&dᴍʏᴛʜɪᴄᴀʟ "
+    if {_rarity} is "special":
+        return "&cꜱᴘᴇᴄɪᴀʟ "
+    return ""
+
+function SmallCaps(text: text) :: text:
+    set {_result} to ""
+    set {_chars::*} to {_text} split at ""
+    set {_map::a} to "ᴀ"
+    set {_map::b} to "ʙ"
+    set {_map::c} to "ᴄ"
+    set {_map::d} to "ᴅ"
+    set {_map::e} to "ᴇ"
+    set {_map::f} to "ꜰ"
+    set {_map::g} to "ɢ"
+    set {_map::h} to "ʜ"
+    set {_map::i} to "ɪ"
+    set {_map::j} to "ᴊ"
+    set {_map::k} to "ᴋ"
+    set {_map::l} to "ʟ"
+    set {_map::m} to "ᴍ"
+    set {_map::n} to "ɴ"
+    set {_map::o} to "ᴏ"
+    set {_map::p} to "ᴘ"
+    set {_map::q} to "q"
+    set {_map::r} to "ʀ"
+    set {_map::s} to "ꜱ"
+    set {_map::t} to "ᴛ"
+    set {_map::u} to "ᴜ"
+    set {_map::v} to "ᴠ"
+    set {_map::w} to "ᴡ"
+    set {_map::x} to "x"
+    set {_map::y} to "ʏ"
+    set {_map::z} to "ᴢ"
+    loop {_chars::*}:
+        if loop-value is "&":
+            set {_skipNext} to true
+            set {_result} to "%{_result}%&"
+        else if {_skipNext} is true:
+            set {_result} to "%{_result}%%loop-value%"
+            set {_skipNext} to false
+        else:
+            set {_char} to loop-value in lowercase
+            if {_map::%{_char}%} is set:
+                set {_result} to "%{_result}%%{_map::%{_char}%}%"
+            else:
+                set {_result} to "%{_result}%%loop-value%"
+    return {_result}
+
+command /modifymelee [<text>] [<number>] [<number>] [<number>]:
+    permission: admin
+    trigger:
+        if arg-1 is not set:
+            send "&cUsage: /modifysword <rarity> <damage> <attack speed>"
+            stop
+        set {_rarity} to arg-1
+        set {_damage} to arg-2
+        set {_attackSpeed} to arg-3
+        set {_item} to player's tool
+        set {_rarityLine} to getRarityLine({_rarity})
+        set {_item} to unbreakable tool
+        set item flags of {_item} to all item flags
+        
+        set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
+        set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &eᴍᴇʟᴇᴇ"
+        set line 3 of lore of {_item} to "&8┃ &7ʀᴀʀɪᴛʏ &8» %{_rarityLine}%"
+        set line 4 of lore of {_item} to ""
+        set line 5 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
+        set line 6 of lore of {_item} to "&8┃ &7ᴅᴀᴍᴀɢᴇ &8» &c%{_damage}%"
+        set line 7 of lore of {_item} to "&8┃ &7ʜɪᴛ ꜱᴘᴇᴇᴅ &8» &e%{_attackSpeed}%"
+        
+        set number data tag "stat:damage" of {_item} to {_damage}
+        set number data tag "stat:speed" of {_item} to {_attackSpeed}
+        
+        set player's tool to {_item}
+        send "&aMelee modified with &cDamage +%{_damage}%&a, &eHit Speed +%{_attackSpeed}%"
+
+command /modifytool [<text>] [<number>] [<number>] [<number>]:
+    permission: admin
+    trigger:
+        if arg-1 is not set:
+            send "&cUsage: /modifytool <rarity> <damage> <attack speed>"
+            stop
+        set {_rarity} to arg-1
+        set {_eff} to arg-2
+        set {_hard} to arg-3
+        set {_item} to player's tool
+        set {_rarityLine} to getRarityLine({_rarity})
+        set {_item} to unbreakable tool
+        set item flags of {_item} to all item flags
+        
+        set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
+        set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &eᴛᴏᴏʟ"
+        set line 3 of lore of {_item} to "&8┃ &7ʀᴀʀɪᴛʏ &8» %{_rarityLine}%"
+        set line 4 of lore of {_item} to ""
+        set line 5 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
+        set line 6 of lore of {_item} to "&8┃ &7ᴇꜰꜰɪᴄɪᴇɴᴄʏ &8» &c%{_eff}%"
+        set line 7 of lore of {_item} to "&8┃ &7ʜᴀʀᴅɴᴇꜱꜱ&8» &e%{_hard}%"
+        
+        set number data tag "stat:eff" of {_item} to {_eff}
+        set number data tag "stat:hard" of {_item} to {_hard}
+        
+        set player's tool to {_item}
+        send "&aTool modified with &cEfficency +%{_eff}%&a, &eHardness +%{_hard}%"
+
+command /modifygun [<text>] [<text>] [<number>] [<number>] [<number>]:
+    permission: admin
+    trigger:
+        if arg-1 is not set:
+            send "&cUsage: /modifygun <rarity> <type> <damage> <firerate> <magazine>"
+            stop
+        set {_rarity} to arg-1
+        set {_type} to arg-2
+        set {_damage} to arg-3
+        set {_fireRate} to arg-4
+        set {_magazine} to arg-5
+        set {_item} to player's tool
+        set {_rarityLine} to getRarityLine({_rarity})
+        set {_typeLine} to SmallCaps({_type})
+        set {_item} to unbreakable tool
+        set item flags of {_item} to all item flags
+        
+        set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
+        set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &e%{_typeLine}%"
+        set line 3 of lore of {_item} to "&8┃ &7ʀᴀʀɪᴛʏ &8» %{_rarityLine}%"
+        set line 4 of lore of {_item} to ""
+        set line 5 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
+        set line 6 of lore of {_item} to "&8┃ &7ᴅᴀᴍᴀɢᴇ &8» &c%{_damage}%"
+        set line 7 of lore of {_item} to "&8┃ &7ғɪʀᴇ ʀᴀᴛᴇ &8» &e%{_fireRate}%"
+        set line 8 of lore of {_item} to "&8┃ &7ᴍᴀɢᴀᴢɪɴᴇ &8» &b%{_magazine}%"
+        
+        set number data tag "stat:gundamage" of {_item} to {_damage}
+        set number data tag "stat:firerate" of {_item} to {_fireRate}
+        set number data tag "stat:magazine" of {_item} to {_magazine}
+        set data tag "stat:gun" of {_item} to true
+        
+        set player's tool to {_item}
+        send "&aGun modified with &cDamage +%{_damage}%&a, &eFire Rate +%{_fireRate}%&a, &bMagazine +%{_magazine}%"
+
+command /modifyarmor [<text>] [<number>] [<number>]:
+    permission: admin
+
+    trigger:
+        if arg-1 is not set:
+            send "&cUsage: /modifyarmor <rarity> <defense> <true defense>"
+            stop
+        set {_rarity} to arg-1
+        set {_def} to arg-2
+        set {_item} to player's tool
+        if arg-3 is set:
+            set {_resistance} to arg-3
+        else:
+            set {_resistance} to 0
+
+        set {_rarityLine} to getRarityLine({_rarity})
+        
+        set {_item} to unbreakable tool
+        set item flags of {_item} to all item flags
+        
+        set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
+        set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &eᴀʀᴍᴏʀ"
+        set line 3 of lore of {_item} to "&8┃ &7ʀᴀʀɪᴛʏ &8» %{_rarityLine}%"
+        set line 4 of lore of {_item} to ""
+        set line 5 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
+        set line 6 of lore of {_item} to "&8┃ &7ᴅᴇꜰᴇɴꜱᴇ &8» &a%{_def}%"
+        set line 7 of lore of {_item} to "&8┃ &7ᴡᴇɪɢʜᴛ &8» &f%{_resistance}%"
+        
+        set number data tag "stat:def" of {_item} to {_def}
+        set number data tag "stat:wei" of {_item} to {_resistance}
+        
+        set player's tool to {_item}
+        send "&aArmor modified: &e%{_rarity}% &7| +%{_def}% armor &7| +%{_resistance}% weight"
+
+command /modifyfood [<text>] [<number>] [<number>]:
+    permission: admin
+
+    trigger:
+        if arg-1 is not set:
+            send "&cUsage: /modifyarmor <rarity> <hunger>"
+            stop
+        set {_rarity} to arg-1
+        set {_hun} to arg-2
+        set {_item} to player's tool
+
+        set {_rarityLine} to getRarityLine({_rarity})
+        
+        set {_item} to unbreakable tool
+        set item flags of {_item} to all item flags
+        
+        set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
+        set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &eꜰᴏᴏᴅ"
+        set line 3 of lore of {_item} to "&8┃ &7ʀᴀʀɪᴛʏ &8» %{_rarityLine}%"
+        set line 4 of lore of {_item} to ""
+        set line 5 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
+        set line 6 of lore of {_item} to "&8┃ &7ʜᴜɴɢᴇʀ &8» <##FFA500>+%{_hun}%"
+        
+        set number data tag "stat:hun" of {_item} to {_hun}
+        
+        set player's tool to {_item}
+        send "&aFood modified: &e%{_rarity}% &7| +%{_hun}% hunger"
+
+command /modifyitem [<text>] [<text>]:
+    permission: admin
+
+    trigger:
+        if arg-1 is not set:
+            send "&cUsage: /modifyitem <rarity> <type>"
+            stop
+        set {_rarity} to arg-1
+        set {_type} to arg-2
+
+        set {_rarityLine} to getRarityLine({_rarity})
+        set {_typeLine} to SmallCaps({_type})
+        set data tag "rarity:set" of {_item} to true
+
+        set player's held item to unbreakable tool
+        set item flags of player's tool to all item flags
+        force the player's held item to stop glinting
+
+        set line 1 of lore of player's tool to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
+        set line 2 of lore of player's tool to "&8┃ &7ᴛʏᴘᴇ &8» &e%{_typeLine}%"
+        set line 3 of lore of player's tool to "&8┃ &7ʀᴀʀɪᴛʏ &8» %{_rarityLine}%"
+
+        send "&aItem modified"
+
+command /modifyability [<text>]:
+    permission: admin
+
+    trigger:
+        if arg-1 is not set:
+            send "&cUsage: /modifyability <ability>"
+            stop
+        set {_ability} to arg-1
+        set {_abilityLine} to SmallCaps({_ability})
+
+        set {_lore::*} to lore of player's tool
+        set {_found} to false
+
+        loop {_lore::*}:
+            if loop-value is "&8┃ &7» ᴀʙɪʟɪᴛʏ":
+                set {_nextIndex} to (loop-index parsed as integer) + 1
+                set {_lore::%{_nextIndex}%} to "&8┃ %{_abilityLine}%"
+                set {_found} to true
+                stop loop
+
+        if {_found} is true:
+            set lore of player's tool to {_lore::*}
+        else:
+            add "" to lore of player's tool
+            add "&8┃ &7» ᴀʙɪʟɪᴛʏ" to lore of player's tool
+            add "&8┃ %{_abilityLine}%" to lore of player's tool
+
+        send "&aItem ability modified"
+
+
+command /pdcset [<text>] [<text>]:
+    permission: admin
+    permission message: &8[&cPDC&8] &cNo permission.
+    usage: &8[&ePDC&8] &7Usage: /pdcset <key> <value>
+    trigger:
+        set {_item} to player's held item
+        set {_key} to arg-1
+        set {_val} to arg-2
+        set data tag {_key} of {_item} to {_val}
+        set player's held item to {_item}
+        send "&8[&ePDC&8] &aSet &f%{_key}% &a= &f%{_val}%&a on held item."
+
+command /pdcdelete [<text>]:
+    permission: admin
+    permission message: &8[&cPDC&8] &cNo permission.
+    usage: &8[&ePDC&8] &7Usage: /pdcdelete <key>
+    trigger:
+        set {_item} to player's held item
+        set {_key} to arg-1
+        delete data tag {_key} of {_item}
+        set player's held item to {_item}
+        send "&8[&ePDC&8] &aDeleted tag &f%{_key}%&a from held item."

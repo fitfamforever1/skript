@@ -1,0 +1,20 @@
+on right click on ender chest or chest:
+    if player has permission "guard":
+        cancel event
+        send "<##FE7300>[SYSTEM] &cYou are not allowed to open an ender chest." to player
+        stop
+    if player has permission "warden":
+        cancel event
+        send "<##FE7300>[SYSTEM] &cYou are not allowed to open an ender chest." to player
+        stop
+    if player has permission "swat":
+        cancel event
+        send "<##FE7300>[SYSTEM] &cYou are not allowed to open an ender chest." to player
+        stop
+    if player has permission "nurse":
+        cancel event
+        send "<##FE7300>[SYSTEM] &cYou are not allowed to open an ender chest." to player
+        stop
+
+on right click on barrel:
+  cancel event

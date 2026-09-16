@@ -1,0 +1,33 @@
+menu_title: "&#deb92bᴄʀᴀꜰᴛ"
+size: 26
+update_interval: 20
+items:
+
+  1:
+    material: paper
+    display_name: "&fPistol Bullet"
+    amount: 4
+    item_model: minecraft:main/skill/1
+    lore:
+      - "&8┃ &e» ɪɴɢʀᴇᴅɪᴇɴᴛ"
+      - "&8┃ &#42cf541x &7ᴄʜᴇᴍɪᴄᴀʟ"
+      - "&8┃ &#42cf543x &7ᴍᴇᴛᴀʟ"
+      - ""
+      - "&8┃ &e» &eʀɪɢʜᴛ ᴄʟɪᴄᴋ"
+      - "&8┃ &7ᴛᴏ ᴄʀᴀꜰᴛ ɪᴛᴇᴍ"
+
+    right_click_commands:
+      - "[player] craft1"
+    slot: 10
+
+
+  close:
+    material: BARRIER
+    display_name: "&c&lClose"
+    item_model: minecraft:main/gui/3
+    lore:
+      - "&8┃ &e» &eʀɪɢʜᴛ ᴄʟɪᴄᴋ"
+      - "&8┃ &7ᴄʟᴏꜱᴇ ᴄʀᴀꜰᴛɪɴɢ ᴍᴇɴᴜ"
+    slot: 26
+    click_commands:
+      - "[close]"

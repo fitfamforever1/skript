@@ -1,0 +1,68 @@
+function isProtected(loc: location) :: boolean:
+    set {_biome} to biome at {_loc}
+    if {_biome} is forest:
+        return true
+    return false
+
+on script load:
+    loop {protect.broken::*}:
+        set {_loc} to {protect.broken.loc::%loop-index%}
+        set {_type} to {protect.broken.type::%loop-index%}
+        if {_loc} is set:
+            set block at {_loc} to {_type}
+        delete {protect.broken::%loop-index%}
+        delete {protect.broken.loc::%loop-index%}
+        delete {protect.broken.type::%loop-index%}
+
+    loop {protect.placed::*}:
+        set {_loc} to {protect.placed.loc::%loop-index%}
+        if {_loc} is set:
+            set block at {_loc} to air
+        delete {protect.placed::%loop-index%}
+        delete {protect.placed.loc::%loop-index%}
+
+on break:
+    if player has permission "admin":
+        stop
+    if isProtected(event-block's location) is true:
+        set {_loc} to location of event-block
+        set {_type} to type of event-block
+        set {_key} to "%{_loc}%"
+
+        if {protect.placed::%{_key}%} is set:
+            delete {protect.placed::%{_key}%}
+            delete {protect.placed.loc::%{_key}%}
+            stop
+
+        set {protect.broken::%{_key}%} to true
+        set {protect.broken.loc::%{_key}%} to {_loc}
+        set {protect.broken.type::%{_key}%} to {_type}
+        send action bar "&8[&4ZONE&8] &eThis block will regenerate in 1 minute!" to player
+        wait 1 minutes
+        if {protect.broken::%{_key}%} is set:
+            set block at {_loc} to {_type}
+            delete {protect.broken::%{_key}%}
+            delete {protect.broken.loc::%{_key}%}
+            delete {protect.broken.type::%{_key}%}
+
+on place:
+    if player has permission "admin":
+        stop
+    if isProtected(event-block's location) is true:
+        set {_loc} to location of event-block
+        set {_key} to "%{_loc}%"
+
+        if {protect.broken::%{_key}%} is set:
+            delete {protect.broken::%{_key}%}
+            delete {protect.broken.loc::%{_key}%}
+            delete {protect.broken.type::%{_key}%}
+            stop
+
+        set {protect.placed::%{_key}%} to true
+        set {protect.placed.loc::%{_key}%} to {_loc}
+        send action bar "&8[&4ZONE&8] &eThis block will be removed in 1 minute!" to player
+        wait 1 minutes
+        if {protect.placed::%{_key}%} is set:
+            set block at {_loc} to air
+            delete {protect.placed::%{_key}%}
+            delete {protect.placed.loc::%{_key}%}

@@ -1,0 +1,33 @@
+# ==========================================================
+#  Custom Minecart Placement + Flying Minecarts
+#  Requires: Skript 2.5.1+ (built-in derailed/flying velocity expressions)
+#  SkBee: not required for this script
+#
+#  What it does:
+#   - Right-click ANY block while holding a minecart to place one there
+#     (no rail required - we spawn it ourselves so we can tag it immediately)
+#   - Every minecart placed this way gets a "flying velocity" and
+#     "derailed velocity" modifier, so instead of grinding to a
+#     halt when it leaves the track (or since it was never on one),
+#     it keeps momentum / rockets
+#   - Right-clicking an existing minecart gives it a launch
+# ==========================================================
+
+options:
+    fly-mod-x: 2      # horizontal momentum retention while airborne (1 = vanilla)
+    fly-mod-y: 6      # vertical momentum retention while airborne - this is what makes it "rocket"
+    fly-mod-z: 2
+    launch-power: 1.2  # upward push given by right-clicking a minecart
+
+# --- Place a minecart by right-clicking any block with one in hand ---
+# --- Tag every minecart the moment it's created ---
+# Fires for ANY minecart creation - the one spawned above, or one placed
+# normally on rails - so the flight behavior always applies either way
+on vehicle create:
+    event-vehicle is a minecart
+    set the flying velocity of event-vehicle to vector({@fly-mod-x}, {@fly-mod-y}, {@fly-mod-z})
+    set the derailed velocity of event-vehicle to vector({@fly-mod-x}, {@fly-mod-y}, {@fly-mod-z})
+
+# --- Right-clicking an existing minecart launches it into flight ---
+on right click on a minecart:
+    push event-entity upwards at speed {@launch-power}

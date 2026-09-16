@@ -1,0 +1,144 @@
+command /ball1:
+    permission: admin
+    trigger:
+        if player's tool is air:
+            send "&cHold the item you want to turn into a 3x3 pick."
+            stop
+        set {_item} to player's tool
+        set data tag "fitfam:ball1" of {_item} to true
+        set player's tool to {_item}
+        send "&aYour held item now mines in a 3x3x1 pattern."
+
+on sneak toggle:
+    if player's off hand tool is player head:
+        set {_item} to player's off hand tool
+        data tag "fitfam:ball1" of {_item} is set:
+            if {growcooldown::§7Growth} is not set:
+                loop blocks in radius 5 around player:
+                    # Crops with age property
+                    if block at loop-block is wheat:
+                        set age of block at loop-block to 7
+                    else if block at loop-block is carrots:
+                        set age of block at loop-block to 7
+                    else if block at loop-block is potatoes:
+                        set age of block at loop-block to 7
+                    else if block at loop-block is beetroot:
+                        set age of block at loop-block to 3
+                    else if block at loop-block is sweet berry bush:
+                        set age of block at loop-block to 3
+                    else if block at loop-block is nether wart:
+                        set age of block at loop-block to 3
+                    else if "%block at loop-block%" contains "stem":
+                        set age of block at loop-block to 7
+                    # Tree saplings - use multiple bonemeal for better growth chance
+                    else if block at loop-block is oak sapling:
+                        loop 10 times:
+                            apply bone meal to block at loop-block
+                            if block at loop-block is not oak sapling:
+                                exit loop
+                    else if block at loop-block is birch sapling:
+                        loop 10 times:
+                            apply bone meal to block at loop-block
+                            if block at loop-block is not birch sapling:
+                                exit loop
+                    else if block at loop-block is spruce sapling:
+                        loop 10 times:
+                            apply bone meal to block at loop-block
+                            if block at loop-block is not spruce sapling:
+                                exit loop
+                    else if block at loop-block is jungle sapling:
+                        loop 10 times:
+                            apply bone meal to block at loop-block
+                            if block at loop-block is not jungle sapling:
+                                exit loop
+                    else if block at loop-block is acacia sapling:
+                        loop 10 times:
+                            apply bone meal to block at loop-block
+                            if block at loop-block is not acacia sapling:
+                                exit loop
+                    else if block at loop-block is dark oak sapling:
+                        loop 10 times:
+                            apply bone meal to block at loop-block
+                            if block at loop-block is not dark oak sapling:
+                                exit loop
+                    else if block at loop-block is cherry sapling:
+                        loop 10 times:
+                            apply bone meal to block at loop-block
+                            if block at loop-block is not cherry sapling:
+                                exit loop
+                    else if block at loop-block is mangrove propagule:
+                        loop 10 times:
+                            apply bone meal to block at loop-block
+                            if block at loop-block is not mangrove propagule:
+                                exit loop
+                    else if block at loop-block is azalea:
+                        loop 10 times:
+                            apply bone meal to block at loop-block
+                            if block at loop-block is not azalea:
+                                exit loop
+                    else if block at loop-block is flowering azalea:
+                        loop 10 times:
+                            apply bone meal to block at loop-block
+                            if block at loop-block is not flowering azalea:
+                                exit loop
+                    else if block at loop-block is pale oak sapling:
+                        loop 10 times:
+                            apply bone meal to block at loop-block
+                            if block at loop-block is not pale oak sapling:
+                                exit loop
+
+                    # Cocoa pods
+                    else if block at loop-block is cocoa:
+                        set age of block at loop-block to 2
+                    # Tall plants - force max height (with proper conditions)
+                    if block at loop-block is sugar cane:
+                        # Only grow from the bottom sugar cane block
+                        if block below loop-block is not sugar cane:
+                            set {_loc} to loop-block
+                            loop 2 times: # Max 3 blocks tall (2 + base)
+                                add 1 to y-coordinate of {_loc}
+                                if block at {_loc} is air:
+                                    set block at {_loc} to sugar cane
+                                else:
+                                    exit loop
+                    if block at loop-block is bamboo sapling:
+                        # Only grow from the bottom bamboo block
+                        if block below loop-block is not bamboo:
+                            set {_loc} to loop-block
+                            loop 12 times: # Max 13 blocks tall (12 + base)
+                                add 1 to y-coordinate of {_loc}
+                                if block at {_loc} is air:
+                                    set block at {_loc} to bamboo
+                                else:
+                                    exit loop
+                    if block at loop-block is cactus:
+                        # Only grow from the bottom cactus block
+                        if block below loop-block is not cactus:
+                            set {_loc} to loop-block
+                            loop 2 times: # Max 3 blocks tall (2 + base)
+                                add 1 to y-coordinate of {_loc}
+                                if block at {_loc} is air:
+                                    if block below {_loc} is cactus: # Cactus can only grow on cactus
+                                        set block at {_loc} to cactus
+                                    else:
+                                        exit loop
+                                else:
+                                    exit loop
+                    if block at loop-block is kelp:
+                        if block below loop-block is not kelp:
+                            set {_loc} to loop-block
+                            loop 10 times:
+                                add 1 to y-coordinate of {_loc}
+                                if block at {_loc} is water:
+                                    set block at {_loc} to kelp
+                                else:
+                                    exit loop
+                play sound "minecraft:item.crop.plant" with volume 0.5 to player
+                set {growcooldown::§7Growth} to true
+                send action bar "§aAll crops in a 5x5 area have been fully grown!" to player # Cooldown Msg
+                loop 15 times:
+                    wait 1 second
+                    send action bar "&b%(15 - loop-number) + 1%s" to player
+                delete {growcooldown::§7Growth}
+            else:
+                send action bar "§cThis item is still on cooldown!" to player

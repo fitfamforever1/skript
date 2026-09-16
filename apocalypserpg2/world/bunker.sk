@@ -1,0 +1,241 @@
+# ================= BUNKER LOCATION FUNCTION =================
+function getBunkerLoc(n: number) :: location:
+    set {_row} to mod(({_n} - 1), 7)
+    set {_col} to floor(({_n} - 1) / 7)
+    set {_x} to -610.5 + (13 * {_col})
+    set {_z} to -2235.5 - (9 * {_row})
+    set {_loc} to location({_x}, 54, {_z}, world("world"), -90, 0)
+    return {_loc}
+
+# ================= REPAIR FUNCTION =================
+function repairBunker(n: number) :: boolean:
+    if {bunker_owner::%{_n}%} is not set:
+        return false
+    add 86400 to {bunker_expire::%{_num}%}
+    return true
+
+# ================= ACCESS CHECK FUNCTION =================
+function canEnterBunker(n: number, playerName: string) :: boolean:
+    if {bunker_owner::%{_n}%} is not set:
+        return true
+    if {bunker_owner::%{_n}%} is {_playerName}:
+        return true
+    if {bunker_trusted::%{_n}%::*} contains {_playerName}:
+        return true
+    return false
+
+# ================= ADMIN SETUP =================
+command /bunker <number>:
+    permission: admin
+    trigger:
+        if arg-1 is not between 1 and 21:
+            send "&cInvalid bunker number, must be 1-21" to player
+            stop
+        teleport player to getBunkerLoc(arg-1)
+        send "&aTeleported to bunker %arg-1%" to player
+
+command /setexit <number>:
+    permission: admin
+    trigger:
+        if arg-1 is not between 1 and 21:
+            send "&cBunker number must be between 1 and 21" to player
+            stop
+        if target block of player is not orange concrete:
+            send "&cYou must be looking at orange concrete" to player
+            stop
+        set {exit::%arg-1%} to location of target block of player
+        send "&aExit block for bunker %arg-1% saved" to player
+
+command /setentry <number>:
+    permission: admin
+    trigger:
+        if arg-1 is not between 1 and 21:
+            send "&cBunker number must be between 1 and 21" to player
+            stop
+        if target block of player is not orange concrete:
+            send "&cYou must be looking at orange concrete" to player
+            stop
+        set {entry::%arg-1%} to location of target block of player
+        send "&aEntry block for bunker %arg-1% saved" to player
+
+command /removebunker <number>:
+    permission: admin
+    trigger:
+        if arg-1 is not between 1 and 21:
+            send "&cBunker number must be between 1 and 21" to player
+            stop
+        delete {exit::%arg-1%}
+        delete {entry::%arg-1%}
+        if {bunker_owner::%arg-1%} is set:
+            delete {player_bunker::%{bunker_owner::%arg-1%}%}
+        delete {bunker_owner::%arg-1%}
+        delete {bunker_trusted::%arg-1%::*}
+        delete {bunker_expire::%arg-1%}
+        send "&aRemoved exit, entry, and claim for bunker %arg-1%" to player
+
+# ================= TIME FORMAT FUNCTION =================
+function formatTime(seconds: number) :: string:
+    set {_h} to floor({_seconds} / 3600)
+    set {_m} to floor(({_seconds} - ({_h} * 3600)) / 60)
+    set {_s} to {_seconds} - ({_h} * 3600) - ({_m} * 60)
+    return "%{_h}%h %{_m}%m %{_s}%s"
+
+
+
+# ================= CLAIM / TRUST COMMANDS =================
+command /repairbunker <number>:
+    trigger:
+        if arg-1 is not between 1 and 21:
+            send "&cInvalid bunker number" to player
+            stop
+        if {bunker_owner::%arg-1%} is not set:
+            send "&cBunker %arg-1% is not claimed" to player
+            stop
+        if name of player is not {bunker_owner::%arg-1%}:
+            send "&cYou don't own this bunker" to player
+            stop
+        repairBunker(arg-1)
+        send "&aBunker %arg-1% repaired - decay timer reset (30s)" to player
+
+command /trust <offline player>:
+    trigger:
+        if {player_bunker::%name of player%} is not set:
+            send "&cʏᴏᴜ ᴅᴏɴ'ᴛ ᴏᴡɴ ᴀ ʙᴜɴᴋᴇʀ" to player
+            stop
+        set {_n} to {player_bunker::%name of player%}
+        if {bunker_trusted::%{_n}%::*} contains name of arg-1:
+            send "&e%arg-1% ɪꜱ ᴀʟʀᴇᴀᴅʏ ᴛʀᴜꜱᴛᴇᴅ" to player
+            stop
+        add name of arg-1 to {bunker_trusted::%{_n}%::*}
+        send "&aᴛʀᴜꜱᴛᴇᴅ %arg-1% to ʙᴜɴᴋᴇʀ" to player
+
+command /untrust <offline player>:
+    trigger:
+        if {player_bunker::%name of player%} is not set:
+            send "&cʏᴏᴜ ᴅᴏɴ'ᴛ ᴏᴡɴ ᴀ ʙᴜɴᴋᴇʀ" to player
+            stop
+        set {_n} to {player_bunker::%name of player%}
+        if {bunker_trusted::%{_n}%::*} does not contain name of arg-1:
+            send "&e%arg-1% ɪꜱ ɴᴏᴛ ᴛʀᴜꜱᴛᴇᴅ" to player
+            stop
+        remove name of arg-1 from {bunker_trusted::%{_n}%::*}
+        send "&aᴜɴᴛʀᴜꜱᴛᴇᴅ %arg-1% ꜰʀᴏᴍ ʙᴜɴᴋᴇʀ" to player
+
+command /trustlist:
+    trigger:
+        if {player_bunker::%name of player%} is not set:
+            send "&cʏᴏᴜ ᴅᴏɴ'ᴛ ᴏᴡɴ ᴀ ʙᴜɴᴋᴇʀ" to player
+            stop
+        set {_n} to {player_bunker::%name of player%}
+        if {bunker_trusted::%{_n}%::*} is not set:
+            send "&7ɴᴏ ᴏɴᴇ ɪꜱ ᴛʀᴜꜱᴛᴇᴅ ᴛᴏ ʏᴏᴜʀ ʙᴜɴᴋᴇʀ" to player
+            stop
+        send "&6ᴛʀᴜꜱᴛᴇᴅ ᴘʟᴀʏᴇʀꜱ ꜰᴏʀ ʙᴜɴᴋᴇʀ %{_n}%:" to player
+        loop {bunker_trusted::%{_n}%::*}:
+            send "&7- %loop-value%" to player
+
+
+# ================= DECAY CHECKER =================
+every 5 seconds:
+    loop integers from 1 to 21:
+        if {bunker_owner::%loop-value%} is set:
+            if {bunker_expire::%loop-value%} is set:
+                remove 5 from {bunker_expire::%loop-value%}
+                if {bunker_expire::%loop-value%} <= 0:
+                    delete {player_bunker::%{bunker_owner::%loop-value%}%}
+                    delete {bunker_owner::%loop-value%}
+                    delete {bunker_trusted::%loop-value%::*}
+                    delete {bunker_expire::%loop-value%}
+
+
+# ================= RIGHT-CLICK CHANNEL LOGIC =================
+on right click on orange concrete:
+    set {_block} to location of clicked block
+    set {_type} to ""
+    set {_n} to 0
+
+    loop {exit::*}:
+        if {_block} is loop-value:
+            set {_type} to "exit"
+            set {_n} to loop-index
+
+    loop {entry::*}:
+        if {_block} is loop-value:
+            set {_type} to "entry"
+            set {_n} to loop-index
+
+    if {_type} is "":
+        stop
+
+    if {channeling::%name of player%} is true:
+        stop
+
+    set {channeling::%name of player%} to true
+    set {channel_progress::%name of player%} to 0
+
+    while {channeling::%name of player%} is true:
+        wait 1 second
+        if player is not online:
+            delete {channeling::%name of player%}
+            stop loop
+
+        add 1 to {channel_progress::%name of player%}
+        set {_prog} to {channel_progress::%name of player%}
+
+        if distance between player and {_block} is greater than 4:
+            send action bar "&c✖ ᴄᴀɴᴄᴇʟʟᴇᴅ - ᴍᴏᴠᴇᴅ ᴀᴡᴀʏ" to player
+            delete {channeling::%name of player%}
+            stop loop
+
+        if target block of player is not block at {_block}:
+            send action bar "&c✖ ᴄᴀɴᴄᴇʟʟᴇᴅ - ʟᴏᴏᴋ ᴀᴛ ᴛʜᴇ ʙʟᴏᴄᴋ" to player
+            delete {channeling::%name of player%}
+            stop loop
+
+        if block at {_block} is not orange concrete:
+            send action bar "&c✖ ᴄᴀɴᴄᴇʟʟᴇᴅ - ʙʟᴏᴄᴋ ᴄʜᴀɴɢᴇᴅ" to player
+            delete {channeling::%name of player%}
+            stop loop
+
+        set {_bars} to ""
+        loop {_prog} times:
+            set {_bars} to "%{_bars}%■"
+        loop (10 - {_prog}) times:
+            set {_bars} to "%{_bars}%□"
+
+        send action bar "&e%{_bars}% &7(%{_prog}%/10s)" to player
+
+        if {_prog} >= 10:
+            delete {channeling::%name of player%}
+
+            if {_type} is "exit":
+                if {entry::%{_n}%} is set:
+                    set {_target} to {entry::%{_n}%}
+                    set {_ox} to random integer between -1 and 1
+                    set {_oz} to random integer between -1 and 1
+                    teleport player to location((x of {_target}) + {_ox} + 0.5, (y of {_target}) + 1, (z of {_target}) + {_oz} + 0.5, world of {_target})
+                    send action bar "&aᴛᴇʟᴇᴘᴏʀᴛᴇᴅ ɴᴇᴀʀ ʙᴜɴᴋᴇʀ ᴇɴᴛʀᴀɴᴄᴇ" to player
+                else:
+                    send "&cɴᴏ ᴇɴᴛʀʏ ꜱᴇᴛ ꜰᴏʀ ʙᴜɴᴋᴇʀ %{_n}%" to player
+
+            else if {_type} is "entry":
+                set {_num} to {_n} parsed as number
+                set {_num} to round {_num}
+            
+                if canEnterBunker({_num}, name of player) is false:
+                    send "&cᴛʜɪꜱ ʙᴜɴᴋᴇʀ ɪꜱ ᴄʟᴀɪᴍᴇᴅ ᴀɴᴅ ʏᴏᴜ ᴀʀᴇ ɴᴏᴛ ᴛʀᴜꜱᴛᴇᴅ." to player
+                    stop loop
+            
+                if {bunker_owner::%{_num}%} is not set:
+                    if {player_bunker::%name of player%} is set:
+                        send "&cʏᴏᴜ ᴀʟʀᴇᴀᴅʏ ᴏᴡɴ ʙᴜɴᴋᴇʀ %{player_bunker::%name of player%}%" to player
+                        stop loop
+                    set {bunker_owner::%{_num}%} to name of player
+                    set {player_bunker::%name of player%} to {_num}
+                    set {bunker_expire::%{_num}%} to 86400
+                    send "&aʏᴏᴜ ᴄʟᴀɪᴍᴇᴅ ʙᴜɴᴋᴇʀ!" to player
+            
+                teleport player to getBunkerLoc({_num})
+                send action bar "&aᴇɴᴛᴇʀɪɴɢ ʙᴜɴᴋᴇʀ" to player
+
+            stop loop

@@ -1,0 +1,66 @@
+# Rat | pet1
+on damage:
+    victim is a player
+    {petid::%victim%::pet1} is "active"
+
+    set {_roll} to random integer from 1 to 10
+    if {_roll} is 1:
+        cancel event
+        send action bar "&7Dodged!" to victim
+        play sound "entity.enderman.teleport" with volume 0.6 and pitch 1.5 at victim 
+
+# Lizard | pet2
+on damage:
+    victim is a player
+    damage cause is fall
+    if {petid::%victim%::pet2} is "active":
+        set damage to damage * 0.5
+
+# Chicken | pet3
+
+# Frog | pet4
+on jump:
+    if {petid::%player%::pet4} is "active":
+        push player in player's direction with force 0.5
+        push player upward with force 0.5
+
+# Fish | pet5
+on swim toggle:
+    if {petid::%player%::pet5} is "active":
+        if player's pose is swimming pose:
+            remove water breathing from player
+            remove dolphin's grace from player
+        else:
+            apply water breathing 1 to player 
+            apply dolphin's grace 2 to player
+
+# Beetle | pet6
+on block damaging:
+    if {petid::%player%::pet6} is "active":
+        apply haste 1 to player for 5 seconds
+
+# Snake | pet7
+on sneak toggle:
+    if {petid::%player%::pet7} is "active":
+        if player is sneaking:
+            remove invisibility from player
+            delete {petability::%player%::invis}
+        else:
+            if {petability::%player%::invis} is not set:
+                wait 2 seconds
+                apply infinite invisibility to the player:
+                    hide particles
+                set {petability::%player%::invis} to true
+                send action bar "&7Camouflage!" to player
+
+# Bat | pet8
+on damage:
+    attacker is a player
+    victim is an entity
+    {petid::%attacker%::pet8} is "active"
+    set {_newHp} to attacker's health + 0.5
+    if {_newHp} > max health of attacker:
+        set attacker's health to max health of attacker
+    else:
+        set attacker's health to {_newHp}
+    send actionbar "&7Bat Pet heals you!" to attacker

@@ -1,0 +1,110 @@
+on inventory slot change:
+	event-item != 0 airs
+	
+	set {_ticks} to 5
+	
+	if player's metadata "slot=%(index of event-slot)%" is not set:
+		set player's metadata "slot=%(index of event-slot)%" to (now - (("%{_ticks}% ticks" parsed as timespan)))
+	
+	if (ticks of (difference between (player's metadata "slot=%(index of event-slot)%") and now)) >= {_ticks}:
+		set player's metadata "slot=%(index of event-slot)%" to now
+		set {_actualized-item} to Enchantments(event-item)
+		set slot (index of event-slot) of player's inventory to {_actualized-item}
+
+function SmallCaps(text: text) :: text:
+	set {_result} to ""
+	set {_chars::*} to {_text} split at ""
+	set {_map::a} to "ᴀ"
+	set {_map::b} to "ʙ"
+	set {_map::c} to "ᴄ"
+	set {_map::d} to "ᴅ"
+	set {_map::e} to "ᴇ"
+	set {_map::f} to "ꜰ"
+	set {_map::g} to "ɢ"
+	set {_map::h} to "ʜ"
+	set {_map::i} to "ɪ"
+	set {_map::j} to "ᴊ"
+	set {_map::k} to "ᴋ"
+	set {_map::l} to "ʟ"
+	set {_map::m} to "ᴍ"
+	set {_map::n} to "ɴ"
+	set {_map::o} to "ᴏ"
+	set {_map::p} to "ᴘ"
+	set {_map::q} to "q"
+	set {_map::r} to "ʀ"
+	set {_map::s} to "ꜱ"
+	set {_map::t} to "ᴛ"
+	set {_map::u} to "ᴜ"
+	set {_map::v} to "ᴠ"
+	set {_map::w} to "ᴡ"
+	set {_map::x} to "x"
+	set {_map::y} to "ʏ"
+	set {_map::z} to "ᴢ"
+	loop {_chars::*}:
+		set {_char} to loop-value in lowercase
+		if {_map::%{_char}%} is set:
+			set {_result} to "%{_result}%%{_map::%{_char}%}%"
+		else:
+			set {_result} to "%{_result}%%loop-value%"
+	return {_result}
+
+function Enchantments(item: item) :: item:
+	if enchantments of {_item} is not set:
+		return {_item}
+
+	add hide enchants to item flags of {_item}
+
+	if string tag "loreBacked" of custom nbt of {_item} is not set:
+		set {_rawLore::*} to lore of {_item}
+		set {_backup} to ""
+		loop {_rawLore::*}:
+			if "%loop-value%" is not "none":
+				set {_backup} to "%{_backup}%§§%loop-value%"
+		set string tag "loreBackup" of custom nbt of {_item} to {_backup}
+		set string tag "loreBacked" of custom nbt of {_item} to "true"
+
+	set {_backupStr} to string tag "loreBackup" of custom nbt of {_item}
+	set {_originalLore::*} to {_backupStr} split at "§§"
+	if first element of {_originalLore::*} is "":
+		delete {_originalLore::1}
+
+	loop (enchantments of {_item}):
+		set {_raw} to "%loop-value%"
+		set {_parts::*} to {_raw} split at " "
+		set {_level} to last element of {_parts::*}
+		set {_enchantment} to join (first (size of {_parts::*} - 1) elements of {_parts::*}) with " "
+		if {_enchantment} contains ":":
+			set {_parts2::*} to {_enchantment} split at ":"
+			set {_enchantment} to last element of {_parts2::*}
+		replace all "nove_structures:" in {_enchantment} with ""
+		replace all "sword/" in {_enchantment} with ""
+		replace all "armor/" in {_enchantment} with ""
+		replace all "axe/" in {_enchantment} with ""
+		replace all "pickaxe/" in {_enchantment} with ""
+		replace all "bow/" in {_enchantment} with ""
+		replace all "boots/" in {_enchantment} with ""
+		replace all "chestplate/" in {_enchantment} with ""
+		replace all "durability/" in {_enchantment} with ""
+		replace all "elytra/" in {_enchantment} with ""
+		replace all "helmet/" in {_enchantment} with ""
+		replace all "hoe/" in {_enchantment} with ""
+		replace all "leggings/" in {_enchantment} with ""
+		replace all "mace/" in {_enchantment} with ""
+		replace all "mounted/" in {_enchantment} with ""
+		replace all "tools/" in {_enchantment} with ""
+		replace all "trident/" in {_enchantment} with ""
+		set {_enchantment} to SmallCaps({_enchantment})
+		add "&8 | &7%{_enchantment}%&7: &b%{_level}%" to {_enchants::*}
+
+	set {_newLore::*} to {_enchants::*}
+
+	if {_originalLore::*} is set:
+		set {_firstOriginal} to first element of {_originalLore::*}
+		if {_firstOriginal} is not "":
+			add "" to {_newLore::*}
+		loop {_originalLore::*}:
+			add loop-value to {_newLore::*}
+
+	set lore of {_item} to {_newLore::*}
+
+	return {_item}

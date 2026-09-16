@@ -1,0 +1,36 @@
+function openRules(p: audience):
+    open multi action dialog to {_p}:
+        title: "&aꜱᴇʀᴠᴇʀ ʀᴜʟᴇꜱ"
+        can_close_with_escape: false
+        columns: 1
+        body:
+            add plain message body:
+                contents: "&a&lᴘʟᴇᴀꜱᴇ ʀᴇᴀᴅ ᴏᴜʀ ꜱᴇʀᴠᴇʀ ʀᴜʟᴇꜱ!"
+            add plain message body:
+                contents: "&8&m-------------------------"
+            add plain message body:
+                contents: "&a#1 &8» &fɴᴏ ᴜɴꜰᴀɪʀ ᴀᴅᴠᴀɴᴛᴀɢᴇ."
+            add plain message body:
+                contents: "&a#2 &8» &fɴᴏ ᴅᴜᴘʟɪᴄᴀᴛɪᴏɴ ɢʟɪᴛᴄʜᴇs."
+            add plain message body:
+                contents: "&a#3 &8» &fɴᴏ ᴅᴏxxɪɴɢ ᴏʀ ʀʟ ᴛʜʀᴇᴀᴛs."
+            add plain message body:
+                contents: "&a#4 &8» &fɴᴏ sᴘᴀᴡɴ ᴄᴀᴍᴘɪɴɢ."
+            add plain message body:
+                contents: "&8&m-------------------------"
+        actions:
+            add callback action button:
+                label: "ᴀᴄᴄᴇᴘᴛ"
+                trigger:
+                    unfreeze connection event-playerconnection
+                    set {rules::%uuid of {_p}%} to true
+
+            add callback action button:
+                label: "ᴅᴇᴄʟɪɴᴇ"
+                trigger:
+                    unfreeze connection event-playerconnection and disconnect due to "&cOk fine... bye!"
+
+on async player connection configure:
+    if {rules::%uuid of event-audience%} is not set:
+        openRules(event-audience)
+        freeze connection event-playerconnection

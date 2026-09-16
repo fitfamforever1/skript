@@ -1,0 +1,46 @@
+on right click with golden sword:
+    set {_name} to colored name of player's held item
+    if {_name} is "&fCelestial Judgement Sword":
+        set {_uuid} to player's uuid
+
+        if {celestial_cd::%{_uuid}%} is set:
+            set {_elapsed} to difference between now and {celestial_cd::%{_uuid}%}
+            if {_elapsed} < 10 seconds:
+                set {_remaining} to 10 seconds - {_elapsed}
+                send action bar "&cShield is repairing!" to player
+                stop
+
+        if {mana::%{_uuid}%} is not set:
+            set {mana::%{_uuid}%} to 0
+        if {mana::%{_uuid}%} < 50:
+            send action bar "&cNot enough mana." to player
+            stop
+
+        remove 50 from {mana::%{_uuid}%}
+        clampMana(player)
+        saveMana(player)
+
+        set {celestial_shield::%{_uuid}%} to true
+        set {celestial_cd::%{_uuid}%} to now
+
+        send action bar "&f✦ Celestial Shield &aactivated! &7(10s)" to player
+        play sound "entity.elder_guardian.curse" with volume 0.6 and pitch 1.5 to player
+
+        wait 10 seconds
+
+        if {celestial_shield::%{_uuid}%} is true:
+            delete {celestial_shield::%{_uuid}%}
+            send action bar "&7Celestial Shield faded." to player
+
+on damage of player:
+    set {_uuid} to victim's uuid
+    if {celestial_shield::%{_uuid}%} is true:
+        cancel event
+
+on damage:
+    if attacker is a player:
+        set {_uuid} to attacker's uuid
+        if {celestial_shield::%{_uuid}%} is true:
+            delete {celestial_shield::%{_uuid}%}
+            send action bar "&cCelestial Shield &4broken &cby attacking!" to attacker
+            play sound "item.shield.break" with volume 0.8 and pitch 1.2 to attacker

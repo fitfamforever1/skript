@@ -1,0 +1,318 @@
+menu_title: "&#deb92bᴄʀᴀꜰᴛ"
+size: 53
+update_interval: 20
+items:
+
+  1:
+    material: paper
+    display_name: "&fPistol Bullet"
+    amount: 4
+    item_model: minecraft:chap1/gun/pistol_bullet
+    lore:
+      - "&8┃ &e» ɪɴɢʀᴇᴅɪᴇɴᴛ"
+      - "&8┃ &#42cf541x &7ᴄʜᴇᴍɪᴄᴀʟ"
+      - "&8┃ &#42cf543x &7ᴍᴇᴛᴀʟ"
+      - ""
+      - "&8┃ &e» &eʀɪɢʜᴛ ᴄʟɪᴄᴋ"
+      - "&8┃ &7ᴛᴏ ᴄʀᴀꜰᴛ ɪᴛᴇᴍ"
+
+    right_click_commands:
+      - "[player] craft1"
+    slot: 10
+
+  2:
+    material: paper
+    display_name: "&fRifle Bullet"
+    amount: 5
+    item_model: minecraft:chap1/gun/rifle_bullet
+    lore:
+      - "&8┃ &e» ɪɴɢʀᴇᴅɪᴇɴᴛ"
+      - "&8┃ &#42cf542x &7ᴄʜᴇᴍɪᴄᴀʟ"
+      - "&8┃ &#42cf545x &7ᴍᴇᴛᴀʟ"
+      - ""
+      - "&8┃ &e» &eʀɪɢʜᴛ ᴄʟɪᴄᴋ"
+      - "&8┃ &7ᴛᴏ ᴄʀᴀꜰᴛ ɪᴛᴇᴍ"
+
+    right_click_commands:
+      - "[player] craft2"
+    slot: 11
+
+  3:
+    material: paper
+    display_name: "&fShotgun Shell"
+    amount: 2
+    item_model: minecraft:chap1/gun/shotgun_shell
+    lore:
+      - "&8┃ &e» ɪɴɢʀᴇᴅɪᴇɴᴛ"
+      - "&8┃ &#42cf542x &7ᴄʜᴇᴍɪᴄᴀʟ"
+      - "&8┃ &#42cf544x &7ᴍᴇᴛᴀʟ"
+      - ""
+      - "&8┃ &e» &eʀɪɢʜᴛ ᴄʟɪᴄᴋ"
+      - "&8┃ &7ᴛᴏ ᴄʀᴀꜰᴛ ɪᴛᴇᴍ"
+
+    right_click_commands:
+      - "[player] craft3"
+    slot: 12
+
+  4:
+    material: paper
+    display_name: "&fRocket"
+    amount: 1
+    item_model: minecraft:gun/21
+    lore:
+      - "&8┃ &e» ɪɴɢʀᴇᴅɪᴇɴᴛ"
+      - "&8┃ &#42cf546x &7ᴄʜᴇᴍɪᴄᴀʟ"
+      - "&8┃ &#42cf548x &7ᴍᴇᴛᴀʟ"
+      - ""
+      - "&8┃ &e» &eʀɪɢʜᴛ ᴄʟɪᴄᴋ"
+      - "&8┃ &7ᴛᴏ ᴄʀᴀꜰᴛ ɪᴛᴇᴍ"
+
+    right_click_commands:
+      - "[player] craft4"
+    slot: 13
+
+  5:
+    material: paper
+    display_name: "&fBrass Knuckles"
+    amount: 1
+    item_model: minecraft:chap1/weapan/3
+    lore:
+      - "&8┃ &e» ɪɴɢʀᴇᴅɪᴇɴᴛ"
+      - "&8┃ &#42cf544x &7ᴍᴇᴛᴀʟ"
+      - ""
+      - "&8┃ &e» &eʀɪɢʜᴛ ᴄʟɪᴄᴋ"
+      - "&8┃ &7ᴛᴏ ᴄʀᴀꜰᴛ ɪᴛᴇᴍ"
+
+    right_click_commands:
+      - "[player] craft5"
+    slot: 14
+
+  6:
+    material: paper
+    display_name: "&fLead Pipe"
+    amount: 1
+    item_model: minecraft:chap1/weapan/8
+    lore:
+      - "&8┃ &e» ɪɴɢʀᴇᴅɪᴇɴᴛ"
+
+      - "&8┃ &#42cf548x &7ᴍᴇᴛᴀʟ"
+      - ""
+      - "&8┃ &e» &eʀɪɢʜᴛ ᴄʟɪᴄᴋ"
+      - "&8┃ &7ᴛᴏ ᴄʀᴀꜰᴛ ɪᴛᴇᴍ"
+
+    right_click_commands:
+      - "[player] craft6"
+    slot: 15
+
+  7:
+    material: paper
+    display_name: "&fSteel"
+    amount: 1
+    item_model: minecraft:chap1/material/5
+    lore:
+      - "&8┃ &e» ɪɴɢʀᴇᴅɪᴇɴᴛ"
+
+      - "&8┃ &#42cf548x &7ᴍᴇᴛᴀʟ"
+      - ""
+      - "&8┃ &e» &eʀɪɢʜᴛ ᴄʟɪᴄᴋ"
+      - "&8┃ &7ᴛᴏ ᴄʀᴀꜰᴛ ɪᴛᴇᴍ"
+
+    right_click_commands:
+      - "[player] craft7"
+    slot: 16
+
+  8:
+    material: paper
+    display_name: "&fGlock"
+    amount: 1
+    item_model: minecraft:gun/2
+    lore:
+      - "&8┃ &e» ɪɴɢʀᴇᴅɪᴇɴᴛ"
+
+      - "&8┃ &#42cf543x &7ꜱᴛᴇᴇʟ"
+      - ""
+      - "&8┃ &e» &eʀɪɢʜᴛ ᴄʟɪᴄᴋ"
+      - "&8┃ &7ᴛᴏ ᴄʀᴀꜰᴛ ɪᴛᴇᴍ"
+
+    right_click_commands:
+      - "[player] craft8"
+    slot: 19
+
+  9:
+    material: paper
+    display_name: "&fDouble Barrel"
+    amount: 1
+    item_model: minecraft:gun/4
+    lore:
+      - "&8┃ &e» ɪɴɢʀᴇᴅɪᴇɴᴛ"
+
+      - "&8┃ &#42cf545x &7ꜱᴛᴇᴇʟ"
+      - ""
+      - "&8┃ &e» &eʀɪɢʜᴛ ᴄʟɪᴄᴋ"
+      - "&8┃ &7ᴛᴏ ᴄʀᴀꜰᴛ ɪᴛᴇᴍ"
+
+    right_click_commands:
+      - "[player] craft9"
+    slot: 20
+
+  10:
+    material: paper
+    display_name: "&fMP40"
+    amount: 1
+    item_model: minecraft:gun/7
+    lore:
+      - "&8┃ &e» ɪɴɢʀᴇᴅɪᴇɴᴛ"
+
+      - "&8┃ &#42cf546x &7ꜱᴛᴇᴇʟ"
+      - ""
+      - "&8┃ &e» &eʀɪɢʜᴛ ᴄʟɪᴄᴋ"
+      - "&8┃ &7ᴛᴏ ᴄʀᴀꜰᴛ ɪᴛᴇᴍ"
+
+    right_click_commands:
+      - "[player] craft10"
+    slot: 21
+
+  11:
+    material: paper
+    display_name: "&fM4A1"
+    amount: 1
+    item_model: minecraft:gun/13
+    lore:
+      - "&8┃ &e» ɪɴɢʀᴇᴅɪᴇɴᴛ"
+
+      - "&8┃ &#42cf548x &7ꜱᴛᴇᴇʟ"
+      - ""
+      - "&8┃ &e» &eʀɪɢʜᴛ ᴄʟɪᴄᴋ"
+      - "&8┃ &7ᴛᴏ ᴄʀᴀꜰᴛ ɪᴛᴇᴍ"
+
+    right_click_commands:
+      - "[player] craft11"
+    slot: 22
+
+  12:
+    material: paper
+    display_name: "&fAdhesive Plaster"
+    amount: 1
+    item_model: minecraft:chap1/med/1
+    lore:
+      - "&8┃ &e» ɪɴɢʀᴇᴅɪᴇɴᴛ"
+      - "&8┃ &#42cf541x &7ꜰᴀʙʀɪᴄ"
+      - "&8┃ &#42cf541x &7ᴄʜᴇᴍɪᴄᴀʟ"
+      - ""
+      - "&8┃ &e» &eʀɪɢʜᴛ ᴄʟɪᴄᴋ"
+      - "&8┃ &7ᴛᴏ ᴄʀᴀꜰᴛ ɪᴛᴇᴍ"
+
+    right_click_commands:
+      - "[player] craft12"
+    slot: 23
+
+  13:
+    material: paper
+    display_name: "&fBandage"
+    amount: 1
+    item_model: minecraft:chap1/med/3
+    lore:
+      - "&8┃ &e» ɪɴɢʀᴇᴅɪᴇɴᴛ"
+      - "&8┃ &#42cf546x &7ꜰᴀʙʀɪᴄ"
+      - ""
+      - "&8┃ &e» &eʀɪɢʜᴛ ᴄʟɪᴄᴋ"
+      - "&8┃ &7ᴛᴏ ᴄʀᴀꜰᴛ ɪᴛᴇᴍ"
+
+    right_click_commands:
+      - "[player] craft13"
+    slot: 24
+
+  14:
+    material: paper
+    display_name: "&fMedKit"
+    amount: 1
+    item_model: minecraft:chap1/med/5
+    lore:
+      - "&8┃ &e» ɪɴɢʀᴇᴅɪᴇɴᴛ"
+      - "&8┃ &#42cf548x &7ꜰᴀʙʀɪᴄ"
+      - "&8┃ &#42cf543x &7ᴄʜᴇᴍɪᴄᴀʟ"
+      - ""
+      - "&8┃ &e» &eʀɪɢʜᴛ ᴄʟɪᴄᴋ"
+      - "&8┃ &7ᴛᴏ ᴄʀᴀꜰᴛ ɪᴛᴇᴍ"
+
+    right_click_commands:
+      - "[player] craft14"
+    slot: 25
+
+  15:
+    material: paper
+    display_name: "&fMilitary Helmet"
+    amount: 1
+    item_model: minecraft:chap1/armor/13
+    lore:
+      - "&8┃ &e» ɪɴɢʀᴇᴅɪᴇɴᴛ"
+      - "&8┃ &#42cf544x &7ꜰᴀʙʀɪᴄ"
+      - "&8┃ &#42cf541x &7ꜱᴛᴇᴇʟ"
+      - ""
+      - "&8┃ &e» &eʀɪɢʜᴛ ᴄʟɪᴄᴋ"
+      - "&8┃ &7ᴛᴏ ᴄʀᴀꜰᴛ ɪᴛᴇᴍ"
+
+    right_click_commands:
+      - "[player] craft15"
+    slot: 28
+
+  16:
+    material: paper
+    display_name: "&fMilitary Chestplate"
+    amount: 1
+    item_model: minecraft:chap1/armor/14
+    lore:
+      - "&8┃ &e» ɪɴɢʀᴇᴅɪᴇɴᴛ"
+      - "&8┃ &#42cf546x &7ꜰᴀʙʀɪᴄ"
+      - "&8┃ &#42cf542x &7ꜱᴛᴇᴇʟ"
+      - ""
+      - "&8┃ &e» &eʀɪɢʜᴛ ᴄʟɪᴄᴋ"
+      - "&8┃ &7ᴛᴏ ᴄʀᴀꜰᴛ ɪᴛᴇᴍ"
+
+    right_click_commands:
+      - "[player] craft16"
+    slot: 29
+
+  17:
+    material: paper
+    display_name: "&fMilitary Leggings"
+    amount: 1
+    item_model: minecraft:chap1/armor/16
+    lore:
+      - "&8┃ &e» ɪɴɢʀᴇᴅɪᴇɴᴛ"
+      - "&8┃ &#42cf545x &7ꜰᴀʙʀɪᴄ"
+      - "&8┃ &#42cf542x &7ꜱᴛᴇᴇʟ"
+      - ""
+      - "&8┃ &e» &eʀɪɢʜᴛ ᴄʟɪᴄᴋ"
+      - "&8┃ &7ᴛᴏ ᴄʀᴀꜰᴛ ɪᴛᴇᴍ"
+
+    right_click_commands:
+      - "[player] craft17"
+    slot: 30
+
+  18:
+    material: paper
+    display_name: "&fMilitary Boots"
+    amount: 1
+    item_model: minecraft:chap1/armor/15
+    lore:
+      - "&8┃ &e» ɪɴɢʀᴇᴅɪᴇɴᴛ"
+      - "&8┃ &#42cf544x &7ꜰᴀʙʀɪᴄ"
+      - ""
+      - "&8┃ &e» &eʀɪɢʜᴛ ᴄʟɪᴄᴋ"
+      - "&8┃ &7ᴛᴏ ᴄʀᴀꜰᴛ ɪᴛᴇᴍ"
+
+    right_click_commands:
+      - "[player] craft18"
+    slot: 31
+
+  close:
+    material: BARRIER
+    display_name: "&c&lClose"
+    item_model: minecraft:main/gui/3
+    lore:
+      - "&8┃ &e» &eʀɪɢʜᴛ ᴄʟɪᴄᴋ"
+      - "&8┃ &7ᴄʟᴏꜱᴇ ᴄʀᴀꜰᴛɪɴɢ ᴍᴇɴᴜ"
+    slot: 53
+    click_commands:
+      - "[close]"

@@ -1,0 +1,78 @@
+command /warn <offline player>:
+    permission: admin.warn
+    permission message: &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪꜱꜱɪᴏɴ ᴛᴏ ᴜꜱᴇ ᴛʜɪꜱ ᴄᴏᴍᴍᴀɴᴅ.
+    trigger:
+        if number data tag "player:warns" of arg-1 is not set:
+            set number data tag "player:warns" of arg-1 to 0
+        set {_w} to number data tag "player:warns" of arg-1
+        add 1 to {_w}
+        set number data tag "player:warns" of arg-1 to {_w}
+        set {_name} to name of arg-1
+        broadcast "&8[&4ꜱʏꜱᴛᴇᴍ&8] &e%{_name}% &7ʜᴀꜱ ʙᴇᴇɴ ᴡᴀʀɴᴇᴅ ʙʏ &e%player%&7. &8(ᴡᴀʀɴ %{_w}%/7)"
+        if {_w} is 1:
+            kick arg-1 due to "&c&lʙᴏxʙᴜᴛʙᴀᴅ &r&7| ᴡᴀʀɴᴇᴅ ʙʏ ꜱᴛᴀꜰꜰ.&r&f&oᴛʜɪꜱ ɪꜱ ʏᴏᴜʀ 1ꜱᴛ ᴡᴀʀɴɪɴɢ. ꜰᴜʀᴛʜᴇʀ ᴠɪᴏʟᴀᴛɪᴏɴꜱ ᴡɪʟʟ ʀᴇꜱᴜʟᴛ ɪɴ ᴀ ʙᴀɴ."
+        else if {_w} is 2:
+            ban and kick arg-1 due to "&c&lʙᴏxʙᴜᴛʙᴀᴅ &r&7| 2ɴᴅ ᴡᴀʀɴɪɴɢ — 10 ᴍɪɴᴜᴛᴇ ʙᴀɴ." for 10 minutes
+        else if {_w} is 3:
+            ban and kick arg-1 due to "&c&lʙᴏxʙᴜᴛʙᴀᴅ &r&7| 3ʀᴅ ᴡᴀʀɴɪɴɢ — 1 ʜᴏᴜʀ ʙᴀɴ." for 1 hour
+        else if {_w} is 4:
+            ban and kick arg-1 due to "&c&lʙᴏxʙᴜᴛʙᴀᴅ &r&7| 4ᴛʜ ᴡᴀʀɴɪɴɢ — 1 ᴅᴀʏ ʙᴀɴ." for 1 day
+        else if {_w} is 5:
+            ban and kick arg-1 due to "&c&lʙᴏxʙᴜᴛʙᴀᴅ &r&7| 5ᴛʜ ᴡᴀʀɴɪɴɢ — 7 ᴅᴀʏ ʙᴀɴ." for 7 days
+        else if {_w} is 6:
+            ban and kick arg-1 due to "&c&lʙᴏxʙᴜᴛʙᴀᴅ &r&7| 6ᴛʜ ᴡᴀʀɴɪɴɢ — 1 ᴍᴏɴᴛʜ ʙᴀɴ." for 30 days
+        else if {_w} >= 7:
+            ban and kick arg-1 due to "&c&lʙᴏxʙᴜᴛʙᴀᴅ &r&7| ᴘᴇʀᴍᴀɴᴇɴᴛʟʏ ʙᴀɴɴᴇᴅ. ʀᴇᴘᴇᴀᴛᴇᴅ ᴠɪᴏʟᴀᴛɪᴏɴꜱ ᴏꜰ ꜱᴇʀᴠᴇʀ ʀᴜʟᴇꜱ."
+
+command /unwarn <offline player>:
+    permission: admin.warn
+    permission message: &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪꜱꜱɪᴏɴ ᴛᴏ ᴜꜱᴇ ᴛʜɪꜱ ᴄᴏᴍᴍᴀɴᴅ.
+    trigger:
+        if number data tag "player:warns" of arg-1 is not set:
+            send "&e%name of arg-1% &7ʜᴀꜱ ɴᴏ ᴡᴀʀɴɪɴɢꜱ." to player
+            stop
+        set {_w} to number data tag "player:warns" of arg-1
+        if {_w} <= 0:
+            send "&e%name of arg-1% &7ʜᴀꜱ ɴᴏ ᴡᴀʀɴɪɴɢꜱ." to player
+            stop
+        subtract 1 from {_w}
+        set number data tag "player:warns" of arg-1 to {_w}
+        send "&a&8[&4ꜱʏꜱᴛᴇᴍ&8] &e%name of arg-1%&7'ꜱ ᴡᴀʀɴꜱ ʀᴇᴅᴜᴄᴇᴅ ᴛᴏ &e%{_w}%&7." to player
+
+command /warnlist [<offline player>]:
+    permission: admin.warn
+    permission message: &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪꜱꜱɪᴏɴ ᴛᴏ ᴜꜱᴇ ᴛʜɪꜱ ᴄᴏᴍᴍᴀɴᴅ.
+    trigger:
+        set {_target} to arg-1 if arg-1 is set, else player
+        set {_w} to number data tag "player:warns" of {_target}
+        if {_w} is not set:
+            set {_w} to 0
+        send "&8&m──────────────────────" to player
+        send "&c&lᴡᴀʀɴ ʟɪꜱᴛ &8| &e%name of {_target}%" to player
+        send "&7ᴡᴀʀɴɪɴɢꜱ: &e%{_w}%&7/7" to player
+        send "&8&m──────────────────────" to player
+
+command /hack <offline player>:
+    permission: admin.warn
+    permission message: &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪꜱꜱɪᴏɴ ᴛᴏ ᴜꜱᴇ ᴛʜɪꜱ ᴄᴏᴍᴍᴀɴᴅ.
+    trigger:
+        if number data tag "player:hacks" of arg-1 is not set:
+            set number data tag "player:hacks" of arg-1 to 0
+        set {_h} to number data tag "player:hacks" of arg-1
+        add 1 to {_h}
+        set number data tag "player:hacks" of arg-1 to {_h}
+        set {_name} to name of arg-1
+        if {_h} is 1:
+            if number data tag "player:warns" of arg-1 is not set:
+                set number data tag "player:warns" of arg-1 to 0
+            set {_w} to number data tag "player:warns" of arg-1
+            add 1 to {_w}
+            set number data tag "player:warns" of arg-1 to {_w}
+            broadcast "&8[&4ꜱʏꜱᴛᴇᴍ&8] &e%{_name}% &7ꜰʟᴀɢɢᴇᴅ ꜰᴏʀ ʜᴀᴄᴋɪɴɢ ʙʏ &e%player%&7. &8(ᴏꜰꜰᴇɴᴄᴇ 1 — ᴡᴀʀɴ ɪꜱꜱᴜᴇᴅ)"
+            kick arg-1 due to "&c&lʙᴏxʙᴜᴛʙᴀᴅ &r&7| ꜰʟᴀɢɢᴇᴅ ꜰᴏʀ ʜᴀᴄᴋɪɴɢ.&r&f&oꜰɪʀꜱᴛ ᴏꜰꜰᴇɴᴄᴇ: ᴡᴀʀɴɪɴɢ ɪꜱꜱᴜᴇᴅ. ɴᴇxᴛ ᴡɪʟʟ ʙᴇ ᴀ ʙᴀɴ."
+        else if {_h} is 2:
+            broadcast "&8[&4ꜱʏꜱᴛᴇᴍ&8] &e%{_name}% &7ꜰʟᴀɢɢᴇᴅ ꜰᴏʀ ʜᴀᴄᴋɪɴɢ ᴀɢᴀɪɴ ʙʏ &e%player%&7. &8(ᴏꜰꜰᴇɴᴄᴇ 2 — 1 ᴅᴀʏ ʙᴀɴ)"
+            ban and kick arg-1 due to "&c&lʙᴏxʙᴜᴛʙᴀᴅ &r&7| ʙᴀɴɴᴇᴅ ꜰᴏʀ ʜᴀᴄᴋɪɴɢ. ꜱᴇᴄᴏɴᴅ ᴏꜰꜰᴇɴᴄᴇ (1 ᴅᴀʏ ʙᴀɴ)." for 1 day
+        else if {_h} >= 3:
+            broadcast "&8[&4ꜱʏꜱᴛᴇᴍ&8] &e%{_name}% &7ᴘᴇʀᴍᴀɴᴇɴᴛʟʏ ʙᴀɴɴᴇᴅ ꜰᴏʀ ʜᴀᴄᴋɪɴɢ ʙʏ &e%player%&7."
+            ban and kick arg-1 due to "&c&lʙᴏxʙᴜᴛʙᴀᴅ &r&7| ᴘᴇʀᴍᴀɴᴇɴᴛʟʏ ʙᴀɴɴᴇᴅ ꜰᴏʀ ʜᴀᴄᴋɪɴɢ. ᴛʜɪʀᴅ ᴏꜰꜰᴇɴᴄᴇ."

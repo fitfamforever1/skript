@@ -1,0 +1,18 @@
+on join:
+    wait 1 tick
+    set {_locations::*} to location(-85.5, -11, -32.5, world "world", 0, 0), location(-91.5, -11, -31.5, world "world", 0, 0), location(-97.5, -11, -32.5, world "world", 0, 0), location(-85.5, -4, -32.5, world "world", 0, 0), location(-91.5, -4, -33.5, world "world", 0, 0), location(-97.5, -4, -32.5, world "world", 0, 0)
+    set {_random} to random integer between 1 and 6
+    teleport player to {_locations::%{_random}%}
+
+on respawn:
+    wait 1 tick
+    if player has permission "guard":
+        teleport player to location(-69.5, -4, -24.5, world "world", 90, 0)
+    else if player has permission "swat":
+        teleport player to location(-69.5, -4, -24.5, world "world", 90, 0)
+    else if player has permission "nurse":
+        teleport player to location(-69.5, -4, -24.5, world "world", 90, 0)
+    else:
+        set {_locations::*} to location(-85.5, -11, -32.5, world "world", 0, 0), location(-91.5, -11, -31.5, world "world", 0, 0), location(-97.5, -11, -32.5, world "world", 0, 0), location(-85.5, -4, -32.5, world "world", 0, 0), location(-91.5, -4, -33.5, world "world", 0, 0), location(-97.5, -4, -32.5, world "world", 0, 0)
+        set {_random} to random integer between 1 and 6
+        teleport player to {_locations::%{_random}%}

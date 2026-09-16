@@ -1,0 +1,119 @@
+# Panther | pet15
+on damage:
+    if {petid::%attacker%::pet15} is "active":
+        set {_time} to time in attacker's world
+        if {_time} > 13000:
+            if {_time} < 23000:
+                set damage to damage * 3
+
+# Scorpion | pet16
+on damage:
+    if {petid::%attacker%::pet16} is "active":
+        if attacker is a player:
+            if victim is a living entity:
+                if {petability::pet16_marked::%victim%} is not set:
+                    chance of 10%:
+                        set {petability::pet16_marked::%victim%} to true
+                        set {_truedmg} to max health of victim * 0.10
+
+                        send title "&c☠ MARKED" with subtitle "&7You are marked for 5 seconds!" to victim
+                        send action bar "&c%victim% is marked for 5 seconds!" to attacker
+
+                        wait 100 ticks
+
+                        if victim is a living entity:
+                            damage victim by {_truedmg}
+                            send action bar "&c☠ -&4%{_truedmg}% &ctrue damage &7(Marked)" to victim
+
+                        delete {petability::pet16_marked::%victim%}
+
+
+on walking on sand or red sand:
+    if {petid::%player%::pet16} is "active":
+        apply speed 4 to player for 30 ticks 
+
+# Raptor | pet17
+on damage of player:
+    attacker is a player
+    {petid::%attacker%::pet17} is "active"
+
+    set {_victim} to victim
+    set {_damage} to damage
+
+    if chance of 10%:
+        cancel event
+        set {_oldHealth} to health of {_victim}
+        set {_newHealth} to ({_oldHealth} - {_damage})
+        if {_newHealth} <= 0:
+            set {_newHealth} to 0
+        set health of {_victim} to {_newHealth}
+        send action bar "&c&l⚔ Armor Pierced!" to {_victim}
+        play sound "entity.wither.hurt" with volume 0.5 and pitch 1.4 at {_victim}
+
+    if chance of 10%:
+        if {petability::bleed::%{_victim}%} is not set:
+            set {petability::bleed::%{_victim}%} to true
+
+            loop 5 times:
+                wait 1 second
+                if {_victim} is alive:
+                    if {petability::bleed::%{_victim}%} is set:
+                        set {_bleedDmg} to max health of {_victim} * 0.05
+                        damage {_victim} by {_bleedDmg}
+                        draw 1 rgb(255, 0, 0) dust particles of size 1.5 at location of {_victim} ~ vector(0, 0.5, 0)
+                        play sound "entity.player.hurt" with volume 0.4 and pitch 0.7 at {_victim}
+
+            delete {petability::bleed::%{_victim}%}
+
+
+
+# Armor Titan | pet18
+on damage of player:
+    if {petid::%victim%::pet18} is "active":
+        set {_maxHp} to victim's max health
+        set {_currentHp} to victim's health
+        set {_percent} to ({_currentHp} / {_maxHp}) * 100
+        if {_percent} < 50:
+            set damage to damage * 0.5
+        set {_postPercent} to (({_currentHp} - damage) / {_maxHp}) * 100
+        if {_postPercent} <= 10:
+            apply resistance 4 to victim for 10 seconds:
+                hide particles
+                hide icon
+
+on entity knockback:
+    if knockback victim is a player:
+        if {petid::%knockback victim%::pet18} is "active":
+            cancel event
+
+# Hydra | pet19
+on damage:
+    attacker is a player
+    {petid::%attacker%::pet19} is "active"
+
+    set {_roll} to random integer between 1 and 7
+    if {_roll} is 1:
+        apply wither 3 to victim for 3 seconds
+    else if {_roll} is 2:
+        apply poison 3 to victim for 3 seconds
+    else if {_roll} is 3:
+        apply slowness 3 to victim for 3 seconds
+    else if {_roll} is 4:
+        apply blindness 3 to victim for 3 seconds
+    else if {_roll} is 5:
+        apply weakness 3 to victim for 3 seconds
+    else if {_roll} is 6:
+        apply nausea 3 to victim for 3 seconds
+    else if {_roll} is 7:
+        apply hunger 3 to victim for 3 seconds
+
+on entity potion effect of poison or wither or slowness or mining fatigue or nausea or blindness or hunger or weakness or instant damage or unluck or bad omen or darkness or slow falling or trial omen added:
+    event-entity is a player
+    {petid::%event-entity%::pet19} is "active"
+    cancel event
+
+every 10 seconds:
+    loop all players:
+        {petid::%loop-player%::pet19} is "active"
+        set {_healAmt} to max health of loop-player * 0.10
+        heal loop-player by {_healAmt}

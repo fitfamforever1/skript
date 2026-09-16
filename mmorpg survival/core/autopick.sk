@@ -1,0 +1,123 @@
+function isInvFull(p: player) :: boolean:
+    loop 36 times:
+        if slot (loop-number - 1) of {_p}'s inventory is air:
+            return false
+    return true
+
+on mine:
+    cancel drops
+    set {_tool} to player's tool
+
+    if enchantment level of silk touch on {_tool} >= 1:
+        if isInvFull(player) is true:
+            send title "&4⚠ Inventory Full!" with subtitle "&cFurther drops will be voided." to player
+            play sound "entity.villager.no" at player
+        else:
+            set {_item} to event-block
+            set {_item} to Rarity({_item})
+            give player {_item}
+        stop
+
+    set {_drop::*} to event-block's drops
+    if isInvFull(player) is true:
+        send title "&4⚠ Inventory Full!" with subtitle "&cFurther drops will be voided." to player
+        play sound "entity.villager.no" at player
+    else:
+        loop {_drop::*}:
+            set {_item} to loop-value
+            if string tag "Rarity" of custom nbt of {_item} is not set:
+                set {_item} to Rarity({_item})
+            give player {_item}
+
+    if event-block is coal ore or deepslate coal ore:
+        give player 3 experience points
+    else if event-block is diamond ore or deepslate diamond ore:
+        give player 7 experience points
+    else if event-block is emerald ore or deepslate emerald ore:
+        give player 8 experience points
+    else if event-block is lapis ore or deepslate lapis ore:
+        give player 5 experience points
+    else if event-block is nether gold ore:
+        give player 2 experience points
+    else if event-block is nether quartz ore:
+        give player 5 experience points
+    else if event-block is redstone ore or deepslate redstone ore:
+        give player 5 experience points
+    else if event-block is ancient debris:
+        give player 2 experience points
+    else if event-block is spawner:
+        give player 250 experience points
+    else if event-block is sculk:
+        give player 1 experience points
+    else if event-block is sculk catalyst:
+        give player 5 experience points
+    else if event-block is sculk sensor or calibrated sculk sensor:
+        give player 5 experience points
+    else if event-block is sculk shrieker:
+        give player 5 experience points
+    else:
+        stop
+    play sound "entity.experience_orb.pickup" to player
+
+on right click on dragon egg:
+    cancel event
+    if isInvFull(player) is true:
+        send title "&4⚠ Inventory Full!" with subtitle "&cCannot pick up Dragon Egg." to player
+        play sound "entity.villager.no" at player
+    else:
+        set block at player's target block to air
+        give player dragon egg
+        play sound "entity.enderman.teleport" at player
+
+on left click on dragon egg:
+    cancel event
+    if isInvFull(player) is true:
+        send title "&4⚠ Inventory Full!" with subtitle "&cCannot pick up Dragon Egg." to player
+        play sound "entity.villager.no" at player
+    else:
+        set block at player's target block to air
+        give player dragon egg
+        play sound "entity.enderman.teleport" at player
+
+on death:
+    set {_killer} to attacker
+    if {_killer} is not set:
+        stop
+    if {_killer} is not a player:
+        stop
+    
+    set {_drops::*} to drops
+    clear drops
+    if isInvFull(attacker) is true:
+        send title "&4⚠ Inventory Full!" with subtitle "&cFurther drops will be voided." to attacker
+        play sound "entity.villager.no" at attacker
+    if isInvFull({_killer}) is false:
+        loop {_drops::*}:
+            set {_item} to loop-value
+            if string tag "Rarity" of custom nbt of {_item} is not set:
+                set {_item} to Rarity({_item})
+            give {_killer} {_item}
+    
+    set {_xp} to experience
+    set {_weapon} to tool of {_killer}
+    set {_lore::*} to lore of {_weapon}
+    loop {_lore::*}:
+        set {_line} to loop-value
+        set {_stripped} to uncolored {_line}
+        if {_stripped} contains "xᴘ_ʙᴏᴏꜱᴛ":
+            set {_parts::*} to {_stripped} split at ": "
+            set {_boostStr} to last element of {_parts::*}
+            set {_boost} to {_boostStr} parsed as number
+    add (experience * (1 + {_boost})) to {_killer}'s experience
+    play sound "entity.experience_orb.pickup" to attacker
+
+on drop:
+    if {drop.confirm::%player%::%type of event-item%} is true:
+        delete {drop.confirm::%player%::%type of event-item%}
+        send action bar "&cItem voided!" to player
+        stop
+    cancel event
+    set {drop.confirm::%player%::%type of event-item%} to true
+    send action bar "&7Drop again to void item. Use &e/trade&7 to trade items." to player
+    wait 2 seconds
+    delete {drop.confirm::%player%::%type of event-item%}

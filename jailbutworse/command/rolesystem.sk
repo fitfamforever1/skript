@@ -1,0 +1,80 @@
+function acceptRole(p: player):
+    set {_role} to {role::pending::%{_p}%}
+    set {_sender} to {role::sender::%{_p}%}
+    if {_role} is not set:
+        send "<##FE7300>[SYSTEM] &7You have no pending role request." to {_p}
+        stop
+    execute console command "lp user %{_p}% parent remove criminal"
+    delete {role::pending::%{_p}%}
+    delete {role::sender::%{_p}%}
+    clear inventory of {_p}
+    clear {_p}'s helmet
+    clear {_p}'s chestplate
+    clear {_p}'s leggings
+    clear {_p}'s boots
+    remove all potion effects from {_p}
+    if {_role} is "guard":
+        teleport {_p} to location(-69.5, -4, -24.5, world "world", 90, 0)
+        execute console command "lp user %{_p}% parent add guard"
+        execute console command "clearall {_p}"
+        execute console command "kit give guard %{_p}%"
+        play sound "block.anvil.place" at {_p}
+        send "" to {_p}
+        send "<##FE7300>[SYSTEM] &7Welcome to the <##4BA5BF>Guard&7, &e%{_p}%&7!" to {_p}
+        send "<##FE7300>[SYSTEM] &7You have been equipped and assigned to your post." to {_p}
+        send "" to {_p}
+        if {_sender} is online:
+            if {warden::player} is {_sender}:
+                send "<##FE7300>[SYSTEM] &e%{_p}% &7has accepted the <##4BA5BF>guard &7role!" to {_sender}
+        delete {warden::%{_p}%}
+    if {_role} is "swat":
+        teleport {_p} to location(-69.5, -4, -24.5, world "world", 90, 0)
+        execute console command "lp user %{_p}% parent add swat"
+        execute console command "clearall {_p}"
+        execute console command "kit give swat %{_p}%"
+        play sound "block.anvil.place" at {_p}
+        send "" to {_p}
+        send "<##FE7300>[SYSTEM] &7Welcome to <##09853A>SWAT&7, %{_p}%!" to {_p}
+        send "<##FE7300>[SYSTEM] &7You have been equipped and assigned to your post." to {_p}
+        send "" to {_p}
+        if {_sender} is online:
+            if {warden::player} is {_sender}:
+                send "<##FE7300>[SYSTEM] &e%{_p}% &7has accepted the <##09853A>SWAT&7 role!" to {_sender}
+    if {_role} is "nurse":
+        teleport {_p} to location(-69.5, -4, -24.5, world "world", 90, 0)
+        execute console command "lp user %{_p}% parent add nurse"
+        execute console command "clearall {_p}"
+        execute console command "kit give nurse %{_p}%"
+        play sound "block.anvil.place" at {_p}
+        send "" to {_p}
+        send "<##FE7300>[SYSTEM] &7Welcome to the <##F862D5>Medical Team&7, %{_p}%!" to {_p}
+        send "<##FE7300>[SYSTEM] &7You have been equipped and assigned to your post." to {_p}
+        send "" to {_p}
+        if {_sender} is online:
+            if {warden::player} is {_sender}:
+                send "<##FE7300>[SYSTEM] &e%{_p}% &7has accepted the <##F862D5>nurse&7 role!" to {_sender}
+
+function denyRole(p: player):
+    set {_role} to {role::pending::%{_p}%}
+    set {_sender} to {role::sender::%{_p}%}
+    if {_role} is not set:
+        send "<##FE7300>[SYSTEM] &7You have no pending role request." to {_p}
+        stop
+    delete {role::pending::%{_p}%}
+    delete {role::sender::%{_p}%}
+    delete {warden::%{_p}%}
+    send "<##FE7300>[SYSTEM] &7You have declined the &e%{_role}%&7 request." to {_p}
+    if {_sender} is online:
+        if {warden::player} is {_sender}:
+            send "<##FE7300>[SYSTEM] &e%{_p}% &7has declined your %{_role}% request." to {_sender}
+    set {role::cooldown::%{_sender}%::%{_p}%} to true
+    wait 1 minute
+    delete {role::cooldown::%{_sender}%::%{_p}%}
+
+command /accept:
+    trigger:
+        acceptRole(player)
+
+command /deny:
+    trigger:
+        denyRole(player)

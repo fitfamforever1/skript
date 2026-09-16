@@ -1,0 +1,88 @@
+# CLUE 1
+on right click on entity:
+    if "%uuid of event-entity%" is "1f25cbde-accb-234f-9835-d79477af66e2":
+        send "&eUnknown SWAT: &cATTENTION, SURVIVOR. This is your final warning. Ashvale City is under mandatory evacuation by direct order of the Governor. You are to vacate the premises immediately. Do NOT approach Ashvale Prison. A military quarantine is now active in this zone. Only authorized personnel are permitted beyond Prison Gate. Non-compliance will be met with force. Move. Now." to player
+        if data tag "chap:1" of player is not set:
+            set data tag "chap:1" of player to 1
+            send "&8[&4SYSTEM&8] &aYou have uncovered &eclue 1 &7to &echapter 1&7." to player
+        else:
+            send "&8[&4SYSTEM&8] &cYou have already uncovered this &eclue&7." to player
+
+# CLUE 2
+on right click on entity:
+    if "%uuid of event-entity%" is "71a30423-e919-2fd2-a4bb-f97332d7c471":
+        if data tag "chap:1" of player is 1:
+            set data tag "chap:1" of player to 2
+            send "&eUnknown SWAT: &cMaya didn't make it... NeoCorp runs this place now. The Warden gave them Wing C. They're calling it medical. It's not. I copied his access code before I ran: HOLT-0931. Warden's office safe. Look inside. Go." to player
+            send "&8[&4SYSTEM&8] &aYou have uncovered &eclue 2 &7to &echapter 1&7." to player
+        else if data tag "chap:1" of player is 2:
+            send "&eUnknown SWAT: &cMaya didn't make it... NeoCorp runs this place now. The Warden gave them Wing C. They're calling it medical. It's not. I copied his access code before I ran: HOLT-0931. Warden's office safe. Look inside. Go." to player
+            send "&8[&4SYSTEM&8] &cYou have already uncovered this &eclue&7." to player
+        else:
+            send "&8[&4SYSTEM&8] &cYou haven't found clue 1 yet." to player
+
+# CLUE 3
+on right click on spruce log:
+    if data tag "chap:1" of player >= 3:
+        send "&8[&4SYSTEM&8] &cYou have already unlocked this clue." to player
+        set data tag "chap:awaiting_code" of player to 1
+    else if data tag "chap:1" of player = 2:
+        send "&8[&bSAFE&8]: &7Enter the access code:" to player
+        set data tag "chap:awaiting_code" of player to 1
+    else:
+        send "&8[&4SYSTEM&8] &cYou haven't found clue 2 yet." to player
+
+on chat:
+    if data tag "chap:awaiting_code" of player is 1:
+        cancel event
+        if message is "HOLT-0931":
+            send "&eSafe: &b*Click* The safe opens." to player
+            send "&8[&4SYSTEM&8] &aYou have uncovered &eclue 3 &7to &echapter 1&7." to player
+            set data tag "chap:1" of player to 3
+            delete data tag "chap:awaiting_code" of player
+            execute console command "si give key1 1 %player% true"
+        else:
+            send "&eSafe: &cAccess denied. Incorrect code." to player
+            delete data tag "chap:awaiting_code" of player
+
+# CLUE 4
+on right click on stripped spruce log:
+    if name of player's held item is "&fLab Keycard":
+        if data tag "chap:1" of player >= 4:
+            send "&8[&4SYSTEM&8] &7You have already unlocked this clue." to player
+        else if data tag "chap:1" of player is 3:
+            send "&8[&bKEYCARD READER&8]: &cLab wing is on LOCKDOWN. Test Subject 09 has escaped containment. Last spotted in the sewer network. Do not enter." to player
+            set data tag "chap:1" of player to 4
+            send "&8[&4SYSTEM&8] &7You have uncovered &eclue 4 &7to &echapter 1&7." to player
+        else:
+            send "&8[&4SYSTEM&8] &cYou haven't found clue 3 yet." to player
+    else:
+        send "&8[&bKEYCARD READER&8]: &cKEYCARD ACCESS REQUIRED" to player
+
+# CLUE 5
+on enter of region "chap1":
+    if data tag "chap:1" of player >= 4:
+        execute console command "mm mobs spawn chap1 1 world,-336.5,44,-1093.5,-90,0"
+        send action bar "&8[&4ZONE&8] &eYou have entered boss zone! Leaving will despawn it!" to player
+    
+on exit of region "chap1":
+    send action bar "&8[&4ZONE&8] &eYou have exited boss zone! Boss has been despawmed" to player
+    execute console command "mm mobs kill chap1"
+    
+command /chap1 <player>:
+    permission: op
+    trigger:
+        if data tag "chap:1" of arg-1 is 4:
+            send "&8[&4SYSTEM&8] &ePlayer &ahas found all clues and completed &echapter 1&7." to arg-1
+            set data tag "chap:1" of arg-1 to 5
+            execute console command "si give chapbook1 1 %arg-1% true"
+        else if data tag "chap:1" of arg-1 is 5:
+            stop
+        else:
+            send "&8[&4SYSTEM&8] &cFind previous clues in chapter 1 first." to arg-1
+            
+command /chap1admin <player> <integer>:
+    permission: op
+    trigger:
+        set data tag "chap:1" of arg-1 to arg-2
+        send "&8[&4SYSTEM&8] &aSet &e%arg-1%&a's chapter 1 clue level to &e%arg-2%&a." to player

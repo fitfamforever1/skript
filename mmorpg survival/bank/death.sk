@@ -1,0 +1,16 @@
+on death of player:
+    set {_victim} to victim
+    set {_coins} to victim's balance
+    set {_half} to floor({_coins} / 2)
+
+    if attacker is a player:
+        set {_killer} to attacker
+
+        remove {_half} from {_victim}'s balance
+        add {_half} to {_killer}'s balance
+        send "&aYou got &e%formatMoney({_half})% coins &afrom &c%{_victim}%&a's death!" to {_killer}
+        send "&cYou lost &e%formatMoney({_half})% coins &cbecause you were killed by &a%{_killer}%&c!" to {_victim}
+
+    else:
+        remove {_half} from {_victim}'s balance
+        send "&cYou lost &e%formatMoney({_half})% coins &con death!" to {_victim}

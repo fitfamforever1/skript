@@ -1,0 +1,129 @@
+# ==============================
+# PET ADMIN & ID SYSTEM
+# ==============================
+
+command /petid [<text>] [<text>]:
+    permission: level.30
+    permission message: "&7You don't have required level."
+    trigger:
+
+        if arg 1 is not set:
+            send "&8[<##CC5500>PET&8] &6&lPet ID System"
+            send "&8[<##CC5500>PET&8] &e/petid <pet1-pet23> <active|unactive> &7— Toggle a pet slot"
+            send "&8[<##CC5500>PET&8] &e/petid status &7— View all your pet slots"
+            stop
+
+        if arg 1 is "status":
+            send "&8[<##CC5500>PET&8] &7Pet status for &e%player%&7:"
+            loop integers from 1 to 23:
+                set {_num} to loop-value
+                set {_name} to getPetName("pet%{_num}%")
+                if {petid::%player%::pet%{_num}%} is "active":
+                    send "  &8» &e%{_name}% &7(pet%{_num}%): &aactive ✔"
+                else:
+                    send "  &8» &e%{_name}% &7(pet%{_num}%): &cunactive ✘"
+            stop
+
+        set {_slot} to arg 1 in lowercase
+        set {_valid} to false
+        loop integers from 1 to 23:
+            set {_n} to loop-value
+            if {_slot} is "pet%{_n}%":
+                set {_valid} to true
+        if {_valid} is false:
+            send "&8[<##CC5500>PET&8] &cInvalid slot! Use &epet1 &cthrough &epet23&c."
+            stop
+
+        if arg 2 is not set:
+            send "&8[<##CC5500>PET&8] &cUsage: /petid %{_slot}% <active|unactive>"
+            stop
+
+        set {_state} to arg 2 in lowercase
+        set {_name} to getPetName({_slot})
+
+        if {_state} is "active":
+            set {petid::%player%::%{_slot}%} to "active"
+            send "&8[<##CC5500>PET&8] &e%{_name}% &7is now &aactive &a✔"
+            stop
+
+        if {_state} is "unactive":
+            set {petid::%player%::%{_slot}%} to "unactive"
+            send "&8[<##CC5500>PET&8] &e%{_name}% &7is now &cdisabled &c✘"
+            stop
+
+        send "&8[<##CC5500>PET&8] &cInvalid state! Use &eactive &cor &eunactive&c."
+
+
+command /petgive <player> <text>:
+    permission: admin
+    permission message: "&7You don't have required level."
+    trigger:
+        set {_target} to arg 1
+        set {_slot} to arg 2 in lowercase
+
+        set {_valid} to false
+        loop integers from 1 to 23:
+            if {_slot} is "pet%loop-value%":
+                set {_valid} to true
+        if {_valid} is false:
+            send "&8[<##CC5500>PET&8] &cInvalid slot! Use &epet1 &cthrough &epet23&c."
+            stop
+
+        set {_uuid} to uuid of {_target}
+        set {_name} to getPetName({_slot})
+
+        if {pet::%{_uuid}%::%{_slot}%} is true:
+            execute console command "si give %{_slot}% 1 %{_target}% true"
+            send "&8[<##CC5500>PET&8] &e%{_target}% &7already owns &e%{_name}%&7, gave as item instead &a✔"
+            stop
+
+        set {pet::%{_uuid}%::%{_slot}%} to true
+        send "&8[<##CC5500>PET&8] &7Gave &e%{_name}% &7to &b%{_target}% &a✔"
+        send "&8[<##CC5500>PET&8] &7You have been given &e%{_name}% &a✔" to {_target}
+
+
+command /petremove <player> <text>:
+    permission: admin
+    permission message: "&7You don't have required level."
+    trigger:
+        set {_target} to arg 1
+        set {_slot} to arg 2 in lowercase
+
+        set {_valid} to false
+        loop integers from 1 to 23:
+            if {_slot} is "pet%loop-value%":
+                set {_valid} to true
+        if {_valid} is false:
+            send "&8[<##CC5500>PET&8] &cInvalid slot! Use &epet1 &cthrough &epet23&c."
+            stop
+
+        set {_uuid} to uuid of {_target}
+        set {_name} to getPetName({_slot})
+
+        if {pet::%{_uuid}%::%{_slot}%} is not set:
+            send "&8[<##CC5500>PET&8] &e%{_target}% &7doesn't own &e%{_name}%&c!"
+            stop
+
+        if {petid::%{_target}%::%{_slot}%} is "active":
+            set {petid::%{_target}%::%{_slot}%} to "unactive"
+
+            delete {petability::%{_target}%::invis}
+            delete {petability::%{_target}%::bloodfrenzy.active}
+            delete {petability::%{_target}%::bloodfrenzy.stacks}
+            delete {petability::%{_target}%::bloodfrenzy.lastTarget}
+            delete {petability::%{_target}%::bloodfrenzy.hitCount}
+            delete {petability::%{_target}%::pet11.ready}
+            delete {petability::%{_target}%::pet11.cooldown}
+            delete {petability::pet16_marked::%{_target}%}
+            delete {petability::bleed::%{_target}%}
+            delete {petability::pet23.aliveTimer::%uuid of {_target}%}
+            delete {petability::pet23.stackLevel::%uuid of {_target}%}
+            delete {petability::pet23.roarCooldown::%uuid of {_target}%}
+
+            remove speed from {_target}
+            remove strength from {_target}
+            remove jump boost from {_target}
+
+        delete {pet::%{_uuid}%::%{_slot}%}
+        send "&8[<##CC5500>PET&8] &7Removed &e%{_name}% &7from &b%{_target}% &a✔"
+        send "&8[<##CC5500>PET&8] &7Your &e%{_name}% &7has been &cremoved&7." to {_target}

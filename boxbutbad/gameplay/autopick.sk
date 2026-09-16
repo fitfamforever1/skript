@@ -1,0 +1,58 @@
+function getFortuneBonusChance(fortune: number) :: number:
+    return round(20 * ({_fortune} ^ 0.5), 2)
+on mine:
+    cancel drops
+    
+    set {_item} to player's tool 
+    
+    set {_eff} to data tag "itemstat:fortune" of {_item}
+    set {_tou} to data tag "itemstat:toughness" of {_item}
+    
+    set {_data::*} to "mat1|4|0|2" if event-block is oak log
+    set {_data::*} to "mat1|1|0|1" if event-block is oak planks
+    set {_data::*} to "mat2|1|1|4" if event-block is copper ore
+    set {_data::*} to "mat3|1|2|6" if event-block is iron ore
+    set {_data::*} to "mat4|1|3|8" if event-block is gold ore
+    set {_data::*} to "mat5|1|4|8" if event-block is deepslate lapis ore
+    set {_data::*} to "mat6|1|5|8" if event-block is deepslate redstone ore
+    set {_data::*} to "mat7|1|6|15" if event-block is deepslate diamond ore
+    set {_data::*} to "mat8|1|7|20" if event-block is deepslate emerald ore
+    set {_data::*} to "mat2|9|1|30" if event-block is copper block
+    set {_data::*} to "mat3|9|2|45" if event-block is iron block
+    set {_data::*} to "mat4|9|3|60" if event-block is gold block
+    set {_data::*} to "mat5|9|4|60" if event-block is lapis block
+    set {_data::*} to "mat6|9|5|60" if event-block is redstone block
+    set {_data::*} to "mat7|9|6|110" if event-block is diamond block
+    set {_data::*} to "mat8|9|7|150" if event-block is emerald block
+    set {_data::*} to "mat9|9|8|300" if event-block is netherite block
+    set {_data::*} to "mat9|1|8|35" if event-block is ancient debris
+    
+    if {_data::*} is not set:
+        stop
+    
+    set {_split::*} to {_data::1} split at "|"
+    set {_name} to {_split::1}
+    set {_base} to {_split::2} parsed as integer
+    set {_reqEff} to {_split::3} parsed as integer
+    set {_xp} to {_split::4} parsed as integer
+    
+    if {_tou} < {_reqEff}:
+        send action bar "&cʀᴇǫᴜɪʀᴇꜱ ᴛᴏᴜɢʜɴᴇꜱꜱ %{_reqEff}% ᴛᴏ ᴍɪɴᴇ ᴛʜɪꜱ!" to player
+        play sound "sound:sound.ui.error" with volume 1 for player
+        cancel event
+        stop
+    
+    if {loot::%{_name}%} is not set:
+        send "&cMissing loot variable: loot::%{_name}%" to player
+        stop
+    
+    set {_chance} to getFortuneBonusChance({_fortune})
+    set {_guaranteed} to floor({_chance} / 100)
+    set {_remainder} to {_chance} - ({_guaranteed} * 100)
+    
+    set {_final} to {_base} * (1 + {_guaranteed})
+    if chance of {_remainder}%:
+        add {_base} to {_final}
+    
+    give {_final} of {loot::%{_name}%} to player
+    GainXP(player, {_xp})

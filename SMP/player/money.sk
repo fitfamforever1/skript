@@ -1,0 +1,61 @@
+command /bal [<player>]:
+    aliases: balance
+    trigger:
+        if arg-1 is set:
+            if player has permission "admin.bal":
+                set {_bal} to number data tag "money:amm" of arg-1
+                set {_p} to SmallCaps("%arg-1%")
+                send "&8[<##65b9d3>ᴍᴏɴᴇʏ&8]&e %{_p}%'s &7ᴄᴜʀʀᴇɴᴛ ʙᴀʟᴀɴᴄᴇ ɪꜱ &e$%{_bal}%&7."
+                stop
+        set {_bal} to number data tag "money:amm" of player
+        send "&8[<##65b9d3>ᴍᴏɴᴇʏ&8]&7 ʏᴏᴜʀ ᴄᴜʀʀᴇɴᴛ ʙᴀʟᴀɴᴄᴇ ɪꜱ &e$%{_bal}%&7."
+        
+command /pay [<player>] [<number>]:
+    trigger:
+        if arg-1 or arg-2 is not set:
+            send "&8[<##65b9d3>ᴍᴏɴᴇʏ&8]&c /ᴘᴀʏ <ᴘʟᴀʏᴇʀ> <ᴍᴏɴᴇʏ>"
+            stop
+
+        if arg-1 is offline:
+            send "&8[<##65b9d3>ᴍᴏɴᴇʏ&8]&c ʏᴏᴜ ᴄᴀɴ'ᴛ ꜱᴇɴᴅ ᴍᴏɴᴇʏ ᴛᴏ ᴏꜰꜰʟɪɴᴇ ᴘʟᴀʏᴇʀꜱ."
+            stop
+
+        if arg-1 is player:
+            send "&8[<##65b9d3>ᴍᴏɴᴇʏ&8]&c ʏᴏᴜ ᴄᴀɴ'ᴛ ꜱᴇɴᴅ ᴍᴏɴᴇʏ ᴛᴏ ʏᴏᴜʀꜱᴇʟꜰ."
+            stop
+
+        if arg-2 <= 0:
+            send "&8[<##65b9d3>ᴍᴏɴᴇʏ&8]&c ʏᴏᴜ ᴄᴀɴ'ᴛ ꜱᴇɴᴅ ᴍᴏɴᴇʏ ᴇǫᴜᴀʟ ᴏʀ ʟᴇꜱꜱ ᴛʜᴇɴ ᴢᴇʀᴏ."
+            stop
+
+        set {_senderBal} to number data tag "money:amm" of player
+        set {_receiverBal} to number data tag "money:amm" of arg-1
+
+        if {_senderBal} < arg-2:
+            send "&8[<##65b9d3>ᴍᴏɴᴇʏ&8]&c ʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴇɴᴏᴜɢʜ ᴍᴏɴᴇʏ."
+            stop
+
+        set number data tag "money:amm" of player to {_senderBal} - arg-2
+        set number data tag "money:amm" of arg-1 to {_receiverBal} + arg-2
+
+        set {_sender} to SmallCaps("%player%")
+        set {_receiver} to SmallCaps("%arg-1%")
+
+        send "&8[<##65b9d3>ᴍᴏɴᴇʏ&8]&7 ʏᴏᴜ ꜱᴇɴᴛ &e$%arg-2%&7 ᴛᴏ &e%{_receiver}%&7." to player
+        send "&8[<##65b9d3>ᴍᴏɴᴇʏ&8]&7 ʏᴏᴜ ʀᴇᴄᴇɪᴠᴇᴅ &e$%arg-2%&7 ꜰʀᴏᴍ &e%{_sender}%&7." to arg-1
+        
+on death of player:
+    if attacker is player:
+        set {_victim} to SmallCaps("%victim%")
+        set {_attacker} to SmallCaps("%attacker%")
+
+        set {_victimMoney} to number data tag "money:amm" of victim
+        set {_stolen} to round({_victimMoney} * 0.1)
+
+        set {_attackerMoney} to number data tag "money:amm" of attacker
+
+        set number data tag "money:amm" of victim to ({_victimMoney} - {_stolen})
+        set number data tag "money:amm" of attacker to ({_attackerMoney} + {_stolen})
+
+        send "&8[<##65b9d3>ᴍᴏɴᴇʏ&8]&7 ʏᴏᴜ ꜱᴛᴏʟᴇ &e$%{_stolen}%&7 ꜰʀᴏᴍ &e%{_victim}%&7." to attacker
+        send "&8[<##65b9d3>ᴍᴏɴᴇʏ&8]&7 &e%{_attacker}%&7 ꜱᴛᴏʟᴇ &e$%{_stolen}%&7 ꜰʀᴏᴍ ʏᴏᴜ&7." to victim

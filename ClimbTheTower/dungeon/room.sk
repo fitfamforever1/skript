@@ -1,0 +1,164 @@
+on load:
+    set {maxRooms} to 22
+
+    set {spawnPoints::baseX::1} to 92.99
+    set {spawnPoints::baseZ::1} to 107.99
+    set {spawnPoints::yaw::1} to -180
+
+    set {spawnPoints::baseX::2} to 100.99
+    set {spawnPoints::baseZ::2} to 107.99
+    set {spawnPoints::yaw::2} to 134
+
+    set {spawnPoints::baseX::3} to 108.99
+    set {spawnPoints::baseZ::3} to 107.99
+    set {spawnPoints::yaw::3} to 115
+
+    set {spawnPoints::baseX::4} to 108.99
+    set {spawnPoints::baseZ::4} to 99.99
+    set {spawnPoints::yaw::4} to 90
+
+    set {spawnPoints::baseX::5} to 108.99
+    set {spawnPoints::baseZ::5} to 91.99
+    set {spawnPoints::yaw::5} to 60
+
+    set {spawnPoints::baseX::6} to 100.99
+    set {spawnPoints::baseZ::6} to 91.99
+    set {spawnPoints::yaw::6} to 40
+
+    set {spawnPoints::baseX::7} to 92.99
+    set {spawnPoints::baseZ::7} to 91.99
+    set {spawnPoints::yaw::7} to 0
+
+    set {spawnPoints::baseX::8} to 100.99
+    set {spawnPoints::baseZ::8} to 99.99
+    set {spawnPoints::yaw::8} to 90
+
+    resetDungeon()
+
+
+
+function resetDungeon():
+    loop {maxRooms} times:
+        set boolean data tag "room%loop-number%:status" of world "world" to false
+        set number data tag "room%loop-number%:floor" of world "world" to 0
+        clearRoomMobs(loop-number)
+
+    loop all players:
+        set {_room} to number data tag "room:id" of loop-player
+        if {_room} is not 0:
+            set {_floor} to number data tag "room%{_room}%:floor" of loop-player
+            EndRoom(loop-player, {_room}, {_floor})
+            set number data tag "current:health" of loop-player to (number data tag "playerstat:health" of loop-player)
+
+function teleportToRoom(p: player, room: number):
+    set {_loc} to location(88.99, 1, 99.99 + (({_room} - 1) * 32), world of {_p}, -90, 0)
+    teleport {_p} to {_loc}
+
+function spawnMob(locId: number, roomId: number, floorId: number, mob: text, amount: number):
+    set {_x} to {spawnPoints::baseX::%{_locId}%}
+    set {_z} to {spawnPoints::baseZ::%{_locId}%} + (({_roomId} - 1) * 32)
+    set {_yaw} to {spawnPoints::yaw::%{_locId}%}
+    set {_loc} to location({_x}, 1, {_z}, world "world", {_yaw}, 0)
+
+    loop {_amount} times:
+        spawn({_loc}, {_mob}, {_roomId}, {_floorId})
+
+function FreeRoom(max: number) :: number:
+    loop {_max} times:
+        set {_roll} to a random integer between 1 and {_max}
+        if boolean data tag "room%{_roll}%:status" of world "world" is not true:
+            set boolean data tag "room%{_roll}%:status" of world "world" to true
+            return {_roll}
+    return 0
+
+function StartRoom(p: player, room: number, floor: number):
+    set number data tag "room%{_room}%:floor" of world "world" to {_floor}
+    set number data tag "room:id" of {_p} to {_room}
+    set {_temp} to number data tag "room:id" of {_p}
+    set number data tag "room%{_room}%:floor" of {_p} to {_floor}
+    set number data tag "floor:current" of {_p} to 0
+    teleportToRoom({_p}, {_room})
+    send title "" with subtitle "&cʏᴏᴜ ʜᴀᴠᴇ ᴇɴᴛᴇʀᴇᴅ ꜰʟᴏᴏʀ %{_floor}%." to {_p} for 0.8 seconds with fadein 0.2 second and fade out 0.2 second
+    wait 1 second
+    StartFloor({_room}, {_floor})
+    heal({_p})
+
+function EndRoom(p: player, room: number, floor: number):
+    set boolean data tag "room%{_room}%:status" of world "world" to false
+    set number data tag "room:id" of {_p} to 0
+    set number data tag "room%{_room}%:floor" of {_p} to 0
+    set number data tag "room%{_room}%:floor" of world "world" to 0
+    set number data tag "floor:current" of {_p} to 0
+    delete {respawning::%{_p}%}
+    clearRoomMobs({_room})
+    teleport {_p} to location(0, 0, 0, "world")
+
+on quit:
+    set {_room} to number data tag "room:id" of player
+    if {_room} is not 0:
+        set {_floor} to number data tag "room%{_room}%:floor" of player
+        EndRoom(player, {_room}, {_floor})
+        
+command /exit:
+    trigger:
+        set {_room} to number data tag "room:id" of player
+        if {_room} is not 0:
+            set {_floor} to number data tag "room%{_room}%:floor" of player
+            EndRoom(player, {_room}, {_floor})
+            send "&aYou have exited the dungeon." to player
+        else:
+            send "&cYou are not within an dungeon." to player
+
+command /room <number>:
+    permission: admin.dungeon
+    trigger:
+        teleportToRoom(player, arg-1)
+
+command /spawn <number> <number> <number> <text> <number>:
+    permission: admin.dungeon
+    trigger:
+        spawnMob(arg-1, arg-2, arg-3, arg-4, arg-5)
+
+command /floor <number>:
+    trigger:
+        set {_room} to FreeRoom({maxRooms})
+        if {_room} is 0:
+            send "&cNo rooms are currently available." to player
+            stop
+        if all:
+            arg-1 > 0
+            arg-1 <= 10
+        then:
+            send "&aYou entered floor %arg-1%." to player
+            StartRoom(player, {_room}, arg-1)
+        else:
+            send "&cNot a valid floor."
+
+command /dungeonreset:
+    permission: admin.dungeon
+    trigger:
+        resetDungeon()
+        send "&eAll dungeon has been fully reset." to player
+        
+command /dungeondebug:
+    trigger:
+        set {_room} to number data tag "room:id" of player
+        set {_floor} to number data tag "room%{_room}%:floor" of player
+        set {_worldFloor} to number data tag "room%{_room}%:floor" of world "world"
+        set {_current} to number data tag "floor:current" of player
+        set {_status} to boolean data tag "room%{_room}%:status" of world "world"
+
+        send "&8&m----------&r &c[Dungeon Debug] &8&m----------" to player
+        send "&7room:id &f= &e%{_room}%" to player
+        send "&7room%{_room}%:floor (player) &f= &e%{_floor}%" to player
+        send "&7room%{_room}%:floor (world) &f= &e%{_worldFloor}%" to player
+        send "&7floor:current &f= &e%{_current}%" to player
+        send "&7room%{_room}%:status (world) &f= &e%{_status}%" to player
+
+        if {_floor} is set:
+            set {_target} to number data tag "floor%{_floor}%:max" of world "world"
+            set {_target2} to number data tag "floor%{_floor}%:min" of world "world"
+            send "&7floor%{_floor}%:max &f= &e%{_target}%" to player
+            send "&7floor%{_floor}%:min &f= &e%{_target2}%" to player
+        send "&8&m--------------------------------" to player
+        

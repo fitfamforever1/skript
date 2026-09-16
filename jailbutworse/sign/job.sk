@@ -1,0 +1,91 @@
+on right click on oak wall sign:
+    cancel event
+    set {_loc} to location of clicked block
+    set {_x} to floor(x-coordinate of {_loc})
+    set {_y} to floor(y-coordinate of {_loc})
+    set {_z} to floor(z-coordinate of {_loc})
+    if {_x} is -77:
+        if {_y} is -10:
+            if {_z} is -10:
+                if {job1::cooldown::%player%} is set:
+                    send "<##FE7300>[SYSTEM] &cYou must wait before using this again." to player
+                    stop
+                set {job1::cooldown::%player%} to true
+                execute console command "si give plumber 1 %player% true"
+                send "<##FE7300>[SYSTEM] &7You have accepted &eplumber &7job. You can right click iron trapdoors to earn money." to player
+                wait 30 second
+                delete {job1::cooldown::%player%}
+            if {_z} is -11:
+                if {job2::cooldown::%player%} is set:
+                    send "<##FE7300>[SYSTEM] &cYou must wait before using this again." to player
+                    stop
+                set {job2::cooldown::%player%} to true
+                execute console command "si give miner 1 %player% true"
+                send "<##FE7300>[SYSTEM] &7You have accepted &eminer &7job. You can mine ores to earn money." to player
+                wait 30 second
+                delete {job2::cooldown::%player%}
+            if {_z} is -12:
+                if {job3::cooldown::%player%} is set:
+                    send "<##FE7300>[SYSTEM] &cYou must wait before using this again." to player
+                    stop
+                set {job3::cooldown::%player%} to true
+                execute console command "si give lumberjack 1 %player% true"
+                send "<##FE7300>[SYSTEM] &7You have accepted &elumberjack &7job. You can cut any logs to earn money." to player
+                wait 30 second
+                delete {job3::cooldown::%player%}
+            if {_z} is -13:
+                if {job4::cooldown::%player%} is set:
+                    send "<##FE7300>[SYSTEM] &cYou must wait before using this again." to player
+                    stop
+                set {job4::cooldown::%player%} to true
+                execute console command "si give cleaner 1 %player% true"
+                send "<##FE7300>[SYSTEM] &7You have accepted &ecleaner &7job. You can dig gravel or coarse dirt to earn money." to player
+                wait 30 second
+                delete {job4::cooldown::%player%}
+    if {_x} is 47:
+        if {_y} is -10:
+            if {_z} is 49:
+                if {job1::cooldown::%player%} is set:
+                    send "<##FE7300>[SYSTEM] &cYou must wait before using this again." to player
+                    stop
+                set {job1::cooldown::%player%} to true
+                execute console command "si give plumber 1 %player% true"
+                send "<##FE7300>[SYSTEM] &7You have accepted &eplumbing &7job. You can right click iron trapdoors to earn money." to player
+                wait 30 second
+                delete {job1::cooldown::%player%}
+            if {_z} is 50:
+                if {job2::cooldown::%player%} is set:
+                    send "<##FE7300>[SYSTEM] &cYou must wait before using this again." to player
+                    stop
+                set {job2::cooldown::%player%} to true
+                execute console command "si give miner 1 %player% true"
+                send "<##FE7300>[SYSTEM] &7You have accepted &eminer &7job. You can mine ores to earn money." to player
+                wait 30 second
+                delete {job2::cooldown::%player%}
+            if {_z} is 51:
+                if {job3::cooldown::%player%} is set:
+                    send "<##FE7300>[SYSTEM] &cYou must wait before using this again." to player
+                    stop
+                set {job3::cooldown::%player%} to true
+                execute console command "si give lumberjack 1 %player% true"
+                send "<##FE7300>[SYSTEM] &7You have accepted &elumberjack &7job. You can cut any logs to earn money." to player
+                wait 30 second
+                delete {job3::cooldown::%player%}
+            if {_z} is 52:
+                if {job4::cooldown::%player%} is set:
+                    send "<##FE7300>[SYSTEM] &cYou must wait before using this again." to player
+                    stop
+                set {job4::cooldown::%player%} to true
+                execute console command "si give cleaner 1 %player% true"
+                send "<##FE7300>[SYSTEM] &7You have accepted &ecleaner &7job. You can dig gravel or coarse dirt to earn money." to player
+                wait 30 second
+                delete {job4::cooldown::%player%}
+
+
+command /resetjobcooldown <offline player>:
+    permission: op
+    trigger:
+        delete {job1::cooldown::%arg-1%}
+        delete {job2::cooldown::%arg-1%}
+        delete {job3::cooldown::%arg-1%}
+        delete {job4::cooldown::%arg-1%}

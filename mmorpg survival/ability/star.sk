@@ -1,0 +1,19 @@
+on right click:
+    if player's held item is a bow:
+        if name of player's held item is "&fStar Short Bow":
+            cancel event
+            if {starbow.cooldown::%player%} is set:
+                stop
+            shoot arrow from player at speed 3
+            set {starbow.cooldown::%player%} to true
+            wait 5 ticks
+            delete {starbow.cooldown::%player%}
+
+on projectile hit:
+    if projectile is an arrow:
+        if shooter is a player:
+            if name of shooter's held item is "&fStar Short Bow":
+                if victim is a living entity:
+                    set {_source} to damage source from arrow
+                    damage victim by 9 with {_source}
+                    cancel event

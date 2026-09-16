@@ -1,0 +1,46 @@
+on right click with phantom membrane:
+    set {_item} to player's tool
+    set {_med} to data tag "minecraft:med" of {_item}
+    if {_med} is not set:
+        stop
+    if {_med} is "1" or "2" or "6":
+        if player's health is player's max health:
+            send action bar "&cʏᴏᴜ ᴀʀᴇ ᴀʟʀᴇᴀᴅʏ ᴀᴛ ꜰᴜʟʟ ʜᴇᴀʟᴛʜ!" to player
+            stop
+    if {_med} is "5":
+        if player's health is player's max health:
+            if {bones::%player%} >= 7:
+                send action bar "&cʏᴏᴜ ᴀʀᴇ ᴀʟʀᴇᴀᴅʏ ᴀᴛ ꜰᴜʟʟ ʜᴇᴀʟᴛʜ ᴀɴᴅ ʏᴏᴜʀ ʙᴏɴᴇꜱ ᴀʀᴇ ɪɴᴛᴀᴄᴛ." to player
+                stop
+    if {_med} is "1":
+        heal the player by 2 hearts
+        remove 1 of {_item} from player's tool
+    if {_med} is "2":
+        remove 1 of {_item} from player's tool
+        loop 8 times:
+            wait 10 ticks
+            heal the player by 0.5 heart
+    if {_med} is "3":
+        if {bones::%player%} >= 7:
+            send action bar "&cʏᴏᴜʀ ʙᴏɴᴇꜱ ᴀʀᴇ ᴀʟʀᴇᴀᴅʏ ꜰᴜʟʟʏ ɪɴᴛᴀᴄᴛ." to player
+            stop
+        add 1 to {bones::%player%}
+        applyBoneEffects(player)
+        send title "" with subtitle "&bᴏɴᴇ ʙᴏɴᴇ ʜᴀꜱ ʙᴇᴇɴ ꜱᴇᴛ." to player for 1 seconds with fade in 0.3 seconds and fade out 0.5 seconds
+        send "&8[<##F9F6EE>ʙᴏɴᴇꜱ&8] &7ʙᴏɴᴇꜱ: &8(&b%{bones::%player%}%&7/&b7&8)" to player
+        remove 1 of {_item} from player's tool
+    if {_med} is "4":
+        curePlayer(player)
+        remove 1 of {_item} from player's tool
+    if {_med} is "5":
+        heal the player
+        if {bones::%player%} < 7:
+            set {bones::%player%} to 7
+            applyBoneEffects(player)
+            send title "" with subtitle "&bᴀʟʟ ʙᴏɴᴇ ʜᴀꜱ ʙᴇᴇɴ ꜱᴇᴛ." to player for 1 seconds with fade in 0.3 seconds and fade out 0.5 seconds
+            send "&8[<##F9F6EE>ʙᴏɴᴇꜱ&8] &7ʙᴏɴᴇꜱ: &8(&b%{bones::%player%}%&7/&b7&8)" to player
+        remove 1 of {_item} from player's tool
+
+    if {_med} is "6":
+        heal the player by 3 hearts
+        remove 1 of {_item} from player's tool

@@ -1,0 +1,139 @@
+function recalcDefense(p: player):
+    set {_uuid} to uuid of {_p}
+    set {_totalDef} to 0.0
+    set {_totalTrueDef} to 0.0
+
+    loop {_p}'s helmet, {_p}'s chestplate, {_p}'s leggings, {_p}'s boots:
+        if loop-value is not air:
+            set {_val} to data tag "itemstat:defense" of loop-value
+            if {_val} is set:
+                add {_val} to {_totalDef}
+            set {_val} to data tag "itemstat:resistance" of loop-value
+            if {_val} is set:
+                add {_val} to {_totalTrueDef}
+
+    set {defense::%{_uuid}%} to {_totalDef}
+    set {truedefense::%{_uuid}%} to {_totalTrueDef}
+
+function recalcDamage(p: player):
+    set {_uuid} to uuid of {_p}
+    set {_total} to 1.0
+    set {_critChance} to 0.0
+    set {_critDamage} to 0.0
+    set {_tool} to {_p}'s tool
+    set {_name} to "%type of {_tool}%"
+    
+    if {_name} contains "sword":
+        set {_total} to data tag "itemstat:damage" of {_tool}
+        set {_critChance} to data tag "itemstat:critchance" of {_tool}
+        set {_critDamage} to data tag "itemstat:critdamage" of {_tool}
+    if {_name} contains "axe":
+        set {_total} to data tag "itemstat:damage" of {_tool}
+        set {_critChance} to data tag "itemstat:critchance" of {_tool}
+        set {_critDamage} to data tag "itemstat:critdamage" of {_tool}
+    
+    set {damage::%{_uuid}%} to {_total}
+    set {critchance::%{_uuid}%} to {_critChance}
+    set {critdamage::%{_uuid}%} to {_critDamage}
+
+function calculateDamage(baseDamage: number, defense: number, trueDefense: number) :: number:
+    set {_effectiveDefense} to max(0, {_defense} - ({_trueDefense} * 2))
+
+    set {_damage} to {_baseDamage} * (100 / (180 + {_effectiveDefense}))
+
+    if {_damage} < 1:
+        set {_damage} to 1
+
+    return round({_damage} * 100) / 100
+
+function calculateCritDamage(baseDamage: number, critDamage: number, defense: number, trueDefense: number) :: number:
+    set {_effectiveDefense} to max(0, {_defense} - ({_trueDefense} * 2))
+
+    set {_rawDamage} to {_baseDamage} * ({_critDamage} / 100)
+
+    set {_damage} to {_rawDamage} * (100 / (180 + {_effectiveDefense}))
+
+    if {_damage} < 1:
+        set {_damage} to 1
+
+    return round({_damage} * 100) / 100
+
+on join:
+    recalcDefense(player)
+    recalcDamage(player)
+
+on quit:
+    set {_uuid} to uuid of player
+    delete {defense::%{_uuid}%}
+    delete {truedefense::%{_uuid}%}
+    delete {damage::%{_uuid}%}
+    delete {critchance::%{_uuid}%}
+    delete {critdamage::%{_uuid}%}
+    delete {farmingfortune::%{_uuid}%}
+
+on armor change:
+    wait 1 tick
+    recalcDefense(player)
+
+on player's held item change:
+    wait 1 tick
+    recalcDamage(player)
+    set {_uuid} to uuid of player
+    
+
+command /debug [<text>]:
+    permission: admin.debug
+    usage: &c/debug <armor/weapon/damage/crit>
+    trigger:
+        set {_uuid} to uuid of player
+        set {_type} to arg-1
+
+        if {_type} is not set:
+            send "&c/debug <armor/weapon/damage/crit>" to player
+            stop trigger
+
+        if {_type} is "armor":
+            recalcDefense(player)
+            send "&eDebug &7» &fDefense: &a%{defense::%{_uuid}%}% &7| &fTrue Defense: &b%{truedefense::%{_uuid}%}%" to player
+            stop trigger
+
+        if {_type} is "weapon":
+            recalcDamage(player)
+            send "&eDebug &7» &fDamage: &c%{damage::%{_uuid}%}% &7| &fCrit Chance: &e%{critchance::%{_uuid}%}% &7| &fCrit Damage: &6%{critdamage::%{_uuid}%}%" to player
+            stop trigger
+
+        if {_type} is "damage":
+            recalcDamage(player)
+            recalcDefense(player)
+            set {_baseDamage} to {damage::%{_uuid}%}
+            set {_defense} to {defense::%{_uuid}%}
+            set {_trueDefense} to {truedefense::%{_uuid}%}
+            set {_finalDamage} to calculateDamage({_baseDamage}, {_defense}, {_trueDefense})
+            send "&6&m----------------------------------"
+            send "&eBase Damage: &f%{_baseDamage}%"
+            send "&aDefense: &f%{_defense}%"
+            send "&bTrue Defense: &f%{_trueDefense}%"
+            send "&cEffective Defense: &f%max(0, {_defense} - ({_trueDefense} * 2))%"
+            send "&4Final Damage: &c%{_finalDamage}%"
+            send "&6&m----------------------------------"
+            stop trigger
+
+        if {_type} is "crit":
+            recalcDamage(player)
+            recalcDefense(player)
+            set {_baseDamage} to {damage::%{_uuid}%}
+            set {_critDamage} to {critdamage::%{_uuid}%}
+            set {_defense} to {defense::%{_uuid}%}
+            set {_trueDefense} to {truedefense::%{_uuid}%}
+            set {_finalDamage} to calculateCritDamage({_baseDamage}, {_critDamage}, {_defense}, {_trueDefense})
+            send "&6&m----------------------------------"
+            send "&eBase Damage: &f%{_baseDamage}%"
+            send "&6Crit Damage: &f%{_critDamage}%"
+            send "&aDefense: &f%{_defense}%"
+            send "&bTrue Defense: &f%{_trueDefense}%"
+            send "&cEffective Defense: &f%max(0, {_defense} - ({_trueDefense} * 2))%"
+            send "&4Final Crit Damage: &c%{_finalDamage}%"
+            send "&6&m----------------------------------"
+            stop trigger
+
+        send "&c/debug <armor/weapon/damage/crit>" to player

@@ -1,0 +1,63 @@
+on respawn:
+    teleport the player to location(-200.5,105,-1146.5,"world",-45,55)
+    set number data tag "death:state" of player to 1
+    wait 1 tick
+    openRespawnOptionGUI(player)
+    
+function Death1(p: player):
+    set {_r} to random integer between 1 and 5
+    if {_r} is 1:
+        teleport {_p} to location(-123.5, 59, -1389.5, world "world", 0, 0)
+    else if {_r} is 2:
+        teleport {_p} to location(-289.5, 62, -1300.5, world "world", -90, 0)
+    else if {_r} is 3:
+        teleport {_p} to location(-229.5, 55, -1331.5, world "world", 90, 0)
+    else if {_r} is 4:
+        teleport {_p} to location(-160.5, 61, -1218.5, world "world", -90, 0)
+    else if {_r} is 5:
+        teleport {_p} to location(-96.5, 59, -1443.5, world "world", 0, 0)
+
+function Death2() :: item:
+    return {loot::death2}
+
+function openRespawnOptionGUI(p: player):
+    open chest inventory with 1 row named "&8ʀᴇꜱᴘᴀᴡɴ ᴏᴘᴛɪᴏɴ" to {_p}
+    wait 1 tick
+    set {_gui} to {_p}'s current inventory
+    set slot 3 of {_gui} to {loot::death1}
+    set slot 5 of {_gui} to {loot::death2}
+
+
+on inventory click:
+    if "%name of player's current inventory%" contains "ʀᴇꜱᴘᴀᴡɴ ᴏᴘᴛɪᴏɴ":
+        cancel event
+
+        if clicked slot is 3:
+            Death1(player)
+            set number data tag "death:state" of player to 0
+            close player's inventory
+            stop
+
+        if clicked slot is 5:
+            send "&cComing Soon"
+
+on inventory close:
+    set {_state} to number data tag "death:state" of player
+    if {_state} is 1:
+        wait 1 tick
+        openRespawnOptionGUI(player)
+    else:
+        stop
+        
+command /authdone <player>:
+    permission: admin
+    trigger:
+        wait 1 tick
+        set {_state} to number data tag "join:state" of arg-1
+        if {_state} is 1:
+            set number data tag "join:state" of arg-1 to 0
+            delete {respawn_gui::%uuid of arg-1%}
+            Death1(arg-1)
+            
+on first join:
+    set number data tag "join:state" of player to 1

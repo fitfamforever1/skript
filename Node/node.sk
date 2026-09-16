@@ -1,0 +1,269 @@
+function canPasteNode(loc: location, id: number) :: boolean:
+    set {_blocks::*} to {_loc}
+
+    if {_id} > 1:
+        set {_l} to {_loc}
+        add 1 to x-coordinate of {_l}
+        add {_l} to {_blocks::*}
+
+        add 1 to x-coordinate of {_l}
+        add {_l} to {_blocks::*}
+
+        add 1 to x-coordinate of {_l}
+        add {_l} to {_blocks::*}
+
+        set {_l} to {_loc}
+        add 1 to x-coordinate of {_l}
+        remove 1 from z-coordinate of {_l}
+        add {_l} to {_blocks::*}
+
+        add 1 to x-coordinate of {_l}
+        add {_l} to {_blocks::*}
+
+        set {_l} to {_loc}
+        add 1 to x-coordinate of {_l}
+        add 1 to z-coordinate of {_l}
+        add {_l} to {_blocks::*}
+
+        add 1 to x-coordinate of {_l}
+        add {_l} to {_blocks::*}
+
+        set {_l} to {_loc}
+        add 1 to x-coordinate of {_l}
+        add 1 to y-coordinate of {_l}
+        add {_l} to {_blocks::*}
+
+        add 1 to x-coordinate of {_l}
+        add {_l} to {_blocks::*}
+    else:
+        set {_l} to {_loc}
+        loop 2 times:
+            add 1 to x-coordinate of {_l}
+            add {_l} to {_blocks::*}
+
+    loop {_blocks::*}:
+        if block at loop-value is not air:
+            return false
+
+        if {node-lookup::%(locKey(loop-value))%} is set:
+            return false
+
+    return true
+
+function locKey(l: location) :: text:
+    return "%world of {_l}%_%floor(x-coordinate of {_l})%_%floor(y-coordinate of {_l})%_%floor(z-coordinate of {_l})%"
+
+function registerNodeBlock(nid: text, l: location):
+    add {_l} to {nodes::%{_nid}%::blocks::*}
+    set {node-lookup::%(locKey({_l}))%} to {_nid}
+
+function getNodeDrop(id: number) :: item:
+    if {_id} = 1:
+        return {loot::mat1}
+    else if {_id} = 2:
+        return {loot::mat2}
+    else if {_id} = 3:
+        return {loot::mat3}
+    else if {_id} = 4:
+        return {loot::mat4}
+    else:
+        return air
+
+function destroyNode(nid: text):
+    if {nodes::%{_nid}%::blocks::*} is set:
+        loop {nodes::%{_nid}%::blocks::*}:
+            set block at loop-value to air
+            delete {node-lookup::%(locKey(loop-value))%}
+
+    delete {nodes::%{_nid}%::blocks::*}
+    delete {nodes::%{_nid}%::type}
+    delete {nodes::%{_nid}%::anchor}
+    remove {_nid} from {nodes::*}
+
+function pasteNode1(loc: location, nid: text):
+    set {_l} to {_loc}
+    loop 3 times:
+        set block data of block at {_l} to oak_log[axis=x]
+        registerNodeBlock({_nid}, {_l})
+        add 1 to x-coordinate of {_l}
+
+function pasteNode2(loc: location, nid: text):
+    set {_l} to {_loc}
+    set block at {_l} to cobblestone
+    registerNodeBlock({_nid}, {_l})
+    add 1 to x-coordinate of {_l}
+    set block at {_l} to stone
+    registerNodeBlock({_nid}, {_l})
+    add 1 to x-coordinate of {_l}
+    set block at {_l} to stone
+    registerNodeBlock({_nid}, {_l})
+    add 1 to x-coordinate of {_l}
+    set block at {_l} to stone_slab[type=bottom]
+    registerNodeBlock({_nid}, {_l})
+
+    set {_l} to {_loc}
+    add 1 to x-coordinate of {_l}
+    remove 1 from z-coordinate of {_l}
+    set block at {_l} to stone
+    registerNodeBlock({_nid}, {_l})
+    add 1 to x-coordinate of {_l}
+    set block at {_l} to cobblestone_slab[type=bottom]
+    registerNodeBlock({_nid}, {_l})
+
+    set {_l} to {_loc}
+    add 1 to x-coordinate of {_l}
+    add 1 to z-coordinate of {_l}
+    set block at {_l} to stone
+    registerNodeBlock({_nid}, {_l})
+    add 1 to x-coordinate of {_l}
+    set block at {_l} to cobblestone
+    registerNodeBlock({_nid}, {_l})
+
+    set {_l} to {_loc}
+    add 1 to x-coordinate of {_l}
+    add 1 to y-coordinate of {_l}
+    set block at {_l} to stone_slab[type=bottom]
+    registerNodeBlock({_nid}, {_l})
+    add 1 to x-coordinate of {_l}
+    set block at {_l} to stone_slab[type=bottom]
+    registerNodeBlock({_nid}, {_l})
+
+function pasteNode3(loc: location, nid: text):
+    set {_l} to {_loc}
+    set block at {_l} to cobblestone
+    registerNodeBlock({_nid}, {_l})
+    add 1 to x-coordinate of {_l}
+    set block at {_l} to stone
+    registerNodeBlock({_nid}, {_l})
+    add 1 to x-coordinate of {_l}
+    set block at {_l} to iron ore
+    registerNodeBlock({_nid}, {_l})
+    add 1 to x-coordinate of {_l}
+    set block at {_l} to stone_slab[type=bottom]
+    registerNodeBlock({_nid}, {_l})
+
+    set {_l} to {_loc}
+    add 1 to x-coordinate of {_l}
+    remove 1 from z-coordinate of {_l}
+    set block at {_l} to iron ore
+    registerNodeBlock({_nid}, {_l})
+    add 1 to x-coordinate of {_l}
+    set block at {_l} to cobblestone_slab[type=bottom]
+    registerNodeBlock({_nid}, {_l})
+
+    set {_l} to {_loc}
+    add 1 to x-coordinate of {_l}
+    add 1 to z-coordinate of {_l}
+    set block at {_l} to iron ore
+    registerNodeBlock({_nid}, {_l})
+    add 1 to x-coordinate of {_l}
+    set block at {_l} to cobblestone
+    registerNodeBlock({_nid}, {_l})
+
+    set {_l} to {_loc}
+    add 1 to x-coordinate of {_l}
+    add 1 to y-coordinate of {_l}
+    set block at {_l} to stone_slab[type=bottom]
+    registerNodeBlock({_nid}, {_l})
+    add 1 to x-coordinate of {_l}
+    set block at {_l} to stone_slab[type=bottom]
+    registerNodeBlock({_nid}, {_l})
+
+function pasteNode4(loc: location, nid: text):
+    set {_l} to {_loc}
+    set block at {_l} to cobblestone
+    registerNodeBlock({_nid}, {_l})
+    add 1 to x-coordinate of {_l}
+    set block at {_l} to stone
+    registerNodeBlock({_nid}, {_l})
+    add 1 to x-coordinate of {_l}
+    set block at {_l} to gold ore
+    registerNodeBlock({_nid}, {_l})
+    add 1 to x-coordinate of {_l}
+    set block at {_l} to stone_slab[type=bottom]
+    registerNodeBlock({_nid}, {_l})
+
+    set {_l} to {_loc}
+    add 1 to x-coordinate of {_l}
+    remove 1 from z-coordinate of {_l}
+    set block at {_l} to gold ore
+    registerNodeBlock({_nid}, {_l})
+    add 1 to x-coordinate of {_l}
+    set block at {_l} to cobblestone_slab[type=bottom]
+    registerNodeBlock({_nid}, {_l})
+
+    set {_l} to {_loc}
+    add 1 to x-coordinate of {_l}
+    add 1 to z-coordinate of {_l}
+    set block at {_l} to gold ore
+    registerNodeBlock({_nid}, {_l})
+    add 1 to x-coordinate of {_l}
+    set block at {_l} to cobblestone
+    registerNodeBlock({_nid}, {_l})
+
+    set {_l} to {_loc}
+    add 1 to x-coordinate of {_l}
+    add 1 to y-coordinate of {_l}
+    set block at {_l} to stone_slab[type=bottom]
+    registerNodeBlock({_nid}, {_l})
+    add 1 to x-coordinate of {_l}
+    set block at {_l} to stone_slab[type=bottom]
+    registerNodeBlock({_nid}, {_l})
+
+function PasteNode(loc: location, id: number):
+    if canPasteNode({_loc}, {_id}) is false:
+        stop
+
+    add 1 to {node-counter}
+    set {_nid} to "%{node-counter}%"
+    add {_nid} to {nodes::*}
+    set {nodes::%{_nid}%::type} to {_id}
+    set {nodes::%{_nid}%::anchor} to {_loc}
+
+    switch {_id}:
+        case 1:
+            pasteNode1({_loc}, {_nid})
+        case 2:
+            pasteNode2({_loc}, {_nid})
+        case 3:
+            pasteNode3({_loc}, {_nid})
+        case 4:
+            pasteNode4({_loc}, {_nid})
+
+on break:
+    set {_l} to location of event-block
+    set {_key} to locKey({_l})
+    if {node-lookup::%{_key}%} is set:
+        set {_nid} to {node-lookup::%{_key}%}
+        set {_type} to {nodes::%{_nid}%::type}
+        
+        cancel event
+        set {_temp} to random integer between 1 and 3
+        loop {_temp} times:
+            give getNodeDrop({_type}) to player
+        destroyNode({_nid})
+
+
+command /nodepaste <number>:
+    permission: admin.node
+    trigger:
+        set {_loc} to player's location
+        add 1 to x-coord of {_loc}
+        PasteNode({_loc}, arg-1)
+
+command /clearnode:
+    permission: admin.node
+    trigger:
+        if {nodes::*} is not set:
+            send "&8[<#00A36C>ɴᴏᴅᴇꜱ&8] &cᴛʜᴇʀᴇ ᴀʀᴇ ɴᴏ ɴᴏᴅᴇꜱ ᴛᴏ ᴄʟᴇᴀʀ." to player
+            stop
+
+        set {_ids::*} to {nodes::*}
+        loop {_ids::*}:
+            wait 1 tick
+            destroyNode(loop-value)
+
+        broadcast "&8[<#00A36C>ɴᴏᴅᴇꜱ&8] &7ᴀʟʟ ɴᴏᴅᴇꜱ ʜᴀᴠᴇ ʙᴇᴇɴ ᴄʟᴇᴀʀᴇᴅ ʙʏ ᴀᴅᴍɪɴɪꜱᴛʀᴀᴛᴏʀ."
+        
+on load:
+    clearAllNodes()

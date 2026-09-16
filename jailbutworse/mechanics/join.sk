@@ -1,0 +1,16 @@
+options:
+    firstJoinMSG: "&7[&a+&7] &e%player% &7has been sent to prison for touching grass."
+    joinMSG: "&7[&a+&7] &e%player% &7has been sent to prison for no reason."
+    quitMSG: "&7[&c-&7] &e%player% &7escaped the server."
+
+on join:
+    execute console command "new %player%"
+    if {JoinLeave::%player%::Joined} is not set:
+        set {JoinLeave::%player%::Joined} to true
+        set join message to {@firstJoinMSG}
+        
+    else:
+        set join message to {@joinMSG}
+on quit:
+    set quit message to {@quitMSG}
+

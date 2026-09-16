@@ -1,0 +1,15 @@
+on dispense:
+    cancel event
+    
+on inventory open:
+    if inventory type is furnace:
+        cancel event
+
+    if inventory type is dispenser:
+        cancel event
+
+    if inventory type is dropper:
+        cancel event
+
+on craft:
+    cancel event

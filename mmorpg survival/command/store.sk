@@ -1,0 +1,9 @@
+command /store:
+    trigger:
+        set {_store} to placeholder "rp_storer" from player
+        send formatted "<gold><link:https://%{_store}%>Click to visit store!" to player
+
+command /discord:
+    trigger:
+        set {_store} to placeholder "rp_discordr" from player
+        send formatted "<gold><link:https://%{_store}%>Click to join discord!" to player

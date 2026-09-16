@@ -1,0 +1,14 @@
+command /intercom <text>:
+    trigger:
+        if player does not have permission "warden":
+            send "<##FE7300>[SYSTEM] &cYou do not have permission to use the intercom." to player
+            stop
+        if {intercom::cooldown::%player%} is set:
+            send "<##FE7300>[SYSTEM] &cYou must wait before using the intercom again." to player
+            stop
+        set {intercom::cooldown::%player%} to true
+        loop all players:
+            send title "<##FE7300>[INTERCOM]" with subtitle "&7%arg-1%" to loop-player for 5 seconds
+        send "<##FE7300>[SYSTEM] &7Intercom message sent." to player
+        wait 10 seconds
+        delete {intercom::cooldown::%player%}

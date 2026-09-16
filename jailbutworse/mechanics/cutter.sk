@@ -1,0 +1,65 @@
+on right click on iron bars:
+    if player is holding shears:
+        cancel event
+        if {barcut::active::%player%} is true:
+            stop
+
+        set {barcut::active::%player%} to true
+        set {barcut::clicks::%player%} to 0
+        set {barcut::block::%player%} to location of clicked block
+
+        send "&7[&8Barcut&7] &eGet ready..." to player
+
+        loop all players:
+            if loop-player has permission "alert":
+                send "<##FE7300>[SYSTEM] &c%player% &eis attempting to cut an iron bar!" to loop-player
+                play sound "block.note_block.bass" at loop-player
+
+        wait 1 second
+
+        send "&7[&8Barcut&7] &a&lCLICK RAPIDLY!" to player
+        play sound "block.note_block.pling" at player
+        set {barcut::canclick::%player%} to true
+
+        wait 3 seconds
+
+        if {barcut::active::%player%} is not true:
+            stop
+
+        delete {barcut::canclick::%player%}
+
+        if {barcut::clicks::%player%} >= 10:
+            set {_loc} to {barcut::block::%player%}
+            set block at {_loc} to air
+            play sound "block.anvil.land" at player
+            delete {barcut::active::%player%}
+            delete {barcut::clicks::%player%}
+            delete {barcut::block::%player%}
+
+            add 1 to {barcut::shearuses::%player%}
+            if {barcut::shearuses::%player%} >= 2:
+                set player's tool to air
+                delete {barcut::shearuses::%player%}
+                send "&7[&8Barcut&7] &aBar cut! &cYour shears broke!" to player
+            else:
+                send "&7[&8Barcut&7] &aBar cut! &7(Shears: 1 use left)" to player
+
+            wait 15 seconds
+            set block at {_loc} to iron bars
+            play sound "block.anvil.land" at location {_loc}
+        else:
+            send "&7[&8Barcut&7] &cFailed! Not enough clicks (%{barcut::clicks::%player%}%/10)." to player
+            play sound "block.anvil.land" at player
+            delete {barcut::active::%player%}
+            delete {barcut::clicks::%player%}
+            delete {barcut::block::%player%}
+
+    else:
+        cancel event
+        send "<##FE7300>[SYSTEM] &cYou need a wire cutter to cut this!" to player
+
+on right click:
+    if {barcut::active::%player%} is true:
+        if {barcut::canclick::%player%} is true:
+            add 1 to {barcut::clicks::%player%}
+            play sound "entity.experience_orb.pickup" at player

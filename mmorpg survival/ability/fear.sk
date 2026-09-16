@@ -1,0 +1,41 @@
+on right click with golden axe:
+    name of player's held item is "&fExecutionor Axe"
+
+    set {_uuid} to uuid of player
+
+    if {executioner_cd::%{_uuid}%} is set:
+        set {_remaining} to difference between now and {executioner_cd::%{_uuid}%}
+        if {_remaining} < 1 minutes:
+            send action bar "&cFear is being gathered!" to player
+            stop
+
+    if {mana::%{_uuid}%} is not set:
+        set {mana::%{_uuid}%} to 0
+    if {mana::%{_uuid}%} < 30:
+        send action bar "&cNot enough mana." to player
+        stop
+
+    remove 30 from {mana::%{_uuid}%}
+    clampMana(player)
+    saveMana(player)
+
+    set {executioner_cd::%{_uuid}%} to now
+
+    send action bar "&fNearby entities are in a state of fear!" to player
+    play sound "entity.wither.shoot" with volume 1 and pitch 0.5 at player
+
+    loop entities in radius 10 around player:
+        if loop-entity is a living entity:
+            if loop-entity is not a player:
+                apply slowness 10 to loop-entity for 10 seconds
+                apply mining fatigue 10 to loop-entity for 10 seconds
+                apply weakness 10 to loop-entity for 10 seconds
+                apply blindness to loop-entity for 10 seconds
+
+    loop entities in radius 10 around player:
+        if loop-entity is a player:
+            if loop-entity is not player:
+                apply slowness 10 to loop-entity for 5 seconds
+                apply mining fatigue 10 to loop-entity for 5 seconds
+                apply jump boost -10 to loop-entity for 5 seconds
+                send action bar "&cYou are in state of fear!" to loop-entity

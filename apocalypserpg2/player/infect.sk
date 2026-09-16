@@ -1,0 +1,44 @@
+function infectPlayer(p: player):
+    if {_p} is not set:
+        stop
+
+    if boolean data tag "infect:infected" of {_p} is true:
+        stop
+
+    set {_helm} to text data tag "armor:id" of {_p}'s helmet
+    set {_chest} to text data tag "armor:id" of {_p}'s chestplate
+    set {_legs} to text data tag "armor:id" of {_p}'s leggings
+    set {_boots} to text data tag "armor:id" of {_p}'s boots
+
+    if {_helm} is "2":
+        if {_chest} is "2":
+            if {_legs} is "2":
+                if {_boots} is "2":
+                    stop
+
+    set boolean data tag "infect:infected" of {_p} to true
+    apply potion effect of unluck of tier 1 to {_p} for 20 minutes
+
+    send "&8[<##06400E>ɪɴꜰᴇᴄᴛɪᴏɴ&8] &cʏᴏᴜ ʜᴀᴠᴇ ʙᴇᴇɴ <##06400E>⚠ ɪɴꜰᴇᴄᴛᴇᴅ&c. ʏᴏᴜ ʜᴀᴠᴇ ᴛᴡᴇɴᴛʏ ᴍɪɴᴜᴛᴇꜱ ʙᴇꜰᴏʀᴇ ᴛʀᴀɴꜱꜰᴏʀᴍɪɴɢ ɪɴᴛᴏ ᴀ ᴢᴏᴍʙɪᴇ." to {_p}
+    send title "<##06400E>⚠ INFECTED" with subtitle "" to {_p} for 1 seconds with fade in 0.3 seconds and fade out 0.5 seconds
+
+    wait 20 minutes
+
+    if boolean data tag "infect:infected" of {_p} is true:
+        delete boolean data tag "infect:infected" of {_p}
+        kill {_p}
+        send "&8[<##06400E>ɪɴꜰᴇᴄᴛɪᴏɴ&8] &cʏᴏᴜ ʜᴀᴠᴇ ᴛᴜʀɴᴇᴅ ɪɴᴛᴏ ᴀ ᴢᴏᴍʙɪᴇ!" to {_p}
+
+function curePlayer(p: player):
+    if {_p} is not set:
+        stop
+    if boolean data tag "infect:infected" of {_p} is not true:
+        stop
+    delete boolean data tag "infect:infected" of {_p}
+    remove unluck from {_p}
+    send "&8[<##06400E>ɪɴꜰᴇᴄᴛɪᴏɴ&8] &bʏᴏᴜ ʜᴀᴠᴇ ʙᴇᴇɴ ᴄᴜʀᴇᴅ." to {_p}
+    
+command /infect <player>:
+    permission: admin
+    trigger:
+        infectPlayer(arg-1)

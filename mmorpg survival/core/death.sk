@@ -1,0 +1,2 @@
+on death of player:
+	set death message to ""

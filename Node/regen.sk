@@ -1,0 +1,56 @@
+options:
+    borderRadius: 100
+    borderClearance: 4
+    maxAttemptsPerNode: 40
+    worldName: "world"
+
+function spawnNodesOfType(id: number, amount: number, world: world):
+    set {_placed} to 0
+    set {_maxAttempts} to {_amount} * {@maxAttemptsPerNode}
+    set {_edge} to {@borderRadius} - {@borderClearance}
+
+    loop {_maxAttempts} times:
+        if {_placed} >= {_amount}:
+            stop loop
+
+        set {_x} to random integer between (0 - {_edge}) and {_edge}
+        set {_z} to random integer between (0 - {_edge}) and {_edge}
+        set {_loc} to location({_x}, -59, {_z}, {_world})
+
+        if canPasteNode({_loc}, {_id}) is true:
+            wait 1 tick
+            PasteNode({_loc}, {_id})
+            add 1 to {_placed}
+
+    send "&8[<#00A36C>ɴᴏᴅᴇꜱ&8]&7 node %{_id}%: &a%{_placed}%&7/&e%{_amount}%" to console
+
+function clearAllNodes():
+    if {nodes::*} is set:
+        set {_ids::*} to {nodes::*}
+        loop {_ids::*}:
+            wait 1 tick
+            destroyNode(loop-value)
+
+
+command /regennodes:
+    permission: admin.node
+    trigger:
+        clearAllNodes()
+
+        spawnNodesOfType(1, 30, world {@worldName})
+        spawnNodesOfType(2, 25, world {@worldName})
+        spawnNodesOfType(3, 15, world {@worldName})
+        spawnNodesOfType(4, 15, world {@worldName})
+
+        broadcast "&8[<#00A36C>ɴᴏᴅᴇꜱ&8] &7ᴀʟʟ ɴᴏᴅᴇꜱ ʜᴀᴠᴇ ʙᴇᴇɴ ᴍᴀɴᴜᴀʟʟʏ ʀᴇɢᴇɴᴇʀᴀᴛᴇᴅ ʙʏ ᴀᴅᴍɪɴɪꜱᴛʀᴀᴛᴏʀ."
+
+
+every 10 minutes:
+    clearAllNodes()
+
+    spawnNodesOfType(1, 30, world {@worldName})
+    spawnNodesOfType(2, 25, world {@worldName})
+    spawnNodesOfType(3, 15, world {@worldName})
+    spawnNodesOfType(4, 15, world {@worldName})
+
+    broadcast "&8[<#00A36C>ɴᴏᴅᴇꜱ&8] &7ᴀʟʟ ɴᴏᴅᴇꜱ ʜᴀᴠᴇ ʙᴇᴇɴ ᴀᴜᴛᴏᴍᴀᴛɪᴄᴀʟʟʏ ʀᴇɢᴇɴᴇʀᴀᴛᴇᴅ."

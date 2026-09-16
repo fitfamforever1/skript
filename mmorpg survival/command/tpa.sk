@@ -1,0 +1,188 @@
+# ── Helpers ──────────────────────────────────────────────────────────────────
+
+function tpaExpire(target: text, requester: text) :: boolean:
+    if {tpa::pending::%{_target}%::%{_requester}%::type} is not set:
+        return false
+    delete {tpa::pending::%{_target}%::%{_requester}%::type}
+    if {_requester} parsed as offline player is online:
+        send "&8[<##AA00FF>TPA&8] &7Your request to &b%{_target}% &7has expired." to {_requester} parsed as player
+    if {_target} parsed as offline player is online:
+        send "&8[<##AA00FF>TPA&8] &7Teleport request from &b%{_requester}% &7has expired." to {_target} parsed as player
+    return true
+
+function tpaDoTeleport(mover: player, dest: player, requester: text, acceptor: text, type: text):
+    set {tpa::frozen::%{_mover}%} to true
+    set {_loc} to location of {_mover}
+    loop 3 times:
+        wait 1 second
+        if {tpa::frozen::%{_mover}%} is not true:
+            send "&8[<##AA00FF>TPA&8] &cTeleport cancelled — you moved!" to {_mover}
+            stop
+        if location of {_mover} is not {_loc}:
+            delete {tpa::frozen::%{_mover}%}
+            send "&8[<##AA00FF>TPA&8] &cTeleport cancelled — you moved!" to {_mover}
+            stop
+        set {_remaining} to 3 - loop-number
+        if {_remaining} > 0:
+            send action bar "&8[<##AA00FF>TPA&8] &7Teleporting in &a%{_remaining}%&7..." to {_mover}
+    delete {tpa::frozen::%{_mover}%}
+    if {_mover} is online:
+        teleport {_mover} to {_dest}
+        if {_type} is "tpa":
+            send "&8[<##AA00FF>TPA&8] &7Request accepted — teleported to &b%{_acceptor}%&7." to {_mover}
+            send "&8[<##AA00FF>TPA&8] &b%{_requester}% &7has been teleported to you." to {_dest}
+        else if {_type} is "tpahere":
+            send "&8[<##AA00FF>TPA&8] &7Request accepted — teleported to &b%{_requester}%&7." to {_mover}
+            send "&8[<##AA00FF>TPA&8] &b%{_acceptor}% &7has teleported to you." to {_dest}
+
+# ── /tpa ─────────────────────────────────────────────────────────────────────
+
+command /tpa <text>:
+    prefix: minecraft
+    trigger:
+        set {_target} to arg-1
+        if {_target} is player's name:
+            send "&8[<##AA00FF>TPA&8] &cYou can't teleport to yourself!"
+            stop
+        if {_target} is not online:
+            send "&8[<##AA00FF>TPA&8] &b%{_target}% &7is not online."
+            stop
+        loadFriends(player's name)
+        loadFriends({_target})
+        if isFriend(player's name, {_target}) is false:
+            send "&8[<##AA00FF>TPA&8] &7You are not friends with &b%{_target}%&7."
+            stop
+        if {tpa::blocked::%{_target}%} is true:
+            send "&8[<##AA00FF>TPA&8] &b%{_target}% &7is not accepting teleport requests."
+            stop
+        if {tpa::pending::%{_target}%::%player's name%::type} is set:
+            send "&8[<##AA00FF>TPA&8] &7You already have a pending request to &b%{_target}%&7."
+            stop
+        set {tpa::pending::%{_target}%::%player's name%::type} to "tpa"
+        send "&8[<##AA00FF>TPA&8] &7Teleport request sent to &b%{_target}%&7."
+        send "&8[<##AA00FF>TPA&8] &b%player's name% &7wants to teleport to you. &7[&a/tpaaccept %player's name%&7] &7[&c/tpadeny %player's name%&7]" to {_target}
+        set {_sender} to player's name
+        wait 60 seconds
+        tpaExpire({_target}, {_sender})
+
+# ── /tpahere ──────────────────────────────────────────────────────────────────
+
+command /tpahere <text>:
+    prefix: minecraft
+    trigger:
+        set {_target} to arg-1
+        if {_target} is player's name:
+            send "&8[<##AA00FF>TPA&8] &cYou can't teleport yourself to yourself!"
+            stop
+        if {_target} is not online:
+            send "&8[<##AA00FF>TPA&8] &b%{_target}% &7is not online."
+            stop
+        loadFriends(player's name)
+        loadFriends({_target})
+        if isFriend(player's name, {_target}) is false:
+            send "&8[<##AA00FF>TPA&8] &7You are not friends with &b%{_target}%&7."
+            stop
+        if {tpa::blocked::%{_target}%} is true:
+            send "&8[<##AA00FF>TPA&8] &b%{_target}% &7is not accepting teleport requests."
+            stop
+        if {tpa::pending::%{_target}%::%player's name%::type} is set:
+            send "&8[<##AA00FF>TPA&8] &7You already have a pending request to &b%{_target}%&7."
+            stop
+        set {tpa::pending::%{_target}%::%player's name%::type} to "tpahere"
+        send "&8[<##AA00FF>TPA&8] &7Teleport-here request sent to &b%{_target}%&7."
+        send "&8[<##AA00FF>TPA&8] &b%player's name% &7wants you to teleport to them. &7[&a/tpaaccept %player's name%&7] &7[&c/tpadeny %player's name%&7]" to {_target}
+        set {_sender} to player's name
+        wait 60 seconds
+        tpaExpire({_target}, {_sender})
+
+# ── /tpaaccept ────────────────────────────────────────────────────────────────
+
+command /tpaaccept [<text>]:
+    prefix: minecraft
+    trigger:
+
+        # ── accept all ───────────────────────────────────────────────────────
+        if arg-1 is not set:
+            set {_found} to false
+            loop {tpa::pending::%player's name%::*}:
+                # loop-index gives the requester name (the * key)
+                set {_req} to loop-index
+                set {_type} to loop-value
+                set {_found} to true
+                delete {tpa::pending::%player's name%::%{_req}%::type}
+                if {_req} parsed as offline player is not online:
+                    send "&8[<##AA00FF>TPA&8] &b%{_req}% &7is no longer online. Skipping."
+                    continue
+                if {_type} is "tpa":
+                    tpaDoTeleport({_req} parsed as player, player, {_req}, player's name, "tpa")
+                else if {_type} is "tpahere":
+                    tpaDoTeleport(player, {_req} parsed as player, {_req}, player's name, "tpahere")
+            if {_found} is false:
+                send "&8[<##AA00FF>TPA&8] &7You have no pending teleport requests."
+            stop
+
+        # ── accept specific ──────────────────────────────────────────────────
+        set {_requester} to arg-1
+        set {_type} to {tpa::pending::%player's name%::%{_requester}%::type}
+        if {_type} is not set:
+            send "&8[<##AA00FF>TPA&8] &7No pending request from &b%{_requester}%&7."
+            stop
+        if {_requester} parsed as offline player is not online:
+            send "&8[<##AA00FF>TPA&8] &b%{_requester}% &7is no longer online."
+            delete {tpa::pending::%player's name%::%{_requester}%::type}
+            stop
+        delete {tpa::pending::%player's name%::%{_requester}%::type}
+        if {_type} is "tpa":
+            tpaDoTeleport({_requester} parsed as player, player, {_requester}, player's name, "tpa")
+        else if {_type} is "tpahere":
+            tpaDoTeleport(player, {_requester} parsed as player, {_requester}, player's name, "tpahere")
+
+# ── /tpadeny ──────────────────────────────────────────────────────────────────
+
+command /tpadeny [<text>]:
+    prefix: minecraft
+    trigger:
+
+        # ── deny all ─────────────────────────────────────────────────────────
+        if arg-1 is not set:
+            set {_found} to false
+            loop {tpa::pending::%player's name%::*}:
+                set {_req} to loop-index
+                set {_found} to true
+                delete {tpa::pending::%player's name%::%{_req}%::type}
+                send "&8[<##AA00FF>TPA&8] &7Denied request from &b%{_req}%&7."
+                if {_req} parsed as offline player is online:
+                    send "&8[<##AA00FF>TPA&8] &b%player's name% &7denied your teleport request." to {_req} parsed as player
+            if {_found} is false:
+                send "&8[<##AA00FF>TPA&8] &7You have no pending teleport requests."
+            stop
+
+        # ── deny specific ────────────────────────────────────────────────────
+        set {_requester} to arg-1
+        if {tpa::pending::%player's name%::%{_requester}%::type} is not set:
+            send "&8[<##AA00FF>TPA&8] &7No pending request from &b%{_requester}%&7."
+            stop
+        delete {tpa::pending::%player's name%::%{_requester}%::type}
+        send "&8[<##AA00FF>TPA&8] &7You denied the request from &b%{_requester}%&7."
+        if {_requester} parsed as offline player is online:
+            send "&8[<##AA00FF>TPA&8] &b%player's name% &7denied your teleport request." to {_requester} parsed as player
+
+# ── /tpaclose & /tpaopen ──────────────────────────────────────────────────────
+
+command /tpaclose:
+    prefix: minecraft
+    trigger:
+        if {tpa::blocked::%player's name%} is true:
+            send "&8[<##AA00FF>TPA&8] &7Your teleports are already &cclosed&7."
+            stop
+        set {tpa::blocked::%player's name%} to true
+        send "&8[<##AA00FF>TPA&8] &7You are no longer accepting teleport requests. Use &a/tpaopen &7to re-enable."
+
+command /tpaopen:
+    prefix: minecraft
+    trigger:
+        if {tpa::blocked::%player's name%} is false:
+            send "&8[<##AA00FF>TPA&8] &7Your teleports are already &aopen&7."
+            stop
+        delete {tpa::blocked::%player's name%}
+        send "&8[<##AA00FF>TPA&8] &7You are now accepting teleport requests."

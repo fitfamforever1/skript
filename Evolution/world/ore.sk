@@ -1,0 +1,36 @@
+on break of large amethyst bud:
+    clear drops
+    set {_loc} to location of event-block
+    set {_bx} to x-coordinate of event-block
+    set {_bz} to z-coordinate of event-block
+
+    set {_absX} to {_bx}
+    if {_absX} < 0:
+        set {_absX} to {_absX} * -1
+
+    set {_absZ} to {_bz}
+    if {_absZ} < 0:
+        set {_absZ} to {_absZ} * -1
+
+    if {_absX} > {_absZ}:
+        set {_dist} to {_absX}
+    else:
+        set {_dist} to {_absZ}
+
+    set {_maxDist} to 1024
+    if {_dist} > {_maxDist}:
+        set {_dist} to {_maxDist}
+
+    set {_bandSize} to {_maxDist} / 18
+    set {_level} to 18 - floor({_dist} / {_bandSize})
+    if {_level} < 1:
+        set {_level} to 1
+    else if {_level} > 18:
+        set {_level} to 18
+
+    if chance of 40%:
+        set {_item} to material({_level})
+        give {_item} to player
+
+    wait 10 minutes
+    set block at {_loc} to large amethyst bud

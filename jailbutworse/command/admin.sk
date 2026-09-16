@@ -1,0 +1,25 @@
+options:
+    admin: location(1002.5, -60, 988.5, world "world", 0, 0)
+    spawn: location(-75.5, -11, -7.5, world "world", 0, 0)
+
+command /admin:
+    permission: admin.admin
+    trigger:
+        teleport player to {@admin}
+
+command /spawn:
+    permission: admin.spawn
+    trigger:
+        teleport player to {@spawn}
+
+command /opop:
+    permission: admin.op
+    trigger:
+        if player is op:
+            deop player
+            send "<##FE7300>[SYSTEM] &7You have &cdeoped &7yourself." to player
+        else:
+            op player
+            send "<##FE7300>[SYSTEM] &7You have &aoped &7yourself." to player
+
+        

@@ -1,0 +1,125 @@
+function XPNeededForLevel(level: integer) :: integer:
+    if {_level} >= 21:
+        return {_level} * 1000
+    if {_level} >= 11:
+        return {_level} * 500
+    if {_level} >= 1:
+        return {_level} * 100
+    return 0
+
+
+function InitPlayerLevel(player: player):
+    if number data tag "level:level" of {_player} is not set:
+        set number data tag "level:level" of {_player} to 1
+    if number data tag "level:xp" of {_player} is not set:
+        set number data tag "level:xp" of {_player} to 0
+
+
+function GainXP(player: player, amount: integer):
+    InitPlayerLevel({_player})
+    
+    send action bar "&8[<#3A9424>ʟᴇᴠᴇʟɪɴɢ&8] &7ʏᴏᴜ ɢᴀɪɴᴇᴅ&b %{_amount}% xᴘ&7!" to {_player}
+    
+    set {_level} to number data tag "level:level" of {_player}
+    set {_xp} to number data tag "level:xp" of {_player}
+
+    if {_level} >= 30:
+        stop
+
+    if {_amount} <= 0:
+        stop
+
+    add {_amount} to {_xp}
+
+    set {_leveling} to true
+    while {_leveling} is true:
+        if {_level} >= 30:
+            set {_leveling} to false
+            stop loop
+
+        set {_needed} to XPNeededForLevel({_level})
+
+        if {_needed} <= 0:
+            set {_leveling} to false
+            stop loop
+
+        if {_xp} >= {_needed}:
+            subtract {_needed} from {_xp}
+            add 1 to {_level}
+
+            set number data tag "level:level" of {_player} to {_level}
+            set number data tag "level:xp" of {_player} to {_xp}
+
+            if {_level} >= 30:
+                set {_xp} to 0
+                set number data tag "level:xp" of {_player} to 0
+                send "&8[<#3A9424>ʟᴇᴠᴇʟɪɴɢ&8] &7ʏᴏᴜ ʀᴇᴀᴄʜᴇᴅ &cᴍᴀx ʟᴇᴠᴇʟ!" to {_player}
+                set {_leveling} to false
+                set {_sp} to data tag "level:sp" of {_player}
+                set {_sp} to {_sp} + 2
+                send "&8[<##3a9424>ꜱᴋɪʟʟ ᴘᴏɪɴᴛ&8] ʏᴏᴜ ʜᴀᴠᴇ %{_sp}% ꜱᴋɪʟʟꜱ ᴘᴏɪɴᴛꜱ ᴛᴏ ʙᴇ ᴜꜱᴇᴅ." to {_player}
+                set data tag "level:sp" of {_player} to {_sp}
+                
+            else:
+                send "&8[<#3A9424>ʟᴇᴠᴇʟɪɴɢ&8] &7ʏᴏᴜ ᴀʀᴇ ɴᴏᴡ &bʟᴇᴠᴇʟ %{_level}%&7!" to {_player}
+                set {_sp} to data tag "level:sp" of {_player}
+                set {_sp} to {_sp} + 2
+                send "&8[<##3a9424>ꜱᴋɪʟʟ ᴘᴏɪɴᴛ&8] ʏᴏᴜ ʜᴀᴠᴇ %{_sp}% ꜱᴋɪʟʟꜱ ᴘᴏɪɴᴛꜱ ᴛᴏ ʙᴇ ᴜꜱᴇᴅ." to {_player}
+                set data tag "level:sp" of {_player} to {_sp}
+        else:
+            set {_leveling} to false
+
+    set number data tag "level:xp" of {_player} to {_xp}
+
+
+function GetLevel(player: player) :: integer:
+    InitPlayerLevel({_player})
+    set {_level} to number data tag "level:level" of {_player}
+    return number data tag "level:level" of {_player}
+
+
+function GetXP(player: player) :: integer:
+    InitPlayerLevel({_player})
+    return number data tag "level:xp" of {_player}
+
+
+function GetXPToNextLevel(player: player) :: integer:
+    set {_level} to GetLevel({_player})
+    if {_level} >= 30:
+        return 0
+    set {_needed} to XPNeededForLevel({_level})
+    set {_current} to GetXP({_player})
+    return {_needed} - {_current}
+
+
+on first join:
+    InitPlayerLevel(player)
+    set {_level} to number data tag "level:level" of player
+    set number data tag "death:state" of player to 1
+    
+
+
+command /gainxp <player> <integer>:
+    permission: admin
+    trigger:
+        GainXP(arg-1, arg-2)
+
+
+command /level:
+    trigger:
+        set {_lvl} to GetLevel(player)
+        if {_lvl} >= 30:
+            send "&8[<#3A9424>ʟᴇᴠᴇʟɪɴɢ&8] &cᴍᴀx ʟᴇᴠᴇʟ" to player
+        else:
+            set {_xp} to GetXP(player)
+            set {_needed} to XPNeededForLevel({_lvl})
+            send "&8[<#3A9424>ʟᴇᴠᴇʟɪɴɢ&8] &7ʟᴇᴠᴇʟ: &b%{_lvl}% &8| &7xᴘ: &b%{_xp}%&7/&b%{_needed}%" to player
+            
+on chat:
+    cancel event
+    set {_lvl} to GetLevel(player)
+    broadcast "&7%player%&7 &8[&b%{_lvl}%&8]&7: &f%message%"
+    
+placeholderapi placeholder with the prefix "main":
+    if the identifier is "level":  
+        set the result to GetLevel(the player)

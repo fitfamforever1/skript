@@ -1,0 +1,7 @@
+on enter of region "prison":
+    apply potion effect of unluck to player for 30 seconds
+    send action bar "&8[&4ZONE&8] &eYou have entered infected zone!" to player
+    
+on exit of region "prison":
+    send action bar "&8[&4ZONE&8] &eYou have exited infected zone!" to player
+    apply potion effect of unluck to player for 5 minutes

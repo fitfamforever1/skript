@@ -1,0 +1,177 @@
+# Credit = https://builtbybit.com/resources/duels-system-skript.75562/ | modified skript
+
+on load:
+    delete {duel.requests::*}
+    delete {duel.inarena::*}
+    delete {duel.arenas::*}
+    delete {duel.queue::*}
+    delete {duel.respawn::*}
+
+
+command /duelsetrespawn:
+    trigger:
+        set {duel.respawn::x} to player's x-coordinate
+        set {duel.respawn::y} to player's y-coordinate
+        set {duel.respawn::z} to player's z-coordinate
+        set {duel.respawn::world} to player's world
+        send "<#8FDE79>ᴅᴜᴇʟ ʀᴇꜱᴘᴀᴡɴ ʟᴏᴄᴀᴛɪᴏɴ ꜱᴇᴛ!" to player
+
+
+command /duel <player>:
+    trigger:
+        if arg is not set:
+            send action bar  "<#FF0000>Player not found" to player
+            play sound "block.note_block.cow_bell" to player
+            stop
+        if arg is name of player:  
+            send action bar  "<#FF0000>You can not duel yourself" to player
+            play sound "block.note_block.cow_bell" to player
+            stop
+        if {dueloff.%arg-1%} is true:
+            send action bar "<#FF0000>This player disabled duel requests"
+        else:
+            if {duel.requests::%arg%} is set:
+                send action bar  "<#FF0000>This player already has a pending duel request" to player
+                play sound "block.note_block.cow_bell" to player
+                stop
+            if {duel.inarena::*} contains arg:
+                send action bar  "<#FF0000>This player is already in a duel" to player
+                play sound "block.note_block.cow_bell" to player
+                stop
+            if {duel.inarena::*} contains player:
+                send action bar  "<#FF0000>You are already in a duel" to player
+                play sound "block.note_block.cow_bell" to player
+                stop
+            set {duel.requests::%arg%} to player
+            send action bar "&7Duel request sent to <#00FF9B>%arg%" to player
+            play sound "entity.experience_orb.pickup" to player
+            play sound "block.note_block.bit" to player
+            send "<#00FF9B>%player% &7has sent you a duel request" to arg
+            send "&7Type <#00FF9B>/duelaccept &7to fight!" to arg
+
+command /duelaccept:
+    trigger:
+        if {duel.requests::%player%} is set:
+            set {_challenger} to {duel.requests::%player%}
+            delete {duel.requests::%player%}
+
+            if {_challenger} is in {duel.inarena::*}:
+                send action bar  "<#FF0000>One of you is already in a duel" to player
+                stop
+            if player is in {duel.inarena::*}:
+                send action bar "<#FF0000>One of you is already in a duel" to player
+                stop
+
+            set {_arena} to 0
+            loop 5 times:
+                set {_i} to loop-number
+                if {duel.arenas::%{_i}%} is not set:
+                    set {_arena} to {_i}
+                    stop loop
+
+            if {_arena} is 0:
+                add player to {duel.queue::*}
+                add {_challenger} to {duel.queue::*}
+                send "<#00FF1F>All arenas are full. You have been added to the queue" to player
+                send "<#00FF1F>All arenas are full. You have been added to the queue" to {_challenger}
+                stop
+
+            set {duel.arenas::%{_arena}%} to true
+            set {_world} to "arena%{_arena}%"
+
+            if {_arena} is 1:
+                set {_spawn1} to location at 116.5, 202, -459.5 in world "pvp"
+                set {_spawn2} to location at 116.5, 202, -521.5 in world "pvp"
+            if {_arena} is 2:
+                set {_spawn1} to location at 367.5, 217, -493.5 in world "pvp"
+                set {_spawn2} to location at 367.5, 217, -431.5 in world "pvp"
+            if {_arena} is 3:
+                set {_spawn1} to location at 638.5, 258, -433.5 in world "pvp"
+                set {_spawn2} to location at 638.5, 258, -371.5 in world "pvp"
+            if {_arena} is 4:
+                set {_spawn1} to location at 640.5, 250, -124.5 in world "pvp"
+                set {_spawn2} to location at 640.5, 250, -62.5 in world "pvp"
+            if {_arena} is 5:
+                set {_spawn1} to location at 643.5, 237, 157.5 in world "pvp"
+                set {_spawn2} to location at 643.5, 237, 219.5 in world "pvp"
+
+            teleport {_challenger} to {_spawn1}
+            teleport player to {_spawn2}
+
+            add {_challenger} to {duel.inarena::*}
+            add player to {duel.inarena::*}
+
+            set {duel.fighting::%player%} to {_challenger}
+            set {duel.fighting::%{_challenger}%} to player
+
+            set {duel.arenaof::%player%} to {_arena}
+            set {duel.arenaof::%{_challenger}%} to {_arena}
+            
+            broadcast " "
+            broadcast "<#00FF9B>⚔ <#00FF9B>%player% &7vs <#00FF9B>%{_challenger}% <#00FF9B>– Duel started in arena %{_arena}%"
+            broadcast " "
+            execute console command "killall all arena%{_arena}%"
+            execute console command "saveregion load arena%{_arena}%"
+            execute console command "effect give %{_challenger}% minecraft:glowing 15"
+            execute console command "effect give %player% minecraft:glowing 15"
+        else:
+            send "<#FF0000>You have no pending duel requests" to player
+            
+            
+         
+command /duelcancel:
+    trigger:
+        delete {duel.requests::%player%}
+        send action bar "<#FF0000>All current duel requests cancelled"
+        play sound "block.note_block.cow_bell" to player
+
+
+on death of player:
+    if {duel.inarena::*} contains victim:
+        if world of victim is "pvp":
+            set {_loser} to victim
+            set {_winner} to {duel.fighting::%{_loser}%}
+            set {_arena} to {duel.arenaof::%{_loser}%}
+
+            if {_winner} is set:
+                remove {_loser} from {duel.inarena::*}
+                delete {duel.fighting::%{_loser}%}
+                delete {duel.arenaof::%{_loser}%}
+                send " " to {_winner}
+                send " " to {_loser}
+                send "<#00FF1F>%{_winner}% &7won the duel in arena %{_arena}%" to {_winner}
+                send "<#00FF1F>%{_winner}% &7won the duel in arena %{_arena}%" to {_loser}
+                send " " to {_winner}
+                send " " to {_loser}
+                send title "<#00FF9B>&lVICTORY" to {_winner}
+                send subtitle "&fWon against %{_loser}%" to {_winner}
+
+                remove {_winner} from {duel.inarena::*}
+                delete {duel.fighting::%{_winner}%}
+                delete {duel.arenaof::%{_winner}%}
+
+                delete {duel.arenas::%{_arena}%}
+
+                set {_time} to 30
+                while {_time} > 0:
+                    if {_winner} is not a player:
+                        stop
+                    if world of {_winner} is not "arena%{_arena}%":
+                        stop
+                    send action bar "&7Time to pick up items: <#00FF9B>%{_time}%s" to {_winner}
+                    wait 1 second
+                    subtract 1 from {_time}
+
+                if world of {_winner} is "arena%{_arena}%":
+                    teleport {_winner} to location(27, 84, -9, world("Spawn"))
+
+
+on quit:
+    if {duel.inarena::*} contains player:
+        if world of player is "pvp":
+            set player's health to 0
+        
+on command:
+    if player is in {duel.inarena::*}:
+        if world of player is "pvp":
+            cancel event

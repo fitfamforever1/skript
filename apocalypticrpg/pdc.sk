@@ -1,0 +1,50 @@
+command /pdc [<text>] [<text>] [<text>]:
+    permission: pdc.admin
+    permission message: &8[&cPDC&8] &cNo permission.
+    usage: &8[&ePDC&8] &7Usage: /pdc <set|delete|list> [key] [value]
+    trigger:
+        set {_item} to player's held item
+        if {_item} is air:
+            send "&8[&ePDC&8] &cYou must hold an item."
+            stop
+
+        # --- LIST ---
+        if arg-1 is "list":
+            send "&8[&ePDC&8] &7Listing PDC requires /data get entity @s SelectedItem in-game."
+            send "&8[&ePDC&8] &eTo view tags, use: &f/data get entity @s SelectedItem"
+            stop
+
+        # --- SET ---
+        if arg-1 is "set":
+            if arg-2 is not set:
+                send "&8[&ePDC&8] &cUsage: /pdc set <key> <value>"
+                stop
+            if arg-3 is not set:
+                send "&8[&ePDC&8] &cUsage: /pdc set <key> <value>"
+                stop
+            set {_key} to arg-2
+            set {_val} to arg-3
+            set number data tag {_key} of {_item} to {_val}
+            set player's held item to {_item}
+            send "&8[&ePDC&8] &aSet &f%{_key}% &a= &f%{_val}%&a on held item."
+            stop
+
+        # --- DELETE ---
+        if arg-1 is "delete":
+            if arg-2 is not set:
+                send "&8[&ePDC&8] &cUsage: /pdc delete <key>"
+                stop
+            set {_key} to arg-2
+            if number data tag {_key} of {_item} is not set:
+                send "&8[&ePDC&8] &cTag &f%{_key}%&c not found on held item."
+                stop
+            delete number data tag {_key} of {_item}
+            set player's held item to {_item}
+            send "&8[&ePDC&8] &aDeleted tag &f%{_key}%&a from held item."
+            stop
+
+        # --- HELP ---
+        send "&8[&ePDC&8] &7Commands:"
+        send "&8 &f/pdc set <key> <value> &7- Set a string tag"
+        send "&8 &f/pdc delete <key> &7- Remove a tag"
+        send "&8 &f/pdc list &7- View tags (via /data)"

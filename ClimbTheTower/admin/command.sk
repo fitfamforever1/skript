@@ -1,0 +1,110 @@
+function SmallCaps(text: text) :: text:
+    set {_result} to ""
+    set {_chars::*} to {_text} split at ""
+    set {_map::a} to "ᴀ"
+    set {_map::b} to "ʙ"
+    set {_map::c} to "ᴄ"
+    set {_map::d} to "ᴅ"
+    set {_map::e} to "ᴇ"
+    set {_map::f} to "ꜰ"
+    set {_map::g} to "ɢ"
+    set {_map::h} to "ʜ"
+    set {_map::i} to "ɪ"
+    set {_map::j} to "ᴊ"
+    set {_map::k} to "ᴋ"
+    set {_map::l} to "ʟ"
+    set {_map::m} to "ᴍ"
+    set {_map::n} to "ɴ"
+    set {_map::o} to "ᴏ"
+    set {_map::p} to "ᴘ"
+    set {_map::q} to "q"
+    set {_map::r} to "ʀ"
+    set {_map::s} to "ꜱ"
+    set {_map::t} to "ᴛ"
+    set {_map::u} to "ᴜ"
+    set {_map::v} to "ᴠ"
+    set {_map::w} to "ᴡ"
+    set {_map::x} to "x"
+    set {_map::y} to "ʏ"
+    set {_map::z} to "ᴢ"
+    loop {_chars::*}:
+        if loop-value is "&":
+            set {_skipNext} to true
+            set {_result} to "%{_result}%&"
+        else if {_skipNext} is true:
+            set {_result} to "%{_result}%%loop-value%"
+            set {_skipNext} to false
+        else:
+            set {_char} to loop-value in lowercase
+            if {_map::%{_char}%} is set:
+                set {_result} to "%{_result}%%{_map::%{_char}%}%"
+            else:
+                set {_result} to "%{_result}%%loop-value%"
+    return {_result}
+
+command /admin:
+    permission: admin.area
+    trigger:
+        teleport player to location(-493.5, 1, -493.5,"world",180,0)
+        
+command /gmc:
+    permission: admin.gamemode
+    trigger:
+        set player's gamemode to creative
+        
+command /gmsp:
+    permission: admin.gamemode
+    trigger:
+        set player's gamemode to spectator
+        
+command /gms:
+    permission: admin.gamemode
+    trigger:
+        set player's gamemode to survival
+        
+command /gma:
+    permission: admin.gamemode
+    trigger:
+        set player's gamemode to adventure
+        
+command /bcast <text>:
+    permission: admin
+    trigger:
+        set {_ann} to SmallCaps(arg-1)
+        broadcast "&8[&cᴀɴɴᴏᴜɴᴄᴇᴍᴇɴᴛ&8] &f%{_ann}%"
+        send title "&c&lᴀɴɴᴏᴜɴᴄᴇᴍᴇɴᴛ" with subtitle "&f%{_ann}%" to all players for 3 seconds with fade in 5 ticks and fade out 5 ticks
+        loop all players:
+            play sound "sound:sound.ui.error" with volume 1 and pitch 1 to loop-player
+
+command /clearchat:
+    permission: warn.chat
+    trigger:
+        loop all players:
+            loop 150 times:
+                send "&r" to loop-player-1
+        broadcast "&8[&4ꜱʏꜱᴛᴇᴍ&8] &fᴄʜᴀᴛ ᴡᴀꜱ ᴄʟᴇᴀʀᴇᴅ ʙʏ &e%player%&f."
+
+variables:
+    {chat.locked} = false
+
+command /lockchat:
+    permission: warn.chat
+    trigger:
+        if {chat.locked} is true:
+            set {chat.locked} to false
+            broadcast "&8[&4ꜱʏꜱᴛᴇᴍ&8] &fᴄʜᴀᴛ ʜᴀꜱ ʙᴇᴇɴ &aᴜɴʟᴏᴄᴋᴇᴅ&f ʙʏ &e%player%&f."
+        else:
+            set {chat.locked} to true
+            broadcast "&8[&4ꜱʏꜱᴛᴇᴍ&8] &fᴄʜᴀᴛ ʜᴀꜱ ʙᴇᴇɴ &cʟᴏᴄᴋᴇᴅ&f ʙʏ &e%player%&f."
+
+on chat:
+    if {chat.locked} is true:
+        if player doesn't have permission "warn.chat":
+            cancel event
+            send "&8[&4ꜱʏꜱᴛᴇᴍ&8] &cᴄʜᴀᴛ ɪꜱ ᴄᴜʀʀᴇɴᴛʟʏ ʟᴏᴄᴋᴇᴅ. ᴘʟᴇᴀꜱᴇ ᴡᴀɪᴛ." to player
+            play sound "sound:sound.ui.disable" with volume 1 and pitch 1 to player
+            
+command /flyspeed [<number>]:
+    permission: admin
+    trigger:
+        set the player's fly speed to arg-1 * 0.1

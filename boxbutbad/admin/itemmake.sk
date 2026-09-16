@@ -1,0 +1,426 @@
+function getRarityLine(rarity: text) :: text:
+    if {_rarity} is "special":
+        return "&cꜱᴘᴇᴄɪᴀʟ"
+    if {_rarity} is "divine":
+        return "&bᴅɪᴠɪɴᴇ"
+    if {_rarity} is "mythic":
+        return "&dᴍʏᴛʜɪᴄᴀʟ"
+    if {_rarity} is "legendary":
+        return "&6ʟᴇɢᴇɴᴅᴀʀʏ"
+    if {_rarity} is "epic":
+        return "&5ᴇᴘɪᴄ"
+    if {_rarity} is "rare":
+        return "&9ʀᴀʀᴇ"
+    if {_rarity} is "uncommon":
+        return "&aᴜɴᴄᴏᴍᴍᴏɴ"
+    if {_rarity} is "common":
+        return "&fᴄᴏᴍᴍᴏɴ"
+    return ""
+
+function SmallCaps(text: text) :: text:
+    set {_result} to ""
+    set {_chars::*} to {_text} split at ""
+    set {_map::a} to "ᴀ"
+    set {_map::b} to "ʙ"
+    set {_map::c} to "ᴄ"
+    set {_map::d} to "ᴅ"
+    set {_map::e} to "ᴇ"
+    set {_map::f} to "ꜰ"
+    set {_map::g} to "ɢ"
+    set {_map::h} to "ʜ"
+    set {_map::i} to "ɪ"
+    set {_map::j} to "ᴊ"
+    set {_map::k} to "ᴋ"
+    set {_map::l} to "ʟ"
+    set {_map::m} to "ᴍ"
+    set {_map::n} to "ɴ"
+    set {_map::o} to "ᴏ"
+    set {_map::p} to "ᴘ"
+    set {_map::q} to "q"
+    set {_map::r} to "ʀ"
+    set {_map::s} to "ꜱ"
+    set {_map::t} to "ᴛ"
+    set {_map::u} to "ᴜ"
+    set {_map::v} to "ᴠ"
+    set {_map::w} to "ᴡ"
+    set {_map::x} to "x"
+    set {_map::y} to "ʏ"
+    set {_map::z} to "ᴢ"
+    loop {_chars::*}:
+        if loop-value is "&":
+            set {_skipNext} to true
+            set {_result} to "%{_result}%&"
+        else if {_skipNext} is true:
+            set {_result} to "%{_result}%%loop-value%"
+            set {_skipNext} to false
+        else:
+            set {_char} to loop-value in lowercase
+            if {_map::%{_char}%} is set:
+                set {_result} to "%{_result}%%{_map::%{_char}%}%"
+            else:
+                set {_result} to "%{_result}%%loop-value%"
+    return {_result}
+
+# ---------- SWORD FORMULAS ----------
+function getSwordDamage(tier: number) :: number:
+    return 4 + ({_tier} - 1) * 2
+
+function getSwordCritChance(tier: number) :: number:
+    return round(4 + ({_tier} - 1) * 1.5)
+
+function getSwordCritDamage(tier: number) :: number:
+    return 150 + ({_tier} - 1) * 6
+
+# ---------- AXE FORMULAS ----------
+function getAxeDamage(tier: number) :: number:
+    return 6 + ({_tier} - 1) * 3
+
+function getAxeCritChance(tier: number) :: number:
+    return round(2 + ({_tier} - 1) * 1)
+
+function getAxeCritDamage(tier: number) :: number:
+    return 140 + ({_tier} - 1) * 5
+
+# ---------- AXE FORMULAS ----------
+function getAxeEfficiency(tier: number) :: number:
+    return {_tier}
+
+function getAxeFortune(tier: number) :: number:
+    return round(2 + ({_tier} - 1) * 1.25)
+
+function getAxeToughness(tier: number) :: number:
+    return {_tier}
+
+# ---------- PICKAXE FORMULAS ----------
+function getPickaxeEfficiency(tier: number) :: number:
+    return {_tier}
+
+function getPickaxeFortune(tier: number) :: number:
+    return round(2 + ({_tier} - 1) * 1.5)
+
+function getPickaxeToughness(tier: number) :: number:
+    return {_tier}
+
+# ---------- ARMOR FORMULAS ----------
+function getArmorDefense(tier: number) :: number:
+    return 5 + ({_tier} - 1) * 3
+
+function getArmorTrueDefense(tier: number) :: number:
+    return round(({_tier} - 1) * 0.5)
+
+
+command /modifypickaxe [<text>] [<number>]:
+    permission: admin.create
+    trigger:
+        if arg-1 is not set:
+            send "&cUsage: /modifypickaxe <rarity> <tier 1-9>"
+            stop
+
+        set {_rarity} to arg-1
+        set {_tier} to arg-2
+        set {_rarityLine} to getRarityLine({_rarity})
+        set {_eff} to getPickaxeEfficiency({_tier})
+        set {_fortune} to getPickaxeFortune({_tier})
+        set {_toughness} to getPickaxeToughness({_tier})
+
+        set {_item} to player's held item
+        set {_item} to unbreakable tool
+        set item flags of {_item} to all item flags
+        force {_item} to stop glinting
+
+        set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
+        set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &eᴛᴏᴏʟ"
+        set line 3 of lore of {_item} to "&8┃ &7ʀᴀʀɪᴛʏ &8» %{_rarityLine}%"
+        set line 4 of lore of {_item} to ""
+        set line 5 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
+        set line 6 of lore of {_item} to "&8┃ &7ᴇꜰꜰɪᴄɪᴇɴᴄʏ &8» &a+%{_eff}%"
+        set line 7 of lore of {_item} to "&8┃ &7ᴛᴏᴜɢʜɴᴇꜱꜱ &8» &2+%{_toughness}%"
+        set line 8 of lore of {_item} to "&8┃ &7ꜰᴏʀᴛᴜɴᴇ &8» &6+%{_fortune}%"
+
+        enchant {_item} with efficiency
+        set level of efficiency of {_item} to {_eff}
+        set data tag "itemstat:fortune" of {_item} to {_fortune}
+        set data tag "itemstat:toughness" of {_item} to {_toughness}
+
+        set player's held item to {_item}
+
+        send "&aPickaxe modified &7(&6Tier %{_tier}%&7) with &eEfficiency %{_eff}%&a, &bFortune %{_fortune}%&a, &2Toughness %{_toughness}%&a!"
+
+
+command /modifyaxe [<text>] [<number>]:
+    permission: admin.create
+    trigger:
+        if arg-1 is not set:
+            send "&cUsage: /modifyaxe <rarity> <tier 1-9>"
+            stop
+
+        set {_rarity} to arg-1
+        set {_tier} to arg-2
+        set {_rarityLine} to getRarityLine({_rarity})
+        set {_eff} to getAxeEfficiency({_tier})
+        set {_fortune} to getAxeFortune({_tier})
+        set {_toughness} to getAxeToughness({_tier})
+        set {_damage} to getAxeDamage({_tier})
+        set {_critChance} to getAxeCritChance({_tier})
+        set {_critDamage} to getAxeCritDamage({_tier})
+
+        set {_item} to player's tool
+        set {_item} to unbreakable tool
+        set item flags of {_item} to all item flags
+        force {_item} to stop glinting
+
+        set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
+        set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &eᴡᴇᴀᴘᴏɴ"
+        set line 3 of lore of {_item} to "&8┃ &7ʀᴀʀɪᴛʏ &8» %{_rarityLine}%"
+        set line 4 of lore of {_item} to ""
+        set line 5 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
+        set line 6 of lore of {_item} to "&8┃ &7ᴅᴀᴍᴀɢᴇ &8» &c+%{_damage}%"
+        set line 7 of lore of {_item} to "&8┃ &7ᴄʀɪᴛ ᴄʜᴀɴᴄᴇ &8» &9+%{_critChance}%%%"
+        set line 8 of lore of {_item} to "&8┃ &7ᴄʀɪᴛ ᴅᴀᴍᴀɢᴇ &8» &b+%{_critDamage}%%%"
+        set line 9 of lore of {_item} to ""
+        set line 10 of lore of {_item} to "&8┃ &7ᴇꜰꜰɪᴄɪᴇɴᴄʏ &8» &a+%{_eff}%"
+        set line 11 of lore of {_item} to "&8┃ &7ᴛᴏᴜɢʜɴᴇꜱꜱ &8» &2+%{_toughness}%"
+        set line 12 of lore of {_item} to "&8┃ &7ꜰᴏʀᴛᴜɴᴇ &8» &6+%{_fortune}%"
+
+        enchant {_item} with efficiency
+        set level of efficiency of {_item} to {_eff}
+
+        set data tag "itemstat:damage" of {_item} to {_damage}
+        set data tag "itemstat:critchance" of {_item} to {_critChance}
+        set data tag "itemstat:critdamage" of {_item} to {_critDamage}
+        set data tag "itemstat:fortune" of {_item} to {_fortune}
+        set data tag "itemstat:toughness" of {_item} to {_toughness}
+
+        set player's tool to {_item}
+        force {_item} to stop glinting
+
+        send "&aAxe modified &7(&6Tier %{_tier}%&7) with &cDamage %{_damage}%&a, &eEfficiency %{_eff}%&a, &6Fortune %{_fortune}%&a, &2Toughness %{_toughness}%&a, &9Crit Chance %{_critChance}%%%&a, &bCrit Damage %{_critDamage}%%%&a!"
+
+
+command /modifysword [<text>] [<number>]:
+    permission: admin.create
+    trigger:
+        if arg-1 is not set:
+            send "&cUsage: /modifysword <rarity> <tier 1-9>"
+            stop
+
+        set {_rarity} to arg-1
+        set {_tier} to arg-2
+        set {_rarityLine} to getRarityLine({_rarity})
+        set {_damage} to getSwordDamage({_tier})
+        set {_critChance} to getSwordCritChance({_tier})
+        set {_critDamage} to getSwordCritDamage({_tier})
+
+        set {_item} to player's tool
+        set {_item} to unbreakable tool
+        set item flags of {_item} to all item flags
+
+        set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
+        set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &eᴡᴇᴀᴘᴏɴ"
+        set line 3 of lore of {_item} to "&8┃ &7ʀᴀʀɪᴛʏ &8» %{_rarityLine}%"
+        set line 4 of lore of {_item} to ""
+        set line 5 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
+        set line 6 of lore of {_item} to "&8┃ &7ᴅᴀᴍᴀɢᴇ &8» &c+%{_damage}%"
+        set line 7 of lore of {_item} to "&8┃ &7ᴄʀɪᴛ ᴄʜᴀɴᴄᴇ &8» &9+%{_critChance}%%%"
+        set line 8 of lore of {_item} to "&8┃ &7ᴄʀɪᴛ ᴅᴀᴍᴀɢᴇ &8» &b+%{_critDamage}%%%"
+
+        set data tag "itemstat:damage" of {_item} to {_damage}
+        set data tag "itemstat:critchance" of {_item} to {_critChance}
+        set data tag "itemstat:critdamage" of {_item} to {_critDamage}
+
+        set player's tool to {_item}
+
+        send "&aSword modified &7(&6Tier %{_tier}%&7) with &cDamage %{_damage}%&a, &eCrit Chance %{_critChance}%%%&a, &6Crit Damage %{_critDamage}%%%&a!"
+
+
+command /modifyarmor [<text>] [<number>]:
+    permission: admin.create
+    trigger:
+        if arg-1 is not set:
+            send "&cUsage: /modifyarmor <rarity> <tier 1-9>"
+            stop
+
+        set {_rarity} to arg-1
+        set {_tier} to arg-2
+        set {_rarityLine} to getRarityLine({_rarity})
+        set {_armor} to getArmorDefense({_tier})
+        set {_resistance} to getArmorTrueDefense({_tier})
+
+        set {_item} to player's tool
+        set {_item} to unbreakable tool
+        set item flags of {_item} to all item flags
+
+        set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
+        set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &eᴀʀᴍᴏʀ"
+        set line 3 of lore of {_item} to "&8┃ &7ʀᴀʀɪᴛʏ &8» %{_rarityLine}%"
+        set line 4 of lore of {_item} to ""
+        set line 5 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
+        set line 6 of lore of {_item} to "&8┃ &7ᴅᴇꜰᴇɴꜱᴇ &8» &a+%{_armor}%"
+
+        if {_resistance} > 0:
+            set line 7 of lore of {_item} to "&8┃ &7ᴛʀᴜᴇ ᴅᴇꜰᴇɴꜱᴇ &8» &f+%{_resistance}%"
+
+        set data tag "itemstat:defense" of {_item} to {_armor}
+        set data tag "itemstat:resistance" of {_item} to {_resistance}
+
+        set player's tool to {_item}
+
+        send "&aArmor modified &7(&6Tier %{_tier}%&7): &e%{_rarity}% &7| &a+%{_armor}% defense &7| &f+%{_resistance}% true defense"
+
+command /modifyfood [<text>] [<number>] [<number>]:
+    permission: admin
+
+    trigger:
+        if arg-1 is not set:
+            send "&cUsage: /modifyarmor <rarity> <hunger>"
+            stop
+        set {_rarity} to arg-1
+        set {_hun} to arg-2
+        set {_sat} to arg-3
+        set {_item} to player's tool
+
+        set {_rarityLine} to getRarityLine({_rarity})
+        
+        set {_item} to unbreakable tool
+        set item flags of {_item} to all item flags
+        
+        set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
+        set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &eꜰᴏᴏᴅ"
+        set line 3 of lore of {_item} to "&8┃ &7ʀᴀʀɪᴛʏ &8» %{_rarityLine}%"
+        set line 4 of lore of {_item} to ""
+        set line 5 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
+        set line 6 of lore of {_item} to "&8┃ &7ʜᴜɴɢᴇʀ &8» <##C19A6B>+%{_hun}%"
+        set line 7 of lore of {_item} to "&8┃ &7ꜱᴀᴛᴜʀᴀᴛɪᴏɴ &8» &6+%{_sat}%"
+        
+        set number data tag "stat:hun" of {_item} to {_hun}
+        set number data tag "stat:sat" of {_item} to {_sat}
+        
+        set player's tool to {_item}
+        send "&aFood modified: &e%{_rarity}% &7| +%{_hun}% hunger | %{_sat}% Saturation"
+
+command /modifyrod [<text>] [<number>] [<number>]:
+    permission: admin.create
+
+    trigger:
+        if arg-1 is not set:
+            send "&cUsage: /modifyrod <rarity> <speed> <fortune>"
+            stop
+        set {_rarity} to arg-1
+        set {_speed} to arg-2
+        set {_fortune} to arg-3
+
+        set {_rarityLine} to getRarityLine({_rarity})
+
+        set {_item} to player's held item
+        set {_item} to unbreakable tool
+        set item flags of {_item} to all item flags
+        force {_item} to stop glinting
+
+        set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
+        set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &eᴛᴏᴏʟ"
+        set line 3 of lore of {_item} to "&8┃ &7ʀᴀʀɪᴛʏ &8» %{_rarityLine}%"
+        set line 4 of lore of {_item} to ""
+        set line 5 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
+        set line 6 of lore of {_item} to "&8┃ &7ꜰɪꜱʜɪɴɢ ꜱᴘᴇᴇᴅ &8» &3+%{_speed}%"
+        set line 7 of lore of {_item} to "&8┃ &7ꜰɪꜱʜɪɴɢ ʟᴜᴄᴋ &8» &6+%{_fortune}%"
+
+        enchant {_item} with lure
+        set level of lure of {_item} to {_speed}
+
+        set number data tag "itemstat:fishing_luck" of {_item} to {_fortune}
+
+        set player's held item to {_item}
+
+        send "&aRod modified with &fSpeed %{_speed}% &aand &6Luck %{_fortune}%&a!"
+
+command /modifyitem [<text>] [<text>]:
+    permission: admin.create
+
+    trigger:
+        if arg-1 is not set:
+            send "&cUsage: /modifyitem <rarity> <type>"
+            stop
+        set {_rarity} to arg-1
+        set {_type} to arg-2
+
+        set {_rarityLine} to getRarityLine({_rarity})
+        set {_typeLine} to SmallCaps({_type})
+
+        set player's held item to unbreakable tool
+        set item flags of player's tool to all item flags
+        force the player's held item to stop glinting
+
+        set line 1 of lore of player's tool to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
+        set line 2 of lore of player's tool to "&8┃ &7ᴛʏᴘᴇ &8» &e%{_typeLine}%"
+        set line 3 of lore of player's tool to "&8┃ &7ʀᴀʀɪᴛʏ &8» %{_rarityLine}%"
+
+        send "&aItem modified"
+
+
+command /modifyability [<text>]:
+    permission: admin.create
+
+    trigger:
+        if arg-1 is not set:
+            send "&cUsage: /modifyability <ability>"
+            stop
+        set {_ability} to arg-1
+        set {_abilityLine} to SmallCaps({_ability})
+
+        set {_lore::*} to lore of player's tool
+        set {_found} to false
+
+        loop {_lore::*}:
+            if loop-value is "&8┃ &7» ᴀʙɪʟɪᴛʏ":
+                set {_nextIndex} to (loop-index parsed as integer) + 1
+                set {_lore::%{_nextIndex}%} to "&8┃ %{_abilityLine}%"
+                set {_found} to true
+                stop loop
+
+        if {_found} is true:
+            set lore of player's tool to {_lore::*}
+        else:
+            add "" to lore of player's tool
+            add "&8┃ &7» ᴀʙɪʟɪᴛʏ" to lore of player's tool
+            add "&8┃ %{_abilityLine}%" to lore of player's tool
+
+        send "&aItem ability modified"
+
+command /modifyname [<text>] [<text>]:
+    permission: admin.create
+
+    trigger:
+        if arg-1 is not set:
+            send "&cUsage: /modifyname <last name> <first name>"
+            stop
+        set {_part1} to arg-1
+        set {_part2} to arg-2
+
+        set {_newName} to "%{_part2}% %{_part1}%"
+
+        set name of player's tool to "&f%{_newName}%"
+
+        send "&aItem renamed to &f%{_newName}%"
+        
+command /pdcset [<text>] [<text>]:
+    permission: admin.create
+    permission message: &8[&cPDC&8] &cNo permission.
+    usage: &8[&ePDC&8] &7Usage: /pdcset <key> <value>
+    trigger:
+        set {_item} to player's held item
+        set {_key} to arg-1
+        set {_val} to arg-2
+        set data tag {_key} of {_item} to {_val}
+        set player's held item to {_item}
+        send "&8[&ePDC&8] &aSet &f%{_key}% &a= &f%{_val}%&a on held item."
+
+command /pdcdelete [<text>]:
+    permission: admin.create
+    permission message: &8[&cPDC&8] &cNo permission.
+    usage: &8[&ePDC&8] &7Usage: /pdcdelete <key>
+    trigger:
+        set {_item} to player's held item
+        set {_key} to arg-1
+        delete data tag {_key} of {_item}
+        set player's held item to {_item}
+        send "&8[&ePDC&8] &aDeleted tag &f%{_key}%&a from held item."

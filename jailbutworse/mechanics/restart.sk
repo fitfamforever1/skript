@@ -1,0 +1,34 @@
+options:
+    RESPAWN_COOLDOWN: 3
+
+
+on quit:
+    if player has permission "warden":
+        set {_name} to name of player
+        execute console command "lp user %{_name}% parent remove warden"
+        send "<##FE7300>[SYSTEM] &7The<##4169E1> Warden &7has left!" to all players
+        delete {warden::player}
+        delete {warden::time}
+        set {warden::cooldown} to {@RESPAWN_COOLDOWN}
+        execute console command "glow toggle %{_name}%"
+        execute console command "clearall %{_name}%"
+    if player has permission "criminal":
+        execute console command "lp user %{_name}% parent remove criminal"
+        execute console command "clearall %{_name}%"
+        execute console command "glow toggle %{_name}%"
+    if player has permission "guard":
+        wait 1 second
+        execute console command "lp user %{_name}% parent remove guard"
+        execute console command "clearall %{_name}%"
+        execute console command "kit give guard %player%"
+    if player has permission "swat":
+        wait 1 second
+        execute console command "lp user %{_name}% parent remove swat"
+        execute console command "clearall %{_name}%"
+        execute console command "kit give swat %player%"
+    if player has permission "nurse":
+        wait 1 second
+        execute console command "lp user %{_name}% parent remove nurse"
+        execute console command "clearall %{_name}%"
+        execute console command "kit give nurse %player%"
+

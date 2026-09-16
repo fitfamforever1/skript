@@ -1,0 +1,21 @@
+command /saveitem <text>:
+    permission: admin.save
+    usage: /saveitem <id>
+    trigger:
+        if player's tool is air:
+            send "&cYou're not holding anything!" to player
+            stop
+        set {loot::%arg-1%} to player's tool
+        send "&aSaved item as &e%arg-1%" to player
+
+command /giveitem <text>:
+    permission: admin.save
+    usage: /giveitem <id>
+    trigger:
+        if {loot::%arg-1%} is set:
+            give {loot::%arg-1%} to player
+            send "&aGave you item &e%arg-1%" to player
+        else:
+            send "&cNo item found with id &e%arg-1%" to player
+            
+            

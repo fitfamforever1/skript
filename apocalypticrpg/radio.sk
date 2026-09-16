@@ -1,0 +1,71 @@
+on load:
+    set {radio::1}  to "&8[<##939544>RADIO&8] &fThe safe zone was overrun by zombies..."
+    set {radio::2}  to "&8[<##939544>RADIO&8] &fCommand post, this is Commander Hayes. Foundry engineer is alive and secured. Currency system established for survivor trade."
+    set {radio::3}  to "&8[<##939544>RADIO&8] &fNEVER ENTER PRISON WITHOUT HAZMAT SUIT! WE LOST 2 PEOPLE!"
+    set {radio::4}  to "&8[<##939544>RADIO&8] &fMedical channel report: vaccine secured. Limited supply is now being sold at the hospital. Over."
+    set {radio::5}  to "&8[<##939544>RADIO&8] &f*crackling* ...they're not dead. I don't know what they are but they're NOT dead—"
+    set {radio::6}  to "&8[<##939544>RADIO&8] &fAnubis is the only god. Messhish is His chosen voice. We follow His judgment."
+    set {radio::7}  to "&8[<##939544>RADIO&8] &fNeoCorp company is the cause of the viruse..."
+    set {radio::8}  to "&8[<##939544>RADIO&8] &fPrison staff is selling weapan. Secure yourself with anything, you can get."
+    set {radio::9}  to "&8[<##939544>RADIO&8] &fThis is an automated emergency broadcast. All civilians must— *signal lost*"
+    set {radio::10} to "&8[<##939544>RADIO&8] &fThe governemnt was in on the Governor!"
+    set {radio::11} to "&8[<##939544>RADIO&8] &f*distant screaming* ...oh god they found us they found— *silence*"
+    set {radio::12} to "&8[<##939544>RADIO&8] &fThe military evacuation at Port Dundas was a lie. There are no helicopters. Save yourselves. It's all a plot by NeoCorp..."
+    set {radio::13} to "&8[<##939544>RADIO&8] &fNeoCorp leaked the virus"
+    set {radio::14} to "&8[<##939544>RADIO&8] &f*static* Day 47. Still alive. Garden is growing. If you find seeds — protect them with your life."
+    set {radio::15} to "&8[<##939544>RADIO&8] &fSome guy in the village north-west to the city is selling food in this hell."
+    set {radio::16} to "&8[<##939544>RADIO&8] &fThis is Dr. Reeves. The infection isn't airborne. Repeat — NOT airborne. Bites only. Stay safe."
+    set {radio::17} to "&8[<##939544>RADIO&8] &f*crying* ...I just wanted someone to know my name was Sarah. And I was here. I was here."
+    set {radio::18} to "&8[<##939544>RADIO&8] &fWhy the fuck did the military take all the weapans before retreating..."
+    set {radio::19} to "&8[<##939544>RADIO&8] &fThe government has abandoned us... All the taxs went in vain..."
+    set {radio::20} to "&8[<##939544>RADIO&8] &f*static* ...they've started moving in packs now. Coordinated. Like they're... thinking..."
+    set {radio::21} to "&8[<##939544>RADIO&8] &fLooking for other survivors... Girls only! Must be under 25!"
+    set {radio::22} to "&8[<##939544>RADIO&8] &fIf you find a red backpack with a wolf patch — that was my son's. Please tell me you found him."
+    set {radio::23} to "&8[<##939544>RADIO&8] &f*garbled* ...outbreak started in prison. It wasn't an accident. I have the files. Find me."
+    set {radio::24} to "&8[<##939544>RADIO&8] &fDON'T TRUST THE CULTIST."
+    set {radio::25} to "&8[<##939544>RADIO&8] &fAnyone listening to this... Uncover the truth please... THIS WAS ALL MAN MADE!"
+    set {radio::26} to "&8[<##939544>RADIO&8] &f*static* ...30 days without a bite. Community of 40. We're making it work. There is hope."
+    set {radio::27} to "&8[<##939544>RADIO&8] &fEverything has fallen.... Theres nothing left now.... I think, I should end myself...."
+    set {radio::28} to "&8[<##939544>RADIO&8] &fDon't fuck the zombies... It will infect you if you ever do that..."
+    set {radio::29} to "&8[<##939544>RADIO&8] &f*heavy breathing* ...I've been alone for three weeks. Just hearing static feels like company..."
+    set {radio::30} to "&8[<##939544>RADIO&8] &fThe emergency bunker is closed... The prison staff shut it... They took all the keycards to it..."
+    set {radio::31} to "&8[<##939544>RADIO&8] &f*static* I hate myself for having to eat my brother to stay alive.... *crying*"
+    set {radio::32} to "&8[<##939544>RADIO&8] &fIf you're listening to this, you're still alive. That means something. Keep fighting."
+
+on right click with phantom membrane:
+    if name of player's tool is "&fRadio":
+
+        if {radio.cooldown::%uuid of player%} is set:
+            send "&8[<##939544>RADIO&8] &c-- signal jammed --" to player
+            stop
+
+        if {radio.charging::%uuid of player%} is set:
+            stop
+
+        set {radio.charging::%uuid of player%} to true
+
+        set {_charge} to a random integer between 2 and 10
+
+        send "&8[<##939544>RADIO&8] &esearching for signal..." to player
+
+        set {_wait} to "%{_charge}% seconds" parsed as timespan
+        wait {_wait}
+
+        if {radio.charging::%uuid of player%} is not set:
+            stop
+
+        delete {radio.charging::%uuid of player%}
+
+        set {_index} to a random integer between 1 and 32
+        send "%{radio::%{_index}%}%" to player
+
+        set {radio.cooldown::%uuid of player%} to true
+
+        wait 5 seconds
+
+        delete {radio.cooldown::%uuid of player%}
+
+
+on quit:
+    delete {radio.charging::%uuid of player%}
+    delete {radio.cooldown::%uuid of player%}

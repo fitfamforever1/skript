@@ -1,0 +1,48 @@
+function hasItem(p: player, name: text, amount: integer) :: boolean:
+    set {_count} to 0
+    loop items in inventory of {_p}:
+        if display name of loop-item is {_name}:
+            add amount of loop-item to {_count}
+    if {_count} >= {_amount}:
+        return true
+    return false
+
+function removeItem(p: player, name: text, amount: integer) :: boolean:
+    set {_remaining} to {_amount}
+    loop items in inventory of {_p}:
+        if display name of loop-item is {_name}:
+            if amount of loop-item >= {_remaining}:
+                remove {_remaining} of loop-item from inventory of {_p}
+                return true
+            else:
+                subtract amount of loop-item from {_remaining}
+                remove loop-item from inventory of {_p}
+    return false
+
+command /setblueprint [<integer>]:
+    permission: op
+    trigger:
+        if arg-1 is not set:
+            send "&8[<##0055FF>BLUEPRINT&8] &cUsage: /setblueprint <id>"
+            stop
+        set number data tag "blueprint:id" of player's tool to arg-1
+        send "&8[<##0055FF>BLUEPRINT&8] &aSet blueprint id to &f%arg-1%&a on held item."
+
+on right click with paper:
+    if number data tag "blueprint:id" of player's tool is 1:
+        if hasItem(player, "&fIron Ingot", 9) is true:
+            if removeItem(player, "&fIron Ingot", 9) is true:
+                execute console command "si give soul 1 %player% true"
+                remove player's tool from player's inventory
+                send "&8[<##0055FF>BLUEPRINT&8] &aYou have used a blueprint to build an item!" to player
+        else:
+            send "&8[<##0055FF>BLUEPRINT&8] &cYou don't have the required materials to craft this blueprint!" to player
+
+    if number data tag "blueprint:id" of player's tool is 2:
+        if hasItem(player, "&fGold Ingot", 9) is true:
+            if removeItem(player, "&fGold Ingot", 9) is true:
+                execute console command "si give soul 1 %player% true"
+                remove player's tool from player's inventory
+                send "&8[<##0055FF>BLUEPRINT&8] &aYou have used a blueprint to build an item!" to player
+        else:
+            send "&8[<##0055FF>BLUEPRINT&8] &cYou don't have the required materials to craft this blueprint!" to player

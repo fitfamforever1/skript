@@ -1,0 +1,24 @@
+function getDoubleDropId(i: item) :: number:
+    set {_id} to int tag "doubledropid" of custom nbt of {_i}
+    if {_id} is not set:
+        return 0
+    return {_id}
+
+
+on break of coal ore or iron ore or copper ore or gold ore or diamond ore or emerald ore or nether gold ore or nether quartz ore or ancient debris or deepslate coal ore or deepslate iron ore or deepslate copper ore or deepslate gold ore or deepslate diamond ore or deepslate emerald ore:
+    set {_active} to false
+    loop player's helmet, player's chestplate, player's leggings, player's boots:
+        if loop-value is not air:
+            set {_armor} to loop-value
+            set {_id} to getDoubleDropId({_armor})
+            if {_id} != 0:
+                if {doubledrop::%{_id}%::wear} is true:
+                    set {_active} to true
+
+    if {_active} is false:
+        stop
+
+    set {_drops::*} to drops of event-block using player's tool
+    loop {_drops::*}:
+        drop loop-value at location of event-block
+

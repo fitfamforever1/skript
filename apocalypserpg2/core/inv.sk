@@ -1,0 +1,63 @@
+on load:
+    loop all players:
+        set slot 9 of loop-player's inventory to {loot::inv1}
+        set slot 10 of loop-player's inventory to {loot::inv2}
+        set slot 11 of loop-player's inventory to {loot::inv3}
+        set slot 12 of loop-player's inventory to {loot::inv4}
+        set slot 13 of loop-player's inventory to {loot::inv5}
+        set slot 14 of loop-player's inventory to {loot::inv0}
+        set slot 15 of loop-player's inventory to {loot::inv7}
+        set slot 16 of loop-player's inventory to {loot::inv8}
+        set slot 17 of loop-player's inventory to {loot::inv9}
+
+on join:
+    set slot 9 of player's inventory to {loot::inv1}
+    set slot 10 of player's inventory to {loot::inv2}
+    set slot 11 of player's inventory to {loot::inv3}
+    set slot 12 of player's inventory to {loot::inv4}
+    set slot 13 of player's inventory to {loot::inv5}
+    set slot 14 of player's inventory to {loot::inv0}
+    set slot 15 of player's inventory to {loot::inv7}
+    set slot 16 of player's inventory to {loot::inv8}
+    set slot 17 of player's inventory to {loot::inv9}
+
+on respawn:
+    set slot 9 of player's inventory to {loot::inv1}
+    set slot 10 of player's inventory to {loot::inv2}
+    set slot 11 of player's inventory to {loot::inv3}
+    set slot 12 of player's inventory to {loot::inv4}
+    set slot 13 of player's inventory to {loot::inv5}
+    set slot 14 of player's inventory to {loot::inv0}
+    set slot 15 of player's inventory to {loot::inv7}
+    set slot 16 of player's inventory to {loot::inv8}
+    set slot 17 of player's inventory to {loot::inv9}
+
+on item spawn:
+    if item is snowball:
+        cancel event
+
+
+on inventory click:
+    if item is snowball:
+        cancel event
+        set {_tag} to data tag "inv:id" of event-item
+        if {_tag} is not set:
+            stop
+        if {_tag} is "1":
+            junkconvert(player)
+        if {_tag} is "2":
+            execute console command "dm open craft %player%"
+        if {_tag} is "4":
+            openSkillGUI(player)
+        if {_tag} is "7":
+            execute player command "backpack 1"
+        if {_tag} is "8":
+            execute player command "backpack 2"
+        if {_tag} is "9":
+            execute player command "backpack 3"
+
+        
+
+on drop:
+    if item is snowball:
+        cancel event

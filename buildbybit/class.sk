@@ -1,0 +1,310 @@
+# ---------------- GUI ----------------
+function openClassGUI(p: player):
+    set {_gui} to chest inventory with 3 rows named "&a&lᴄʟᴀꜱꜱ ꜱᴇʟᴇᴄᴛɪᴏɴ"
+
+    set slot 12 of {_gui} to 1 of netherite axe without additional tooltip with item flags all item flags named "&aTank Class" with lore "&eExclusive Weapon: &7Axes & Mace" and "" and "&eHeavy Hit: &7Every 3 hits, there is a weakening" and "&7effect on enemy." and "&eSelf Repair: &7Killing an entity, heals player" and "&7by 4 hearts." and "" and "&eFortress: &7Become invincible for 4 seconds" and "&7to any incoming attack." and "" and "&cYou can only select one class!"
+
+    set slot 14 of {_gui} to 1 of bow without additional tooltip with item flags all item flags named "&aArcher Class" with lore "&eExclusive Weapon: &7Bow & Crossbow" and "" and "&eBleeding: &7Inflicts a bleeding effect which" and "&7takes 1 heart per second." and "&eLong Shot: &7Causes double damage if" and "&7target is 20 blocks away." and "" and "&eFrost Shot: &7Stuns target on next shoot." and "" and "&cYou can only select one class!"
+
+    set slot 16 of {_gui} to 1 of iron sword without additional tooltip with item flags all item flags named "&aAssassin Class" with lore "&eExclusive Weapon: &7Swords & Spear" and "" and "&eEvade: &7Lets player dodge 60%% of damage" and "&7while sneaking." and "&ePoison Blade: &7Applies Poison II on the" and "&74th hit." and "" and "&eVanish: &7Become invisible for 5s; dealing" and "&7damage during this time causes 4x damage." and "" and "&cYou can only select one class!"
+
+    set slot 10 of {_gui} to 1 of shield without additional tooltip with item flags all item flags named "&aKnight Class" with lore "&eExclusive Weapon: &7Swords & Spear" and "" and "&eReflect: &715%% chance to deflect" and "&7back 20%% of damage taken." and "&eChivalry: &7Heals when player drops" and "&7below 4 hearts." and "" and "&eAura: &7Gains Strength III and Resistance" and "&7II for 8 seconds." and "" and "&cYou can only select one class!"
+
+    open {_gui} to {_p}
+
+command /classgui:
+    trigger:
+        openClassGUI(player)
+
+on first join:
+    wait 1 seconds
+    openClassGUI(player)
+
+on inventory click:
+  name of event-inventory is "&a&lᴄʟᴀꜱꜱ ꜱᴇʟᴇᴄᴛɪᴏɴ"
+  cancel event
+  index of event-slot is 12:
+    make player execute command "class b"
+    close player's inventory
+  index of event-slot is 14:
+    make player execute command "class c"
+    close player's inventory
+  index of event-slot is 16:
+    make player execute command "class d"
+    close player's inventory
+  index of event-slot is 10:
+    make player execute command "class a"
+    close player's inventory
+
+# ---------------- Command ----------------
+command /classadmin <text> <player>:
+    permission: op
+    trigger:
+        set {_uuid} to arg-2's uuid
+
+        if arg-1 is "clear":
+            if {class::used::%{_uuid}%} is not set:
+                send "&e%arg-2% &7has no class to clear." to player
+                stop
+
+            delete {class::used::%{_uuid}%}
+            delete {class::type::%{_uuid}%}
+
+            send "&aCleared class for &e%arg-2%&a." to player
+            send "&eYour class has been reset by an admin." to arg-2
+            stop
+
+        if arg-1 is "info":
+            if {class::used::%{_uuid}%} is not set:
+                send "&e%arg-2% is classless."
+                stop
+
+            set {_class} to {class::type::%{_uuid}%}
+
+            if {_class} is "a":
+                send "&e%arg-2% is &aKnight&e class."
+            else if {_class} is "b":
+                send "&e%arg-2% is &aTank&e class."
+            else if {_class} is "c":
+                send "&e%arg-2% is &aArcher&e class."
+            else if {_class} is "d":
+                send "&e%arg-2% is &aAssassin&e class."
+            stop
+
+        send "&cUsage:"
+        send "&7/classadmin info <player>"
+        send "&7/classadmin clear <player>"
+
+
+command /class <text>:
+    trigger:
+        if {class::used::%player's uuid%} is set:
+            send "&cYou have already made your class!" to player
+            stop
+
+        set {_class} to lowercase arg-1
+        
+        if {_class} is "knight" or "a":
+            set {class::type::%player's uuid%} to "a"
+            set {_name} to "Knight"
+
+        else if {_class} is "tank" or "b":
+            set {class::type::%player's uuid%} to "b"
+            set {_name} to "Tank"
+
+        else if {_class} is "archer" or "c":
+            set {class::type::%player's uuid%} to "c"
+            set {_name} to "Archer"
+
+        else if {_class} is "assassin" or "d":
+            set {class::type::%player's uuid%} to "d"
+            set {_name} to "Assassin"
+
+        else:
+            send "&cAvailable classes: &eKnight, Tank, Archer, Assassin"
+            stop
+
+        set {class::used::%player's uuid%} to true
+        send "&aYou chose &e%{_name}%&a! This class is permanent." to player
+
+# ---------------- Weapan Restriction ----------------
+
+on damage:
+    attacker is a player
+    if {class::used::%attacker's uuid%} is set:
+        set {_class} to {class::type::%attacker's uuid%}
+        set {_type} to type of held item of attacker
+        
+        if {_type} is air:
+            stop
+            
+        if {_class} is "a":
+            if {_type} is not wooden sword, stone sword, iron sword, golden sword, diamond sword or netherite sword:
+                cancel event
+                send action bar "&cYour class cannot use this weapon!" to attacker
+
+        if {_class} is "b":
+            if {_type} is not wooden axe, stone axe, iron axe, golden axe, diamond axe, netherite axe or mace:
+                cancel event
+                send action bar "&cYour class cannot use this weapon!" to attacker
+
+        if {_class} is "c":
+            if {_type} is not bow or crossbow:
+                cancel event
+                send action bar "&cYour class cannot use this weapon!" to attacker
+
+        if {_class} is "d":
+            if {_type} is not wooden sword, stone sword, iron sword, golden sword, diamond sword or netherite sword:
+                cancel event
+                send action bar "&cYour class cannot use this weapon!" to attacker
+
+on projectile hit:
+    shooter is a player
+    victim is a living entity
+    if {class::used::%shooter's uuid%} is set:
+        set {_class} to {class::type::%shooter's uuid%}
+        if {_class} is not "c":
+            cancel event
+            delete projectile
+            send action bar "&cYour class cannot use this weapon!" to shooter
+
+# ---------------- Passive ----------------
+on damage:
+    victim is a player
+    if {class::used::%victim's uuid%} is set:
+        set {_class} to {class::type::%victim's uuid%}
+# Knight
+        if {_class} is "a":
+            chance of 15%:
+                send action bar "&eChivalry reflects the attack!" to attacker
+                send action bar "&eChivalry reflects your attack!" to victim
+                set {_reflect} to damage * 0.2
+                damage attacker by {_reflect}
+            if victim's health < 4:
+                send action bar "&eChivalry heals you!" to attacker
+                apply regeneration 2 to victim for 8 seconds:
+                    hide icon
+                    hide particles
+# Tank
+        if {_class} is "b":
+            add 1 to {tank::hitstacks::%attacker's uuid%}
+            if {tank::hitstacks::%attacker's uuid%} >= 3:
+                set {tank::hitstacks::%attacker's uuid%} to 0
+                send action bar "&eYou crushed their legs!" to attacker
+                send action bar "&eYour legs are crushed!" to victim
+                apply slowness 5 to victim for 2 seconds:
+                    hide particles
+                apply weakness 2 to victim for 2 seconds:
+                    hide particles
+on death:
+    if attacker is a player:
+        if {class::used::%victim's uuid%} is set:
+            set {_class} to {class::type::%victim's uuid%}
+            if {_class} is "b":
+                heal attacker by 4
+                send action bar "&eYour defenses repairs itself!" to attacker
+
+# Archer
+on damage:
+    projectile is an arrow
+    attacker is a player
+    victim is a living entity
+    if {class::used::%attacker's uuid%} is set:
+        if {class::type::%attacker's uuid%} is "c":
+            if distance between attacker and victim > 20:
+                send action bar "Long Shot!" to attacker
+                set {_target} to victim
+                add damage to {_target}
+                set {bleed::active::%uuid of {_target}%} to true
+            loop 3 times:
+                wait 1 second
+                if {bleed::active::%uuid of {_target}%} is true:
+                    if {_target} is alive:
+                        send "&eYou are bleeding!" to victim
+                        send "&eBleeding inflicted!" to attacker
+                        damage {_target} by 1
+            delete {bleed::active::%uuid of {_target}%}
+
+# Assassin
+on damage:
+    victim is a player
+    if {class::type::%victim's uuid%} is "d":
+        if victim is sneaking:
+            set damage to damage * 0.4
+            send action bar "&eYou managed to evade the attack!" to attacker
+            
+on damage:
+    attacker is a player
+    victim is a living entity
+    if {class::type::%attacker's uuid%} is "d":
+        if {assassin::lasttarget::%attacker's uuid%} is not uuid of victim:
+            set {assassin::lasttarget::%attacker's uuid%} to uuid of victim
+            set {assassin::combo::%attacker's uuid%} to 0
+        add 1 to {assassin::combo::%attacker's uuid%}
+        if {assassin::combo::%attacker's uuid%} >= 4:
+            set {assassin::combo::%attacker's uuid%} to 0
+            send action bar "&eYou poisoned your enemy!" to attacker
+            send action bar "&eYou have been poisoned!" to attacker
+            apply poison 2 to victim for 20 seconds:
+                hide icon
+                hide particles
+
+# ---------------- Active ----------------
+on right click:
+    if {class::used::%player's uuid%} is set:
+        set {_uuid} to player's uuid
+        set {_class} to {class::type::%{_uuid}%}
+        set {_type} to type of held item of player
+        if {ability::cd::%{_uuid}%} is set:
+            set {_elapsed} to difference between now and {ability::cd::%{_uuid}%}
+            if {_elapsed} < 60 seconds:
+                send action bar "&cAbility on cooldown!" to player
+                stop
+        if {_class} is "a":
+            if {_type} is wooden sword, stone sword, iron sword, golden sword, diamond sword or netherite sword:
+                apply strength 3 to player for 8 seconds:
+                    hide particles
+                apply resistance 2 to player for 4 seconds:
+                    hide particles
+                set {ability::cd::%{_uuid}%} to now
+                send action bar "&eBattle Cry &aactivated!" to player
+                play sound "entity.ravager.roar" with volume 0.8 and pitch 1.2 to player
+        if {_class} is "b":
+            if {_type} is wooden axe, stone axe, iron axe, golden axe, diamond axe, mace or netherite axe:
+                set {fortress::active::%{_uuid}%} to true
+                set {ability::cd::%{_uuid}%} to now
+                send action bar "&eFortress &aactivated!" to player
+                play sound "entity.iron_golem.attack" with volume 0.8 and pitch 0.8 to player
+                wait 4 seconds
+                if {fortress::active::%{_uuid}%} is true:
+                    delete {fortress::active::%{_uuid}%}
+                    send action bar "&7Fortress faded." to player
+        if {_class} is "c":
+            if {_type} is bow or crossbow:
+                set {frostshot::active::%{_uuid}%} to true
+                set {ability::cd::%{_uuid}%} to now
+                send action bar "&eFrost Shot &aready!" to player
+                play sound "block.powder_snow.step" with volume 0.8 and pitch 1.2 to player
+
+        if {_class} is "d":
+            if {_type} is wooden sword, stone sword, iron sword, golden sword, diamond sword or netherite sword:
+                set {ability::cd::%{_uuid}%} to now
+                apply invisibility 1 to player for 5 seconds:
+                    hide particles
+                set {vanish::active::%{_uuid}%} to true
+                send action bar "&eVanish &aactivated!" to player
+                play sound "entity.enderman.teleport" with volume 0.6 and pitch 1.4 to player
+                wait 5 seconds
+                if {vanish::active::%{_uuid}%} is true:
+                    delete {vanish::active::%{_uuid}%}
+                    send action bar "&eVanish faded." to player
+
+on damage:
+    attacker is a player
+    victim is a living entity
+    set {_uuid} to attacker's uuid
+    if {vanish::active::%{_uuid}%} is true:
+        set {_bonus} to damage * 3
+        set damage to {_bonus}
+        delete {vanish::active::%{_uuid}%}
+        remove invisibility from attacker
+        send action bar "&eVanish broken!" to attacker
+
+on damage:
+    projectile is an arrow
+    attacker is a player
+    victim is a living entity
+    if {class::used::%attacker's uuid%} is set:
+        if {class::type::%attacker's uuid%} is "c":
+            if {frostshot::active::%attacker's uuid%} is true:
+                apply slowness 5 to victim for 5 seconds:
+                    hide particles
+                apply weakness 2 to victim for 5 seconds:
+                    hide particles
+                delete {frostshot::active::%attacker's uuid%}
+                send action bar "&eFrost Shot triggered!" to attacker
+
+on damage of player:
+    set {_uuid} to victim's uuid
+    if {fortress::active::%{_uuid}%} is true:
+        cancel event

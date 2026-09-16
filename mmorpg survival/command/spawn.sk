@@ -1,0 +1,27 @@
+command /spawn [<player>]:
+    description: Teleports you or another player to spawn
+    trigger:
+        if arg-1 is set:
+            if player does not have permission "admin.spawn":
+                send "&c✖ &7| &c&cYou do not have permission to teleport others!" to player
+                stop
+            teleport arg-1 to location(28.5, 150, -29.5, world "spawn")
+            send title "&a✔ &aTeleported &e%arg-1% &ato spawn!" to player for 1.6 seconds
+            play sound "entity.enderman.teleport" at arg-1 for arg-1
+            stop
+
+        teleport player to location(28.5, 150, -29.5, world "spawn")
+        send title "&a✔ &aTeleported to spawn!" to player for 1.6 seconds
+        play sound "entity.enderman.teleport" at player for player
+
+on respawn:
+    wait 20 tick
+    if player's bed location is set:
+        stop
+    teleport player to location(28.5, 150, -29.5, world "spawn")
+    send title "&a✔ &aTeleported to spawn" with subtitle "&adue to having no respawn point!" to player for 1.6 seconds
+
+on first join:
+    wait 1 tick
+    teleport player to location(28.5, 150, -29.5, world "spawn")
+    send title "&a✔ &aWelcome to the server!" to player for 1.6 seconds

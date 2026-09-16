@@ -1,0 +1,9 @@
+command /dummy:
+    permission: admin.test
+    trigger:
+        set {_loc} to player's location
+        spawn armor stand at {_loc}
+        set {_e} to last spawned entity
+        set max health of {_e} to 1000
+        set health of {_e} to 1000
+       

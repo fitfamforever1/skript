@@ -1,0 +1,31 @@
+command /femboy <player>:
+    permission: warden
+    permission message: <##FE7300>[SYSTEM] &cYou do not have permission to use this command.
+    trigger:
+        set {_target} to arg-1
+        set {_warden} to player
+        if {_target} does not have permission "nurse":
+            send "<##FE7300>[SYSTEM] &c%{_target}% &cis not a nurse." to {_warden}
+            stop
+        if {femboy::%{_target}%} is set:
+            send "<##FE7300>[SYSTEM] &c%{_target}% &cis already a femboy." to {_warden}
+            stop
+        if {femboy::cooldown::%{_target}%} is set:
+            send "<##FE7300>[SYSTEM] &c%{_target}% &cis on femboy cooldown." to {_warden}
+            stop
+        set {femboy::%{_target}%} to true
+        send "<##FE7300>[SYSTEM] &d%{_target}% &7is now a femboy for 1 minute! UwU" to {_warden}
+        send "<##FE7300>[SYSTEM] &dyou are now a femboy UwU~ hewwo!! >w<" to {_target}
+        wait 1 minute
+        delete {femboy::%{_target}%}
+        send "<##FE7300>[SYSTEM] &7The femboy effect has worn off." to {_target}
+        set {femboy::cooldown::%{_target}%} to true
+        wait 5 minutes
+        delete {femboy::cooldown::%{_target}%}
+        send "<##FE7300>[SYSTEM] &7Femboy cooldown for &d%{_target}% &7has expired." to {_warden}
+
+on chat:
+    if {femboy::%player%} is set:
+        cancel event
+        set {_msg} to message
+        broadcast "&d[Nurse] &f%player% &7uwu: &d%{_msg}% UwU~ >w< OwO !!"

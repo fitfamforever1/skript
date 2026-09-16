@@ -1,0 +1,28 @@
+on right click with netherite sword:
+    name of player's held item is "&fVoidedge Katana"
+    set {_uuid} to uuid of player
+
+    if {mana::%{_uuid}%} is not set:
+        set {mana::%{_uuid}%} to 0
+    if {mana::%{_uuid}%} < 10:
+        send action bar "&cNot enough mana." to player
+        stop
+
+    remove 10 from {mana::%{_uuid}%}
+    clampMana(player)
+    saveMana(player)
+
+    if target block of player is set:
+        if distance between player and target block of player < 8:
+            set {_safe} to location of target block of player
+            add vector(0, 1, 0) to {_safe}
+            set {_yaw} to yaw of player
+            set {_pitch} to pitch of player
+            set yaw of {_safe} to {_yaw}
+            set pitch of {_safe} to {_pitch}
+            teleport player to {_safe}
+            stop
+        else:
+            teleport player to location 8 meters in front of player
+    else:
+        teleport player to location 8 meters in front of player

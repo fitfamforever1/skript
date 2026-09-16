@@ -1,0 +1,153 @@
+command /saveitem <text>:
+    permission: admin.save
+    trigger:
+        if player's tool is air:
+            send "&cYou're not holding anything!" to player
+            stop
+        set {item::%arg-1%} to player's tool
+        send "&aSaved item as &e%arg-1%" to player
+
+command /giveitem <text>:
+    permission: admin.save
+    trigger:
+        if {item::%arg-1%} is set:
+            give {item::%arg-1%} to player
+            send "&aGave you item &e%arg-1%" to player
+        else:
+            send "&cNo item found with id &e%arg-1%" to player  
+            
+command /pdcset [<text>] [<text>]:
+    permission: admin.create
+    trigger:
+        set {_item} to player's held item
+        set {_key} to arg-1
+        set {_val} to arg-2
+        set data tag {_key} of {_item} to {_val}
+        set player's held item to {_item}
+        send "&aSet &e%{_key}% &a= &e%{_val}%&a on held item."
+#
+function craftgui(p: player):
+    set {_gui} to chest inventory with 3 rows named "<##E9BF35>ꜰᴏʀɢɪɴɢ ɢᴜɪ"
+
+    loop 27 times:
+        set slot (loop-number - 1) of {_gui} to {item::space}
+        
+    set slot 10 of {_gui} to air
+    set slot 12 of {_gui} to air
+    set slot 14 of {_gui} to {item::craft}
+    set slot 16 of {_gui} to air
+
+    open {_gui} to {_p}
+    
+on inventory click:
+    name of event-inventory is "<##E9BF35>ꜰᴏʀɢɪɴɢ ɢᴜɪ"
+    if event-slot is 14:
+        cancel event
+        
+        set {_temp1} to item in slot 10 of event-inventory
+        set {_temp2} to item in slot 12 of event-inventory
+        set {_type1} to data tag "itemstat:type" of {_temp1}
+        set {_type2} to data tag "itemstat:type" of {_temp2}
+        if all:
+            {_type1} is "ore"
+            {_type2} is "ore"
+        then:
+            set {_temp3} to item in slot 16 of event-inventory
+            if {_temp3} is not air:
+                give {_temp3} to player
+            set {_type3} to number data tag "itemstat:min" of {_temp2}
+            set {_type4} to number data tag "itemstat:max" of {_temp1}
+            set {_item} to craft(player, {_type3}, {_type4})
+            remove 1 of {_temp1} from event-inventory 
+            remove 1 of {_temp2} from event-inventory
+            set slot 16 of event-inventory to {_item}
+            play sound "sound:sound.ui.click" for player
+        else:
+            send "&cInvalid"
+            play sound "sound:sound.ui.error" for player
+
+    if event-slot is 10 or 12 or 16:
+        set {_cursor} to cursor slot of player
+        if {_cursor} is not air:
+            if event-slot is 16:
+                cancel event
+            else:
+                set {_type} to data tag "itemstat:type" of {_cursor}
+                if {_type} is not "ore":
+                    cancel event
+
+    set {_temp} to data tag "item:id" of event-item
+    if {_temp} is "1":
+        cancel event
+
+on inventory close:
+    name of event-inventory is "<##E9BF35>ꜰᴏʀɢɪɴɢ ɢᴜɪ"
+    set {_temp1} to item in slot 10 of event-inventory
+    set {_temp2} to item in slot 12 of event-inventory
+    set {_temp3} to item in slot 16 of event-inventory
+
+    if {_temp1} is not air:
+        give {_temp1} to player
+    if {_temp2} is not air:
+        give {_temp2} to player
+    if {_temp3} is not air:
+        give {_temp3} to player
+    
+function craft2gui(p: player):
+    set {_gui} to chest inventory with 3 rows named "<##E9BF35>ꜱᴇʟᴇᴄᴛ ꜰᴏʀɢɪɴɢ ɪᴛᴇᴍ"
+
+    loop 27 times:
+        set slot (loop-number - 1) of {_gui} to {item::space}
+        
+    set slot 10 of {_gui} to {item::craft1}
+    set slot 11 of {_gui} to {item::craft2}
+    set slot 13 of {_gui} to {item::craft3}
+    set slot 14 of {_gui} to {item::craft4}
+    set slot 15 of {_gui} to {item::craft5}
+    set slot 16 of {_gui} to {item::craft6}
+
+    open {_gui} to {_p}
+    
+on inventory click:
+    name of event-inventory is "<##E9BF35>ꜱᴇʟᴇᴄᴛ ꜰᴏʀɢɪɴɢ ɪᴛᴇᴍ"
+    cancel event
+    
+    if event-slot is 10, 11, 13, 14, 15 or 16:
+        if event-slot is 10:
+            set data tag "craft:id" of player to 1
+        if event-slot is 11:
+            set data tag "craft:id" of player to 2
+        if event-slot is 13:
+            set data tag "craft:id" of player to 3
+        if event-slot is 14:
+            set data tag "craft:id" of player to 4
+        if event-slot is 15:
+            set data tag "craft:id" of player to 5
+        if event-slot is 16:
+            set data tag "craft:id" of player to 6
+        play sound "sound:sound.ui.go_back" for player
+        close player's inventory
+        open craftgui(player)
+    
+on right click on anvil:
+    cancel event
+    craft2gui(player)
+        
+function craft(p: player, mat1min: number, mat2max: number):: item:
+    set {_temp} to data tag "craft:id" of {_p}
+    switch {_temp}:
+        case 1:
+            set {_item} to sword({_mat1min}, {_mat2max})
+        case 2:
+            set {_item} to axe({_mat1min}, {_mat2max})
+        case 3:
+            set {_item} to helmet({_mat1min}, {_mat2max})
+        case 4:
+            set {_item} to chestplate({_mat1min}, {_mat2max})
+        case 5:
+            set {_item} to leggings({_mat1min}, {_mat2max})
+        case 6:
+            set {_item} to boots({_mat1min}, {_mat2max})
+    return {_item}       
+     
+        

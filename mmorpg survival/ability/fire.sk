@@ -1,0 +1,43 @@
+on right click with blaze rod:
+    if name of player's tool is not "&fFire Wand":
+        stop
+
+    set {_uuid} to uuid of player
+
+    if {cooldown::%{_uuid}%} is set:
+        if {cooldown::%{_uuid}%} > now:
+            stop
+
+    if {mana::%{_uuid}%} is not set:
+        stop
+
+    if {mana::%{_uuid}%} < 10:
+        send action bar "&cNot enough mana." to player
+        stop
+
+    set {cooldown::%{_uuid}%} to now + 0.5 seconds
+
+    remove 10 from {mana::%{_uuid}%}
+    clampMana(player)
+    saveMana(player)
+
+    shoot a fireball from player with speed 2
+    send action bar "&fFireball conjoured! &b-10 Mana" to player
+
+on projectile hit:
+    if event-projectile is a fireball:
+        if {fireballHit::%event-projectile%} is set:
+            stop
+
+        set {fireballHit::%event-projectile%} to true
+
+        set {_shooter} to shooter of event-projectile
+
+        if {_shooter} is a player:
+            loop entities in radius 2 around event-location:
+                if loop-entity is {_shooter}:
+                    stop loop
+
+                damage loop-entity by 6
+
+        delete {fireballHit::%event-projectile%}

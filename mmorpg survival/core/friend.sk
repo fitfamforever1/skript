@@ -1,0 +1,227 @@
+options:
+    max-friends: 50
+    announce-cooldown: 60
+
+function friendsFile(p: text) :: text:
+    return "plugins/Skript/scripts/friends-data/%{_p}%.yml"
+
+function loadFriends(p: text) :: boolean:
+    set {_file} to friendsFile({_p})
+    if yaml "%{_file}%" is loaded:
+        unload yaml "%{_file}%"
+    load yaml "%{_file}%"
+    if yaml path "friends" in "%{_file}%" exists:
+        set {friends::%{_p}%::list::*} to yaml list "friends" from "%{_file}%"
+    if yaml path "requests" in "%{_file}%" exists:
+        set {friends::%{_p}%::requests::*} to yaml list "requests" from "%{_file}%"
+    return true
+
+function saveFriends(p: text) :: boolean:
+    set {_file} to friendsFile({_p})
+    if yaml "%{_file}%" is not loaded:
+        load yaml "%{_file}%"
+    set yaml list "friends" from "%{_file}%" to {friends::%{_p}%::list::*}
+    set yaml list "requests" from "%{_file}%" to {friends::%{_p}%::requests::*}
+    save yaml "%{_file}%"
+    return true
+
+function isFriend(p: text, target: text) :: boolean:
+    if {friends::%{_p}%::list::*} is not set:
+        loadFriends({_p})
+    loop {friends::%{_p}%::list::*}:
+        if loop-value is {_target}:
+            return true
+    return false
+
+function hasPendingRequest(sender: text, receiver: text) :: boolean:
+    if {friends::%{_receiver}%::requests::*} is not set:
+        loadFriends({_receiver})
+    loop {friends::%{_receiver}%::requests::*}:
+        if loop-value is {_sender}:
+            return true
+    return false
+
+command /friends [<text>] [<text>]:
+    trigger:
+        loadFriends(player's name)
+
+        if arg-1 is not set:
+            execute player command "/friends list"
+            stop
+
+        if arg-1 is "list":
+            if {friends::%player's name%::list::*} is not set:
+                send "&8[<##C2F4B2>FRIEND&8] &7Your friends list is &cempty&7."
+                stop
+            set {_size} to size of {friends::%player's name%::list::*}
+            send ""
+            send "&6&lFriends &7&8(%{_size}%/{@max-friends})"
+            send "&8&m                              "
+            loop {friends::%player's name%::list::*}:
+                set {_friend} to loop-value
+                if {_friend} is online:
+                    send " &a● &7%{_friend}% &8(Online)"
+                else:
+                    send " &8● &8%{_friend}% &8(Offline)"
+            send "&8&m                              "
+            send ""
+            stop
+
+        if arg-1 is "help":
+            send ""
+            send "&6&lꜰʀɪᴇɴᴅꜱ ʜᴇʟᴘ"
+            send "&8&m                                      "
+            send " &e/friends list        &7- View your friends"
+            send " &e/friends add &b<player>   &7- Send friend request"
+            send " &e/friends remove &b<player> &7- Remove a friend"
+            send " &e/friends accept &b<player> &7- Accept a request"
+            send " &e/friends announce &b<msg>  &7- Message all friends"
+            send "&8&m                                      "
+            send ""
+            stop
+
+        if arg-1 is "add":
+            if arg-2 is not set:
+                send "&8[<##C2F4B2>FRIEND&8] &cUsage: &7/friends add <player>"
+                stop
+            set {_target} to arg-2
+            if {_target} is player's name:
+                send "&8[<##C2F4B2>FRIEND&8] &cYou can't add yourself!"
+                stop
+            if {_target} is not online:
+                send "&8[<##C2F4B2>FRIEND&8] &b%{_target}% &7is not online."
+                stop
+            if isFriend(player's name, {_target}) is true:
+                send "&8[<##C2F4B2>FRIEND&8] &b%{_target}% &7is already your friend."
+                stop
+            set {_size} to size of {friends::%player's name%::list::*}
+            if {_size} >= {@max-friends}:
+                send "&8[<##C2F4B2>FRIEND&8] &cYou've reached the max friends limit!"
+                stop
+            if hasPendingRequest(player's name, {_target}) is true:
+                send "&8[<##C2F4B2>FRIEND&8] &7You already sent a request to &b%{_target}%&7."
+                stop
+            add player's name to {friends::%{_target}%::requests::*}
+            saveFriends({_target})
+            send "&8[<##C2F4B2>FRIEND&8] &7Friend request sent to &b%{_target}%&7. &a✔"
+            send "&8[<##C2F4B2>FRIEND&8] &b%player's name% &7sent you a friend request! Type &e/friends accept %player's name% &7to accept." to {_target}
+            stop
+
+        if arg-1 is "remove":
+            if arg-2 is not set:
+                send "&8[<##C2F4B2>FRIEND&8] &cUsage: &7/friends remove <player>"
+                stop
+            set {_target} to arg-2
+            if isFriend(player's name, {_target}) is false:
+                send "&8[<##C2F4B2>FRIEND&8] &b%{_target}% &7is not your friend."
+                stop
+            remove {_target} from {friends::%player's name%::list::*}
+            saveFriends(player's name)
+            loadFriends({_target})
+            remove player's name from {friends::%{_target}%::list::*}
+            saveFriends({_target})
+            send "&8[<##C2F4B2>FRIEND&8] &7You removed &b%{_target}% &7from your friends list."
+            if {_target} is online:
+                send "&8[<##C2F4B2>FRIEND&8] &b%player's name% &7removed you from their friends list." to {_target}
+            stop
+
+        if arg-1 is "accept":
+            if arg-2 is not set:
+                send "&8[<##C2F4B2>FRIEND&8] &cUsage: &7/friends accept <player>"
+                stop
+            set {_target} to arg-2
+            if hasPendingRequest({_target}, player's name) is false:
+                send "&8[<##C2F4B2>FRIEND&8] &7No pending request from &b%{_target}%&7."
+                stop
+            set {_mySize} to size of {friends::%player's name%::list::*}
+            if {_mySize} >= {@max-friends}:
+                send "&8[<##C2F4B2>FRIEND&8] &cYou've reached the max friends limit!"
+                stop
+            add {_target} to {friends::%player's name%::list::*}
+            remove {_target} from {friends::%player's name%::requests::*}
+            saveFriends(player's name)
+            loadFriends({_target})
+            add player's name to {friends::%{_target}%::list::*}
+            saveFriends({_target})
+            send "&8[<##C2F4B2>FRIEND&8] &7You are now friends with &b%{_target}%&7. &a✔"
+            if {_target} is online:
+                send "&8[<##C2F4B2>FRIEND&8] &b%player's name% &7accepted your friend request! &a✔" to {_target}
+            stop
+
+        if arg-1 is "announce":
+            if arg-2 is not set:
+                send "&8[<##C2F4B2>FRIEND&8] &cUsage: &7/friends announce <message>"
+                stop
+            if {friends::%player's name%::announce-cooldown} is set:
+                set {_remaining} to difference between now and {friends::%player's name%::announce-cooldown}
+                if {_remaining} < {@announce-cooldown} seconds:
+                    set {_left} to {@announce-cooldown} - ({_remaining} / 1)
+                    send "&8[<##C2F4B2>FRIEND&8] &cPlease wait &e%{_left}%s &cbefore announcing again."
+                    stop
+            if {friends::%player's name%::list::*} is not set:
+                send "&8[<##C2F4B2>FRIEND&8] &7You have no friends to announce to."
+                stop
+            set {_msg} to arg-2
+            set {_sent} to 0
+            loop {friends::%player's name%::list::*}:
+                set {_friend} to loop-value
+                if {_friend} is online:
+                    send "&8[<##C2F4B2>FRIEND&8] &b%player's name% &7» &e%{_msg}%" to {_friend}
+                    add 1 to {_sent}
+            send "&8[<##C2F4B2>FRIEND&8] &7Announcement sent to &e%{_sent}% &7online friends. &a✔"
+            set {friends::%player's name%::announce-cooldown} to now
+            stop
+
+        send "&8[<##C2F4B2>FRIEND&8] &7Unknown subcommand. Use &e/friends help&7."
+
+command /msg <text> [<text>]:
+    prefix: minecraft
+    trigger:
+        set {_target} to arg-1
+        if arg-2 is not set:
+            send "&8[<##C2F4B2>FRIEND&8] &cUsage: &7/msg <player> <message>"
+            stop
+        set {_msg} to arg-2
+        if {_target} is player's name:
+            send "&8[<##C2F4B2>FRIEND&8] &cYou can't message yourself!"
+            stop
+        if {_target} is not online:
+            send "&8[<##C2F4B2>FRIEND&8] &b%{_target}% &7is not online."
+            stop
+        loadFriends(player's name)
+        loadFriends({_target})
+        if isFriend(player's name, {_target}) is false:
+            send "&7You are not friends with that person."
+            stop
+        send "&8[<##C2F4B2>FRIEND&8] &b%player's name% &7→ &b%{_target}% &7» &e%{_msg}%"
+        send "&8[<##C2F4B2>FRIEND&8] &b%player's name% &7→ &byou &7» &e%{_msg}%" to {_target}
+        set {friends::%{_target}%::last-msg} to player's name
+        set {friends::%player's name%::last-msg} to {_target}
+
+command /r [<text>]:
+    trigger:
+        if arg-1 is not set:
+            send "&8[<##C2F4B2>FRIEND&8] &cUsage: &7/r <message>"
+            stop
+        loadFriends(player's name)
+        if {friends::%player's name%::last-msg} is not set:
+            send "&8[<##C2F4B2>FRIEND&8] &7No one to reply to."
+            stop
+        set {_target} to {friends::%player's name%::last-msg}
+        execute player command "/msg %{_target}% %arg-1%"
+
+on join:
+    wait 2 ticks
+    loadFriends(player's name)
+    loop all players:
+        if loop-player is not player:
+            loadFriends(loop-player's name)
+            if isFriend(loop-player's name, player's name) is true:
+                send "&8[<##C2F4B2>FRIEND&8] &b%player's name% &ahas come online &7● Say hi!" to loop-player
+
+on quit:
+    loop all players:
+        if loop-player is not player:
+            loadFriends(loop-player's name)
+            if isFriend(loop-player's name, player's name) is true:
+                send "&8[<##C2F4B2>FRIEND&8] &b%player's name% &7has gone &coffline &7●" to loop-player

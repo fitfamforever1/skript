@@ -1,0 +1,67 @@
+options:
+    packURL: "https://github.com/fitfamforever1/apocalpticrpg/releases/download/beta/latest.zip"
+    packHash: "1d565192bc0b1d50ffe2c2727dc6c021011ee3e8"
+
+
+on join:
+    wait 2 seconds
+    if {pack.bypass::%player%} is true:
+        stop trigger
+    send the resource pack from URL {@packURL} with hash {@packHash} to player
+
+
+command /resend:
+    trigger:
+        send the resource pack from URL {@packURL} with hash {@packHash} to player
+        send "&aʀᴇꜱᴇɴᴅɪɴɢ ʀᴇꜱᴏᴜʀᴄᴇ ᴘᴀᴄᴋ..." to player
+
+command /packlink:
+    trigger:
+        send formatted "<click:open_url:'https://github.com/fitfamforever1/apocalpticrpg/releases/download/beta/latest.zip'><yellow>ᴘᴀᴄᴋ ʟɪɴᴋ</yellow></click>" to player
+        send "ʏᴏᴜ ᴄᴀɴ ᴜꜱᴇ /ᴘᴀᴄᴋɪɢɴᴏʀᴇ ᴛᴏ ᴀᴠᴏɪᴅ ʀᴇꜱᴏᴜʀᴄᴇᴘᴀᴄᴋ." to player
+
+command /packignore:
+    trigger:
+        if {pack.bypass::%player%} is true:
+            set {pack.bypass::%player%} to false
+            send "&eʏᴏᴜ ᴡɪʟʟ ɴᴏᴡ ʙᴇ &cʀᴇǫᴜɪʀᴇᴅ&e ᴛᴏ ᴀᴄᴄᴇᴘᴛ ᴛʜᴇ ʀᴇꜱᴏᴜʀᴄᴇ ᴘᴀᴄᴋ." to player
+        else:
+            set {pack.bypass::%player%} to true
+            send "&eʏᴏᴜ ᴄᴀɴ ɴᴏᴡ &aɪɢɴᴏʀᴇ&e ᴛʜᴇ ʀᴇꜱᴏᴜʀᴄᴇ ᴘᴀᴄᴋ ʀᴇǫᴜɪʀᴇᴍᴇɴᴛ." to player
+
+
+command /packsend <player>:
+    permission: pack
+    permission message: &cYou don't have permission to do that.
+    trigger:
+        send the resource pack from URL {@packURL} with hash {@packHash} to arg-1
+        send "&aꜱᴇɴᴛ ᴛʜᴇ ʀᴇꜱᴏᴜʀᴄᴇ ᴘᴀᴄᴋ ᴛᴏ %arg-1%." to player
+
+
+command /packsendall:
+    permission: pack
+    permission message: &cYou don't have permission to do that.
+    trigger:
+        loop all players:
+            if {pack.bypass::%loop-player%} is true:
+                continue
+            send the resource pack from URL {@packURL} with hash {@packHash} to loop-player
+        send "&aꜱᴇɴᴛ ᴛʜᴇ ʀᴇꜱᴏᴜʀᴄᴇ ᴘᴀᴄᴋ ᴛᴏ ᴇᴠᴇʀʏᴏɴᴇ ᴏɴʟɪɴᴇ." to player
+
+
+on resource pack request response:
+    if resource pack is successfully installed:
+        send action bar "&aʀᴇꜱᴏᴜʀᴄᴇ ᴘᴀᴄᴋ ʟᴏᴀᴅᴇᴅ!" to player
+        stop trigger
+
+    if {pack.bypass::%player%} is true:
+        stop trigger
+
+    if resource pack is declined:
+        send "&cʀᴇꜱᴏᴜʀᴄᴇᴘᴀᴄᴋ ɪꜱ ᴀ ᴍᴜꜱᴛ ᴡʜɪʟᴇ ᴘʟᴀʏɪɴɢ ᴛʜᴇ ꜱᴇʀᴠᴇʀ, ᴅᴏᴡɴʟᴏᴀᴅ ɪᴛ ꜰʀᴏᴍ /ᴘᴀᴄᴋʟɪɴᴋ ᴏʀ ᴅᴏ /ʀᴇꜱᴇɴᴅ." to player
+        stop trigger
+
+    if resource pack is failed to download:
+        send action bar "&cꜰᴀɪʟᴇᴅ ᴛᴏ ᴅᴏᴡɴʟᴏᴀᴅ ᴛʜᴇ ʀᴇꜱᴏᴜʀᴄᴇ ᴘᴀᴄᴋ, ᴀᴛᴛᴇᴍᴘᴛɪɴɢ ʀᴇꜱᴇɴᴅ..." to player
+        wait 1 second
+        send the resource pack from URL {@packURL} with hash {@packHash} to player

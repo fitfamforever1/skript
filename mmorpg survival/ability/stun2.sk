@@ -1,0 +1,15 @@
+on damage:
+    damage cause is projectile
+    projectile is an arrow
+    attacker is a player
+    set {_bow} to attacker's tool
+    if display name of {_bow} is "&fEclipse Bow":
+        cancel event
+        delete projectile
+        set {_entity} to victim
+        set {_source} to damage source from arrow
+        damage {_entity} by 5.5 with {_source}
+        apply slowness 255 to {_entity} for 2 seconds
+        apply mining fatigue 255 to {_entity} for 2 seconds
+        if {_entity} is a player:
+            send action bar "&8⚡ &fYou have been &7stunned&f!" to {_entity}

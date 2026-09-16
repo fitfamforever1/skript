@@ -1,0 +1,303 @@
+function giveHelmet(p: player, id: number):: item:
+    switch {_id}:
+        case 1:
+            set {_item} to helmet("Rotten Helmet", 1, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZGM2ZjI3MmZjMzI0MDU1NzUxMGQ2ZTQ2MzRhZmEzNzRjZTZjMDJmOThiYjU2YmE2MzEyMjk5ZTU1MWM3Nzg1YSJ9fX0=")
+        case 2:
+            set {_item} to helmet("Frost Helmet", 2, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODA4NzQ0NjJhN2QzNjE4ZWFmYTFjNThlZjdjNTY2ZjQ4ZDgzOGVmNTNiNGY1MjBhMzhkNGJhNmExYWRjMTgxMSJ9fX0=")
+        case 3:
+            set {_item} to helmet("Molten Helmet", 3, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTExNGRiZDJiMGNjZjcyNDRiM2ZjYzI1ZWY0Y2RjYzBhNTYwYTQyOGU5OTNkNGU3YTI4ZGIzZGRhYjNmOGVlOSJ9fX0=")
+        case 4:
+            set {_item} to helmet("Gravedigger's Helmet", 4, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMmUwZDRkM2YyYWQ0ZjZkMzcwOTcxMTNjODc4NjhiOWQ4MmE1YjU1YjQwNzdmOGZmMGFhYmEzMDM2NDdkNTliNSJ9fX0=")
+        case 5:
+            set {_item} to helmet("Shadow Helmet", 5, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOGFmMDJjYzE5OTg4MzkwMDZhODQ1MWViOWE5MThmZGYyMjgyZjY0ZWM4MGM3ODJmMzQyOTc5ZGZkMmMxNjU5ZiJ9fX0=")
+        case 6:
+            set {_item} to helmet("Splintered Helmet", 6, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2RlNDMzNDIyNDRmNzFhYzRhMjljOTg4YmFkZjZlZjUwNTcxYzE0ZTA0NGIwOTAxYjg3MzJiMTk2Y2RkNmNiMSJ9fX0=")
+        case 7:
+            set {_item} to helmet("Glacier Helmet", 7, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTFlZGIxNDI1OWYxNmE3YTQxZDNjZmFlZGZhYzBmZDBlNjdhMWEzMGE0YTc5NTQwMzdiYTYxNzU3YzUzZjdkIn19fQ==")
+        case 8:
+            set {_item} to helmet("Cinder Helmet", 8, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzc0ZjY1ZjliOTk1OGE2MzkyYzhiNjMzMjRkNzZlODBkMmI1MDljMTk4NWEwMDIzMmFlY2NlNDA5NTg1YWUyYSJ9fX0=")
+        case 9:
+            set {_item} to helmet("Bone Helmet", 9, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZmIwMjkyNDQwNDJlZTY5NDFkMDEwNzU1ZTMwYWI1ZjRkMDk1YTMwZmE4MGZmNThiYmE2N2U4NWNhNWI4OTU3ZCJ9fX0=")
+        case 10:
+            set {_item} to helmet("Rusty Helmet", 10, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzAwOGU1MjNjYTQ5NDI0NDhiOGVjNzFhNzRlMGI1NzRlNTE2Y2E1NmZmOWQ2MjIxYTRiMjFkOWNiZDdhZjQ2ZCJ9fX0=")
+        case 11:
+            set {_item} to helmet("Timber Helmet", 11, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZGE1Yjc4NzI1OTk1YzdhYjNlYTVkNDg3OGU1ODk3YjExNDhiZmIwM2JjYjdkN2RjMDgwOGZlZDYzNjYwZDA0NCJ9fX0=")
+        case 12:
+            set {_item} to helmet("Frost Helmet", 12, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjMwMDA3YTgzODliNDkzODdmMDZkZWYwNjY5NjhlMmVkMDAyYmJmMDM0NjIyZTE0OGE2MDA0MDUyZTM4MmJhZiJ9fX0=")
+        case 13:
+            set {_item} to helmet("Blaze Helmet", 13, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmIzMGY1NzkzNDUyMjNjMGZjOTM4YWFlNGFjYzlhYTZkNmI1YzZlM2U3N2ZhMTFjZDJiMmM0MTY4NDE4ZWY1YSJ9fX0=")
+        case 14:
+            set {_item} to helmet("Ender Helmet", 14, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzQwZTg5NjIxNDNlZjQxZGVmYjBiNjQ4OWQ3MzZiNGZhODhhOTM4N2Y4Y2RlMGM1ZjM2NjkyODY4NzkxMjE0NCJ9fX0=")
+        case 15:
+            set {_item} to helmet("Warden Helmet", 15, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDE0YzU5YmYwMmQ1OTZhM2E4ZDc1N2ViZjQzYzkyMGI4MzNmMGRlYzFhZmFmOTlhMzNhZjBmN2Q4YWMyYTMzNyJ9fX0=")
+        case 16:
+            set {_item} to helmet("Wither Helmet", 16, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTBiYTBhY2YwZWY2ODhmOTNjYmFhMjQ1NzE2ZGNjMzM5MGU4YzcwOTIzZTI5YzI2NTdkZWRlOGYxMjlkYjM4NiJ9fX0=")
+        case 17:
+            set {_item} to helmet("Crystal Helmet", 17, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTY1NDAxODZlYjBlNzQ4NjY4ZGZjZGIwODAwZDkwMzJlMjFjYTY2NTg2ZjM2OTU0ODA0NjY4Y2ExOGVhMDBkMyJ9fX0=")
+        case 18:
+            set {_item} to helmet("Ember Helmet", 18, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjBiMTcwMTFhOGRkMWU5NjdkMThkMmI5MDAwMTcyZjNmYTdjYTY0MmYxOWE3YWFhM2M2NjFkNWJlNjk1MDBiYiJ9fX0=")
+        case 19:
+            set {_item} to helmet("Chaos Helmet", 19, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTViNmMxOGJmMzcyMGFhZGM5MjExZjIxOTg0MmYzNmVhMmU2NTNiZDc4NmMxN2Y0MTliMGE0YzgyMzFkY2JiZCJ9fX0=")
+        case 20:
+            set {_item} to helmet("Golem Helmet", 20, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTVmODhmYWQxNDJhMTcxOWEyMjYwZDZjNDY0MjViYjg3ZjUxOTA3NTU5MzE2OTcyMGY4YmJiNDVjYjY2NjY3YyJ9fX0=")
+        case 21:
+            set {_item} to helmet("Divine Helmet", 21, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2RlNDFlODE1YTQ5MmM5MmQ4YTQ1YmU1NGRhOWVhNjdlNmMyOTliZWNlMTM4NmMxZGZhOWMxNjk5ZDA5ZTA4NCJ9fX0=")
+        case 22:
+            set {_item} to helmet("Starfall Helmet", 22, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWJmZDk2NDJjZGYzOTYyYTBlY2QyYjljMDA3Mjk1MDIwNTM4ZGE3MzJkNTk3YzU5YmJiODIwZTM4OWY5ZmMyYSJ9fX0=")
+        case 23:
+            set {_item} to helmet("Dragon Helmet", 23, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjIzYjIwNWE1MDY2Y2YxZGY0YTJjZmEzYTQ5MDI0NjZjMjgyNDMwNmNiZGQ5ZDU2ZGI2OGVlMWY3ZTlkZGY1NiJ9fX0=")
+        case 24:
+            set {_item} to helmet("Fallen Helmet", 24, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTNmZTY3NmJiMzg4ODBjNjU5ZWY2NzIxMzM1N2FiYWJhODI0NWQwOTk1NjRhYzY3ODY5NWYwMzgzMzdiZmM2YiJ9fX0=")
+        case 25:
+            set {_item} to helmet("Blood Helmet", 25, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjAzMjMyOTVhOTRlMTBkODU0NDU3ZGUwOTEwNzYyZTM0YmZiN2I1MjYyNzdhMjE1YjI4MGRmYzkwOWNiZTJjOSJ9fX0=")
+        case 26:
+            set {_item} to helmet("Fairy Helmet", 26, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWMyYmE2YWNkMzcwZGU2M2U4YzUxN2YxYzY4MTc5YjkzODg4YmQyYjlhYTE1ODI0ODAwOTFkZTM1MjU5ODY3YSJ9fX0=")
+        case 27:
+            set {_item} to helmet("Divan Helmet", 27, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTVjMmY3ZDlhNjMwYTE3OTljYTYzYmQwNmYxNzA1NTE3ZTk2NjljN2ExMTFhMjAwMjg1YTVkNTNmODE5NzIxNCJ9fX0=")
+        case 28:
+            set {_item} to helmet("Ashfall Helmet", 28, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjgwZDQ0Y2ExNWUzMDNhMTcxNGQ4ZDY4OGJjM2QwYzQ4NDhhZjQ4YmJlMTZiMzg4OTNlNjQyOThkZGNmZTEwZSJ9fX0=")
+        case 29:
+            set {_item} to helmet("Bone Helmet", 29, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTUyMjcxMTUwYjAzMDhmYTc0YjdhZDI3MGU4N2M5NjMyZjMxMzZiMTc2ZThhNzE1YjZkYzgzNmFlYTU4ZmY2YiJ9fX0=")
+        case 30:
+            set {_item} to helmet("Warforged Helmet", 30, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2YyYmVmMTc5MGNkMGQ4MDExN2Q3YTlkYzQ4NDVlNWIzNmQ3OGQ0OTY2ODQwZTYyMjY4NDQwYWE4MGE2NDAzMyJ9fX0=")
+        default:
+            send "&cInvalid armor ID." to {_p}
+            stop
+    return {_item}
+
+function giveChestplate(p: player, id: number):: item:
+    switch {_id}:
+        case 1:
+            set {_item} to chestplate(leather chestplate, "Rotten Chestplate", 1, 121, 127, 68)
+        case 2:
+            set {_item} to chestplate(leather chestplate, "Frost Chestplate", 2, 113, 178, 201)
+        case 3:
+            set {_item} to chestplate(leather chestplate, "Molten Chestplate", 3, 35, 35, 39)
+        case 4:
+            set {_item} to chestplate(leather chestplate, "Gravedigger's Chestplate", 4, 63, 37, 43)
+        case 5:
+            set {_item} to chestplate(leather chestplate, "Shadow Chestplate", 5, 61, 61, 61)
+        case 6:
+            set {_item} to chestplate(leather chestplate, "Splintered Chestplate", 6, 74, 49, 36)
+        case 7:
+            set {_item} to chestplate(leather chestplate, "Glacier Chestplate", 7, 57, 89, 113)
+        case 8:
+            set {_item} to chestplate(leather chestplate, "Cinder Chestplate", 8, 243, 77, 0)
+        case 9:
+            set {_item} to chestplate(leather chestplate, "Bone Chestplate", 9, 255, 255, 255)
+        case 10:
+            set {_item} to chestplate(leather chestplate, "Rusty Chestplate", 10, 145, 114, 85)
+        case 11:
+            set {_item} to chestplate(leather chestplate, "Timber Chestplate", 11, 121, 104, 91)
+        case 12:
+            set {_item} to chestplate(leather chestplate, "Frost Chestplate", 12, 64, 81, 90)
+        case 13:
+            set {_item} to chestplate(leather chestplate, "Blaze Chestplate", 13, 159, 59, 16)
+        case 14:
+            set {_item} to chestplate(leather chestplate, "Ender Chestplate", 14, 72, 72, 74)
+        case 15:
+            set {_item} to chestplate(leather chestplate, "Warden Chestplate", 15, 84, 72, 86)
+        case 16:
+            set {_item} to chestplate(leather chestplate, "Wither Chestplate", 16, 48, 47, 46)
+        case 17:
+            set {_item} to chestplate(leather chestplate, "Crystal Chestplate", 17, 177, 7, 224)
+        case 18:
+            set {_item} to chestplate(leather chestplate, "Ember Chestplate", 18, 254, 231, 97)
+        case 19:
+            set {_item} to chestplate(leather chestplate, "Chaos Chestplate", 19, 212, 64, 76)
+        case 20:
+            set {_item} to chestplate(leather chestplate, "Golem Chestplate", 20, 149, 137, 118)
+        case 21:
+            set {_item} to chestplate(leather chestplate, "Divine Chestplate", 21, 235, 223, 243)
+        case 22:
+            set {_item} to chestplate(leather chestplate, "Starfall Chestplate", 22, 33, 0, 111)
+        case 23:
+            set {_item} to chestplate(leather chestplate, "Dragon Chestplate", 23, 32, 59, 73)
+        case 24:
+            set {_item} to chestplate(leather chestplate, "Fallen Chestplate", 24, 70, 70, 70)
+        case 25:
+            set {_item} to chestplate(leather chestplate, "Blood Chestplate", 25, 208, 36, 68)
+        case 26:
+            set {_item} to chestplate(leather chestplate, "Fairy Chestplate", 26, 78, 65, 189)
+        case 27:
+            set {_item} to chestplate(leather chestplate, "Divan Chestplate", 27, 42, 83, 166)
+        case 28:
+            set {_item} to chestplate(leather chestplate, "Ashfall Chestplate", 28, 72, 72, 71)
+        case 29:
+            set {_item} to chestplate(leather chestplate, "Bone Chestplate", 29, 171, 170, 201)
+        case 30:
+            set {_item} to chestplate(leather chestplate, "Warforged Chestplate", 30, 36, 36, 36)
+        default:
+            send "&cInvalid armor ID." to {_p}
+            stop
+    return {_item}
+
+function giveLeggings(p: player, id: number):: item:
+    switch {_id}:
+        case 1:
+            set {_item} to leggings(leather leggings, "Rotten Leggings", 1, 121, 127, 68)
+        case 2:
+            set {_item} to leggings(leather leggings, "Frost Leggings", 2, 113, 178, 201)
+        case 3:
+            set {_item} to leggings(leather leggings, "Molten Leggings", 3, 35, 35, 39)
+        case 4:
+            set {_item} to leggings(leather leggings, "Gravedigger's Leggings", 4, 63, 37, 43)
+        case 5:
+            set {_item} to leggings(leather leggings, "Shadow Leggings", 5, 61, 61, 61)
+        case 6:
+            set {_item} to leggings(leather leggings, "Splintered Leggings", 6, 74, 49, 36)
+        case 7:
+            set {_item} to leggings(leather leggings, "Glacier Leggings", 7, 57, 89, 113)
+        case 8:
+            set {_item} to leggings(leather leggings, "Cinder Leggings", 8, 243, 77, 0)
+        case 9:
+            set {_item} to leggings(leather leggings, "Bone Leggings", 9, 255, 255, 255)
+        case 10:
+            set {_item} to leggings(leather leggings, "Rusty Leggings", 10, 145, 114, 85)
+        case 11:
+            set {_item} to leggings(leather leggings, "Timber Leggings", 11, 121, 104, 91)
+        case 12:
+            set {_item} to leggings(leather leggings, "Frost Leggings", 12, 64, 81, 90)
+        case 13:
+            set {_item} to leggings(leather leggings, "Blaze Leggings", 13, 159, 59, 16)
+        case 14:
+            set {_item} to leggings(leather leggings, "Ender Leggings", 14, 72, 72, 74)
+        case 15:
+            set {_item} to leggings(leather leggings, "Warden Leggings", 15, 84, 72, 86)
+        case 16:
+            set {_item} to leggings(leather leggings, "Wither Leggings", 16, 48, 47, 46)
+        case 17:
+            set {_item} to leggings(leather leggings, "Crystal Leggings", 17, 177, 7, 224)
+        case 18:
+            set {_item} to leggings(leather leggings, "Ember Leggings", 18, 254, 231, 97)
+        case 19:
+            set {_item} to leggings(leather leggings, "Chaos Leggings", 19, 212, 64, 76)
+        case 20:
+            set {_item} to leggings(leather leggings, "Golem Leggings", 20, 149, 137, 118)
+        case 21:
+            set {_item} to leggings(leather leggings, "Divine Leggings", 21, 235, 223, 243)
+        case 22:
+            set {_item} to leggings(leather leggings, "Starfall Leggings", 22, 33, 0, 111)
+        case 23:
+            set {_item} to leggings(leather leggings, "Dragon Leggings", 23, 32, 59, 73)
+        case 24:
+            set {_item} to leggings(leather leggings, "Fallen Leggings", 24, 70, 70, 70)
+        case 25:
+            set {_item} to leggings(leather leggings, "Blood Leggings", 25, 208, 36, 68)
+        case 26:
+            set {_item} to leggings(leather leggings, "Fairy Leggings", 26, 78, 65, 189)
+        case 27:
+            set {_item} to leggings(leather leggings, "Divan Leggings", 27, 42, 83, 166)
+        case 28:
+            set {_item} to leggings(leather leggings, "Ashfall Leggings", 28, 72, 72, 71)
+        case 29:
+            set {_item} to leggings(leather leggings, "Bone Leggings", 29, 171, 170, 201)
+        case 30:
+            set {_item} to leggings(leather leggings, "Warforged Leggings", 30, 36, 36, 36)
+        default:
+            send "&cInvalid armor ID." to {_p}
+            stop
+    return {_item}
+
+function giveBoots(p: player, id: number):: item:
+    switch {_id}:
+        case 1:
+            set {_item} to boots(leather boots, "Rotten Boots", 1, 121, 127, 68)
+        case 2:
+            set {_item} to boots(leather boots, "Frost Boots", 2, 113, 178, 201)
+        case 3:
+            set {_item} to boots(leather boots, "Molten Boots", 3, 35, 35, 39)
+        case 4:
+            set {_item} to boots(leather boots, "Gravedigger's Boots", 4, 63, 37, 43)
+        case 5:
+            set {_item} to boots(leather boots, "Shadow Boots", 5, 61, 61, 61)
+        case 6:
+            set {_item} to boots(leather boots, "Splintered Boots", 6, 74, 49, 36)
+        case 7:
+            set {_item} to boots(leather boots, "Glacier Boots", 7, 57, 89, 113)
+        case 8:
+            set {_item} to boots(leather boots, "Cinder Boots", 8, 243, 77, 0)
+        case 9:
+            set {_item} to boots(leather boots, "Bone Boots", 9, 255, 255, 255)
+        case 10:
+            set {_item} to boots(leather boots, "Rusty Boots", 10, 145, 114, 85)
+        case 11:
+            set {_item} to boots(leather boots, "Timber Boots", 11, 121, 104, 91)
+        case 12:
+            set {_item} to boots(leather boots, "Frost Boots", 12, 64, 81, 90)
+        case 13:
+            set {_item} to boots(leather boots, "Blaze Boots", 13, 159, 59, 16)
+        case 14:
+            set {_item} to boots(leather boots, "Ender Boots", 14, 72, 72, 74)
+        case 15:
+            set {_item} to boots(leather boots, "Warden Boots", 15, 84, 72, 86)
+        case 16:
+            set {_item} to boots(leather boots, "Wither Boots", 16, 48, 47, 46)
+        case 17:
+            set {_item} to boots(leather boots, "Crystal Boots", 17, 177, 7, 224)
+        case 18:
+            set {_item} to boots(leather boots, "Ember Boots", 18, 254, 231, 97)
+        case 19:
+            set {_item} to boots(leather boots, "Chaos Boots", 19, 212, 64, 76)
+        case 20:
+            set {_item} to boots(leather boots, "Golem Boots", 20, 149, 137, 118)
+        case 21:
+            set {_item} to boots(leather boots, "Divine Boots", 21, 235, 223, 243)
+        case 22:
+            set {_item} to boots(leather boots, "Starfall Boots", 22, 33, 0, 111)
+        case 23:
+            set {_item} to boots(leather boots, "Dragon Boots", 23, 32, 59, 73)
+        case 24:
+            set {_item} to boots(leather boots, "Fallen Boots", 24, 70, 70, 70)
+        case 25:
+            set {_item} to boots(leather boots, "Blood Boots", 25, 208, 36, 68)
+        case 26:
+            set {_item} to boots(leather boots, "Fairy Boots", 26, 78, 65, 189)
+        case 27:
+            set {_item} to boots(leather boots, "Divan Boots", 27, 42, 83, 166)
+        case 28:
+            set {_item} to boots(leather boots, "Ashfall Boots", 28, 72, 72, 71)
+        case 29:
+            set {_item} to boots(leather boots, "Bone Boots", 29, 171, 170, 201)
+        case 30:
+            set {_item} to boots(leather boots, "Warforged Boots", 30, 36, 36, 36)
+        default:
+            send "&cInvalid armor ID." to {_p}
+            stop
+    return {_item}
+
+command /givehelmet <number>:
+    permission: admin.item
+    trigger:
+        set {_item} to giveHelmet(player, arg-1)
+        give {_item} to player
+
+command /givechestplate <number>:
+    permission: admin.item
+    trigger:
+        set {_item} to giveChestplate(player, arg-1)
+        give {_item} to player
+
+command /giveleggings <number>:
+    permission: admin.item
+    trigger:
+        set {_item} to giveLeggings(player, arg-1)
+        give {_item} to player
+
+command /giveboots <number>:
+    permission: admin.item
+    trigger:
+        set {_item} to giveBoots(player, arg-1)
+        give {_item} to player
+
+command /giveset <number>:
+    permission: admin.item
+    trigger:
+        set {_item1} to giveHelmet(player, arg-1)
+        set {_item2} to giveChestplate(player, arg-1)
+        set {_item3} to giveLeggings(player, arg-1)
+        set {_item4} to giveBoots(player, arg-1)
+        give {_item1} to player
+        give {_item2} to player
+        give {_item3} to player
+        give {_item4} to player

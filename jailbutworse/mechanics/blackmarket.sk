@@ -1,0 +1,19 @@
+on right click on cauldron:
+    if distance between player and location(-79, -11, -17, world "world") < 3:
+        cancel event
+        teleport player to location(-76.5, -20, -19.5, world "world")
+        send "<##FE7300>[SYSTEM] &7You have entered the <##C20C0C>Black Market&7." to player
+    if distance between player and location(35, -11, 66, world "world") < 3:
+        cancel event
+        teleport player to location(-76.5, -20, -19.5, world "world")
+        send "<##FE7300>[SYSTEM] &7You have entered the <##C20C0C>Black Market&7." to player
+    if distance between player and location(-100, -11, 31, world "world") < 3:
+        cancel event
+        teleport player to location(-76.5, -20, -19.5, world "world")
+        send "<##FE7300>[SYSTEM] &7You have entered the <##C20C0C>Black Market&7." to player
+
+on right click on oak wall sign:
+    if distance between player and location(-79, -19, -22, world "world") < 3:
+        cancel event
+        teleport player to location(-75.5, -11, -8.5, world "world")
+        send "<##FE7300>[SYSTEM] &7You have left the <##C20C0C>Black Market&7." to player

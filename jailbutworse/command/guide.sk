@@ -1,0 +1,89 @@
+command /guide:
+    trigger:
+        send "" to player
+        send "&8&m----------------------------------------" to player
+        send "         <##FE7300>[PRISON GUIDE]" to player
+        send "&8&m----------------------------------------" to player
+        send "" to player
+        send "&e&lRoles" to player
+        send "" to player
+        send "  &6&lWarden" to player
+        send "  &8» &fAnyone can become the Warden by using &e/warden&f." to player
+        send "  &8» &fOnly &c1 player &fcan be Warden at a time." to player
+        send "  &8» &fIf the Warden dies, the role is removed automatically." to player
+        send "  &8» &fResign from Warden using &e/resignwarden&f." to player
+        send "" to player
+        send "  &6&lPrison Staff" to player
+        send "  &8» &fThe Warden can assign roles to players." to player
+        send "  &8» &fThey can be nurses, guard or SWAT." to player
+        send "  &8» &fDo not abuse your role or randomly kill prisoners." to player
+        send "" to player
+        send "  &6&lCrimianl" to player
+        send "  &8» &fThe player can escape from prison by using tools or special routes." to player
+        send "  &8» &fPlayer might become criminals by finding criminal hideouts." to player
+        send "" to player
+        send "&8&m----------------------------------------" to player
+        send "" to player
+        send "&e&lJOBS & MONEY" to player
+        send "" to player
+        send "  &6&lJobs" to player
+        send "  &8» &fWork in or outside the prison to earn money." to player
+        send "  &8» &fPrison staff can earn by killing criminals." to player
+        send "" to player
+        send "  &6&lSpending Money" to player
+        send "  &8» &fThere are sign shop in blackmarket aswell as warden's office." to player
+        send "  &8» &fYou can enter the blackmarket by right clicking a cauldron." to player
+        send "" to player
+        send "&8&m----------------------------------------" to player
+        send "  &7Use &e/rules &7to view the server rules." to player
+        send "  &7Use &e/help &7to view all commands." to player
+        send "&8&m----------------------------------------" to player
+        send "" to player
+
+command /help:
+    trigger:
+        send "" to player
+        send "&8&m----------------------------------------" to player
+        send "          <##FE7300>[PRISON HELP]" to player
+        send "&8&m----------------------------------------" to player
+        send "" to player
+        send "&e&lGENERAL" to player
+        send "  &8» &e/rules &8- &fView the server rules." to player
+        send "  &8» &e/guide &8- &fView the prison guide." to player
+        send "  &8» &e/help &8- &fView this help menu." to player
+        send "" to player
+        send "&e&lROLES" to player
+        send "  &8» &e/warden &8- &fBecome the Warden." to player
+        send "  &8» &e/resignwarden &8- &fResign from Warden." to player
+        send "  &8» &e/resignguard &8- &fResign from Guard." to player
+        send "  &8» &e/resignswat &8- &fResign from SWAT." to player
+        send "  &8» &e/resignnurse &8- &fResign from Nurse." to player
+        send "" to player
+        send "&e&lWARDEN ONLY" to player
+        send "  &8» &e/guard <player> &8- &fAssign a player as Guard." to player
+        send "  &8» &e/swat <player> &8- &fAssign a player as SWAT." to player
+        send "  &8» &e/nurse <player> &8- &fAssign a player as Nurse." to player
+        send "  &8» &e/fire <player> &8- &fFire a player from their role." to player
+        send "  &8» &e/intercom <message> &8- &fBroadcast to all players." to player
+        send "  &8» &e/femboy &8- &fWarden exclusive fun command." to player
+        send "" to player
+        send "&8&m----------------------------------------" to player
+        send "" to player
+
+command /new <offline player>:
+    trigger:
+        send "" to arg-1
+        send "&8&m----------------------------------------" to arg-1
+        send "       <##FE7300>[WELCOME TO PRISON]" to arg-1
+        send "&8&m----------------------------------------" to arg-1
+        send "" to arg-1
+        send "  &7Hey &e%arg-1%&7! Welcome to the server." to arg-1
+        send "  &7Here are some commands to get you started:" to arg-1
+        send "" to arg-1
+        send "  &8» &e/rules &8- &fView the server rules." to arg-1
+        send "  &8» &e/guide &8- &fView the prison guide." to arg-1
+        send "  &8» &e/help &8- &fView all commands." to arg-1
+        send "" to arg-1
+        send "&8&m----------------------------------------" to arg-1
+        send "" to arg-1
+        send "<##FE7300>[SYSTEM] &7Welcome message sent to &e%arg-1%&7." to player

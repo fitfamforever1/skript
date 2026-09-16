@@ -1,0 +1,67 @@
+every 300 seconds:
+    add 1 to {server::time}
+    if {server::time} is not set:
+        set {server::time} to 0
+    if {server::time} is 0:
+        set {server::event} to "Roll Call"
+        execute console command "time set 0"
+        execute console command "tab bossbar announce RollCall 299"
+        send title "&cMorning Roll Call" with subtitle "&7Line up in the courtyard!" to all players
+    if {server::time} is 1:
+        set {server::event} to "Breakfast"
+        execute console command "time set 1000"
+        send title "&6Breakfast Time" with subtitle "&7Head to the cafeteria!" to all players
+        execute console command "tab bossbar announce Breakfast 299"
+    if {server::time} is 2:
+        set {server::event} to "Work Time"
+        execute console command "time set 4000"
+        send title "&eWork Time" with subtitle "&7Time for work!" to all players
+        execute console command "tab bossbar announce WorkTime 299"
+    if {server::time} is 3:
+        set {server::event} to "Lunch"
+        execute console command "time set 8000"
+        send title "&6Lunch Time" with subtitle "&7Head to the cafeteria!" to all players
+        execute console command "tab bossbar announce Lunch 299"
+    if {server::time} is 4:
+        set {server::event} to "Free Time"
+        execute console command "time set 11500"
+        send title "&eFree Time" with subtitle "&7Relax!" to all players
+        execute console command "tab bossbar announce FreeTime 299"
+    if {server::time} is 5:
+        set {server::event} to "Dinner"
+        execute console command "time set 13000"
+        send title "&6Dinner Time" with subtitle "&7Head to the cafeteria!" to all players
+        execute console command "tab bossbar announce Dinner 299"
+    if {server::time} is 7:
+        set {server::event} to "Lights Out"
+        execute console command "time set 18000"
+        send title "&8Lights Out" with subtitle "&7No leaving cells allowed." to all players
+        send "<##FE7300>[SYSTEM] &7- &8Lights Out | &cKill any prisoner out their cell!" to all players
+        set {server::time} to -1
+        execute console command "tab bossbar announce LightsOut 299"
+
+
+every 1 second:
+    if {warden::cooldown} is set:
+        subtract 1 from {warden::cooldown}
+        if {warden::cooldown} <= 0:
+            delete {warden::cooldown}
+            loop all players:
+                send action bar "&7The <##4169E1>Warden &7position is now open! Use &e/warden &7to claim it. &7| &7Period: &e%{server::event}%" to loop-value
+            send "<##FE7300>[SYSTEM] &7The Warden position is now open! Use &e/warden &7to claim it." to all players
+            stop
+        loop all players:
+            send action bar "<##4169E1>Warden &7position opens in &e%{warden::cooldown}%&7s... &7| &7Period: &e%{server::event}%" to loop-value
+        stop
+    if {warden::player} is set:
+        if {warden::player} is online:
+            add 1 to {warden::time}
+            set {_m} to floor({warden::time} / 60)
+            loop all players:
+                send action bar "<##4169E1>Warden: &e%{warden::player}% &7| Warden Time: <##4169E1>%{_m}%m &7| &7Period: &e%{server::event}%" to loop-value
+            stop
+    loop all players:
+        send action bar "&7The <##4169E1>Warden &7position is now open! Use &e/warden &7to claim it. &7| &7Period: &e%{server::event}%" to loop-value
+
+
+

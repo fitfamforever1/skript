@@ -1,0 +1,95 @@
+command /itemstats [<text>] [<text>] [<number>]:
+    permission: admin
+    trigger:
+        set {_item} to player's tool
+        if {_item} is air:
+            send "&cYou are not holding any item!"
+            stop
+
+        if arg-1 is not set:
+            set {_item} to player's tool
+            send "&8&m                    &r"
+            send "&7[&aPDC&7] &fItem Stats for &e%type of {_item}%"
+            send "&8&m                    &r"
+            set {_found} to 0
+            set {_val} to data tag "itemstat:damage" of {_item}
+            if {_val} is set:
+                send "&7» &fDamage &8= &c%{_val}%"
+                add 1 to {_found}
+            set {_val} to data tag "itemstat:critchance" of {_item}
+            if {_val} is set:
+                send "&7» &fCrit Chance &8= &e%{_val}%%%"
+                add 1 to {_found}
+            set {_val} to data tag "itemstat:critdamage" of {_item}
+            if {_val} is set:
+                send "&7» &fCrit Damage &8= &6%{_val}%%%"
+                add 1 to {_found}
+            set {_val} to data tag "itemstat:defense" of {_item}
+            if {_val} is set:
+                send "&7» &fDefense &8= &a%{_val}%"
+                add 1 to {_found}
+            set {_val} to data tag "itemstat:resistance" of {_item}
+            if {_val} is set:
+                send "&7» &fTrue Defense &8= &f%{_val}%"
+                add 1 to {_found}
+            set {_val} to data tag "itemstat:fishing_luck" of {_item}
+            if {_val} is set:
+                send "&7» &fFishing Luck &8= &b%{_val}%"
+                add 1 to {_found}
+            set {_val} to data tag "itemstat:farming_luck" of {_item}
+            if {_val} is set:
+                send "&7» &fFarming Luck &8= &b%{_val}%"
+                add 1 to {_found}
+            if {_found} is 0:
+                send "&cNo itemstat PDC tags found on this item."
+            send "&8&m                    &r"
+            stop
+
+        if arg-1 is "help":
+            send "&8&m                    &r"
+            send "&7[&aPDC&7] &fUsage:"
+            send "&7» &e/itemstats &8- &fShow all stats"
+            send "&7» &e/itemstats set <stat> <value> &8- &fSet a stat"
+            send "&7» &e/itemstats remove <stat> &8- &fRemove a stat"
+            send "&7» &e/itemstats clear &8- &fRemove all stats"
+            send "&7Available stats: &edamage, critchance, critdamage, defense, resistance, fishing_luck, farming_luck"
+            send "&8&m                    &r"
+            stop
+
+        if arg-1 is "clear":
+            set {_item} to player's tool
+            delete data tag "itemstat:damage" of {_item}
+            delete data tag "itemstat:critchance" of {_item}
+            delete data tag "itemstat:critdamage" of {_item}
+            delete data tag "itemstat:defense" of {_item}
+            delete data tag "itemstat:resistance" of {_item}
+            delete data tag "itemstat:fishing_luck" of {_item}
+            delete data tag "itemstat:farming_luck" of {_item}
+            set player's tool to {_item}
+            send "&7[&aPDC&7] &cCleared all itemstat tags."
+            stop
+
+        if arg-1 is "remove":
+            if arg-2 is not set:
+                send "&cUsage: /itemstats remove <stat>"
+                stop
+            set {_key} to "itemstat:%arg-2%"
+            delete data tag {_key} of {_item}
+            set player's tool to {_item}
+            send "&7[&aPDC&7] &fRemoved &e%arg-2%&f from item."
+            stop
+
+        if arg-1 is "set":
+            if arg-2 is not set:
+                send "&cUsage: /itemstats set <stat> <value>"
+                stop
+            if arg-3 is not set:
+                send "&cUsage: /itemstats set <stat> <value>"
+                stop
+            set {_key} to "itemstat:%arg-2%"
+            set data tag {_key} of {_item} to arg-3
+            set player's tool to {_item}
+            send "&7[&aPDC&7] &fSet &e%arg-2% &8= &a%arg-3%&f on item."
+            stop
+
+        send "&cUnknown subcommand. Use /itemstats help"

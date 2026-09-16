@@ -1,0 +1,44 @@
+on load:
+    set {death1} to "{victim} got clapped by {attacker}."
+    set {death2} to "{attacker} turned {victim} into a corpse."
+    set {death3} to "{victim} thought they could beat {attacker}. They were wrong."
+    set {death4} to "{attacker} sent {victim} back to spawn."
+    set {death5} to "{victim} ran straight into {attacker}'s blade."
+    set {death6} to "{attacker} made {victim} look easy."
+    set {death7} to "{victim} donated their loot to {attacker}."
+    set {death8} to "{attacker} ended {victim}'s career."
+    set {death9} to "{victim} had no business fighting {attacker}."
+    set {death10} to "{attacker} deleted {victim} from the server."
+
+on join:
+    set join message to "&8[&a+&8] &7%player%"
+
+on first join:
+    set join message to "&8[&a+&8] &b%player%"
+
+    wait 2 ticks
+
+    send "&8&m--------------------------------------------------" to player
+    send "&f&lᴄʟᴏᴠᴇʀ ʙᴏx" to player
+    send "" to player
+    send "&f/rules &8» &7View the server rules!" to player
+    send "&f/discord &8» &7Official discord store!" to player
+    send "" to player
+    send "&aEnjoy your adventure! ✔" to player
+    send "&8&m--------------------------------------------------" to player
+
+
+on quit:
+    set quit message to "&8[&c-&8] &7%player%"
+
+on death of player:
+    if attacker is a player:
+        set {_roll} to random integer between 1 and 10
+        set {_msg} to {death%{_roll}%}
+        set {_victim} to "%victim%"
+        set {_attacker} to "%attacker%"
+        replace all "{victim}" in {_msg} with {_victim}
+        replace all "{attacker}" in {_msg} with {_attacker}
+        set death message to {_msg}
+    else:
+        set death message to ""

@@ -1,0 +1,20 @@
+command /nbtitem <text>:
+    permission: admin
+    trigger:
+        if player's tool is air:
+            send "&cYou must hold an item." to player
+            stop
+
+        set string tag "craft" of custom nbt of player's tool to arg 1
+        send "&aSet &ecraft&a = &e%arg 1%&a on held item." to player
+
+
+command /nbtcheck:
+    permission: admin
+    trigger:
+        if player's tool is air:
+            send "&cYou must hold an item." to player
+            stop
+
+        set {_nbt} to custom nbt of player's tool
+        send "&aNBT: &e%{_nbt}%" to player

@@ -1,0 +1,31 @@
+every 1 second:
+    loop all players:
+        if {combat::%loop-player's uuid%} > 0:
+            remove 1 from {combat::%loop-player's uuid%}
+            send action bar "&c⚔ Combat: &f%{combat::%loop-player's uuid%}%s" to loop-player
+            if {combat::%loop-player's uuid%} <= 0:
+                delete {combat::%loop-player's uuid%}
+                send action bar "&8[&4SYSTEM&8] &aYou are no longer in combat." to loop-player
+
+
+on death of player:
+    if {combat::%victim's uuid%} > 0:
+        delete {combat::%victim's uuid%}
+        send action bar "&8[&4SYSTEM&8] &aYou are no longer in combat." to victim
+
+on quit:
+    if {combat::%player's uuid%} > 0:
+        broadcast "&c%player% &7logged out in combat!"
+        kill player
+        delete {combat::%player's uuid%}
+        
+on entering region "spawn":
+    if {combat::%player's uuid%} > 0:
+        cancel event
+        push player in the horizontal direction of player at speed -1.5
+        send action bar "&8[&4SYSTEM&8] &cYou cannot enter spawn while in combat!" to player
+
+on command:
+    if {combat::%player's uuid%} > 0:
+        cancel event
+        send action bar "&8[&4SYSTEM&8] &cYou cannot run commands while in combat!" to player

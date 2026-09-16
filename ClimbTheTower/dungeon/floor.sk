@@ -1,0 +1,115 @@
+on load:
+    set number data tag "floor1:max" of world "world" to 1
+    set number data tag "floor2:max" of world "world" to 3
+    set number data tag "floor3:max" of world "world" to 5
+    set number data tag "floor4:max" of world "world" to 8
+    set number data tag "floor5:max" of world "world" to 10
+    set number data tag "floor6:max" of world "world" to 12
+    set number data tag "floor7:max" of world "world" to 15
+    set number data tag "floor8:max" of world "world" to 18
+    set number data tag "floor9:max" of world "world" to 22
+    set number data tag "floor10:max" of world "world" to 25
+    set number data tag "floor10:min" of world "world" to 24
+    
+function StartBoss(room: number, floor: number):
+    if {_floor} = 10:
+        boss10({_room})
+
+function StartFloor(room: number, floor: number):
+    if {_floor} = 1:
+        floor1({_room})
+    if {_floor} = 2:
+        floor2({_room})
+    if {_floor} = 3:
+        floor3({_room})
+    if {_floor} = 4:
+        floor4({_room})
+    if {_floor} = 5:
+        floor5({_room})
+    if {_floor} = 6:
+        floor6({_room})
+    if {_floor} = 7:
+        floor7({_room})
+    if {_floor} = 8:
+        floor8({_room})
+    if {_floor} = 9:
+        floor9({_room})
+    if {_floor} = 10:
+        floor10({_room})
+
+#   [5][4][3]
+#   [6][8][2]
+#   [7][S][1]
+
+function floor1(room: number):
+    spawnMob(8, {_room}, 1, "undead1", 1)
+
+function floor2(room: number):
+    spawnMob(8, {_room}, 2, "undead1", 2)
+    spawnMob(1, {_room}, 2, "undead2", 1)
+
+function floor3(room: number):
+    spawnMob(6, {_room}, 3, "undead1", 2)
+    spawnMob(2, {_room}, 3, "undead1", 2)
+    spawnMob(4, {_room}, 3, "undead2", 1)
+
+function floor4(room: number):
+    spawnMob(2, {_room}, 4, "undead1", 3)
+    spawnMob(6, {_room}, 4, "undead1", 3)
+    spawnMob(3, {_room}, 4, "undead2", 1)
+    spawnMob(5, {_room}, 4, "undead2", 1)
+
+function floor5(room: number):
+    spawnMob(1, {_room}, 5, "undead1", 3)
+    spawnMob(7, {_room}, 5, "undead1", 2)
+    spawnMob(2, {_room}, 5, "undead2", 2)
+    spawnMob(6, {_room}, 5, "undead2", 2)
+    spawnMob(8, {_room}, 5, "undead3", 1)
+
+function floor6(room: number):
+    spawnMob(1, {_room}, 6, "undead1", 3)
+    spawnMob(7, {_room}, 6, "undead1", 4)
+    spawnMob(2, {_room}, 6, "undead2", 2)
+    spawnMob(6, {_room}, 6, "undead2", 2)
+    spawnMob(8, {_room}, 6, "undead3", 1)
+
+function floor7(room: number):
+    spawnMob(6, {_room}, 7, "undead1", 4)
+    spawnMob(2, {_room}, 7, "undead1", 4)
+    spawnMob(3, {_room}, 7, "undead2", 2)
+    spawnMob(5, {_room}, 7, "undead2", 3)
+    spawnMob(7, {_room}, 7, "undead3", 1)
+    spawnMob(1, {_room}, 7, "undead3", 1)
+
+function floor8(room: number):
+    spawnMob(7, {_room}, 8, "undead1", 3)
+    spawnMob(1, {_room}, 8, "undead1", 3)
+    spawnMob(2, {_room}, 8, "undead1", 3)
+    spawnMob(6, {_room}, 8, "undead1", 3)
+    spawnMob(5, {_room}, 8, "undead2", 2)
+    spawnMob(3, {_room}, 8, "undead2", 2)
+    spawnMob(4, {_room}, 8, "undead3", 1)
+    spawnMob(8, {_room}, 8, "undead3", 1)
+    
+function floor9(room: number):
+    spawnMob(7, {_room}, 9, "undead1", 4)
+    spawnMob(1, {_room}, 9, "undead1", 4)
+    spawnMob(2, {_room}, 9, "undead1", 4)
+    spawnMob(6, {_room}, 9, "undead1", 4)
+    spawnMob(5, {_room}, 9, "undead2", 2)
+    spawnMob(3, {_room}, 9, "undead2", 2)
+    spawnMob(4, {_room}, 9, "undead3", 1)
+    spawnMob(8, {_room}, 9, "undead3", 1)
+    
+function floor10(room: number):
+    spawnMob(7, {_room}, 10, "undead1", 4)
+    spawnMob(1, {_room}, 10, "undead1", 4)
+    spawnMob(2, {_room}, 10, "undead1", 4)
+    spawnMob(6, {_room}, 10, "undead1", 4)
+    spawnMob(5, {_room}, 10, "undead2", 3)
+    spawnMob(3, {_room}, 10, "undead2", 3)
+    spawnMob(4, {_room}, 10, "undead3", 1)
+    spawnMob(8, {_room}, 10, "undead3", 1)
+    
+function boss10(room: number):
+    spawnMob(8, {_room}, 10, "undead4", 1)

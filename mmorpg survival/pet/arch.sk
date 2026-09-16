@@ -1,0 +1,46 @@
+command /arch <player>:
+    permission: admin
+    trigger:
+        set {_target} to arg-1
+        set {_found} to false
+        set {_slot} to 0
+
+        loop 36 times:
+            set {_item} to slot {_slot} of {_target}'s inventory
+            if {_item} is not air:
+                set {_nbt} to custom nbt of {_item}
+                if "%{_nbt}%" contains "craft:""9""":
+                    remove 1 of {_item} from {_target}'s inventory
+                    set {_found} to true
+                    exit loop
+            add 1 to {_slot}
+
+        if {_found} is true:
+            set {_roll} to random integer between 1 and 100
+
+            if {_roll} is 100:
+                execute console command "si give fossil23 1 %{_target}% true"
+                send "<##967969>[Archaeology] &7- You unearthed a &d&lʟᴇɢᴇɴᴅᴀʀʏ ꜰᴏꜱꜱɪʟ&7!" to {_target}
+
+            else if {_roll} >= 97:
+                set {_id} to random integer between 20 and 22
+                execute console command "si give fossil%{_id}% 1 %{_target}% true"
+                send "<##967969>[Archaeology] &7- You unearthed an &5&lᴇᴘɪᴄ ꜰᴏꜱꜱɪʟ&7!" to {_target}
+
+            else if {_roll} >= 87:
+                set {_id} to random integer between 15 and 19
+                execute console command "si give fossil%{_id}% 1 %{_target}% true"
+                send "<##967969>[Archaeology] &7- You unearthed a &b&lʀᴀʀᴇ ꜰᴏꜱꜱɪʟ&7!" to {_target}
+
+            else if {_roll} >= 62:
+                set {_id} to random integer between 9 and 14
+                execute console command "si give fossil%{_id}% 1 %{_target}% true"
+                send "<##967969>[Archaeology] &7- You unearthed an &a&lᴜɴᴄᴏᴍᴍᴏɴ ꜰᴏꜱꜱɪʟ&7!" to {_target}
+
+            else:
+                set {_id} to random integer between 1 and 8
+                execute console command "si give fossil%{_id}% 1 %{_target}% true"
+                send "<##967969>[Archaeology] &7- You unearthed a &f&lᴄᴏᴍᴍᴏɴ ꜰᴏꜱꜱɪʟ&7!" to {_target}
+
+        else:
+            send "&e[Archaeologist] &fBring me fossils to let them be uncovered!" to {_target}

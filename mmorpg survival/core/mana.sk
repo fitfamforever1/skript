@@ -1,0 +1,207 @@
+function getManaId(i: item) :: integer:
+    set {_data} to custom nbt of {_i}
+    if {_data} is set:
+        set {_id} to int tag "manaid" of {_data}
+        if {_id} is set:
+            return {_id}
+    return 0
+
+function saveMana(p: player):
+    set {_uuid} to uuid of {_p}
+    set int tag "custom.mana" of nbt of {_p} to floor({mana::%{_uuid}%})
+
+function loadMana(p: player):
+    set {_uuid} to uuid of {_p}
+    set {_val} to int tag "custom.mana" of nbt of {_p}
+    if {_val} is not set:
+        set {mana::%{_uuid}%} to {maxmana::%{_uuid}%}
+    else:
+        set {mana::%{_uuid}%} to {_val}
+
+function recalcMaxMana(p: player):
+    set {_uuid} to uuid of {_p}
+    set {_total} to 20
+
+    if {_p}'s tool is not air:
+        set {_id} to getManaId({_p}'s tool)
+        if {_id} != 0:
+            if {manabonus::%{_id}%::held} is set:
+                add {manabonus::%{_id}%::held} to {_total}
+
+    if {_p}'s helmet is not air:
+        set {_id} to getManaId({_p}'s helmet)
+        if {_id} != 0:
+            if {manabonus::%{_id}%::wear} is set:
+                add {manabonus::%{_id}%::wear} to {_total}
+
+    if {_p}'s chestplate is not air:
+        set {_id} to getManaId({_p}'s chestplate)
+        if {_id} != 0:
+            if {manabonus::%{_id}%::wear} is set:
+                add {manabonus::%{_id}%::wear} to {_total}
+
+    if {_p}'s leggings is not air:
+        set {_id} to getManaId({_p}'s leggings)
+        if {_id} != 0:
+            if {manabonus::%{_id}%::wear} is set:
+                add {manabonus::%{_id}%::wear} to {_total}
+
+    if {_p}'s boots is not air:
+        set {_id} to getManaId({_p}'s boots)
+        if {_id} != 0:
+            if {manabonus::%{_id}%::wear} is set:
+                add {manabonus::%{_id}%::wear} to {_total}
+
+    set {maxmana::%{_uuid}%} to {_total}
+
+    if {mana::%{_uuid}%} > {_total}:
+        set {mana::%{_uuid}%} to {_total}
+
+function clampMana(p: player):
+    set {_uuid} to uuid of {_p}
+
+    if {mana::%{_uuid}%} > {maxmana::%{_uuid}%}:
+        set {mana::%{_uuid}%} to {maxmana::%{_uuid}%}
+
+    if {mana::%{_uuid}%} < 0:
+        set {mana::%{_uuid}%} to 0
+
+
+on join:
+    recalcMaxMana(player)
+    loadMana(player)
+
+on quit:
+    set {_uuid} to uuid of player
+    saveMana(player)
+    delete {mana::%{_uuid}%}
+    delete {maxmana::%{_uuid}%}
+
+on armor change:
+    recalcMaxMana(player)
+
+on inventory click:
+    set {_p} to player
+    if {mana_recalc::%uuid of {_p}%} is set:
+        stop
+    set {mana_recalc::%uuid of {_p}%} to true
+    wait 1 tick
+    recalcMaxMana({_p})
+    delete {mana_recalc::%uuid of {_p}%}
+
+on held item change:
+    set {_p} to player
+    if {mana_recalc::%uuid of {_p}%} is set:
+        stop
+    set {mana_recalc::%uuid of {_p}%} to true
+    wait 1 tick
+    recalcMaxMana({_p})
+    delete {mana_recalc::%uuid of {_p}%}
+
+
+
+every 1 seconds:
+    loop all players:
+        set {_p} to loop-player
+        set {_uuid} to uuid of {_p}
+
+        if {mana::%{_uuid}%} is not set:
+            continue
+
+        set {_display} to floor({mana::%{_uuid}%})
+        set {actionbar::last::%{_uuid}%} to {_display}
+        send action bar "&b✦ &b%{_display}%&7/&b%{maxmana::%{_uuid}%}%" to {_p}
+
+        if {mana::%{_uuid}%} < {maxmana::%{_uuid}%}:
+            add ({maxmana::%{_uuid}%} * 0.05) to {mana::%{_uuid}%}
+            clampMana({_p})
+
+every 60 seconds:
+    loop all players:
+        saveMana(loop-player)
+
+
+command /manaset <player> <number>:
+    permission: admin
+    trigger:
+        set {_uuid} to uuid of arg 1
+        set {mana::%{_uuid}%} to arg 2
+        clampMana(arg 1)
+        saveMana(arg 1)
+
+command /manaremove <player> <number>:
+    permission: admin
+    trigger:
+        set {_uuid} to uuid of arg 1
+        remove arg 2 from {mana::%{_uuid}%}
+        clampMana(arg 1)
+        saveMana(arg 1)
+
+command /manareset <player>:
+    permission: admin
+    trigger:
+        set {_uuid} to uuid of arg 1
+        set {mana::%{_uuid}%} to {maxmana::%{_uuid}%}
+        saveMana(arg 1)
+
+command /manaitem <number> <text>:
+    permission: admin
+    trigger:
+        if player's tool is air:
+            send "&cYou must hold an item." to player
+            stop
+
+        set {_data} to custom nbt of player's tool
+        if {_data} is not set:
+            set {_data} to nbt compound from "{}"
+            set {_id} to int tag "manaid" of custom nbt of player's tool
+
+        if {_id} is not set:
+            set {_id} to 0
+        if {_id} is 0:
+            if {mana::id::counter} is not set:
+                set {mana::id::counter} to 0
+            add 1 to {mana::id::counter}
+            set {_id} to {mana::id::counter}
+            set int tag "manaid" of custom nbt of player's tool to {_id}
+
+        set {manabonus::%{_id}%::%arg 2%} to arg 1
+        send "&aRegistered mana bonus &e%arg 1%&a for slot &e%arg 2%&a on item with ID &e%{_id}%&a." to player
+
+
+command /manaitemremove:
+    permission: admin
+    trigger:
+        if player's tool is air:
+            send "&cYou must hold an item." to player
+            stop
+
+        set {_data} to custom nbt of player's tool
+        if {_data} is not set:
+            send "&cThis item has no mana ID." to player
+            stop
+
+        set {_id} to int tag "manaid" of {_data}
+
+        if {_id} is not set:
+            set {_id} to 0
+        if {_id} is 0:
+            send "&cThis item has no mana ID." to player
+            stop
+
+        delete {manabonus::%{_id}%::held}
+        delete {manabonus::%{_id}%::wear}
+        send "&aRemoved all mana bonuses for item ID &e%{_id}%&a." to player
+
+command /manaresetall:
+    permission: admin
+    trigger:
+        delete {mana::*}
+        delete {maxmana::*}
+        delete {actionbar::last::*}
+        delete {manabonus::*}
+
+        loop all players:
+            set {_uuid} to uuid of loop-player
+            set {maxmana::%{_uuid}%} to 20
+            set {mana::%{_uuid}%} to 20

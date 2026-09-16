@@ -1,0 +1,192 @@
+function formatMoney(n: number) :: string:
+    if {_n} >= 1000000:
+        return "$%round({_n} / 100000) / 10%M"
+    else if {_n} >= 1000:
+        return "$%round({_n} / 100) / 10%K"
+    else:
+        return "$%{_n}%"
+
+
+function getBankLimit(uuid: string) :: number:
+    set {_level} to {bank.upgradelevel::%{_uuid}%}
+    if {_level} is not set:
+        set {_level} to 1
+    return {_level} * 50000000
+
+
+command /bankput [<offline player>] [<text>]:
+    trigger:
+        if sender is player:
+            send "&8[<##FFB84D>BANK&8] &cThis command can only be run by a console." to sender
+            stop
+
+        set {_target} to argument 1
+        set {_input} to argument 2
+        set {_targetUUID} to "%uuid of {_target}%"
+
+
+        replace all "%%" in {_input} with ""
+        set {_percentStr} to {_input}
+        set {_percent} to {_percentStr} parsed as number
+
+        if {_percent} is not set:
+            send "&8[<##FFB84D>BANK&8] &cInvalid percentage." to sender
+            stop
+
+        if {_percent} <= 0:
+            send "&8[<##FFB84D>BANK&8] &cPercentage must be between 1 and 100." to sender
+            stop
+        if {_percent} > 100:
+            send "&8[<##FFB84D>BANK&8] &cPercentage must be between 1 and 100." to sender
+            stop
+
+        set {_wallet} to balance of {_target}
+        set {_amount} to floor({_wallet} * ({_percent} / 100))
+
+        if {_amount} <= 0:
+            send "&8[<##FFB84D>BANK&8] &cNot enough money in wallet to deposit." to {_target}
+            stop
+
+        set {_limit} to getBankLimit({_targetUUID})
+        set {_balance} to {bank.balance::%{_targetUUID}%} if {bank.balance::%{_targetUUID}%} is set, else 0
+        set {_space} to {_limit} - {_balance}
+
+        if {_space} <= 0:
+            send "&8[<##FFB84D>BANK&8] &cYour bank is full! Limit: &e%formatMoney({_limit})%" to {_target}
+            stop
+
+        if {_amount} > {_space}:
+            set {_deposited} to {_space}
+            set {_refund} to {_amount} - {_space}
+        else:
+            set {_deposited} to {_amount}
+            set {_refund} to 0
+
+        remove {_amount} from {_target}'s balance
+        add {_deposited} to {bank.balance::%{_targetUUID}%}
+        if {_refund} > 0:
+            add {_refund} to {_target}'s balance
+
+        send "&8[<##FFB84D>BANK&8] &7Deposited &e%formatMoney({_deposited})% &7into your bank &a✔" to {_target}
+        if {_refund} > 0:
+            send "&8[<##FFB84D>BANK&8] &7Refunded &e%formatMoney({_refund})%&7 — your bank is now full." to {_target}
+        send "&8[<##FFB84D>BANK&8] &7Your bank balance: &e%formatMoney({bank.balance::%{_targetUUID}%})%&7 / &e%formatMoney({_limit})%" to {_target}
+
+
+command /banktake [<offline player>] [<text>]:
+    trigger:
+        if sender is player:
+            send "&8[<##FFB84D>BANK&8] &cThis command can only be run by a console." to sender
+            stop
+
+        set {_target} to argument 1
+        set {_input} to argument 2
+        set {_targetUUID} to "%uuid of {_target}%"
+
+
+        replace all "%%" in {_input} with ""
+        set {_percentStr} to {_input}
+        set {_percent} to {_percentStr} parsed as number
+
+        if {_percent} is not set:
+            send "&8[<##FFB84D>BANK&8] &cInvalid percentage." to sender
+            stop
+
+        if {_percent} <= 0:
+            send "&8[<##FFB84D>BANK&8] &cPercentage must be between 1 and 100." to sender
+            stop
+        if {_percent} > 100:
+            send "&8[<##FFB84D>BANK&8] &cPercentage must be between 1 and 100." to sender
+            stop
+
+        set {_balance} to {bank.balance::%{_targetUUID}%} if {bank.balance::%{_targetUUID}%} is set, else 0
+        set {_amount} to floor({_balance} * ({_percent} / 100))
+
+        if {_amount} <= 0:
+            send "&8[<##FFB84D>BANK&8] &cNo bank balance to withdraw from." to {_target}
+            stop
+
+        if {_balance} < {_amount}:
+            send "&8[<##FFB84D>BANK&8] &cInsufficient funds! Your bank balance: &e%formatMoney({_balance})%" to {_target}
+            stop
+
+        remove {_amount} from {bank.balance::%{_targetUUID}%}
+        add {_amount} to {_target}'s balance
+
+        send "&8[<##FFB84D>BANK&8] &7Withdrew &e%formatMoney({_amount})% &7from your bank &a✔" to {_target}
+        send "&8[<##FFB84D>BANK&8] &7Your remaining bank balance: &e%formatMoney({bank.balance::%{_targetUUID}%})%" to {_target}
+
+command /bankupgrade:
+    trigger:
+        if player is console:
+            send "&8[<##FFB84D>BANK&8] &cThis command can only be run by a player." to sender
+            stop
+
+        set {_uuid} to uuid of player
+        set {_level} to {bank.upgradelevel::%{_uuid}%} if {bank.upgradelevel::%{_uuid}%} is set, else 0
+
+        if {_level} >= 10:
+            send "&8[<##FFB84D>BANK&8] &cYour bank is already at the maximum upgrade level! &7(Max limit: &e%formatMoney(500000000)%&7)" to player
+            stop
+
+        set {_nextLevel} to {_level} + 1
+
+        if player doesn't have permission "bank.upgrade.%{_nextLevel}%":
+            send "&8[<##FFB84D>BANK&8] &cYou don't have permission to reach upgrade level &e%{_nextLevel}%&c." to player
+            send "&8[<##FFB84D>BANK&8] &7Required permission: &ebank.upgrade.%{_nextLevel}%" to player
+            stop
+
+        set {_cost} to 10000000
+        set {_wallet} to balance of player
+        if {_wallet} < {_cost}:
+            send "&8[<##FFB84D>BANK&8] &cYou can't afford this upgrade! &7Cost: &e%formatMoney({_cost})%" to player
+            send "&8[<##FFB84D>BANK&8] &7Your wallet: &e%formatMoney({_wallet})%" to player
+            stop
+
+        remove {_cost} from player's balance
+        set {bank.upgradelevel::%{_uuid}%} to {_nextLevel}
+
+        set {_newLimit} to getBankLimit("%{_uuid}%")
+        send "&8[<##FFB84D>BANK&8] &7Bank upgraded to level &e%{_nextLevel}% &a✔" to player
+        send "&8[<##FFB84D>BANK&8] &7New limit: &e%formatMoney({_newLimit})% &7(Cost: &e%formatMoney({_cost})%&7)" to player
+
+
+every 24 hours:
+    loop all players:
+        set {_uuid} to "%uuid of loop-player%"
+        set {_balance} to {bank.balance::%{_uuid}%} if {bank.balance::%{_uuid}%} is set, else 0
+
+        if {_balance} <= 0:
+            stop loop
+
+        set {_rate} to 0
+
+        if loop-player has permission "bank.rank.5":
+            set {_rate} to 0.1
+        else if loop-player has permission "bank.rank.4":
+            set {_rate} to 0.07
+        else if loop-player has permission "bank.rank.3":
+            set {_rate} to 0.05
+        else if loop-player has permission "bank.rank.2":
+            set {_rate} to 0.03
+        else if loop-player has permission "bank.rank.1":
+            set {_rate} to 0.01
+
+        if {_rate} <= 0:
+            stop loop
+
+        set {_interest} to {_balance} * {_rate}
+        set {_limit} to getBankLimit({_uuid})
+
+        set {_newBalance} to {_balance} + {_interest}
+        if {_newBalance} > {_limit}:
+            set {_interest} to {_limit} - {_balance}
+            set {_newBalance} to {_limit}
+
+        if {_interest} <= 0:
+            stop loop
+
+        set {bank.balance::%{_uuid}%} to {_newBalance}
+
+        send "&8[<##FFB84D>BANK&8] &7You earned &e%formatMoney({_interest})%&7 in interest &a✔" to loop-player
+        send "&8[<##FFB84D>BANK&8] &7New balance: &e%formatMoney({_newBalance})%" to loop-player

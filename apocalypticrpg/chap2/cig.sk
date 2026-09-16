@@ -1,0 +1,31 @@
+on right click with phantom membrane:
+    if display name of player's tool is "&fCigarette":
+        execute console command "si give cig2 1 %player% true"
+        remove 1 of player's tool from player's inventory
+        
+on right click with phantom membrane:
+    if display name of player's tool is "&fBurning Cigarette":
+        play sound "block.ancient_debris.hit" with volume 0.5 to the player
+        if {cig.smoking.%player%} is not set:
+            set {cig.smoking.%player%} to true
+            set {_slot} to index of player's tool
+            chance of 50%:
+                apply potion effect of strength of tier 2 to player for 30 seconds
+            else:
+                apply potion effect of weakness of tier 2 to player for 30 seconds
+            wait 30 seconds
+            set slot {_slot} of player's inventory to air
+            delete {cig.smoking.%player%}
+            stop
+        wait 3 seconds
+        draw smoke particle with velocity vector(0, 0.01, 0) at location 0.3 meters in front of player's eyes
+            
+on mine of wheat:
+    cancel drops
+    set {_amm} to a random integer between 1 and 3
+    execute console command "si give cig1 %{_amm}% %player% true"
+    
+on mine of short grass:
+    cancel drops
+    chance of 10%:
+        execute console command "si give cig3 1 %player% true"

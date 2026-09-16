@@ -1,0 +1,133 @@
+shambler:
+  Type: zombie
+  Health: 20
+  Damage: 3
+  Faction: zombie
+  Options:
+    MovementSpeed: 0.16
+    MaxCombatDistance: 64
+    FollowRange: 32
+    KnockbackResistance: 0.9
+    Invisible: false
+    Despawn: true
+    NoGravity: false
+    PreventOtherDrops: true
+    PreventRandomEquipment: true
+    PreventSunburn: true
+    Baby: false
+    Scale: 1
+  Skills:
+  - command{cmd="infect <target.name>";asOp=true} @trigger ~onAttack 0.1
+  - command{cmd="gainxp <target.name> 5";asOp=true} @trigger ~onDeath
+
+baby:
+  Type: zombie
+  Health: 10
+  Damage: 4
+  Faction: zombie
+  Options:
+    MovementSpeed: 0.22
+    MaxCombatDistance: 64
+    FollowRange: 32
+    KnockbackResistance: 0.9
+    Invisible: false
+    Despawn: true
+    NoGravity: false
+    PreventOtherDrops: true
+    PreventRandomEquipment: true
+    PreventSunburn: true
+    Baby: false
+    Scale: 0.6
+  Skills:
+  - command{cmd="infect <target.name>";asOp=true} @trigger ~onAttack 0.1
+  - command{cmd="gainxp <target.name> 25";asOp=true} @trigger ~onDeath
+
+runner:
+  Type: zombie
+  Health: 16
+  Damage: 4
+  Faction: zombie
+  Options:
+    MovementSpeed: 0.3
+    MaxCombatDistance: 64
+    FollowRange: 32
+    KnockbackResistance: 0.9
+    Invisible: false
+    Despawn: true
+    NoGravity: false
+    PreventOtherDrops: true
+    PreventRandomEquipment: true
+    PreventSunburn: true
+    Baby: false
+    Scale: 0.9
+  Skills:
+  - command{cmd="infect <target.name>";asOp=true} @trigger ~onAttack 0.1
+  - command{cmd="gainxp <target.name> 50";asOp=true} @trigger ~onDeath
+
+armored:
+  Type: zombie
+  Health: 30
+  Damage: 7
+  Faction: zombie
+  Options:
+    MovementSpeed: 0.13
+    MaxCombatDistance: 64
+    FollowRange: 32
+    KnockbackResistance: 0.9
+    Invisible: false
+    Despawn: true
+    NoGravity: false
+    PreventOtherDrops: true
+    PreventRandomEquipment: true
+    PreventSunburn: true
+    Baby: false
+    Scale: 1.4
+  Skills:
+  - command{cmd="infect <target.name>";asOp=true} @trigger ~onAttack 0.1
+  - command{cmd="gainxp <target.name> 50";asOp=true} @trigger ~onDeath
+
+bloater:
+  Type: zombie
+  Health: 20
+  Damage: 3
+  Faction: zombie
+  Options:
+    MovementSpeed: 0.16
+    MaxCombatDistance: 64
+    FollowRange: 32
+    KnockbackResistance: 0.9
+    Invisible: false
+    Despawn: true
+    NoGravity: false
+    PreventOtherDrops: true
+    PreventRandomEquipment: true
+    PreventSunburn: true
+    Baby: false
+    Scale: 1
+  Skills:
+  - command{cmd="infect <target.name>";asOp=true} @trigger ~onAttack 0.1
+  - command{cmd="infect <target.name>";asOp=true} @trigger ~onDeath
+  - command{cmd="gainxp <target.name> 50";asOp=true} @trigger ~onDeath
+
+screamer:
+  Type: zombie
+  Health: 20
+  Damage: 3
+  Faction: zombie
+  Options:
+    MovementSpeed: 0.16
+    MaxCombatDistance: 64
+    FollowRange: 32
+    KnockbackResistance: 0.9
+    Invisible: false
+    Despawn: true
+    NoGravity: false
+    PreventOtherDrops: true
+    PreventRandomEquipment: true
+    PreventSunburn: true
+    Baby: false
+    Scale: 1
+  Skills:
+  - command{cmd="infect <target.name>";asOp=true} @trigger ~onAttack 0.1
+  - summon{type=shambler;amount=3;radius=4;uty=true} @Self  ~onTimer:1200
+  - command{cmd="gainxp <target.name> 50";asOp=true} @trigger ~onDeath

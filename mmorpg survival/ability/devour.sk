@@ -1,0 +1,38 @@
+on death:
+    if victim is not a player:
+        if attacker is a player:
+            set {_p} to attacker
+            if display name of {_p}'s held item is "&fDevourer Axe":
+
+                if {devourer.kills::%{_p}%} >= 50:
+                    stop
+
+                add 1 to {devourer.kills::%{_p}%}
+                set {_kills} to {devourer.kills::%{_p}%}
+
+                send action bar "&f⚔ Devourer &7| Kills: &e%{_kills}%&7/&e50" to {_p}
+
+                if {_kills} is 10:
+                    apply strength 1 to {_p} for 15 seconds
+                    send title "&f☠ Devourer" with subtitle "&cStrength I &7activated!" to {_p} for 3 seconds
+                    send "&f[Devourer] &e10 kills &7→ &cStrength I &7for 15 seconds!" to {_p}
+                else if {_kills} is 20:
+                    apply strength 2 to {_p} for 15 seconds
+                    send title "&f☠ Devourer" with subtitle "&cStrength II &7activated!" to {_p} for 3 seconds
+                    send "&f[Devourer] &e20 kills &7→ &cStrength II &7for 15 seconds!" to {_p}
+                else if {_kills} is 30:
+                    apply strength 3 to {_p} for 15 seconds
+                    send title "&f☠ Devourer" with subtitle "&cStrength III &7activated!" to {_p} for 3 seconds
+                    send "&f[Devourer] &e30 kills &7→ &cStrength III &7for 15 seconds!" to {_p}
+                else if {_kills} is 40:
+                    apply strength 4 to {_p} for 15 seconds
+                    send title "&f☠ Devourer" with subtitle "&cStrength IV &7activated!" to {_p} for 3 seconds
+                    send "&f[Devourer] &e40 kills &7→ &cStrength IV &7for 15 seconds!" to {_p}
+                else if {_kills} is 50:
+                    apply strength 5 to {_p} for 15 seconds
+                    delete {devourer.kills::%attacker%}
+                    send title "&f☠ MAX DEVOURER" with subtitle "&cStrength V &7activated!" to {_p} for 3 seconds
+                    send "&f[Devourer] &e50 kills &7→ &cStrength V &7for 15 seconds! &e(MAX)" to {_p}
+
+on quit:
+    delete {devourer.kills::%player%}

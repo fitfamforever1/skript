@@ -1,0 +1,49 @@
+on join:
+    wait 2 ticks
+    if {bones::%player%} is not set:
+        set {bones::%player%} to 7
+
+on death:
+    if victim is a player:
+        set {bones::%victim%} to 7
+
+function applyBoneEffects(p: player):
+    remove slowness and weakness from {_p}
+    set {_b} to {bones::%{_p}%}
+    if {_b} <= 0:
+        kill {_p}
+    else if {_b} <= 3:
+        apply permanent potion effect of slowness of tier 4 to {_p}
+        apply permanent potion effect of weakness of tier 2 to {_p}
+    else if {_b} is 4:
+        apply permanent potion effect of slowness of tier 2 to {_p}
+        apply permanent potion effect of weakness of tier 1 to {_p}
+    else if {_b} is 5:
+        apply permanent potion effect of slowness of tier 1 to {_p}
+        apply permanent potion effect of weakness of tier 1 to {_p}
+    
+on damage of player:
+    chance of 10%:
+        set {_target} to victim
+        remove 1 from {bones::%{_target}%}
+        applyBoneEffects({_target})
+        send title "" with subtitle "&cʏᴏᴜ ʜᴀᴠᴇ ʙʀᴏᴋᴇɴ ᴀ ʙᴏɴᴇ!" to {_target} for 1 seconds with fade in 0.3 seconds and fade out 0.5 seconds
+        send "&8[<##F9F6EE>ʙᴏɴᴇꜱ&8] &7ʙᴏɴᴇꜱ: &8(&b%{bones::%{_target}%}%&7/&b7&8)" to {_target}
+
+command /breakbone [<player>]:
+    permission: admin
+    trigger:
+        if arg-1 is set:
+            set {_target} to arg-1
+        else:
+            set {_target} to player
+        if {bones::%{_target}%} is not set:
+            set {bones::%{_target}%} to 7
+        if {bones::%{_target}%} <= 0:
+            send "&cNo bones left." to player
+            stop
+        remove 1 from {bones::%{_target}%}
+        applyBoneEffects({_target})
+        send title "" with subtitle "&cYou have broken a bone!" to {_target} for 1 seconds with fade in 0.3 seconds and fade out 0.5 seconds
+        send "&8[<##F9F6EE>ʙᴏɴᴇꜱ&8] &7ʙᴏɴᴇꜱ: &8(&b%{bones::%{_target}%}%&7/&b7&8)" to {_target}
+

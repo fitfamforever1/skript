@@ -1,0 +1,141 @@
+function addCommas(n: number) :: string:
+    set {_formatted} to "%{_n}%"
+    set {_parts::*} to {_formatted} split at "."
+    set {_whole} to {_parts::1}
+    set {_decimals} to {_parts::2} if {_parts::2} is set, else ""
+    set {_chars::*} to {_whole} split at ""
+    set {_result} to ""
+    set {_len} to length of {_whole}
+    loop {_len} times:
+        set {_char} to {_chars::%loop-number%}
+        set {_remaining} to {_len} - loop-number
+        set {_mod} to {_remaining}
+        while {_mod} >= 3:
+            set {_mod} to {_mod} - 3
+        set {_result} to "%{_result}%%{_char}%"
+        if {_mod} = 0:
+            if {_remaining} > 0:
+                set {_result} to "%{_result}%,"
+    if {_decimals} is not "":
+        set {_result} to "%{_result}%.%{_decimals}%"
+    return {_result}
+
+placeholderapi placeholder with the prefix "bank":
+    if the identifier is "balance":
+        set {_uuid} to "%uuid of player%"
+        set {_bal} to {bank.balance::%{_uuid}%} if {bank.balance::%{_uuid}%} is set, else 0
+        set the result to formatMoney({_bal})
+
+    if the identifier is "balance_raw":
+        set {_uuid} to "%uuid of player%"
+        set the result to "%{bank.balance::%{_uuid}%} if {bank.balance::%{_uuid}%} is set, else 0%"
+
+    if the identifier is "balance_com":
+        set {_uuid} to "%uuid of player%"
+        set {_bal} to {bank.balance::%{_uuid}%} if {bank.balance::%{_uuid}%} is set, else 0
+        set the result to addCommas({_bal})
+
+
+    if the identifier is "limit_raw":
+        set {_uuid} to "%uuid of player%"
+        set the result to "%getBankLimit({_uuid})%"
+
+    if the identifier is "level":
+        set {_uuid} to "%uuid of player%"
+        set the result to "%{bank.upgradelevel::%{_uuid}%} if {bank.upgradelevel::%{_uuid}%} is set, else 0%"
+
+
+    if the identifier is "next_limit":
+        set {_uuid} to "%uuid of player%"
+        set {_level} to {bank.upgradelevel::%{_uuid}%} if {bank.upgradelevel::%{_uuid}%} is set, else 1
+        if {_level} >= 10:
+            set the result to "MAX"
+        else:
+            set {_next} to ({_level} + 1) * 50000000
+            set the result to addCommas({_next})
+
+    if the identifier is "next_limit_raw":
+        set {_uuid} to "%uuid of player%"
+        set {_level} to {bank.upgradelevel::%{_uuid}%} if {bank.upgradelevel::%{_uuid}%} is set, else 0
+        if {_level} >= 45:
+            set the result to "MAX"
+        else:
+            set the result to "%50000000 + (({_level} + 1) * 10000000)%"
+
+    if the identifier is "interest_rate":
+        if player has permission "bank.rank.5":
+            set the result to "10%%"
+        else if player has permission "bank.rank.4":
+            set the result to "7%%"
+        else if player has permission "bank.rank.3":
+            set the result to "5%%"
+        else if player has permission "bank.rank.2":
+            set the result to "3%%"
+        else if player has permission "bank.rank.1":
+            set the result to "1%%"
+        else:
+            set the result to "0%%"
+
+
+
+    if the identifier is "upgrade_cost":
+        set the result to addCommas(10000000)
+
+    if the identifier is "is_maxed":
+        set {_uuid} to "%uuid of player%"
+        set {_level} to {bank.upgradelevel::%{_uuid}%} if {bank.upgradelevel::%{_uuid}%} is set, else 0
+        if {_level} >= 45:
+            set the result to "true"
+        else:
+            set the result to "false"
+
+    if the identifier is "limit_com":
+        set {_uuid} to "%uuid of player%"
+        set the result to addCommas(getBankLimit({_uuid}))
+
+    if the identifier is "interest_amount_com":
+        set {_uuid} to "%uuid of player%"
+        set {_bal} to {bank.balance::%{_uuid}%} if {bank.balance::%{_uuid}%} is set, else 0
+        if player has permission "bank.rank.5":
+            set the result to addCommas({_bal} * 0.1)
+        else if player has permission "bank.rank.4":
+            set the result to addCommas({_bal} * 0.07)
+        else if player has permission "bank.rank.3":
+            set the result to addCommas({_bal} * 0.05)
+        else if player has permission "bank.rank.2":
+            set the result to addCommas({_bal} * 0.03)
+        else if player has permission "bank.rank.1":
+            set the result to addCommas({_bal} * 0.01)
+        else:
+            set the result to addCommas(0)
+
+    if the identifier starts with "after_deposit_com_":
+        set {_uuid} to "%uuid of player%"
+        set {_parts::*} to identifier split by "_"
+        set {_percent} to last element of {_parts::*} parsed as number
+        if {_percent} is not set:
+            set the result to "Invalid"
+            stop
+        set {_balance} to {bank.balance::%{_uuid}%} if {bank.balance::%{_uuid}%} is set, else 0
+        set {_wallet} to balance of player
+        set {_amount} to floor({_wallet} * ({_percent} / 100))
+        set {_limit} to getBankLimit({_uuid})
+        set {_space} to {_limit} - {_balance}
+        if {_space} <= 0:
+            set the result to addCommas({_balance})
+            stop
+        if {_amount} > {_space}:
+            set the result to addCommas({_limit})
+        else:
+            set the result to addCommas({_balance} + {_amount})
+
+    if the identifier starts with "after_withdraw_com_":
+        set {_uuid} to "%uuid of player%"
+        set {_parts::*} to identifier split by "_"
+        set {_percent} to last element of {_parts::*} parsed as number
+        if {_percent} is not set:
+            set the result to "Invalid"
+            stop
+        set {_balance} to {bank.balance::%{_uuid}%} if {bank.balance::%{_uuid}%} is set, else 0
+        set {_amount} to floor({_balance} * ({_percent} / 100))
+        set the result to addCommas({_balance} - {_amount})

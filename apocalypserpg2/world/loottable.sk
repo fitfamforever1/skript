@@ -1,0 +1,121 @@
+on load:
+    delete {loot::pool::junk::*}
+    add {loot::junk1} to {loot::pool::junk::*}
+    add {loot::junk2} to {loot::pool::junk::*}
+    add {loot::junk3} to {loot::pool::junk::*}
+    add {loot::junk4} to {loot::pool::junk::*}
+    add {loot::junk5} to {loot::pool::junk::*}
+    add {loot::junk6} to {loot::pool::junk::*}
+    add {loot::junk7} to {loot::pool::junk::*}
+    add {loot::junk8} to {loot::pool::junk::*}
+    add {loot::junk9} to {loot::pool::junk::*}
+    add {loot::junk10} to {loot::pool::junk::*}
+    add {loot::junk11} to {loot::pool::junk::*}
+    add {loot::junk12} to {loot::pool::junk::*}
+    add {loot::junk13} to {loot::pool::junk::*}
+    add {loot::junk14} to {loot::pool::junk::*}
+    add {loot::junk15} to {loot::pool::junk::*}
+
+    delete {loot::pool::med::*}
+    add {loot::med1} to {loot::pool::med::*}
+    add {loot::med2} to {loot::pool::med::*}
+    add {loot::med3} to {loot::pool::med::*}
+    add {loot::med4} to {loot::pool::med::*}
+    add {loot::med6} to {loot::pool::med::*}
+
+    delete {loot::pool::food_common::*}
+    add {loot::food1} to {loot::pool::food_common::*}
+    add {loot::food2} to {loot::pool::food_common::*}
+    add {loot::food3} to {loot::pool::food_common::*}
+    add {loot::food4} to {loot::pool::food_common::*}
+    add {loot::food5} to {loot::pool::food_common::*}
+    add {loot::food6} to {loot::pool::food_common::*}
+    add {loot::food7} to {loot::pool::food_common::*}
+    add {loot::food8} to {loot::pool::food_common::*}
+
+    delete {loot::pool::melee_common::*}
+    add {loot::melee1} to {loot::pool::melee_common::*}
+    add {loot::melee2} to {loot::pool::melee_common::*}
+    add {loot::melee3} to {loot::pool::melee_common::*}
+    add {loot::melee4} to {loot::pool::melee_common::*}
+
+    delete {loot::pool::melee_uncommon::*}
+    add {loot::melee5} to {loot::pool::melee_uncommon::*}
+    add {loot::melee6} to {loot::pool::melee_uncommon::*}
+    add {loot::melee7} to {loot::pool::melee_uncommon::*}
+    add {loot::melee8} to {loot::pool::melee_uncommon::*}
+    add {loot::melee9} to {loot::pool::melee_uncommon::*}
+
+    delete {loot::pool::melee_rare::*}
+    add {loot::melee10} to {loot::pool::melee_rare::*}
+    add {loot::melee11} to {loot::pool::melee_rare::*}
+    add {loot::melee12} to {loot::pool::melee_rare::*}
+    add {loot::melee13} to {loot::pool::melee_rare::*}
+
+    delete {loot::pool::gun_uncommon::*}
+    add {loot::gun1} to {loot::pool::gun_uncommon::*}
+    add {loot::gun2} to {loot::pool::gun_uncommon::*}
+    add {loot::gun3} to {loot::pool::gun_uncommon::*}
+    add {loot::gun4} to {loot::pool::gun_uncommon::*}
+
+    delete {loot::pool::gun_rare::*}
+    add {loot::gun5} to {loot::pool::gun_rare::*}
+    add {loot::gun6} to {loot::pool::gun_rare::*}
+    add {loot::gun7} to {loot::pool::gun_rare::*}
+    add {loot::gun8} to {loot::pool::gun_rare::*}
+    add {loot::gun9} to {loot::pool::gun_rare::*}
+    add {loot::gun10} to {loot::pool::gun_rare::*}
+
+    delete {loot::pool::gun_epic::*}
+    add {loot::gun11} to {loot::pool::gun_epic::*}
+    add {loot::gun12} to {loot::pool::gun_epic::*}
+    add {loot::gun13} to {loot::pool::gun_epic::*}
+    add {loot::gun14} to {loot::pool::gun_epic::*}
+
+    delete {loot::pool::gun_legendary::*}
+    add {loot::gun15} to {loot::pool::gun_legendary::*}
+    add {loot::gun16} to {loot::pool::gun_legendary::*}
+
+    delete {loot::pool::ammo_common::*}
+    add {loot::ammo1} to {loot::pool::ammo_common::*}
+
+    delete {loot::pool::ammo_uncommon::*}
+    add {loot::ammo2} to {loot::pool::ammo_uncommon::*}
+    add {loot::ammo3} to {loot::pool::ammo_uncommon::*}
+
+    delete {loot::pool::ammo_rare::*}
+    add {loot::ammo4} to {loot::pool::ammo_rare::*}
+
+    delete {loot::pool::armor_common::*}
+    add {loot::armor1} to {loot::pool::armor_common::*}
+    add {loot::armor2} to {loot::pool::armor_common::*}
+    add {loot::armor3} to {loot::pool::armor_common::*}
+    add {loot::armor4} to {loot::pool::armor_common::*}
+    add {loot::armor5} to {loot::pool::armor_common::*}
+    add {loot::armor6} to {loot::pool::armor_common::*}
+    add {loot::armor7} to {loot::pool::armor_common::*}
+    add {loot::armor8} to {loot::pool::armor_common::*}
+    add {loot::armor9} to {loot::pool::armor_common::*}
+    add {loot::armor10} to {loot::pool::armor_common::*}
+    add {loot::armor11} to {loot::pool::armor_common::*}
+    add {loot::armor12} to {loot::pool::armor_common::*}
+
+    delete {loot::pool::armor_uncommon::*}
+    add {loot::armor13} to {loot::pool::armor_uncommon::*}
+    add {loot::armor14} to {loot::pool::armor_uncommon::*}
+    add {loot::armor15} to {loot::pool::armor_uncommon::*}
+    add {loot::armor16} to {loot::pool::armor_uncommon::*}
+    add {loot::armor17} to {loot::pool::armor_uncommon::*}
+    add {loot::armor18} to {loot::pool::armor_uncommon::*}
+    add {loot::armor19} to {loot::pool::armor_uncommon::*}
+    add {loot::armor20} to {loot::pool::armor_uncommon::*}
+
+    delete {loot::pool::armor_rare::*}
+    add {loot::armor21} to {loot::pool::armor_rare::*}
+    add {loot::armor22} to {loot::pool::armor_rare::*}
+    add {loot::armor23} to {loot::pool::armor_rare::*}
+    add {loot::armor24} to {loot::pool::armor_rare::*}
+    add {loot::armor25} to {loot::pool::armor_rare::*}
+    add {loot::armor26} to {loot::pool::armor_rare::*}
+    add {loot::armor27} to {loot::pool::armor_rare::*}
+    add {loot::armor28} to {loot::pool::armor_rare::*}

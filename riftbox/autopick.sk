@@ -1,0 +1,81 @@
+function getRarityLine(rarity: text) :: text:
+    if {_rarity} is "special":
+        return "&7ʀᴀʀɪᴛʏ: &c&lꜱᴘᴇᴄɪᴀʟ"
+    if {_rarity} is "divine":
+        return "&7ʀᴀʀɪᴛʏ: &b&lᴅɪᴠɪɴᴇ"
+    if {_rarity} is "mythic":
+        return "&7ʀᴀʀɪᴛʏ: &d&lᴍʏᴛʜɪᴄᴀʟ"
+    if {_rarity} is "legendary":
+        return "&7ʀᴀʀɪᴛʏ: &6&lʟᴇɢᴇɴᴅᴀʀʏ"
+    if {_rarity} is "epic":
+        return "&7ʀᴀʀɪᴛʏ: &5&lᴇᴘɪᴄ"
+    if {_rarity} is "rare":
+        return "&7ʀᴀʀɪᴛʏ: &9&lʀᴀʀᴇ"
+    if {_rarity} is "uncommon":
+        return "&7ʀᴀʀɪᴛʏ: &a&lᴜɴᴄᴏᴍᴍᴏɴ"
+    if {_rarity} is "common":
+        return "&7ʀᴀʀɪᴛʏ: &f&lᴄᴏᴍᴍᴏɴ"
+    return ""
+
+function autopick(mat: material, itemName: text, rarity: text, amount: integer, fortuneLevel: integer, model: text) :: item:
+    set {_finalAmount} to {_amount}
+    set {_chance} to {_fortuneLevel} * 10
+
+    set {_guaranteedExtras} to floor({_chance} / 100)
+    set {_remainderChance} to {_chance} - ({_guaranteedExtras} * 100)
+
+    add {_guaranteedExtras} * {_amount} to {_finalAmount}
+
+    if chance of {_remainderChance}%:
+        add {_amount} to {_finalAmount}
+
+    set {_item} to {_finalAmount} of {_mat}
+    set display name of {_item} to {_itemName}
+    set lore of {_item} to ("" and getRarityLine({_rarity}))
+    if {_model} is not "":
+        set item model of {_item} to {_model}
+    return {_item}
+
+on mine:
+    cancel drops
+    set {_fortune} to level of fortune of player's tool
+    if event-block is oak log:
+        give player autopick(oak planks, "&fWood", "common", 4, {_fortune}, "")
+    else if event-block is oak planks:
+        give player autopick(oak planks, "&fWood", "common", 1, {_fortune}, "")
+    else if event-block is stone:
+        give player autopick(stone, "&fStone", "common", 1, {_fortune}, "")
+    else if event-block is stone bricks:
+        give player autopick(stone, "&fStone", "common", 4, {_fortune}, "")
+    else if event-block is coal ore:
+        give player autopick(coal, "&fCoal", "common", 1, {_fortune}, "")
+    else if event-block is iron ore:
+        give player autopick(raw iron, "&fIron", "common", 1, {_fortune}, "")
+    else if event-block is copper ore:
+        give player autopick(raw copper, "&fCopper", "common", 1, {_fortune}, "")
+    else if event-block is gold ore:
+        give player autopick(raw gold, "&fGold", "common", 1, {_fortune}, "")
+    else if event-block is deepslate lapis ore:
+        give player autopick(lapis lazuli, "&fLapis", "uncommon", 1, {_fortune}, "")
+    else if event-block is deepslate redstone ore:
+        give player autopick(redstone, "&fRedstone", "uncommon", 1, {_fortune}, "")
+    else if event-block is deepslate diamond ore:
+        give player autopick(diamond, "&fDiamond", "uncommon", 1, {_fortune}, "")
+    else if event-block is deepslate emerald ore:
+        give player autopick(emerald, "&fEmerald", "uncommon", 1, {_fortune}, "")
+    else if event-block is coal block:
+        give player autopick(coal, "&fCoal", "common", 9, {_fortune}, "")
+    else if event-block is iron block:
+        give player autopick(raw iron, "&fIron", "common", 9, {_fortune}, "")
+    else if event-block is copper block:
+        give player autopick(raw copper, "&fCopper", "common", 9, {_fortune}, "")
+    else if event-block is gold block:
+        give player autopick(raw gold, "&fGold", "common", 9, {_fortune}, "")
+    else if event-block is lapis block:
+        give player autopick(lapis lazuli, "&fLapis", "uncommon", 9, {_fortune}, "")
+    else if event-block is redstone block:
+        give player autopick(redstone, "&fRedstone", "uncommon", 9, {_fortune}, "")
+    else if event-block is diamond block:
+        give player autopick(diamond, "&fDiamond", "uncommon", 9, {_fortune}, "")
+    else if event-block is emerald block:
+        give player autopick(emerald, "&fEmerald", "uncommon", 9, {_fortune}, "")

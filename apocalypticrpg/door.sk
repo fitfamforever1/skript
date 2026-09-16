@@ -1,0 +1,105 @@
+options:
+    PREFIX: &8[&4SYSTEM&8]&r
+
+on place of iron door:
+    set {_loc} to "%location of event-block%"
+    set {door::owner::%{_loc}%} to player
+    send "{@PREFIX} &aSteel door binded to you." to player
+
+on break of iron door:
+    set {_data} to "%block data of event-block%"
+    if {_data} contains "half=upper":
+        set {_loc} to "%location of block below event-block%"
+    else:
+        set {_loc} to "%location of event-block%"
+    if {door::owner::%{_loc}%} is not set:
+        stop
+    if player is not {door::owner::%{_loc}%}:
+        if player does not have permission "ownership.admin":
+            cancel event
+            send "{@PREFIX} &cYou cannot break someone else's door!" to player
+            stop
+    delete {door::owner::%{_loc}%}
+    cancel drops
+    execute console command "si give door 1 %player% true"
+
+on right click on iron door:
+    set {_clicked} to clicked block
+    set {_data} to "%block data of {_clicked}%"
+    if {_data} contains "half=upper":
+        set {_clicked} to block below {_clicked}
+    set {_loc} to "%location of {_clicked}%"
+    if {door::owner::%{_loc}%} is not set:
+        stop
+    cancel event
+    set {_owner} to "%{door::owner::%{_loc}%}%"
+    if player is {door::owner::%{_loc}%}:
+        toggleDoor({_clicked})
+        stop
+    loop {door::trusted::%{_owner}%::*}:
+        if player is loop-value:
+            toggleDoor({_clicked})
+            stop
+    send "{@PREFIX} &cThis door is locked. You are not trusted." to player
+    play sound "block.iron_door.close" at location of {_clicked}
+
+function toggleDoor(b: block):
+    set {_data} to "%block data of {_b}%"
+    if {_data} contains "open=false":
+        open {_b}
+        play sound "block.iron_door.open" at location of {_b}
+    else:
+        close {_b}
+        play sound "block.iron_door.close" at location of {_b}
+
+command /trust <offline player>:
+    description: Trust a player on ALL your locked doors.
+    trigger:
+        set {_target} to arg 1
+        if {_target} is not set:
+            send "{@PREFIX} &cUsage: /trust <player>" to player
+            stop
+        if {_target} is player:
+            send "{@PREFIX} &cYou can't trust yourself." to player
+            stop
+        set {_ownerName} to "%player%"
+        loop {door::trusted::%{_ownerName}%::*}:
+            if loop-value is {_target}:
+                send "{@PREFIX} &e%{_target}% &cis already trusted on your doors." to player
+                stop
+        add {_target} to {door::trusted::%{_ownerName}%::*}
+        send "{@PREFIX} &aTrusted &e%{_target}% &aon all your doors." to player
+
+command /untrust <offline player>:
+    description: Revoke a trusted player's access to all your doors.
+    trigger:
+        set {_target} to arg 1
+        if {_target} is not set:
+            send "{@PREFIX} &cUsage: /untrust <player>" to player
+            stop
+        set {_ownerName} to "%player%"
+        set {_found} to false
+        loop {door::trusted::%{_ownerName}%::*}:
+            if loop-value is {_target}:
+                remove loop-value from {door::trusted::%{_ownerName}%::*}
+                set {_found} to true
+                exit loop
+        if {_found} is true:
+            send "{@PREFIX} &aRemoved &e%{_target}% &afrom your doors." to player
+        else:
+            send "{@PREFIX} &e%{_target}% &cwas not in your trust list." to player
+
+command /trustlist:
+    description: List all players trusted on your doors.
+    trigger:
+        set {_ownerName} to "%player%"
+        if {door::trusted::%{_ownerName}%::*} is not set:
+            send "{@PREFIX} &7You haven't trusted anyone on your doors." to player
+            stop
+        set {_size} to size of {door::trusted::%{_ownerName}%::*}
+        if {_size} <= 0:
+            send "{@PREFIX} &7You haven't trusted anyone on your doors." to player
+            stop
+        send "{@PREFIX} &7Players trusted on your doors:" to player
+        loop {door::trusted::%{_ownerName}%::*}:
+            send "  &8- &e%loop-value%" to player

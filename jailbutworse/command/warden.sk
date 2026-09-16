@@ -1,0 +1,72 @@
+options:
+    WARDEN_GROUP: warden
+    RESPAWN_COOLDOWN: 3
+
+command /warden:
+    trigger:
+        if {warden::cooldown} is set:
+            send action bar "<##4169E1>Warden &eposition available in &e%{warden::cooldown}%&cs..." to player
+            stop
+        if {warden::player} is set:
+            if {warden::player} is player:
+                send "<##FE7300>[SYSTEM] &cYou are already the <##4169E1>Warden&7!"
+            else:
+                send "<##FE7300>[SYSTEM] &cThere is already an active <##4169E1>Warden&7: &e%{warden::player}%&c!"
+            stop
+        assign_warden(player)
+
+function assign_warden(target: player):
+    set {warden::player} to {_target}
+    set {warden::time} to 0
+    execute console command "lp user %{_target}% parent add {@WARDEN_GROUP}"
+    execute console command "lp user %{_target}% parent remove criminal"
+    execute console command "lp user %{_target}% parent remove swat"
+    execute console command "lp user %{_target}% parent remove nurse"
+    execute console command "lp user %{_target}% parent remove guard"
+    send "<##FE7300>[SYSTEM] &e%{_target}% &7has stepped up as the <##4169E1>Warden&7!" to all players
+    send "<##FE7300>[SYSTEM] &aYou are now the <##4169E1>Warden&a!" to {_target}
+    teleport {_target} to location(-69.5, -4, -24.5, world "world", 90, 0)
+    play sound "block.end_portal.spawn" with volume 1 and pitch 1 to all players
+    execute console command "glow blue %{_target}%"
+    execute console command "clearall %{_target}%"
+    execute console command "kit give warden %{_target}%"
+
+
+
+command /wardenremove:
+    permission: admin.warden
+    permission message: &cYou do not have permission to use this command.
+    trigger:
+        if {warden::player} is not set:
+            send "<##FE7300>[SYSTEM] &7There is no active Warden to remove."
+            stop
+        set {_old} to {warden::player}
+        set {_oldname} to name of {_old}
+        execute console command "lp user %{_oldname}% parent remove {@WARDEN_GROUP}"
+        if {_old} is online:
+            send "<##FE7300>[SYSTEM] &cYou have been removed as the Warden." to {_old}
+        delete {warden::player}
+        delete {warden::time}
+        send "<##FE7300>[SYSTEM] &7Warden &e%{_oldname}%&7 has been removed." to player
+        play sound "entity.blaze.death" with volume 1 and pitch 1 to all players
+        set {warden::cooldown} to {@RESPAWN_COOLDOWN}
+        execute console command "glow toggle %{_oldname}%"
+        execute console command "clearall %{_oldname}%"
+
+command /resignwarden:
+    trigger:
+        if {warden::player} is not set:
+            send "<##FE7300>[SYSTEM] &cThere is no active Warden."
+            stop
+        if {warden::player} is not player:
+            send "<##FE7300>[SYSTEM] &cYou are not the Warden!"
+            stop
+        set {_name} to name of player
+        execute console command "lp user %{_name}% parent remove {@WARDEN_GROUP}"
+        send "<##FE7300>[SYSTEM] &e%{_name}%&7 has resigned as the <##4169E1>Warden&7!" to all players
+        play sound "entity.blaze.death" with volume 1 and pitch 1 to all players
+        delete {warden::player}
+        delete {warden::time}
+        set {warden::cooldown} to {@RESPAWN_COOLDOWN}
+        execute console command "glow toggle %{_name}%"
+        execute console command "clearall %{_name}%"

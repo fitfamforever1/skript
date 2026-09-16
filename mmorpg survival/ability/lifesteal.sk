@@ -1,0 +1,12 @@
+on damage:
+    attacker is a player
+    victim is an entity
+    name of attacker's held item is "&fBlood Sword"
+    chance of 10%:
+        set {_newHp} to attacker's health + 2
+        if {_newHp} > max health of attacker:
+            set attacker's health to max health of attacker
+        else:
+            set attacker's health to {_newHp}
+        send actionbar "&c❤ &fBlood Sword &7healed you for &c4 hearts!" to attacker
+        play sound "entity.experience_orb.pickup" to attacker

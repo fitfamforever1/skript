@@ -1,0 +1,173 @@
+on first join:
+    InitPlayerLevel(player)
+    set {_level} to number data tag "level:level" of player
+    execute console command "lp user %player% meta setprefix 1 ""&8[&b%{_level}%&8] &7"""
+
+on join:
+    if data tag "authsys:registered" of player is set:
+        set {loggedin::%uuid of player%} to false
+        send "&aWelcome back &e%player%&a! Type &f/login <password>&a to continue." to player
+    else:
+        set {loggedin::%uuid of player%} to false
+        send "&aWelcome &e%player%&a! Type &f/register <password> <confirm password>&a to create an account." to player
+
+
+    set {_state} to number data tag "death:state" of player
+    if {_state} is 1:
+        set {pendingrespawn::%uuid of player%} to true
+
+    apply potion effect of blindness of tier 1 to player for 999 minutes
+    apply potion effect of slowness of tier 10 to player for 999 minutes
+
+    wait 30 seconds
+    if {loggedin::%uuid of player%} is not true:
+        kick player due to "&cYou took too long to log in/register."
+
+on player move:
+    if {loggedin::%uuid of event-player%} is not true:
+        cancel event
+
+on damage:
+    if {loggedin::%uuid of victim%} is not true:
+        cancel event
+    if attacker is a player:
+        if {loggedin::%uuid of attacker%} is not true:
+            cancel event
+
+on chat:
+    if {loggedin::%uuid of player%} is not true:
+        cancel event
+        send "&cLog in before chatting." to player
+
+on inventory click:
+    if {loggedin::%uuid of player%} is not true:
+        cancel event
+
+on drop:
+    if {loggedin::%uuid of player%} is not true:
+        cancel event
+        send "&cLog in before dropping items." to player
+
+on pickup:
+    if {loggedin::%uuid of player%} is not true:
+        cancel event
+
+on right click:
+    if {loggedin::%uuid of player%} is not true:
+        if event-item is set:
+            cancel event
+
+on inventory open:
+    if {loggedin::%uuid of player%} is not true:
+        if event-inventory is not player's inventory:
+            cancel event
+            send "&cLog in before opening containers." to player
+
+on command:
+    if {loggedin::%uuid of player%} is not true:
+        set {_cmd} to first element of (command split at " ")
+        if {_cmd} is not "login" and {_cmd} is not "register":
+            cancel event
+            send "&cYou must log in first." to player
+
+function afterAuthSuccess(p: player):
+    remove potion effect blindness from {_p}
+    remove potion effect slowness from {_p}
+    if {pendingrespawn::%uuid of {_p}%} is true:
+        delete {pendingrespawn::%uuid of {_p}%}
+        wait 1 tick
+        openRespawnOptionGUI({_p})
+
+command /register <text> <text>:
+    trigger:
+        if data tag "authsys:registered" of player is set:
+            send "&cYou already have an account. Use /login instead." to player
+            stop trigger
+
+        if length of arg-1 is less than 8:
+            send "&cPassword must be at least 8 characters." to player
+            stop trigger
+
+        if arg-1 is not arg-2:
+            send "&cPasswords do not match." to player
+            stop trigger
+
+        set data tag "authsys:registered" of player to true
+        set data tag "authsys:password" of player to arg-1
+        delete data tag "authsys:failedattempts" of player
+        set {loggedin::%uuid of player%} to true
+
+        afterAuthSuccess(player)
+
+        send "&aAccount created! You are now logged in." to player
+
+command /login <text>:
+    trigger:
+        if data tag "authsys:registered" of player is not set:
+            send "&cNo account found. Use /register <password> <confirm> first." to player
+            stop trigger
+
+        if {loggedin::%uuid of player%} is true:
+            send "&eYou are already logged in." to player
+            stop trigger
+
+        # lockout check happens even before checking the password
+        set {_fails} to number data tag "authsys:failedattempts" of player
+        if {_fails} is set:
+            if {_fails} >= 3:
+                kick player due to "&cAccount locked. Try again in a few minutes."
+                stop trigger
+
+        set {_stored} to data tag "authsys:password" of player
+
+        if arg-1 is {_stored}:
+            set {loggedin::%uuid of player%} to true
+            delete data tag "authsys:failedattempts" of player
+
+            afterAuthSuccess(player)
+
+            send "&aLogin successful. Welcome back!" to player
+        else:
+            add 1 to {_fails}
+            set number data tag "authsys:failedattempts" of player to {_fails}
+            send "&cWrong password. (%{_fails}%/3)" to player
+            if {_fails} >= 3:
+                ban player due to "&cToo many failed login attempts." for 10 minutes
+                kick player due to "&cToo many failed login attempts. Locked out for 10 minutes."
+
+command /logout:
+    trigger:
+        if {loggedin::%uuid of player%} is true:
+            set {loggedin::%uuid of player%} to false
+            apply potion effect of blindness of tier 1 to player for 999 minutes
+            apply potion effect of slowness of tier 10 to player for 999 minutes
+            send "&aYou have been logged out." to player
+        else:
+            send "&cYou aren't logged in." to player
+
+command /changepassword <text> <text> <text>:
+    trigger:
+        if {loggedin::%uuid of player%} is not true:
+            send "&cLog in first." to player
+            stop trigger
+
+        set {_stored} to data tag "authsys:password" of player
+
+        if arg-1 is not {_stored}:
+            send "&cCurrent password is incorrect." to player
+            stop trigger
+
+        if arg-2 is not arg-3:
+            send "&cNew passwords do not match." to player
+            stop trigger
+
+        if length of arg-2 is less than 8:
+            send "&cNew password must be at least 8 characters." to player
+            stop trigger
+
+        set data tag "authsys:password" of player to arg-2
+        send "&aPassword changed successfully." to player
+
+on quit:
+    delete {pendingrespawn::%uuid of player%}
+    set {loggedin::%uuid of player%} to false

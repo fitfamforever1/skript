@@ -1,0 +1,29 @@
+on death of player:
+    if victim has permission "criminal":
+        set {_killer} to attacker
+        if {_killer} is not set:
+            stop
+        if {_killer} has permission "guard":
+            execute console command "eco give %{_killer}% 150"
+            send "<##FE7300>[SYSTEM] &aYou earned &2$150 &afor eliminating a criminal!" to {_killer}
+            loop all players:
+                if loop-player has permission "warden":
+                    execute console command "eco give %loop-player% 50"
+                    send "<##FE7300>[SYSTEM] &aYou earned &2$50 &aas warden bonus!" to loop-player
+        if {_killer} has permission "swat":
+            execute console command "eco give %{_killer}% 150"
+            send "<##FE7300>[SYSTEM] &aYou earned &2$150 &afor eliminating a criminal!" to {_killer}
+            loop all players:
+                if loop-player has permission "warden":
+                    execute console command "eco give %loop-player% 50"
+                    send "<##FE7300>[SYSTEM] &aYou earned &2$50 &aas warden bonus!" to loop-player
+        if {_killer} has permission "nurse":
+            execute console command "eco give %{_killer}% 150"
+            send "<##FE7300>[SYSTEM] &aYou earned &2$150 &afor eliminating a criminal!" to {_killer}
+            loop all players:
+                if loop-player has permission "warden":
+                    execute console command "eco give %loop-player% 50"
+                    send "<##FE7300>[SYSTEM] &aYou earned &2$50 &aas warden bonus!" to loop-player
+        if {_killer} has permission "warden":
+            execute console command "eco give %{_killer}% 200"
+            send "<##FE7300>[SYSTEM] &aYou earned &2$200 &afor eliminating a criminal!" to {_killer}

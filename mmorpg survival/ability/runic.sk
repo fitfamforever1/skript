@@ -1,0 +1,37 @@
+on right click with diamond axe:
+    name of player's held item is "&fRunic Axe"
+
+    set {_uuid} to uuid of player
+
+    if {runicaxe.cooldown::%{_uuid}%} is set:
+        set {_remaining} to difference between now and {runicaxe.cooldown::%{_uuid}%}
+        if {_remaining} < 1 minutes:
+            send action bar "&cYour body is not ready for runes!" to player
+            stop
+
+    if {mana::%{_uuid}%} is not set:
+        set {mana::%{_uuid}%} to 0
+    if {mana::%{_uuid}%} < 15:
+        send action bar "&cNot enough mana." to player
+        stop
+
+    remove 15 from {mana::%{_uuid}%}
+    clampMana(player)
+    saveMana(player)
+
+    set {runicaxe.cooldown::%{_uuid}%} to now
+
+    apply strength 3 to player for 30 seconds
+    apply speed 2 to player for 30 seconds
+
+    send action bar "&fRune activated!" to player
+    play sound "entity.evoker.cast_spell" at player
+
+    wait 30 seconds
+
+    if player is online:
+        apply slowness 1 to player for 30 seconds
+        apply weakness 1 to player for 30 seconds
+        send action bar "&cBacklash using runes!" to player
+        damage player by 0 hearts
+        play sound "entity.wither.ambient" at player

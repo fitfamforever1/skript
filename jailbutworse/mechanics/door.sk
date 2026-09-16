@@ -1,0 +1,134 @@
+on right click on iron door:
+    if player is holding lever:
+        cancel event
+        if {lockpick::active::%player%} is true:
+            send "&7[&8Lockpick&7] &cAlready lockpicking!" to player
+            stop
+        set {lockpick::active::%player%} to true
+        set {lockpick::starting::%player%} to true
+        remove 1 of lever from player's inventory
+        send "&7[&8Lockpick&7] &eGet ready..." to player
+        
+
+        loop all players:
+            if loop-player has permission "alert":
+                send "<##FE7300>[SYSTEM] &c%player% &eis attempting to lockpick a door!" to loop-player
+                play sound "block.note_block.bass" at loop-player
+
+        wait 1 second
+        delete {lockpick::starting::%player%}
+
+        # Round 1
+        set {lockpick::wait::%player%} to random integer between 20 and 100
+        loop {lockpick::wait::%player%} times:
+            wait 1 tick
+        if {lockpick::active::%player%} is not true:
+            stop
+        send "&7[&8Lockpick&7] &a&lCLICK NOW!" to player
+        play sound "block.note_block.pling" at player
+        set {lockpick::waiting::%player%} to true
+        set {lockpick::canclick::%player%} to true
+        wait 20 ticks
+        delete {lockpick::canclick::%player%}
+        if {lockpick::waiting::%player%} is true:
+            delete {lockpick::waiting::%player%}
+            delete {lockpick::active::%player%}
+            delete {lockpick::wait::%player%}
+            send "&7[&8Lockpick&7] &cFailed! Too slow." to player
+            play sound "block.anvil.land" at player
+            stop
+        if {lockpick::active::%player%} is not true:
+            stop
+        send "&7[&8Lockpick&7] &e1/3 Nice..." to player
+        play sound "block.note_block.hat" at player
+
+        # Round 2
+        set {lockpick::wait::%player%} to random integer between 20 and 100
+        loop {lockpick::wait::%player%} times:
+            wait 1 tick
+        if {lockpick::active::%player%} is not true:
+            stop
+        send "&7[&8Lockpick&7] &a&lCLICK NOW!" to player
+        play sound "block.note_block.pling" at player
+        set {lockpick::waiting::%player%} to true
+        set {lockpick::canclick::%player%} to true
+        wait 18 ticks
+        delete {lockpick::canclick::%player%}
+        if {lockpick::waiting::%player%} is true:
+            delete {lockpick::waiting::%player%}
+            delete {lockpick::active::%player%}
+            delete {lockpick::wait::%player%}
+            send "&7[&8Lockpick&7] &cFailed! Too slow." to player
+            play sound "block.anvil.land" at player
+            stop
+        if {lockpick::active::%player%} is not true:
+            stop
+        send "&7[&8Lockpick&7] &e2/3 Keep going..." to player
+        play sound "block.note_block.hat" at player
+
+        # Round 3
+        set {lockpick::wait::%player%} to random integer between 20 and 100
+        loop {lockpick::wait::%player%} times:
+            wait 1 tick
+        if {lockpick::active::%player%} is not true:
+            stop
+        send "&7[&8Lockpick&7] &a&lCLICK NOW!" to player
+        play sound "block.note_block.pling" at player
+        set {lockpick::waiting::%player%} to true
+        set {lockpick::canclick::%player%} to true
+        wait 16 ticks
+        delete {lockpick::canclick::%player%}
+        if {lockpick::waiting::%player%} is true:
+            delete {lockpick::waiting::%player%}
+            delete {lockpick::active::%player%}
+            delete {lockpick::wait::%player%}
+            send "&7[&8Lockpick&7] &cFailed! Too slow." to player
+            play sound "block.anvil.land" at player
+            stop
+        if {lockpick::active::%player%} is not true:
+            stop
+
+        delete {lockpick::active::%player%}
+        delete {lockpick::wait::%player%}
+        set {_data} to "%block data of clicked block%"
+        if {_data} contains "open=false":
+            open clicked block
+            play sound "block.iron_door.open" at location of clicked block
+            send "&7[&8Lockpick&7] &aLock picked! Door opened." to player
+        else:
+            close clicked block
+            play sound "block.iron_door.close" at location of clicked block
+            send "&7[&8Lockpick&7] &aLock picked! Door closed." to player
+
+    else if player is holding paper:
+        set {_data} to "%block data of clicked block%"
+        if {_data} contains "open=false":
+            open clicked block
+            play sound "block.iron_door.open" at location of clicked block
+            send action bar "&7[&8Door&7] &aOpened" to player
+        else:
+            close clicked block
+            play sound "block.iron_door.close" at location of clicked block
+            send action bar "&7[&8Door&7] &cClosed" to player
+
+    else:
+        cancel event
+        send "<##FE7300>[SYSTEM] &cYou need a keycard or lockpick to open this door!" to player
+
+on right click:
+    if {lockpick::starting::%player%} is true:
+        stop
+    if {lockpick::active::%player%} is true:
+        if {lockpick::canclick::%player%} is true:
+            delete {lockpick::waiting::%player%}
+        else:
+            delete {lockpick::waiting::%player%}
+            delete {lockpick::active::%player%}
+            delete {lockpick::wait::%player%}
+            delete {lockpick::canclick::%player%}
+            send "&7[&8Lockpick&7] &cFailed! Clicked too early." to player
+            play sound "block.anvil.land" at player
+
+on drop:
+    if item is paper:
+        cancel event

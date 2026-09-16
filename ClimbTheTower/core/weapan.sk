@@ -1,0 +1,218 @@
+function giveSword(p: player, id: number):: item:
+    switch {_id}:
+        case 1:
+            set {_item} to sword(wooden sword, "Rotten Blade", 1)
+        case 2:
+            set {_item} to sword(diamond sword, "Frosted Fang", 2)
+        case 3:
+            set {_item} to sword(golden sword, "Molten Cutlass", 3)
+        case 4:
+            set {_item} to sword(stone sword, "Gravedigger's Edge", 4)
+        case 5:
+            set {_item} to sword(iron sword, "Shadow Saber", 5)
+        case 6:
+            set {_item} to sword(wooden sword, "Splintered Reaper", 6)
+        case 7:
+            set {_item} to sword(diamond sword, "Glacier Fang", 7)
+        case 8:
+            set {_item} to sword(golden sword, "Cinderblade", 8)
+        case 9:
+            set {_item} to sword(stone sword, "Bonecrusher", 9)
+        case 10:
+            set {_item} to sword(iron sword, "Rustbite Edge", 10)
+        case 11:
+            set {_item} to sword(wooden sword, "Timberfang", 11)
+        case 12:
+            set {_item} to sword(diamond sword, "Frostbite Saber", 12)
+        case 13:
+            set {_item} to sword(golden sword, "Blazing Cutlass", 13)
+        case 14:
+            set {_item} to sword(stone sword, "Tombstone Blade", 14)
+        case 15:
+            set {_item} to sword(iron sword, "Ironshank", 15)
+        case 16:
+            set {_item} to sword(wooden sword, "Withered Edge", 16)
+        case 17:
+            set {_item} to sword(diamond sword, "Crystal Fang", 17)
+        case 18:
+            set {_item} to sword(golden sword, "Emberfall Blade", 18)
+        case 19:
+            set {_item} to sword(stone sword, "Cairnbreaker", 19)
+        case 20:
+            set {_item} to sword(iron sword, "Steelclaw Saber", 20)
+        case 21:
+            set {_item} to sword(wooden sword, "Rotwood Blade", 21)
+        case 22:
+            set {_item} to sword(diamond sword, "Starlight Fang", 22)
+        case 23:
+            set {_item} to sword(golden sword, "Wildfire Saber", 23)
+        case 24:
+            set {_item} to sword(stone sword, "Gravebound Edge", 24)
+        case 25:
+            set {_item} to sword(iron sword, "Bloodiron Blade", 25)
+        case 26:
+            set {_item} to sword(wooden sword, "Driftwood Fang", 26)
+        case 27:
+            set {_item} to sword(diamond sword, "Icebound Saber", 27)
+        case 28:
+            set {_item} to sword(golden sword, "Ashfall Blade", 28)
+        case 29:
+            set {_item} to sword(stone sword, "Boneyard Edge", 29)
+        case 30:
+            set {_item} to sword(iron sword, "Warforged Saber", 30)
+        default:
+            send "&cInvalid weapon ID." to {_p}
+            stop
+    return {_item}
+
+function giveAxe(p: player, id: number):: item:
+    switch {_id}:
+        case 1:
+            set {_item} to axe(wooden axe, "Rotten Hatchet", 1)
+        case 2:
+            set {_item} to axe(diamond axe, "Frosted Cleaver", 2)
+        case 3:
+            set {_item} to axe(golden axe, "Molten Chopper", 3)
+        case 4:
+            set {_item} to axe(stone axe, "Gravedigger's Axe", 4)
+        case 5:
+            set {_item} to axe(iron axe, "Shadow Hewer", 5)
+        case 6:
+            set {_item} to axe(wooden axe, "Splintered Cleaver", 6)
+        case 7:
+            set {_item} to axe(diamond axe, "Glacier Hatchet", 7)
+        case 8:
+            set {_item} to axe(golden axe, "Cinderchop", 8)
+        case 9:
+            set {_item} to axe(stone axe, "Bonecrusher Axe", 9)
+        case 10:
+            set {_item} to axe(iron axe, "Rustbite Hewer", 10)
+        case 11:
+            set {_item} to axe(wooden axe, "Timberfang Hatchet", 11)
+        case 12:
+            set {_item} to axe(diamond axe, "Frostbite Cleaver", 12)
+        case 13:
+            set {_item} to axe(golden axe, "Blazing Chopper", 13)
+        case 14:
+            set {_item} to axe(stone axe, "Tombstone Axe", 14)
+        case 15:
+            set {_item} to axe(iron axe, "Ironshank Hewer", 15)
+        case 16:
+            set {_item} to axe(wooden axe, "Withered Hatchet", 16)
+        case 17:
+            set {_item} to axe(diamond axe, "Crystal Cleaver", 17)
+        case 18:
+            set {_item} to axe(golden axe, "Emberfall Chopper", 18)
+        case 19:
+            set {_item} to axe(stone axe, "Cairnbreaker Axe", 19)
+        case 20:
+            set {_item} to axe(iron axe, "Steelclaw Hewer", 20)
+        case 21:
+            set {_item} to axe(wooden axe, "Rotwood Hatchet", 21)
+        case 22:
+            set {_item} to axe(diamond axe, "Starlight Cleaver", 22)
+        case 23:
+            set {_item} to axe(golden axe, "Wildfire Chopper", 23)
+        case 24:
+            set {_item} to axe(stone axe, "Gravebound Axe", 24)
+        case 25:
+            set {_item} to axe(iron axe, "Bloodiron Hewer", 25)
+        case 26:
+            set {_item} to axe(wooden axe, "Driftwood Hatchet", 26)
+        case 27:
+            set {_item} to axe(diamond axe, "Icebound Cleaver", 27)
+        case 28:
+            set {_item} to axe(golden axe, "Ashfall Chopper", 28)
+        case 29:
+            set {_item} to axe(stone axe, "Boneyard Axe", 29)
+        case 30:
+            set {_item} to axe(iron axe, "Warforged Hewer", 30)
+        default:
+            send "&cInvalid weapon ID." to {_p}
+            stop
+    return {_item}
+
+function giveDagger(p: player, id: number):: item:
+    switch {_id}:
+        case 1:
+            set {_item} to dagger(wooden sword, "Rotten Shiv", 1)
+        case 2:
+            set {_item} to dagger(diamond sword, "Frosted Dirk", 2)
+        case 3:
+            set {_item} to dagger(golden sword, "Molten Knife", 3)
+        case 4:
+            set {_item} to dagger(stone sword, "Gravedigger's Shank", 4)
+        case 5:
+            set {_item} to dagger(iron sword, "Shadow Fang", 5)
+        case 6:
+            set {_item} to dagger(wooden sword, "Splintered Shiv", 6)
+        case 7:
+            set {_item} to dagger(diamond sword, "Glacier Dirk", 7)
+        case 8:
+            set {_item} to dagger(golden sword, "Cinderknife", 8)
+        case 9:
+            set {_item} to dagger(stone sword, "Bonecrusher Shank", 9)
+        case 10:
+            set {_item} to dagger(iron sword, "Rustbite Fang", 10)
+        case 11:
+            set {_item} to dagger(wooden sword, "Timberfang Shiv", 11)
+        case 12:
+            set {_item} to dagger(diamond sword, "Frostbite Dirk", 12)
+        case 13:
+            set {_item} to dagger(golden sword, "Blazing Knife", 13)
+        case 14:
+            set {_item} to dagger(stone sword, "Tombstone Shank", 14)
+        case 15:
+            set {_item} to dagger(iron sword, "Ironshank Fang", 15)
+        case 16:
+            set {_item} to dagger(wooden sword, "Withered Shiv", 16)
+        case 17:
+            set {_item} to dagger(diamond sword, "Crystal Dirk", 17)
+        case 18:
+            set {_item} to dagger(golden sword, "Emberfall Knife", 18)
+        case 19:
+            set {_item} to dagger(stone sword, "Cairnbreaker Shank", 19)
+        case 20:
+            set {_item} to dagger(iron sword, "Steelclaw Fang", 20)
+        case 21:
+            set {_item} to dagger(wooden sword, "Rotwood Shiv", 21)
+        case 22:
+            set {_item} to dagger(diamond sword, "Starlight Dirk", 22)
+        case 23:
+            set {_item} to dagger(golden sword, "Wildfire Knife", 23)
+        case 24:
+            set {_item} to dagger(stone sword, "Gravebound Shank", 24)
+        case 25:
+            set {_item} to dagger(iron sword, "Bloodiron Fang", 25)
+        case 26:
+            set {_item} to dagger(wooden sword, "Driftwood Shiv", 26)
+        case 27:
+            set {_item} to dagger(diamond sword, "Icebound Dirk", 27)
+        case 28:
+            set {_item} to dagger(golden sword, "Ashfall Knife", 28)
+        case 29:
+            set {_item} to dagger(stone sword, "Boneyard Shank", 29)
+        case 30:
+            set {_item} to dagger(iron sword, "Warforged Fang", 30)
+        default:
+            send "&cInvalid weapon ID." to {_p}
+            stop
+    return {_item}
+
+command /givesword <number>:
+    permission: admin.item
+    trigger:
+        set {_item} to giveSword(player, arg-1)
+        give {_item} to player
+
+command /giveaxe <number>:
+    permission: admin.item
+    trigger:
+        set {_item} to giveAxe(player, arg-1)
+        give {_item} to player
+
+command /givedagger <number>:
+    permission: admin.item
+    trigger:
+        set {_item} to giveDagger(player, arg-1)
+        give {_item} to player

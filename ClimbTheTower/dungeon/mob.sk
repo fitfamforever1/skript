@@ -1,0 +1,125 @@
+function spawnGoblin1(loc: location, roomId: number, floorId: number) :: entity:
+    set {_level} to {_floorId}
+    set {_category} to "balanced"
+    set {_health} to getCategoryStat({_category}, "health", {_level})
+    set {_speed} to getCategoryStat({_category}, "speed", {_level})
+    set {_damage} to getCategoryStat({_category}, "damage", {_level})
+
+    spawn zombie at {_loc}
+    set {_e} to last spawned entity
+    set tool of {_e} to air
+
+    set {_chest} to leather chestplate
+    dye {_chest} (97, 121, 69)
+    set chestplate of {_e} to {_chest}
+    
+    set {_legs} to leather leggings
+    dye {_legs} (97, 121, 69)
+    set leggings of {_e} to {_legs}
+    
+    set {_boots} to leather boots
+    dye {_boots} (97, 121, 69)
+    set boots of {_e} to {_boots}
+        
+    set {_head} to a player head
+    set the skull texture of {_head} to "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2ZlNDM5NjFkOTliNGJkMTI2MzUzYzgyMjAxNWVkMGIzN2U5YzMyMTQ0MTFhNmQ2MzdiYTY1NDE5NWE4YTFjZiJ9fX0="
+    set helmet of {_e} to {_head}
+
+    applyMobStats({_e}, "&cGoblin", {_category}, {_health}, 0.3, {_damage}, {_roomId}, {_floorId}, {_level})
+    return {_e}
+
+function spawnGoblin2(loc: location, roomId: number, floorId: number) :: entity:
+    set {_level} to {_floorId}
+    set {_category} to "ranged"
+    set {_health} to getCategoryStat({_category}, "health", {_level})
+    set {_speed} to getCategoryStat({_category}, "speed", {_level})
+    set {_damage} to getCategoryStat({_category}, "damage", {_level})
+    
+    spawn skeleton at {_loc}
+    set {_e} to last spawned entity
+    set tool of {_e} to bow
+    
+    set {_chest} to leather chestplate
+    dye {_chest} (97, 121, 69)
+    set chestplate of {_e} to {_chest}
+    
+    set {_legs} to leather leggings
+    dye {_legs} (97, 121, 69)
+    set leggings of {_e} to {_legs}
+    
+    set {_boots} to leather boots
+    dye {_boots} (97, 121, 69)
+    set boots of {_e} to {_boots}
+        
+    set {_head} to a player head
+    set the skull texture of {_head} to "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2ZlNDM5NjFkOTliNGJkMTI2MzUzYzgyMjAxNWVkMGIzN2U5YzMyMTQ0MTFhNmQ2MzdiYTY1NDE5NWE4YTFjZiJ9fX0="
+    set helmet of {_e} to {_head}
+    
+    applyMobStats({_e}, "&cGoblin Archer", {_category}, {_health}, {_speed}, {_damage}, {_roomId}, {_floorId}, {_level})
+    return {_e}
+
+function spawnGoblin3(loc: location, roomId: number, floorId: number) :: entity:
+    set {_level} to {_floorId}
+    set {_category} to "tank"
+    set {_health} to getCategoryStat({_category}, "health", {_level})
+    set {_speed} to getCategoryStat({_category}, "speed", {_level})
+    set {_damage} to getCategoryStat({_category}, "damage", {_level})
+    
+    spawn zombie at {_loc}
+    set {_e} to last spawned entity
+    set tool of {_e} to air
+    
+    set {_chest} to leather chestplate
+    dye {_chest} (69, 63, 50)
+    set chestplate of {_e} to {_chest}
+    
+    set {_legs} to leather leggings
+    dye {_legs} (69, 63, 50)
+    set leggings of {_e} to {_legs}
+    
+    set {_boots} to leather boots
+    dye {_boots} (69, 63, 50)
+    set boots of {_e} to {_boots}
+        
+    set {_head} to a player head
+    set the skull texture of {_head} to "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTAxZjM5OGY3NjYyZWRkYWEyN2QwYjdhYjcyY2NiMmM5MDYxMjNjNWJlZDFkYmM5NWMxMTA3ZDczOWFhMGQ3OSJ9fX0="
+    set helmet of {_e} to {_head}
+    
+    set scale attribute of {_e} to 1.4
+    applyMobStats({_e}, "&cHobgoblin", {_category}, {_health}, 0.22, {_damage}, {_roomId}, {_floorId}, {_level})
+    return {_e}
+
+function spawnGoblin4(loc: location, roomId: number, floorId: number) :: entity:
+    set {_level} to {_floorId}
+    set {_category} to "boss"
+    set {_health} to getCategoryStat({_category}, "health", {_level})
+    set {_speed} to getCategoryStat({_category}, "speed", {_level})
+    set {_damage} to getCategoryStat({_category}, "damage", {_level})
+    
+    spawn zombie at {_loc}
+    set {_e} to last spawned entity
+    set tool of {_e} to air
+    
+    set {_chest} to leather chestplate
+    dye {_chest} (135, 188, 121)
+    set chestplate of {_e} to {_chest}
+    
+    set {_legs} to leather leggings
+    dye {_legs} (135, 188, 121)
+    set leggings of {_e} to {_legs}
+    
+    set {_boots} to leather boots
+    dye {_boots} (135, 188, 121)
+    set boots of {_e} to {_boots}
+        
+    set {_head} to a player head
+    set the skull texture of {_head} to "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjZiYWQ5ODhjZjNlN2E0MGVhYzlmYTE2OTgyODM5OTRkMTM1OTJlMzRhZjg0NTJiOTZkMTgyNjU4Y2Y0YmY2MCJ9fX0="
+    set helmet of {_e} to {_head}
+    
+    set scale attribute of {_e} to 1.2
+    applyMobStats({_e}, "&cGoblin King", {_category}, {_health}, {_speed}, {_damage}, {_roomId}, {_floorId}, {_level})
+    return {_e}
+    
+command /test3:
+    trigger:
+        spawnMob(8, 1, 20, "goblin4", 1)

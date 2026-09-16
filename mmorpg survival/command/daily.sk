@@ -1,0 +1,82 @@
+function formatTime(ss: number) :: text:
+    set {_h} to floor({_ss} / 3600)
+    set {_m} to floor(({_ss} - {_h} * 3600) / 60)
+    set {_s} to {_ss} - {_h} * 3600 - {_m} * 60
+    set {_out} to ""
+    if {_h} > 0:
+        set {_out} to "%{_h}%h"
+    if {_m} > 0:
+        if {_out} contains "h":
+            set {_out} to "%{_out}% %{_m}%m"
+        else:
+            set {_out} to "%{_out}%%{_m}%m"
+    if {_s} > 0:
+        if {_out} contains "m":
+            set {_out} to "%{_out}% %{_s}%s"
+        else:
+            set {_out} to "%{_out}%%{_s}%s"
+    else if {_out} is "":
+        set {_out} to "0s"
+    return {_out}
+
+command /daily:
+    permission: crate
+    permission message: &8[&6CRATE&8] &cYou don't have permission to use this command.
+    trigger:
+        if {daily.cooldown::%player's uuid%} is not set:
+            execute console command "excellentcrates key give %player% daily 1 -sf -s"
+            send "&8[&6CRATE&8] &7You received &e1x Daily Key &a✔" to player
+            send "&8[&6CRATE&8] &7Come back in &f24 hours &7for your next reward." to player
+            set {daily.cooldown::%player's uuid%} to now
+        else:
+            set {_elapsed} to difference between {daily.cooldown::%player's uuid%} and now
+            if {_elapsed} >= 1 day:
+                execute console command "excellentcrates key give %player% daily 1 -sf -s"
+                send "&8[&6CRATE&8] &7You received &e1x Daily Key &a✔" to player
+                send "&8[&6CRATE&8] &7Come back in &f24 hours &7for your next reward." to player
+                set {daily.cooldown::%player's uuid%} to now
+            else:
+                set {_secs} to (1 day - {_elapsed}) / 1 second
+                send "&8[&6CRATE&8] &cAlready claimed! Come back in &f%formatTime({_secs})% &c✘" to player
+
+
+command /weekly:
+    permission: crate
+    permission message: &8[&6CRATE&8] &cYou don't have permission to use this command.
+    trigger:
+        if {weekly.cooldown::%player's uuid%} is not set:
+            execute console command "excellentcrates key give %player% weekly 1 -sf -s"
+            send "&8[&6CRATE&8] &7You received &e1x Weekly Key &a✔" to player
+            send "&8[&6CRATE&8] &7Come back in &f7 days &7for your next reward." to player
+            set {weekly.cooldown::%player's uuid%} to now
+        else:
+            set {_elapsed} to difference between {weekly.cooldown::%player's uuid%} and now
+            if {_elapsed} >= 7 days:
+                execute console command "excellentcrates key give %player% weekly 1 -sf -s"
+                send "&8[&6CRATE&8] &7You received &e1x Weekly Key &a✔" to player
+                send "&8[&6CRATE&8] &7Come back in &f7 days &7for your next reward." to player
+                set {weekly.cooldown::%player's uuid%} to now
+            else:
+                set {_secs} to (7 days - {_elapsed}) / 1 second
+                send "&8[&6CRATE&8] &cAlready claimed! Come back in &f%formatTime({_secs})% &c✘" to player
+
+
+command /monthly:
+    permission: crate
+    permission message: &8[&6CRATE&8] &cYou don't have permission to use this command.
+    trigger:
+        if {monthly.cooldown::%player's uuid%} is not set:
+            execute console command "excellentcrates key give %player% monthly 1 -sf -s"
+            send "&8[&6CRATE&8] &7You received &e1x Monthly Key &a✔" to player
+            send "&8[&6CRATE&8] &7Come back in &f30 days &7for your next reward." to player
+            set {monthly.cooldown::%player's uuid%} to now
+        else:
+            set {_elapsed} to difference between {monthly.cooldown::%player's uuid%} and now
+            if {_elapsed} >= 30 days:
+                execute console command "excellentcrates key give %player% monthly 1 -sf -s"
+                send "&8[&6CRATE&8] &7You received &e1x Monthly Key &a✔" to player
+                send "&8[&6CRATE&8] &7Come back in &f30 days &7for your next reward." to player
+                set {monthly.cooldown::%player's uuid%} to now
+            else:
+                set {_secs} to (30 days - {_elapsed}) / 1 second
+                send "&8[&6CRATE&8] &cAlready claimed! Come back in &f%formatTime({_secs})% &c✘" to player

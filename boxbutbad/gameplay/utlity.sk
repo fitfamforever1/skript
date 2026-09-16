@@ -1,0 +1,122 @@
+on right click with paper:
+    set {_item} to player's tool
+    set {_id} to data tag "ut:id" of {_item}
+
+    if {_id} is not set:
+        stop
+
+    if metadata tag "utility_cd" of player is set:
+        if difference between metadata tag "utility_cd" of player and now is less than 3 seconds:
+            send action bar "&8[<##7393B3>ᴜᴛɪʟɪᴛʏ&8] &cᴀʙɪʟɪᴛʏ ɪꜱ ᴏɴ ᴄᴏᴏʟᴅᴏᴡɴ!" to player
+            play sound "sound:sound.ui.error" with volume 1 for player
+            stop
+
+    set metadata tag "utility_cd" of player to now
+
+    if {_id} is "1":
+        remove 1 of {_item} from player's tool
+
+        set {_safeX} to x-coord of location of player
+        set {_safeY} to y-coord of location of player
+        set {_safeZ} to z-coord of location of player
+        set {_world} to world of player
+
+        loop 10 times:
+            set {_checkBlock} to block loop-number in front of player
+
+            set {_footLoc} to location(x-coord of location of {_checkBlock}, {_safeY}, z-coord of location of {_checkBlock}, {_world})
+            set {_headLoc} to location(x-coord of location of {_checkBlock}, {_safeY} + 1, z-coord of location of {_checkBlock}, {_world})
+
+            if block at {_footLoc} is not air:
+                stop loop
+            if block at {_headLoc} is not air:
+                stop loop
+
+            set {_safeX} to x-coord of location of {_checkBlock}
+            set {_safeZ} to z-coord of location of {_checkBlock}
+
+        teleport player to location({_safeX}, {_safeY}, {_safeZ}, {_world}, yaw of player, pitch of player)
+        send action bar "&8[<##7393B3>ᴜᴛɪʟɪᴛʏ&8] &aᴘʜᴀꜱᴇ ᴡᴀʟᴋᴇʀ ᴀᴄᴛɪᴠᴀᴛᴇᴅ!" to player
+
+    else if {_id} is "2":
+        remove 1 of {_item} from player's tool
+        push player horizontally forwards at speed 3
+        send action bar "&8[<##7393B3>ᴜᴛɪʟɪᴛʏ&8] &aɪᴍᴘᴜʟꜱᴇ ᴛʜʀᴜꜱᴛᴇʀ ᴀᴄᴛɪᴠᴀᴛᴇᴅ!" to player
+
+    else if {_id} is "3":
+        remove 1 of {_item} from player's tool
+        push player upwards at speed 1
+        send action bar "&8[<##7393B3>ᴜᴛɪʟɪᴛʏ&8] &aᴀꜱᴄᴇɴꜱɪᴏɴ ᴄᴏʀᴇ ᴀᴄᴛɪᴠᴀᴛᴇᴅ!" to player
+
+    else if {_id} is "4":
+        if {reversepearl::origin::%player%} is set:
+            teleport player to {reversepearl::origin::%player%}
+            delete {reversepearl::origin::%player%}
+            remove 1 of {_item} from player's tool
+            play sound "entity.enderman.teleport" at player
+            send action bar "&8[<##7393B3>ᴜᴛɪʟɪᴛʏ&8] &aᴛᴇʟᴇᴘᴏʀᴛᴇᴅ ʙᴀᴄᴋ!" to player
+            stop
+
+        set {reversepearl::origin::%player%} to player's location
+        play sound "entity.enderman.teleport" at player
+        send action bar "&8[<##7393B3>ᴜᴛɪʟɪᴛʏ&8] &aꜱᴘᴀᴛɪᴀʟ ᴄᴜʙᴇ ᴀᴄᴛɪᴠᴀᴛᴇᴅ!" to player
+
+        wait 20 seconds
+
+        if {reversepearl::origin::%player%} is not set:
+            stop
+
+        delete {reversepearl::origin::%player%}
+        remove 1 of {_item} from player's tool
+        send action bar "&8[<##7393B3>ᴜᴛɪʟɪᴛʏ&8] &cꜱᴘᴀᴛɪᴀʟ ᴄᴜʙᴇ ᴇxᴘɪʀᴇᴅ!" to player
+
+    else if {_id} is "5":
+        remove 1 of {_item} from player's tool
+        play 10 of explosion emitter particle at player's location
+
+        loop all players in radius 4 of player:
+            if loop-player is not player:
+                push loop-player away from player at speed 2
+
+        send action bar "&8[<##7393B3>ᴜᴛɪʟɪᴛʏ&8] &aꜱʜᴏᴄᴋᴡᴀᴠᴇ ʀᴇʟᴇᴀꜱᴇᴅ!" to player
+
+    else if {_id} is "6":
+        remove 1 of {_item} from player's tool
+
+        clear {_locs::*}
+        clear {_types::*}
+
+        loop all players in radius 5 of player:
+            if loop-player is not player:
+                apply slowness 255 to loop-player for 3 seconds:
+                    hide particles
+                    hide icon
+                apply jump boost 137 to loop-player for 3 seconds:
+                    hide particles
+                    hide icon
+
+                set {_loc} to location of loop-player
+                add {_loc} to {_locs::*}
+                add type of block at {_loc} to {_types::*}
+                set block at {_loc} to powder snow
+
+        send action bar "&8[<##7393B3>ᴜᴛɪʟɪᴛʏ&8] &aᴄʀʏᴏ ᴛʀᴀᴘ ᴀᴄᴛɪᴠᴀᴛᴇᴅ!" to player
+
+        wait 3 seconds
+
+        loop {_locs::*}:
+            set block at loop-value to {_types::%loop-index%}
+
+    else if {_id} is "7":
+        remove 1 of {_item} from player's tool
+
+        loop all players in radius 8 of player:
+            if loop-player is not player:
+                apply nausea 3 to loop-player for 10 seconds:
+                    hide particles
+                    hide icon
+                apply blindness 5 to loop-player for 10 seconds:
+                    hide particles
+                    hide icon
+
+        send action bar "&8[<##7393B3>ᴜᴛɪʟɪᴛʏ&8] &aɴᴇᴜʀᴀʟ ᴅɪꜱʀᴜᴘᴛᴏʀ ᴀᴄᴛɪᴠᴀᴛᴇᴅ!" to player

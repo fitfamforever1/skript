@@ -1,0 +1,28 @@
+on right click with diamond sword:
+    name of player's held item is "&fHex Blade"
+    
+    set {_uuid} to uuid of player
+    
+    if {hexblade.cooldown::%{_uuid}%} is set:
+        set {_remaining} to difference between now and {hexblade.cooldown::%{_uuid}%}
+        if {_remaining} < 30 seconds:
+            send action bar "&cHex is recharging!" to player
+            stop
+
+    if {mana::%{_uuid}%} is not set:
+        set {mana::%{_uuid}%} to 0
+    if {mana::%{_uuid}%} < 20:
+        send action bar "&cNot enough mana." to player
+        stop
+
+    remove 20 from {mana::%{_uuid}%}
+    clampMana(player)
+    saveMana(player)
+
+
+    apply strength 3 to player for 10 seconds
+    apply speed 2 to player for 10 seconds
+
+    set {hexblade.cooldown::%{_uuid}%} to now
+
+    send action bar "&fHex activated! &b-20 Mana" to player

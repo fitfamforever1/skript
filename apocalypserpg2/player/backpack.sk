@@ -1,0 +1,76 @@
+command /backpack [<integer>]:
+    trigger:
+        if data tag "oak:vstorage_open" of player is set:
+            send "&8[<##6F4E37>ʙᴀᴄᴋᴘᴀᴄᴋ&8] &cᴄʟᴏꜱᴇ ʏᴏᴜʀ ᴄᴜʀʀᴇɴᴛ ʙᴀᴄᴋᴘᴀᴄᴋ ꜰɪʀꜱᴛ." to player
+            stop
+
+        set {_bag} to arg-1 ? 1
+
+        if {_bag} < 1:
+            send "&8[<##6F4E37>ʙᴀᴄᴋᴘᴀᴄᴋ&8] &cᴜɴᴋɴᴏᴡɴ ʙᴀɢ ɪᴅ | ᴄᴏɴᴛᴀᴄᴛ ᴅᴇᴠᴇʟᴏᴘᴇʀ." to player
+            stop
+        if {_bag} > 3:
+            send "&8[<##6F4E37>ʙᴀᴄᴋᴘᴀᴄᴋ&8] &cᴜɴᴋɴᴏᴡɴ ʙᴀɢ ɪᴅ | ᴄᴏɴᴛᴀᴄᴛ ᴅᴇᴠᴇʟᴏᴘᴇʀ." to player
+            stop
+            
+        set metadata tag "vstorage_%{_bag}%" of player to chest inventory with 3 rows named "<##6F4E37>ʙᴀᴄᴋᴘᴀᴄᴋ &7#%{_bag}%"
+
+        loop 27 times:
+            set {_slot} to loop-number - 1
+            if {vstorage::%player%::%{_bag}%::%{_slot}%} is set:
+                set slot {_slot} of (metadata tag "vstorage_%{_bag}%" of player) to {vstorage::%player%::%{_bag}%::%{_slot}%}
+
+        set data tag "oak:vstorage_open" of player to {_bag}
+        open (metadata tag "vstorage_%{_bag}%" of player) to player
+
+command /backpackclear [<offline player>] [<integer>]:
+    permission: admin
+    permission message: "&8[<##6F4E37>ʙᴀᴄᴋᴘᴀᴄᴋ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪꜱꜱɪᴏɴ."
+    trigger:
+        if arg-1 is not set:
+            send "&8[<##6F4E37>ʙᴀᴄᴋᴘᴀᴄᴋ&8] &c/backpackclear [player] [bag number]" to player
+            stop
+        set {_target} to arg-1
+        if arg-2 is set:
+            delete {vstorage::%{_target}%::%arg-2%::*}
+            send "&8[<##6F4E37>ʙᴀᴄᴋᴘᴀᴄᴋ&8] &7Cleared &f%{_target}%&7's backpack &f#%arg-2%&7." to player
+        else:
+            loop 9 times:
+                delete {vstorage::%{_target}%::%loop-number%::*}
+            send "&8[<##6F4E37>ʙᴀᴄᴋᴘᴀᴄᴋ&8] &7Cleared all backpacks for &f%{_target}%&7." to player
+
+on inventory click:
+    set {_bag} to data tag "oak:vstorage_open" of player
+    if {_bag} is set:
+        if event-inventory = (metadata tag "vstorage_%{_bag}%" of player):
+            stop
+
+on inventory close:
+    set {_bag} to data tag "oak:vstorage_open" of player
+    if {_bag} is set:
+        if event-inventory = (metadata tag "vstorage_%{_bag}%" of player):
+            loop 27 times:
+                set {_slot} to loop-number - 1
+                set {_item} to slot {_slot} of (metadata tag "vstorage_%{_bag}%" of player)
+                if {_item} is set:
+                    set {vstorage::%player%::%{_bag}%::%{_slot}%} to {_item}
+                else:
+                    delete {vstorage::%player%::%{_bag}%::%{_slot}%}
+            delete metadata tag "vstorage_%{_bag}%" of player
+            delete data tag "oak:vstorage_open" of player
+
+on quit:
+    set {_bag} to data tag "oak:vstorage_open" of player
+    if {_bag} is set:
+        loop 27 times:
+            set {_slot} to loop-number - 1
+            set {_item} to slot {_slot} of (metadata tag "vstorage_%{_bag}%" of player)
+            if {_item} is set:
+                set {vstorage::%player%::%{_bag}%::%{_slot}%} to {_item}
+            else:
+                delete {vstorage::%player%::%{_bag}%::%{_slot}%}
+        delete metadata tag "vstorage_%{_bag}%" of player
+        delete data tag "oak:vstorage_open" of player
+
+on join:
+    delete data tag "oak:vstorage_open" of player

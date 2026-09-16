@@ -1,0 +1,41 @@
+command /spawn [<player>]:
+    description: Teleports you or another player to spawn
+    trigger:
+        if arg-1 is set:
+            if player does not have permission "admin.spawn":
+                send "&c✖ &8| &cʏᴏᴜ ᴅᴏ ɴᴏᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪꜱꜱɪᴏɴ ᴛᴏ ᴛᴇʟᴇᴘᴏʀᴛ ᴏᴛʜᴇʀꜱ!" to player
+                stop
+            spawn(player)
+            stop
+        spawn(player)
+
+function spawn(mover: player):
+    set data tag "spawn:froze" of {_mover} to true
+    set {_loc} to location of {_mover}
+    loop 5 times:
+        wait 1 second
+        if data tag "spawn:froze" of {_mover} is not true:
+            send "debug1" to {_mover}
+            send "&8[<##578cbf>ꜱᴘᴀᴡɴ&8] &cᴛᴇʟᴇᴘᴏʀᴛ ᴄᴀɴᴄᴇʟʟᴇᴅ — ʏᴏᴜ ᴍᴏᴠᴇᴅ!" to {_mover}
+            stop
+        if distance between location of {_mover} and {_loc} > 0.05:
+            set data tag "spawn:froze" of {_mover} to false
+            send "&8[<##578cbf>ꜱᴘᴀᴡɴ&8] &cᴛᴇʟᴇᴘᴏʀᴛ ᴄᴀɴᴄᴇʟʟᴇᴅ — ʏᴏᴜ ᴍᴏᴠᴇᴅ!" to {_mover}
+            stop
+        set {_remaining} to 5 - loop-number
+        if {_remaining} > 0:
+            send action bar "&8[<##578cbf>ꜱᴘᴀᴡɴ&8] &7ᴛᴇʟᴇᴘᴏʀᴛɪɴɢ ɪɴ &a%{_remaining}%&7..." to {_mover}
+    set data tag "spawn:froze" of {_mover} to false
+    if {_mover} is online:
+        teleport {_mover} to location(-699.5, 69, 822.5, world "world", 180, 0)
+        send title "&a✔ &aᴛᴇʟᴇᴘᴏʀᴛᴇᴅ ᴛᴏ ꜱᴘᴀᴡɴ!" to {_mover} for 1.6 seconds
+        play sound "entity.enderman.teleport" for {_mover}
+
+on respawn:
+    wait 20 ticks
+    teleport player to location(-699.5, 69, 822.5, world "world", 180, 0)
+    send title "&a✔ &aᴛᴇʟᴇᴘᴏʀᴛᴇᴅ ᴛᴏ ꜱᴘᴀᴡɴ!" with subtitle "&4ʏᴏᴜ ʜᴀᴠᴇ ᴅɪᴇᴅ!" to player for 1.6 seconds
+
+on first join:
+    wait 1 tick
+    teleport player to location(-701.5, 54, 821.5, world "world", 180, 0)

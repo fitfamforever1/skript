@@ -1,0 +1,92 @@
+command /u1:
+    permission: utility
+    trigger:
+        set {_safeX} to x-coord of location of player
+        set {_safeY} to y-coord of location of player
+        set {_safeZ} to z-coord of location of player
+        set {_world} to world of player
+
+        loop 10 times:
+            set {_checkBlock} to block loop-number in front of player
+
+            set {_footLoc} to location(x-coord of location of {_checkBlock}, {_safeY}, z-coord of location of {_checkBlock}, {_world})
+            set {_headLoc} to location(x-coord of location of {_checkBlock}, {_safeY} + 1, z-coord of location of {_checkBlock}, {_world})
+
+            if block at {_footLoc} is not air:
+                stop loop
+            if block at {_headLoc} is not air:
+                stop loop
+
+            set {_safeX} to x-coord of location of {_checkBlock}
+            set {_safeZ} to z-coord of location of {_checkBlock}
+
+        teleport player to location({_safeX}, {_safeY}, {_safeZ}, {_world}, yaw of player, pitch of player)
+
+command /u2:
+    permission: utility
+    trigger:
+        push player horizontally forwards at speed 3
+
+command /u3:
+    permission: utility
+    trigger:
+        push player upwards at speed 1.2
+
+command /u4:
+    permission: utility
+    trigger:
+        if {reversepearl::origin::%player%} is set:
+            teleport player to {reversepearl::origin::%player%}
+            delete {reversepearl::origin::%player%}
+            send action bar "&8[&4SYSTEM&8] &aTeleported back!" to player
+            play sound "entity.enderman.teleport" at player
+            stop
+        set {reversepearl::origin::%player%} to player's location
+        send action bar "&8[&4SYSTEM&8] &aSpacial Cube activated!" to player
+        play sound "entity.enderman.teleport" at player
+        wait 20 seconds
+        if {reversepearl::origin::%player%} is not set:
+            stop
+        delete {reversepearl::origin::%player%}
+        send action bar "&8[&4SYSTEM&8] &cSpacial Cube expired!" to player
+
+command /u5:
+    permission: utility
+    trigger:
+        play 10 of explosion emitter particle at player's location
+        loop all players in radius 4 of player:
+            if loop-player is not player:
+                push loop-player away from player at speed 2
+
+command /u6:
+    permission: utility
+    trigger:
+        loop all players in radius 5 of player:
+            if loop-player is not player:
+                apply slowness 255 to loop-player for 3 seconds:
+                    hide particles
+                    hide icon
+                apply jump boost 137 to loop-player for 3 seconds:
+                    hide particles
+                    hide icon
+                set {_lp} to loop-player
+                set {_loc} to location of {_lp}
+                add {_loc} to {_locs::*}
+                add type of block at {_loc} to {_types::*}
+                set block at {_loc} to powder snow
+
+        wait 3 seconds
+        loop {_locs::*}:
+            set block at loop-value to {_types::%loop-index%}
+
+command /u7:
+    permission: utility
+    trigger:
+        loop all players in radius 8 of player:
+            if loop-player is not player:
+                apply nausea 3 to loop-player for 10 seconds:
+                    hide particles
+                    hide icon
+                apply blindness 5 to loop-player for 10 seconds:
+                    hide particles
+                    hide icon

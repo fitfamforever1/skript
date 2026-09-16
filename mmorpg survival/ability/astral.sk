@@ -1,0 +1,37 @@
+on right click with breeze rod:
+    name of player's held item is "&fAstral Wand"
+
+    set {_uuid} to uuid of player
+
+    if {cooldown_astral::%{_uuid}%} is set:
+        if {cooldown_astral::%{_uuid}%} > now:
+            stop
+
+    if {mana::%{_uuid}%} is not set:
+        set {mana::%{_uuid}%} to 0
+
+    if {mana::%{_uuid}%} < 20:
+        send action bar "&cNot enough mana." to player
+        stop
+
+    set {_target} to targeted entity of player
+    if {_target} is not set:
+        stop
+    if {_target} is a player:
+        if {_target} is player:
+            stop
+
+    set {cooldown_astral::%{_uuid}%} to now + 0.5 seconds
+
+    set {_source} to damage source from magic
+    damage {_target} by 10 with {_source}
+
+    set {_loc} to location of {_target}
+    draw 30 end rod particles with a distribution of vector(0.5, 1, 0.5) at {_loc} 
+    draw 1 explosion particle at {_loc}
+
+    remove 20 from {mana::%{_uuid}%}
+    clampMana(player)
+    saveMana(player)
+    send action bar "&fGamama Rays fired! &b-20 Mana" to player
+

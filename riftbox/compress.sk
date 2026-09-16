@@ -1,0 +1,63 @@
+function CompressInventory(p: player):
+    loop items in inventory of {_p}:
+        set {_name} to name of loop-item
+        if {_name} is "&fWheat":
+            set {_compressed-id} to "crop1"
+        else if {_name} is "&fCarrot":
+            set {_compressed-id} to "crop2"
+        else if {_name} is "&fPotato":
+            set {_compressed-id} to "crop3"
+        else if {_name} is "&fWood":
+            set {_compressed-id} to "comp1"
+        else if {_name} is "&fStone":
+            set {_compressed-id} to "comp2"
+        else if {_name} is "&fCoal":
+            set {_compressed-id} to "comp3"
+        else if {_name} is "&fCopper":
+            set {_compressed-id} to "comp4"
+        else if {_name} is "&fIron":
+            set {_compressed-id} to "comp5"
+        else if {_name} is "&fGold":
+            set {_compressed-id} to "comp6"
+        else if {_name} is "&fLapis":
+            set {_compressed-id} to "comp7"
+        else if {_name} is "&fRedstone":
+            set {_compressed-id} to "comp8"
+        else if {_name} is "&fDiamond":
+            set {_compressed-id} to "comp9"
+        else if {_name} is "&fEmerald":
+            set {_compressed-id} to "comp10"
+        else:
+            continue
+        set {_amount} to amount of loop-item
+        if {_amount} < 64:
+            continue
+        set {_stacks} to floor({_amount} / 64)
+        set {_remainder} to {_amount} - ({_stacks} * 64)
+        remove (amount of loop-item) of loop-item from inventory of {_p}
+        loop {_stacks} times:
+            execute console command "si give %{_compressed-id}% 1 %{_p}% true"
+        if {_remainder} > 0:
+            give {_remainder} of (type of loop-item) to {_p}
+
+
+every 1 second:
+    loop all players:
+        if {compress::enabled::%loop-player%} is not true:
+            continue
+        CompressInventory(loop-player)
+        
+command /compression:
+    permission: compression.use
+    permission message: "&cNo permission."
+    trigger:
+        if {compress::enabled::%player%} is true:
+            set {compress::enabled::%player%} to false
+            send "&cAuto Compression disabled!" to player
+        else:
+            set {compress::enabled::%player%} to true
+            send "&aAuto Compression enabled!" to player
+
+on join:
+    if {compress::enabled::%player%} is not set:
+        set {compress::enabled::%player%} to true

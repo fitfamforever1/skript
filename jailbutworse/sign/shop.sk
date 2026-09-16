@@ -1,0 +1,118 @@
+on right click on oak wall sign:
+    cancel event
+    set {_loc} to location of clicked block
+    set {_x} to floor(x-coordinate of {_loc})
+    set {_y} to floor(y-coordinate of {_loc})
+    set {_z} to floor(z-coordinate of {_loc})
+    if {_y} is -11:
+        if {_z} is -27:
+            if {_x} is -65:
+                if player's balance >= 10:
+                    execute console command "eco take %player% 10"
+                    give player 1 bread
+                    send action bar "&c-$10 &7(Bread)" to player
+                    play sound "block.note_block.pling" at player
+                else:
+                    send "<##FE7300>[SYSTEM] &cYou don't have enough money. &7Bread costs &e$10&7." to player
+            if {_x} is -64:
+                if player's balance >= 20:
+                    execute console command "eco take %player% 20"
+                    give player 1 cooked beef
+                    send action bar "&c-$20 &7(Steak)" to player
+                    play sound "block.note_block.pling" at player
+                else:
+                    send "<##FE7300>[SYSTEM] &cYou don't have enough money. &7Steak costs &e$20&7." to player
+            if {_x} is -63:
+                if player's balance >= 5:
+                    execute console command "eco take %player% 5"
+                    give player 1 cookie
+                    send action bar "&c-$5 &7(Cookie)" to player
+                    play sound "block.note_block.pling" at player
+                else:
+                    send "<##FE7300>[SYSTEM] &cYou don't have enough money. &7Cookie costs &e$5&7." to player
+            if {_x} is -62:
+                if player's balance >= 8:
+                    execute console command "eco take %player% 8"
+                    give player 1 apple
+                    send action bar "&c-$8 &7(Apple)" to player
+                    play sound "block.note_block.pling" at player
+                else:
+                    send "<##FE7300>[SYSTEM] &cYou don't have enough money. &7Apple costs &e$8&7." to player
+    if {_y} is -19:
+        if {_z} is -17:
+            if {_x} is -70:
+                if player's balance >= 15:
+                    execute console command "eco take %player% 15"
+                    give player 1 arrow
+                    send action bar "&c-$15 &7(Arrow)" to player
+                    play sound "block.note_block.pling" at player
+                else:
+                    send "<##FE7300>[SYSTEM] &cYou don't have enough money. &7Arrow costs &e$15&7." to player
+            if {_x} is -69:
+                if player's balance >= 1000:
+                    execute console command "eco take %player% 1000"
+                    execute console command "si give lockpick 1 %player% true"
+                    send action bar "&c-$1000 &7(Lockpick)" to player
+                    play sound "block.note_block.pling" at player
+                else:
+                    send "<##FE7300>[SYSTEM] &cYou don't have enough money. &7Lockpick costs &e$1000&7." to player
+            if {_x} is -68:
+                if player's balance >= 500:
+                    execute console command "eco take %player% 500"
+                    repair player's helmet
+                    repair player's chestplate
+                    repair player's leggings
+                    repair player's boots
+                    send action bar "&c-$500 &7(Armor Repair)" to player
+                    play sound "block.anvil.use" at player
+                else:
+                    send "<##FE7300>[SYSTEM] &cYou don't have enough money. &7Armor repair costs &e$500&7." to player
+    if {_y} is -18:
+        if {_z} is -17:
+            if {_x} is -69:
+                if player's balance >= 800:
+                    execute console command "eco take %player% 800"
+                    execute console command "si give cutter 1 %player% true"
+                    send action bar "&c-$800 &7(Wire Cutter)" to player
+                    play sound "block.note_block.pling" at player
+                else:
+                    send "<##FE7300>[SYSTEM] &cYou don't have enough money. &7Wire Cutter costs &e$800&7." to player
+            if {_x} is -68:
+                if player's balance >= 400:
+                    execute console command "eco take %player% 400"
+                    execute console command "si give pearl 1 %player% true"
+                    send action bar "&c-$400 &7(Reverse Pearl)" to player
+                    play sound "block.note_block.pling" at player
+                else:
+                    send "<##FE7300>[SYSTEM] &cYou don't have enough money. &7Reverse Pearl costs &e$400&7." to player
+    if {_y} is -4:
+        if {_z} is -22:
+            if {_x} is -67:
+                if player's balance >= 500:
+                    execute console command "eco take %player% 500"
+                    repair player's helmet
+                    repair player's chestplate
+                    repair player's leggings
+                    repair player's boots
+                    send action bar "&c-$500 &7(Armor Repair)" to player
+                    play sound "block.anvil.use" at player
+                else:
+                    send "<##FE7300>[SYSTEM] &cYou don't have enough money. &7Armor repair costs &e$500&7." to player
+        if {_z} is -21:
+            if {_x} is -67:
+                if player's balance >= 400:
+                    execute console command "eco take %player% 400"
+                    execute console command "si give pearl 1 %player% true"
+                    send action bar "&c-$400 &7(Reverse Pearl)" to player
+                    play sound "block.note_block.pling" at player
+                else:
+                    send "<##FE7300>[SYSTEM] &cYou don't have enough money. &7Reverse Pearl costs &e$400&7." to player
+        if {_z} is -20:
+            if {_x} is -67:
+                if player's balance >= 200:
+                    execute console command "eco take %player% 200"
+                    give player 1 golden apple
+                    send action bar "&c-$200 &7(Golden Apple)" to player
+                    play sound "block.note_block.pling" at player
+                else:
+                    send "<##FE7300>[SYSTEM] &cYou don't have enough money. &7Golden Apple costs &e$200&7." to player

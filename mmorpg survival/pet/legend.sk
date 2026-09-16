@@ -1,0 +1,75 @@
+# Dragon | pet23
+on damage:
+    attacker is a player
+    victim is an enderman
+    {petid::%attacker%::pet23} is "active"
+    set damage to damage * 5
+
+on join:
+    set {petability::pet23.aliveTimer::%player's uuid%} to 0
+
+every 30 minutes:
+    loop all players:
+        if {petid::%loop-player%::pet23} is "active":
+            add 1 to {petability::pet23.stackLevel::%loop-player's uuid%}
+            if {petability::pet23.stackLevel::%loop-player's uuid%} > 5:
+                set {petability::pet23.stackLevel::%loop-player's uuid%} to 5
+            set {_lvl} to {petability::pet23.stackLevel::%loop-player's uuid%}
+            set {_str} to potion effect of strength of tier {_lvl}
+            apply infinite {_str} to loop-player
+            set {_spd} to potion effect of speed of tier {_lvl}
+            apply infinite {_spd} to loop-player
+            send action bar "&6[Pet 23] &eStrength &7+ &bSpeed &flevel %{_lvl}% granted!" to loop-player
+
+on death:
+    victim is a player
+    set {petability::pet23.aliveTimer::%victim's uuid%} to 0
+    set {petability::pet23.stackLevel::%victim's uuid%} to 0
+
+on damage:
+    victim is a player
+    {petid::%victim%::pet23} is "active"
+    set {_maxHp} to max health of victim
+    set {_halfHp} to {_maxHp} * 0.5
+    if health of victim > {_halfHp}:
+        if (health of victim) - damage <= {_halfHp}:
+            if {petability::pet23.roarCooldown::%victim's uuid%} is not set:
+                set {petability::pet23.roarCooldown::%victim's uuid%} to true
+                play sound "entity.ender_dragon.growl" with volume 3 and pitch 0.8 at victim
+                draw 200 explosion particles at victim
+                loop entities in radius 30 around victim:
+                    if loop-entity is not a player:
+                        apply slowness 255 to loop-entity for 3 seconds
+                        apply blindness to loop-entity for 3 seconds
+                send action bar "&5[Pet 23] &dDragon Roar! &7Mobs stunned for &f3s&7!" to victim
+                wait 60 seconds
+                delete {petability::pet23.roarCooldown::%victim's uuid%}
+
+on damage:
+    attacker is a player
+    {petid::%attacker%::pet23} is "active"
+    victim is a living entity
+    victim is not a player
+    set {_bonus} to damage * 0.10
+    set {_newHp} to health of victim - {_bonus}
+    if {_newHp} <= 0:
+        kill victim
+    else:
+        set health of victim to {_newHp}
+
+every 5 seconds:
+    loop all players:
+        if {petid::%loop-player%::pet23} is "active":
+            set {_money} to balance of loop-player
+            if {_money} < 0:
+                set {_money} to 0
+            if {_money} > 10000000:
+                set {_money} to 10000000
+            set {_healPercent} to 1 + (({_money} / 100000) * 19)
+            set {_maxHp} to max health of loop-player
+            set {_healAmount} to {_maxHp} * ({_healPercent} / 100)
+            if health of loop-player < {_maxHp}:
+                set {_newHp} to health of loop-player + {_healAmount}
+                if {_newHp} > {_maxHp}:
+                    set {_newHp} to {_maxHp}
+                set health of loop-player to {_newHp}

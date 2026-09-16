@@ -1,0 +1,35 @@
+on right click on oak wall sign:
+    if distance between player and location(-75, -10, 9, world "world") < 4:
+        cancel event
+        if {cell::door::cooldown} is set:
+            send action bar "&c[CELL] &7Please wait before toggling again." to player
+            stop
+        set {cell::door::cooldown} to true
+        if {cell::door::open} is true:
+            set {cell::door::open} to false
+            play sound "block.iron_door.close" at player
+            send action bar "&7[CELL] &cClosing..." to player
+            wait 5 ticks
+            loop integers from -9 to -11:
+                set block at location(-76, loop-value, 7, world "world") to cobblestone wall[east=tall, west=tall, north=none, south=none, up=false, waterlogged=false]
+                set block at location(-77, loop-value, 7, world "world") to cobblestone wall[east=tall, west=tall, north=none, south=none, up=false, waterlogged=false]
+                set block at location(-78, loop-value, 7, world "world") to cobblestone wall[east=tall, west=tall, north=none, south=none, up=false, waterlogged=false]
+                set block at location(-79, loop-value, 7, world "world") to cobblestone wall[east=tall, west=tall, north=none, south=none, up=false, waterlogged=false]
+                play sound "block.stone.place" at location(-77, loop-value, 7, world "world")
+                wait 5 ticks
+            send action bar "&7[CELL] &cCell closed." to player
+        else:
+            set {cell::door::open} to true
+            play sound "block.iron_door.open" at player
+            send action bar "&7[CELL] &aOpening..." to player
+            wait 5 ticks
+            loop integers from -11 to -9:
+                set block at location(-76, loop-value, 7, world "world") to air
+                set block at location(-77, loop-value, 7, world "world") to air
+                set block at location(-78, loop-value, 7, world "world") to air
+                set block at location(-79, loop-value, 7, world "world") to air
+                play sound "block.stone.break" at location(-77, loop-value, 7, world "world")
+                wait 5 ticks
+            send action bar "&7[CELL] &aCell opened." to player
+        wait 5 seconds
+        delete {cell::door::cooldown}

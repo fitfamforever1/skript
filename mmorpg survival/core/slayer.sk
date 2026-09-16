@@ -1,0 +1,382 @@
+on load:
+    set {ritual.tier.1.kill_goal} to 10
+    set {ritual.tier.1.mob_name}  to "zombie1"
+    set {ritual.tier.1.mob_level} to 1
+    set {ritual.tier.1.label}     to "RotFather T1"
+    set {ritual.tier.1.cost}      to 2000
+
+    set {ritual.tier.2.kill_goal} to 25
+    set {ritual.tier.2.mob_name}  to "zombie2"
+    set {ritual.tier.2.mob_level} to 2
+    set {ritual.tier.2.label}     to "RotFather T2"
+    set {ritual.tier.2.cost}      to 7500
+
+    set {ritual.tier.3.kill_goal} to 50
+    set {ritual.tier.3.mob_name}  to "zombie3"
+    set {ritual.tier.3.mob_level} to 3
+    set {ritual.tier.3.label}     to "RotFather T3"
+    set {ritual.tier.3.cost}      to 20000
+
+    set {ritual.tier.4.kill_goal} to 100
+    set {ritual.tier.4.mob_name}  to "zombie4"
+    set {ritual.tier.4.mob_level} to 4
+    set {ritual.tier.4.label}     to "RotFather T4"
+    set {ritual.tier.4.cost}      to 50000
+
+    set {ritual.tier.5.kill_goal} to 10
+    set {ritual.tier.5.mob_name}  to "skeleton1"
+    set {ritual.tier.5.mob_level} to 1
+    set {ritual.tier.5.label}     to "BoneLord T1"
+    set {ritual.tier.5.cost}      to 2000
+
+    set {ritual.tier.6.kill_goal} to 25
+    set {ritual.tier.6.mob_name}  to "skeleton2"
+    set {ritual.tier.6.mob_level} to 2
+    set {ritual.tier.6.label}     to "BoneLord T2"
+    set {ritual.tier.6.cost}      to 7500
+
+    set {ritual.tier.7.kill_goal} to 50
+    set {ritual.tier.7.mob_name}  to "skeleton3"
+    set {ritual.tier.7.mob_level} to 3
+    set {ritual.tier.7.label}     to "BoneLord T3"
+    set {ritual.tier.7.cost}      to 20000
+
+    set {ritual.tier.8.kill_goal} to 100
+    set {ritual.tier.8.mob_name}  to "skeleton4"
+    set {ritual.tier.8.mob_level} to 4
+    set {ritual.tier.8.label}     to "BoneLord T4"
+    set {ritual.tier.8.cost}      to 50000
+
+    set {ritual.tier.9.kill_goal}  to 10
+    set {ritual.tier.9.mob_name}   to "enderman1"
+    set {ritual.tier.9.mob_level}  to 1
+    set {ritual.tier.9.label}      to "VoidLord T1"
+    set {ritual.tier.9.cost}       to 2000
+
+    set {ritual.tier.10.kill_goal} to 25
+    set {ritual.tier.10.mob_name}  to "enderman2"
+    set {ritual.tier.10.mob_level} to 2
+    set {ritual.tier.10.label}     to "VoidLord T2"
+    set {ritual.tier.10.cost}      to 7500
+
+    set {ritual.tier.11.kill_goal} to 50
+    set {ritual.tier.11.mob_name}  to "enderman3"
+    set {ritual.tier.11.mob_level} to 3
+    set {ritual.tier.11.label}     to "VoidLord T3"
+    set {ritual.tier.11.cost}      to 20000
+
+    set {ritual.tier.12.kill_goal} to 100
+    set {ritual.tier.12.mob_name}  to "enderman4"
+    set {ritual.tier.12.mob_level} to 4
+    set {ritual.tier.12.label}     to "VoidLord T4"
+    set {ritual.tier.12.cost}      to 50000
+
+    set {ritual.tier.13.kill_goal} to 10
+    set {ritual.tier.13.mob_name}  to "blaze1"
+    set {ritual.tier.13.mob_level} to 1
+    set {ritual.tier.13.label}     to "Infernus T1"
+    set {ritual.tier.13.cost}      to 2000
+
+    set {ritual.tier.14.kill_goal} to 25
+    set {ritual.tier.14.mob_name}  to "blaze2"
+    set {ritual.tier.14.mob_level} to 2
+    set {ritual.tier.14.label}     to "Infernus T2"
+    set {ritual.tier.14.cost}      to 7500
+
+    set {ritual.tier.15.kill_goal} to 50
+    set {ritual.tier.15.mob_name}  to "blaze3"
+    set {ritual.tier.15.mob_level} to 3
+    set {ritual.tier.15.label}     to "Infernus T3"
+    set {ritual.tier.15.cost}      to 20000
+
+    set {ritual.tier.16.kill_goal} to 100
+    set {ritual.tier.16.mob_name}  to "blaze4"
+    set {ritual.tier.16.mob_level} to 4
+    set {ritual.tier.16.label}     to "Infernus T4"
+    set {ritual.tier.16.cost}      to 50000
+
+
+command /startrotfather:
+    permission: slayer.t1
+    permission message: &cYou need level 5 to unlock slayers!
+    trigger:
+        startRitual(player, 1)
+
+command /startrotfather2:
+    permission: slayer.zombie.t2
+    permission message: &cYou need Rot Father Tier 1 Collection to unlock this!
+    trigger:
+        startRitual(player, 2)
+
+command /startrotfather3:
+    permission: slayer.zombie.t3
+    permission message: &cYou need Rot Father Tier 2 Collection to unlock this!
+    trigger:
+        startRitual(player, 3)
+
+command /startrotfather4:
+    permission: slayer.zombie.t4
+    permission message: &cYou need Rot Father Tier 3 Collection to unlock this!
+    trigger:
+        startRitual(player, 4)
+
+command /startbonelord:
+    permission: slayer.t1
+    permission message: &cYou need level 5 to unlock slayers!
+    trigger:
+        startRitual(player, 5)
+
+command /startbonelord2:
+    permission: slayer.skeleton.t2
+    permission message: &cYou need Bone Lord Tier 1 Collection to unlock this!
+    trigger:
+        startRitual(player, 6)
+
+command /startbonelord3:
+    permission: slayer.skeleton.t3
+    permission message: &cYou need Bone Lord Tier 2 Collection to unlock this!
+    trigger:
+        startRitual(player, 7)
+
+command /startbonelord4:
+    permission: slayer.skeleton.t4
+    permission message: &cYou need Bone Lord Tier 3 Collection to unlock this!
+    trigger:
+        startRitual(player, 8)
+
+command /startvoidlord:
+    permission: slayer.t1
+    permission message: &cYou need level 5 to unlock slayers!
+    trigger:
+        startRitual(player, 9)
+
+command /startvoidlord2:
+    permission: slayer.enderman.t2
+    permission message: &cYou need Void Lord Tier 1 Collection to unlock this!
+    trigger:
+        startRitual(player, 10)
+
+command /startvoidlord3:
+    permission: slayer.enderman.t3
+    permission message: &cYou need Void Lord Tier 2 Collection to unlock this!
+    trigger:
+        startRitual(player, 11)
+
+command /startvoidlord4:
+    permission: slayer.enderman.t4
+    permission message: &cYou need Void Lord Tier 3 Collection to unlock this!
+    trigger:
+        startRitual(player, 12)
+
+command /startinfernus:
+    permission: slayer.t1
+    permission message: &cYou need level 5 to unlock slayers!
+    trigger:
+        startRitual(player, 13)
+
+command /startinfernus2:
+    permission: slayer.blaze.t2
+    permission message: &cYou need Infernus Tier 1 Collection to unlock this!
+    trigger:
+        startRitual(player, 14)
+
+command /startinfernus3:
+    permission: slayer.blaze.t3
+    permission message: &cYou need Infernus Tier 2 Collection to unlock this!
+    trigger:
+        startRitual(player, 15)
+
+command /startinfernus4:
+    permission: slayer.blaze.t4
+    permission message: &cYou need Infernus Tier 3 Collection to unlock this!
+    trigger:
+        startRitual(player, 16)
+
+command /stopritual:
+    trigger:
+        if {ritual.active::%player's uuid%} is set:
+            set {_tier}  to {ritual.active::%player's uuid%}
+            set {_label} to {ritual.tier.%{_tier}%.label}
+            delete {ritual.active::%player's uuid%}
+            delete {ritual.kills::%player's uuid%}
+            delete {ritual.spawnloc::%player's uuid%}
+            delete {ritual.particles::%player's uuid%}
+            send "" to player
+            send "&cYou have abandoned your &4%{_label}% &critual." to player
+            send "" to player
+        else:
+            send "&cYou have no active ritual to stop." to player
+
+command /cancelritual [<player>]:
+    permission: ritual.cancel
+    trigger:
+        if arg-1 is set:
+            set {_t} to arg-1
+        else:
+            set {_t} to player
+
+        if {ritual.active::%{_t}'s uuid%} is set:
+            delete {ritual.active::%{_t}'s uuid%}
+            delete {ritual.kills::%{_t}'s uuid%}
+            delete {ritual.spawnloc::%{_t}'s uuid%}
+            delete {ritual.particles::%{_t}'s uuid%}
+            send "&aRitual cancelled for &f%{_t}%&a." to player
+            if player is not {_t}:
+                send "&cYour ritual was cancelled by an admin." to {_t}
+        else:
+            send "&c%{_t}% has no active ritual." to player
+
+
+function startRitual(p: player, tier: integer):
+    if {ritual.active::%{_p}'s uuid%} is set:
+        set {_activeTier}  to {ritual.active::%{_p}'s uuid%}
+        set {_activeLabel} to {ritual.tier.%{_activeTier}%.label}
+        send "" to {_p}
+        send "&cYou already have an active ritual: &4%{_activeLabel}%&c." to {_p}
+        send "&7Use &c/stopritual &7to abandon it before starting a new one." to {_p}
+        send "" to {_p}
+        stop
+
+    if {ritual.tier.%{_tier}%.mob_name} is not set:
+        send "&cTier %{_tier}% is not configured." to {_p}
+        stop
+
+    set {_label} to {ritual.tier.%{_tier}%.label}
+    set {_goal}  to {ritual.tier.%{_tier}%.kill_goal}
+    set {_cost}  to {ritual.tier.%{_tier}%.cost}
+
+    if balance of {_p} < {_cost}:
+        send "" to {_p}
+        send "&cYou cannot afford this ritual!" to {_p}
+        send "&7Cost: &6$%{_cost}%" to {_p}
+        send "" to {_p}
+        stop
+
+    remove {_cost} from balance of {_p}
+
+    set {ritual.active::%{_p}'s uuid%} to {_tier}
+    set {ritual.kills::%{_p}'s uuid%}  to 0
+
+    send "" to {_p}
+    send "&4&l☠ &c%{_label}% Ritual — Tier %{_tier}% &4&l☠" to {_p}
+    send "&7Paid: &6$%{_cost}%" to {_p}
+    send "&7Slay &c%{_goal}% &7mobs to summon the &4%{_label}%&7." to {_p}
+    send "&7Progress: &c0&7/&c%{_goal}%" to {_p}
+    send "&7Use &c/stopritual &7to abandon this ritual." to {_p}
+    send "" to {_p}
+
+
+on death of zombie:
+    set {_killer} to attacker
+    if {_killer} is a player:
+        if {ritual.active::%{_killer}'s uuid%} is set:
+            set {_tier} to {ritual.active::%{_killer}'s uuid%}
+            if {_tier} >= 1:
+                if {_tier} <= 4:
+                    ritualKill({_killer}, {_tier})
+
+on death of skeleton:
+    set {_killer} to attacker
+    if {_killer} is a player:
+        if {ritual.active::%{_killer}'s uuid%} is set:
+            set {_tier} to {ritual.active::%{_killer}'s uuid%}
+            if {_tier} >= 5:
+                if {_tier} <= 8:
+                    ritualKill({_killer}, {_tier})
+
+on death of enderman:
+    set {_killer} to attacker
+    if {_killer} is a player:
+        if {ritual.active::%{_killer}'s uuid%} is set:
+            set {_tier} to {ritual.active::%{_killer}'s uuid%}
+            if {_tier} >= 9:
+                if {_tier} <= 12:
+                    ritualKill({_killer}, {_tier})
+
+on death of blaze:
+    set {_killer} to attacker
+    if {_killer} is a player:
+        if {ritual.active::%{_killer}'s uuid%} is set:
+            set {_tier} to {ritual.active::%{_killer}'s uuid%}
+            if {_tier} >= 13:
+                if {_tier} <= 16:
+                    ritualKill({_killer}, {_tier})
+
+function ritualKill(p: player, tier: integer):
+    set {_label} to {ritual.tier.%{_tier}%.label}
+    set {_goal}  to {ritual.tier.%{_tier}%.kill_goal}
+
+    add 1 to {ritual.kills::%{_p}'s uuid%}
+    set {_count} to {ritual.kills::%{_p}'s uuid%}
+
+    set {ritual.spawnloc::%{_p}'s uuid%} to location of {_p}
+
+    send action bar "&8[&4%{_label}%&8] &7Mobs slain: &c%{_count}%&7/&c%{_goal}%" to {_p}
+
+    if {_count} >= {_goal}:
+        delete {ritual.active::%{_p}'s uuid%}
+        delete {ritual.kills::%{_p}'s uuid%}
+        send "" to {_p}
+        send "&4&l☠ &cSacrifice complete! The &4%{_label}% &cawakens... &4&l☠" to {_p}
+        send "" to {_p}
+        runRitual({_p}, {_tier})
+
+
+function runRitual(p: player, tier: integer):
+    set {_loc}   to {ritual.spawnloc::%{_p}'s uuid%}
+    set {_label} to {ritual.tier.%{_tier}%.label}
+
+    if {_loc} is not set:
+        set {_loc} to location of {_p}
+
+    loop all players in radius 50 around {_loc}:
+        send "" to loop-player
+        send "&4&l⚠ &cThe &4%{_label}% &cis spawning nearby! &4&l⚠" to loop-player
+        send "&7Something wicked stirs in the darkness..." to loop-player
+        send "" to loop-player
+        play sound "entity.wither.spawn" with volume 1 and pitch 0.5 at loop-player
+
+    set {ritual.particles::%{_p}'s uuid%} to true
+    spawnRitualParticles({_loc}, {_p})
+
+    wait 5 seconds
+
+    delete {ritual.particles::%{_p}'s uuid%}
+
+    set {_world} to name of world of {_loc}
+    set {_x}     to x-coordinate of {_loc}
+    set {_y}     to y-coordinate of {_loc}
+    set {_z}     to z-coordinate of {_loc}
+    set {_mob}   to {ritual.tier.%{_tier}%.mob_name}
+    set {_level} to {ritual.tier.%{_tier}%.mob_level}
+
+    execute console command "mm mobs spawn -s %{_mob}%:%{_level}% 1 %{_world}%,%{_x}%,%{_y}%,%{_z}%,0,0"
+
+    loop all players in radius 50 around {_loc}:
+        send "&4&l☠ &cThe &4%{_label}% &chas arrived! &4&l☠" to loop-player
+        play sound "entity.ender_dragon.growl" with volume 1 and pitch 1 at loop-player
+
+    delete {ritual.spawnloc::%{_p}'s uuid%}
+
+
+function spawnRitualParticles(loc: location, p: player):
+    loop 25 times:
+        if {ritual.particles::%{_p}'s uuid%} is not set:
+            stop
+
+        set {_step} to 0
+        loop 8 times:
+            set {_angle} to {_step} * 45
+            set {_px}    to x-coordinate of {_loc} + 1.5 * cos({_angle})
+            set {_pz}    to z-coordinate of {_loc} + 1.5 * sin({_angle})
+            set {_py}    to y-coordinate of {_loc} + 1
+            set {_ploc}  to location({_px}, {_py}, {_pz}, world of {_loc})
+            draw soul fire flame particle at {_ploc}
+            draw soul fire flame particle at {_ploc}
+            add 1 to {_step}
+
+        draw 5 soul fire flame particles at {_loc}
+        set {_cloc} to location(x-coordinate of {_loc}, y-coordinate of {_loc} + 0.5, z-coordinate of {_loc}, world of {_loc})
+        draw 3 lava particles at {_cloc}
+
+        wait 4 ticks

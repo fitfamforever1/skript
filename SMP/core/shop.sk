@@ -1,0 +1,271 @@
+command /saveitem <text>:
+    permission: admin.save
+    trigger:
+        if player's tool is air:
+            send "&cYou're not holding anything!" to player
+            stop
+        set {item::%arg-1%} to player's tool
+        send "&aSaved item as &e%arg-1%" to player
+
+command /giveitem <text>:
+    permission: admin.save
+    trigger:
+        if {item::%arg-1%} is set:
+            give {item::%arg-1%} to player
+            send "&aGave you item &e%arg-1%" to player
+        else:
+            send "&cNo item found with id &e%arg-1%" to player
+            
+command /pdcset [<text>] [<text>]:
+    permission: admin.create
+    trigger:
+        set {_item} to player's held item
+        set {_key} to arg-1
+        set {_val} to arg-2
+        set data tag {_key} of {_item} to {_val}
+        set player's held item to {_item}
+        send "&aSet &e%{_key}% &a= &e%{_val}%&a on held item."
+
+function item(base: item, buy: number, sell: number):: item:
+    set {_item} to {_base}
+    set {_p} to SmallCaps("%{_base}%")
+    set name of {_item} to "&f%{_p}%"
+
+    set data tag "item:sale" of {_item} to true
+    set string data tag "item:id" of {_item} to "%type of {_base}%"
+    set number data tag "item:buy" of {_item} to {_buy}
+    set number data tag "item:sell" of {_item} to {_sell}
+
+    set line 1 of lore of {_item} to "&8┃ &7» ꜱᴀʟᴇ ɪɴꜰᴏ"
+    set line 2 of lore of {_item} to "&8┃ &7ʙᴜʏ ᴘʀɪᴄᴇ &8» &e%{_buy}%"
+    set line 3 of lore of {_item} to "&8┃ &7ꜱᴇʟʟ ᴘʀɪᴄᴇ &8» &e%{_sell}%"
+
+    return {_item}
+
+
+function buyItem(p: player, item: item, amount: number):
+    set {_id} to string data tag "item:id" of {_item}
+    set {_price} to (number data tag "item:buy" of {_item}) * {_amount}
+    set {_bal} to number data tag "money:amm" of {_p}
+    if {_bal} < {_price}:
+        send "&8[<##E9BF35>ꜱʜᴏᴘ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴇɴᴏᴜɢʜ ᴍᴏɴᴇʏ!" to {_p}
+        stop
+    remove {_price} from {_bal}
+    set number data tag "money:amm" of {_p} to {_bal}
+    give {_amount} of {_id} parsed as item to {_p}
+
+    set {_spriteid} to {_id}
+    replace all " " with "_" in {_spriteid}
+    if {_id} is "dirt", "cobblestone", "cobbled deepslate", "sand", "soul sand", "netherrack", "brown mushroom", "red mushroom", "oak log" or "pumpkin":
+        if {_id} is "pumpkin":
+            set {_spriteid} to "pumpkin_side"
+        send action bar formatted "&8[<##E9BF35>ꜱʜᴏᴘ&8] &7ʏᴏᴜ ꜱᴏʟᴅ &e%{_amount}% &f<sprite:blocks:block/%{_spriteid}%> &7ғᴏʀ &e$%{_price}%&7." to {_p}
+        stop
+    send action bar formatted "&8[<##E9BF35>ꜱʜᴏᴘ&8] &7ʏᴏᴜ ʙᴏᴜɢʜᴛ &e%{_amount}% &f<sprite:items:item/%{_spriteid}%> &7ғᴏʀ &e$%{_price}%&7." to {_p}
+
+function sellItem(p: player, item: item, amount: number):
+    set {_id} to string data tag "item:id" of {_item}
+    set {_price} to (number data tag "item:sell" of {_item}) * {_amount}
+    if {_p} doesn't have {_amount} of {_id} parsed as item:
+        send "&8[<##E9BF35>ꜱʜᴏᴘ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴇɴᴏᴜɢʜ ɪᴛᴇᴍꜱ!" to {_p}
+        stop
+    remove {_amount} of {_id} parsed as item from {_p}
+    set {_bal} to number data tag "money:amm" of {_p}
+    add {_price} to {_bal}
+    set number data tag "money:amm" of {_p} to {_bal}
+
+    set {_spriteid} to {_id}
+    replace all " " with "_" in {_spriteid}
+    if {_id} is "dirt", "cobblestone", "cobbled deepslate", "sand", "soul sand", "netherrack", "brown mushroom", "red mushroom", "oak log" or "pumpkin":
+        if {_id} is "pumpkin":
+            set {_spriteid} to "pumpkin_side"
+        send action bar formatted "&8[<##E9BF35>ꜱʜᴏᴘ&8] &7ʏᴏᴜ ꜱᴏʟᴅ &e%{_amount}% &f<sprite:blocks:block/%{_spriteid}%> &7ғᴏʀ &e$%{_price}%&7." to {_p}
+        stop
+    send action bar formatted "&8[<##E9BF35>ꜱʜᴏᴘ&8] &7ʏᴏᴜ ꜱᴏʟᴅ &e%{_amount}% &f<sprite:items:item/%{_spriteid}%> &7ғᴏʀ &e$%{_price}%&7." to {_p}
+    
+on inventory click:
+    if name of event-inventory is "<##E9BF35>ᴏʀᴇ ꜱʜᴏᴘ", "<##E9BF35>ʙʟᴏᴄᴋ ꜱʜᴏᴘ", "<##E9BF35>ꜰᴀʀᴍ ꜱʜᴏᴘ", "<##E9BF35>ᴍᴏʙ ꜱʜᴏᴘ", "<##E9BF35>ᴍɪᴄꜱ ꜱʜᴏᴘ" or "<##E9BF35>ꜰᴏᴏᴅ ꜱʜᴏᴘ":
+        cancel event
+
+        if data tag "item:id" of event-item is "2":
+            openShop(player)
+        
+        if data tag "item:sale" of event-item is not true:
+            stop
+
+        if click type is left mouse button:
+            buyItem(player, event-item, 1)
+
+        else if click type is left mouse button with shift:
+            buyItem(player, event-item, 64)
+
+        else if click type is right mouse button:
+            sellItem(player, event-item, 1)
+
+        else if click type is right mouse button with shift:
+            sellItem(player, event-item, 64)
+
+        else if click type is middle mouse:
+            set {_id} to string data tag "item:id" of event-item
+            set {_mat} to {_id} parsed as item
+
+            set {_amount} to amount of {_mat} in player's inventory
+
+            if {_amount} > 0:
+                sellItem(player, event-item, {_amount})
+            else:
+                send "&cYou don't have any to sell!"
+    
+function openShop(p: player):
+    set {_gui} to chest inventory with 3 rows named "<##E9BF35>ꜱᴇʟᴇᴄᴛ ᴄᴀᴛᴇɢᴏʀʏ"
+
+    loop 27 times:
+        set slot (loop-number - 1) of {_gui} to {item::space}
+    
+    set slot 10 of {_gui} to {item::shop1}
+    set slot 11 of {_gui} to {item::shop2}
+    set slot 12 of {_gui} to {item::shop3}
+    set slot 14 of {_gui} to {item::shop4}
+    set slot 15 of {_gui} to {item::shop5}
+    set slot 16 of {_gui} to {item::shop6}
+    
+    open {_gui} to {_p}
+    
+on inventory click:
+    if name of event-inventory is "<##E9BF35>ꜱᴇʟᴇᴄᴛ ᴄᴀᴛᴇɢᴏʀʏ":
+        cancel event
+        set {_temp} to data tag "shop:id" of event-item
+        if {_temp} is "1":
+            openBlock(player)
+        if {_temp} is "2":
+            openMics(player)
+        if {_temp} is "3":
+            openFood(player)
+        if {_temp} is "4":
+            openOre(player)
+        if {_temp} is "5":
+            openMob(player)
+        if {_temp} is "6":
+            openFarm(player)
+    
+function openOre(p: player):
+    set {_gui} to chest inventory with 4 rows named "<##E9BF35>ᴏʀᴇ ꜱʜᴏᴘ"
+
+    loop 36 times:
+        set slot (loop-number - 1) of {_gui} to {item::space}
+    
+    set slot 10 of {_gui} to item(netherite_ingot, 135000, 45000)
+    set slot 11 of {_gui} to item(emerald, 48000, 16000)
+    set slot 12 of {_gui} to item(diamond, 36000, 12000)
+    set slot 13 of {_gui} to item(gold_ingot, 9000, 3000)
+    set slot 14 of {_gui} to item(iron_ingot, 5400, 1800)
+    set slot 15 of {_gui} to item(copper_ingot, 2700, 900)
+    set slot 16 of {_gui} to item(coal, 1500, 500)
+
+    
+    set slot 35 of {_gui} to {item::goback}
+    set slot 27 of {_gui} to {item::shopinfo}
+
+    open {_gui} to {_p}
+   
+function openFood(p: player):
+    set {_gui} to chest inventory with 4 rows named "<##E9BF35>ꜰᴏᴏᴅ ꜱʜᴏᴘ"
+
+    loop 36 times:
+        set slot (loop-number - 1) of {_gui} to {item::space}
+    
+    set slot 10 of {_gui} to item(bread, 900, 300)
+    set slot 11 of {_gui} to item(baked_potato, 1050, 350)
+    set slot 12 of {_gui} to item(cooked_chicken, 1500, 500)
+    set slot 13 of {_gui} to item(cooked_mutton, 1650, 550)
+    set slot 14 of {_gui} to item(cooked_porkchop, 1800, 600)
+    set slot 15 of {_gui} to item(cooked_beef, 2100, 700)
+    set slot 16 of {_gui} to item(golden_carrot, 3600, 1200)
+
+    
+    set slot 35 of {_gui} to {item::goback}
+    set slot 27 of {_gui} to {item::shopinfo}
+
+    open {_gui} to {_p}
+   
+function openFarm(p: player):
+    set {_gui} to chest inventory with 4 rows named "<##E9BF35>ꜰᴀʀᴍ ꜱʜᴏᴘ"
+
+    loop 36 times:
+        set slot (loop-number - 1) of {_gui} to {item::space}
+    
+    set slot 10 of {_gui} to item(potato, 6000, 800)
+    set slot 11 of {_gui} to item(pumpkin_seeds, 4500, 600)
+    set slot 12 of {_gui} to item(red_mushroom, 21000, 7000)
+    set slot 13 of {_gui} to item(brown_mushroom, 21000, 7000)
+    set slot 14 of {_gui} to item(pumpkin, 10500, 3500)
+    set slot 15 of {_gui} to item(nether_wart, 15000, 5000)
+    set slot 16 of {_gui} to item(sugar_cane, 7500, 2500)
+    
+    set slot 35 of {_gui} to {item::goback}
+    set slot 27 of {_gui} to {item::shopinfo}
+
+    open {_gui} to {_p}
+    
+function openMics(p: player):
+    set {_gui} to chest inventory with 4 rows named "<##E9BF35>ᴍɪᴄꜱ ꜱʜᴏᴘ"
+
+    loop 36 times:
+        set slot (loop-number - 1) of {_gui} to {item::space}
+    
+    set slot 10 of {_gui} to item(water_bucket, 900, 300)
+    set slot 11 of {_gui} to item(lava_bucket, 1500, 500)
+    set slot 12 of {_gui} to item(flint_and_steel, 2700, 900)
+    set slot 13 of {_gui} to item(wind_charge, 7500, 2500)
+    set slot 14 of {_gui} to item(name_tag, 15000, 5000)
+    set slot 15 of {_gui} to item(book, 3000, 1000)
+    set slot 16 of {_gui} to item(shulker_shell, 36000, 12000)
+
+    
+    set slot 35 of {_gui} to {item::goback}
+    set slot 27 of {_gui} to {item::shopinfo}
+
+    open {_gui} to {_p}
+  
+function openMob(p: player):
+    set {_gui} to chest inventory with 4 rows named "<##E9BF35>ᴍᴏʙ ꜱʜᴏᴘ"
+
+    loop 36 times:
+        set slot (loop-number - 1) of {_gui} to {item::space}
+    
+    set slot 10 of {_gui} to item(leather, 750, 250)
+    set slot 11 of {_gui} to item(glow_ink_sac, 1800, 600)
+    set slot 12 of {_gui} to item(spider_eye, 600, 200)
+    set slot 13 of {_gui} to item(string, 450, 150)
+    set slot 14 of {_gui} to item(bone, 450, 150)
+    set slot 15 of {_gui} to item(blaze_rod, 10500, 3500)
+    set slot 16 of {_gui} to item(ender_pearl, 6000, 2000)
+
+    
+    set slot 35 of {_gui} to {item::goback}
+    set slot 27 of {_gui} to {item::shopinfo}
+
+    open {_gui} to {_p}
+  
+function openBlock(p: player):
+    set {_gui} to chest inventory with 4 rows named "<##E9BF35>ʙʟᴏᴄᴋ ꜱʜᴏᴘ"
+
+    loop 36 times:
+        set slot (loop-number - 1) of {_gui} to {item::space}
+    
+    set slot 10 of {_gui} to item(oak_log, 1200, 400)
+    set slot 11 of {_gui} to item(cobblestone, 300, 100)
+    set slot 12 of {_gui} to item(cobbled_deepslate, 450, 150)
+    set slot 13 of {_gui} to item(dirt, 150, 50)
+    set slot 14 of {_gui} to item(sand, 225, 75)
+    set slot 15 of {_gui} to item(soul_sand, 900, 300)
+    set slot 16 of {_gui} to item(netherrack, 450, 150)
+    
+    set slot 35 of {_gui} to {item::goback}
+    set slot 27 of {_gui} to {item::shopinfo}
+
+    open {_gui} to {_p}
+  
+command /shop:
+    trigger:
+        openShop(player)

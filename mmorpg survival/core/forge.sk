@@ -1,0 +1,166 @@
+command /forgemithril:
+    permission: level.15
+    trigger:
+        set {_found} to false
+        set {_slot} to 0
+        loop 36 times:
+            set {_item} to slot {_slot} of player's inventory
+            if {_item} is not air:
+                set {_nbt} to custom nbt of {_item}
+                if "%{_nbt}%" contains "craft:""1""":
+                    if amount of {_item} >= 16:
+                        remove 16 of {_item} from player's inventory
+                        execute console command "si give forge1 1 %player% true"
+                        send "&aYou crafted a &eMithril Ingot&7!" to player
+                        stop
+                    else:
+                        send "&cYou need at least 16 of this item!" to player
+                        stop
+            add 1 to {_slot}
+        send "&cYou don't have &eMithril Ore&7!" to player
+
+command /forgedemonite:
+    permission: level.15
+    trigger:
+        set {_found} to false
+        set {_slot} to 0
+        loop 36 times:
+            set {_item} to slot {_slot} of player's inventory
+            if {_item} is not air:
+                set {_nbt} to custom nbt of {_item}
+                if "%{_nbt}%" contains "craft:""2""":
+                    if amount of {_item} >= 16:
+                        remove 16 of {_item} from player's inventory
+                        execute console command "si give forge2 1 %player% true"
+                        send "&aYou crafted a &eDemonite Gem&7!" to player
+                        stop
+                    else:
+                        send "&cYou need at least 16 of this item!" to player
+                        stop
+            add 1 to {_slot}
+        send "&cYou don't have &eDemonite Ore&7!" to player
+
+command /forgesteel:
+    permission: level.15
+    trigger:
+        set {_found} to false
+        set {_slot} to 0
+        loop 36 times:
+            set {_item} to slot {_slot} of player's inventory
+            if {_item} is not air:
+                set {_nbt} to custom nbt of {_item}
+                if "%{_nbt}%" contains "craft:""3""":
+                    if amount of {_item} >= 16:
+                        remove 16 of {_item} from player's inventory
+                        execute console command "si give forge3 1 %player% true"
+                        send "&aYou crafted a &eSteel Chunk&7!" to player
+                        stop
+                    else:
+                        send "&cYou need at least 16 of this item!" to player
+                        stop
+            add 1 to {_slot}
+        send "&cYou don't have &eRaw Steel&7!" to player
+
+command /forgeenderite:
+    permission: level.15
+    trigger:
+        set {_found} to false
+        set {_slot} to 0
+        loop 36 times:
+            set {_item} to slot {_slot} of player's inventory
+            if {_item} is not air:
+                set {_nbt} to custom nbt of {_item}
+                if "%{_nbt}%" contains "craft:""4""":
+                    if amount of {_item} >= 16:
+                        remove 16 of {_item} from player's inventory
+                        execute console command "si give forge4 1 %player% true"
+                        send "&aYou crafted a &eEnderite Crystal&7!" to player
+                        stop
+                    else:
+                        send "&cYou need at least 16 of this item!" to player
+                        stop
+            add 1 to {_slot}
+        send "&cYou don't have &eEnderite Ore&7!" to player
+
+# Slayers
+command /forgezombie:
+    permission: level.15
+    trigger:
+        set {_slot} to 0
+        loop 36 times:
+            set {_item} to slot {_slot} of player's inventory
+            if {_item} is not air:
+                set {_nbt} to custom nbt of {_item}
+                if "%{_nbt}%" contains "craft:""5""":
+                    if amount of {_item} >= 64:
+                        remove 64 of {_item} from player's inventory
+                        execute console command "si give zombie2 1 %player% true"
+                        send "&aYou forged a &eRotten Marrow&7!" to player
+                        stop
+                    else:
+                        send "&cYou need at least 64 of this item!" to player
+                        stop
+            add 1 to {_slot}
+        send "&cYou don't have the required Rotten &eFlesh Chunk&7!" to player
+
+command /forgeskeleton:
+    permission: level.15
+    trigger:
+        set {_slot} to 0
+        loop 36 times:
+            set {_item} to slot {_slot} of player's inventory
+            if {_item} is not air:
+                set {_nbt} to custom nbt of {_item}
+                if "%{_nbt}%" contains "craft:""6""":
+                    if amount of {_item} >= 64:
+                        remove 64 of {_item} from player's inventory
+                        execute console command "si give skeleton2 1 %player% true"
+                        send "&aYou forged a &eBloody Spine&7!" to player
+                        stop
+                    else:
+                        send "&cYou need at least 64 of this item!" to player
+                        stop
+            add 1 to {_slot}
+        send "&cYou don't have the required &eBone Spine&7!" to player
+
+
+command /forgeenderman:
+    permission: level.15
+    trigger:
+        set {_slot} to 0
+        loop 36 times:
+            set {_item} to slot {_slot} of player's inventory
+            if {_item} is not air:
+                set {_nbt} to custom nbt of {_item}
+                if "%{_nbt}%" contains "craft:""7""":
+                    if amount of {_item} >= 64:
+                        remove 64 of {_item} from player's inventory
+                        execute console command "si give enderman2 1 %player% true"
+                        send "&aYou forged a &eVoid&7!" to player
+                        stop
+                    else:
+                        send "&cYou need at least 64 of this item!" to player
+                        stop
+            add 1 to {_slot}
+        send "&cYou don't have the required &eVoid Dust&7!" to player
+
+
+command /forgeblaze:
+    permission: level.15
+    trigger:
+        set {_slot} to 0
+        loop 36 times:
+            set {_item} to slot {_slot} of player's inventory
+            if {_item} is not air:
+                set {_nbt} to custom nbt of {_item}
+                if "%{_nbt}%" contains "craft:""8""":
+                    if amount of {_item} >= 64:
+                        remove 64 of {_item} from player's inventory
+                        execute console command "si give blaze2 1 %player% true"
+                        send "&aYou forged a &eInfernus Core&7!" to player
+                        stop
+                    else:
+                        send "&cYou need at least 64 of this item!" to player
+                        stop
+            add 1 to {_slot}
+        send "&cYou don't have the required &eBlazing Core&7!" to player

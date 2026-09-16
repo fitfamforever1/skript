@@ -1,0 +1,43 @@
+function newQuestion():
+    set {_a} to a random integer between 1 and 20
+    set {_b} to a random integer between 1 and 20
+    set {_ops::*} to "+", "-" and "*"
+    set {_op} to a random element of {_ops::*}
+
+    if {_op} is "+":
+        set {_answer} to {_a} + {_b}
+    else if {_op} is "-":
+        set {_answer} to {_a} - {_b}
+    else:
+        set {_answer} to {_a} * {_b}
+
+    set {math.answer} to {_answer}
+    set {math.solved} to false
+    broadcast "&8[<##8400ff>ᴍᴀᴛʜ&8] &7%{_a}% %{_op}% %{_b}% = ?"
+
+function handleWin(p: player):
+    set {math.solved} to true
+    GainXP({_p}, 1000)
+    give {loot::coin2} to {_p}
+    send "&8[<##8400ff>ᴍᴀᴛʜ&8] &7ʏᴏᴜ ɢᴏᴛ ɪᴛ ʀɪɢʜᴛ" to {_p}
+
+
+every 10 minutes:
+    newQuestion()
+
+
+command /math ask:
+    permission: admin
+    permission message: &cYou don't have permission to manage the math game.
+    trigger:
+        newQuestion()
+
+
+on chat:
+    if {math.solved} is not true:
+        if message matches "^-?\d+(\.\d+)?$":
+            set {_guess} to message parsed as number
+            if {_guess} is set:
+                if {_guess} = {math.answer}:
+                    cancel event
+                    handleWin(player)

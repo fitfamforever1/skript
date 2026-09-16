@@ -1,0 +1,6 @@
+on projectile hit:
+    if projectile is a thrown potion:
+        if shooter is a player:
+            if projectile's item is splash potion of healing:
+                wait 10 seconds
+                give shooter 1 splash potion of healing

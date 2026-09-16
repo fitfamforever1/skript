@@ -1,0 +1,122 @@
+options:
+    prefix: <##FE7300>[SYSTEM]
+    RESPAWN_COOLDOWN: 3
+
+on load:
+    clear {data::deathmessages::*}
+
+    # Player Death Messages
+    add "{@prefix} &c<attacker> &7killed &e<victim>&7." to {data::deathmessages::player::*}
+    add "{@prefix} &e<victim> &7was slain by &c<attacker>&7." to {data::deathmessages::player::*}
+    add "{@prefix} &e<victim> &7was killed by &c<attacker>&7." to {data::deathmessages::player::*}
+    # Drowning Death Messages
+    add "{@prefix} &e<victim> &7couldn't breathe under water." to {data::deathmessages::drowning::*}
+    add "{@prefix} &e<victim> &7thought they were a fish." to {data::deathmessages::drowning::*}
+    add "{@prefix} &e<victim> &7drowned." to {data::deathmessages::drowning::*}
+    # Fall Damage Death Messages
+    add "{@prefix} &e<victim> &7fell from a high place." to {data::deathmessages::fall::*}
+    add "{@prefix} &e<victim> &7thought they could fly." to {data::deathmessages::fall::*}
+    add "{@prefix} &e<victim> &7fell." to {data::deathmessages::fall::*}
+    # Lava Death Messages
+    add "{@prefix} &e<victim> &7thought, they had fire resistance." to {data::deathmessages::lava::*}
+    add "{@prefix} &e<victim> &7tried to swim in the deep fryer." to {data::deathmessages::lava::*}
+    add "{@prefix} &e<victim> &7tried to swim in lava." to {data::deathmessages::lava::*}
+    add "{@prefix} &e<victim> &7was incinerated." to {data::deathmessages::lava::*}
+    # Burning Death Messages
+    add "{@prefix} &e<victim> &7was killed by fire." to {data::deathmessages::burning::*}
+    add "{@prefix} &e<victim> &7was turned into ash." to {data::deathmessages::burning::*}
+    add "{@prefix} &e<victim> &7forgot their sunscreen." to {data::deathmessages::burning::*}
+    add "{@prefix} &e<victim> &7burned to a crisp." to {data::deathmessages::burning::*}
+    add "{@prefix} &e<victim> &7burned." to {data::deathmessages::burning::*}
+    # Poison Death Messages
+    add "{@prefix} &e<victim> &7couldn't find the antidote." to {data::deathmessages::poison::*}
+    add "{@prefix} &e<victim> &7took the wrong substance." to {data::deathmessages::poison::*}
+    add "{@prefix} &e<victim> &7was poisoned." to {data::deathmessages::poison::*}
+    # Withering Death Messages
+    add "{@prefix} &e<victim> &7withered away." to {data::deathmessages::wither::*}
+    add "{@prefix} &e<victim> &7faded away." to {data::deathmessages::wither::*}
+    add "{@prefix} &e<victim> &7rotted away." to {data::deathmessages::wither::*}
+    add "{@prefix} &e<victim> &7decayed." to {data::deathmessages::wither::*}
+    # Void Death Messages
+    add "{@prefix} &e<victim> &7was crushed by the void" to {data::deathmessages::void::*}
+    add "{@prefix} &e<victim> &7sliped into the void" to {data::deathmessages::void::*}
+    add "{@prefix} &e<victim> &7fell out of the world" to {data::deathmessages::void::*}
+    # Other Death Messages
+    add "{@prefix} &e<victim> &7was killed." to {data::deathmessages::other::*}
+    add "{@prefix} &e<victim> &7died." to {data::deathmessages::other::*}
+
+on death of player:
+    if victim has permission "warden":
+        set {_name} to name of victim
+        execute console command "lp user %{_name}% parent remove warden"
+        send "<##FE7300>[SYSTEM] &7The<##4169E1> Warden&7 has died!" to all players
+        delete {warden::player}
+        delete {warden::time}
+        set {warden::cooldown} to {@RESPAWN_COOLDOWN}
+        execute console command "glow toggle %{_name}%"
+        execute console command "clearall %{_name}%"
+        set death message to " "
+        stop
+    if attacker is a player or mob:
+        set {_msg} to a random element out of {data::deathmessages::player::*}
+        replace all "<victim>" with "%victim%" in {_msg}
+        replace all "<attacker>" with "%attacker%" in {_msg}
+        set death message to "%{_msg}%"
+    else:
+        if damage was caused by drown:
+            set {_msg} to a random element out of {data::deathmessages::drowning::*}
+            replace all "<victim>" with "%victim%" in {_msg}
+            set death message to "%{_msg}%"
+        else if damage was caused by starvation:
+            set {_msg} to a random element out of {data::deathmessages::starvation::*}
+            replace all "<victim>" with "%victim%" in {_msg}
+            set death message to "%{_msg}%"
+        else if damage was caused by fall:
+            set {_msg} to a random element out of {data::deathmessages::fall::*}
+            replace all "<victim>" with "%victim%" in {_msg}
+            set death message to "%{_msg}%"
+        else if damage was caused by lava:
+            set {_msg} to a random element out of {data::deathmessages::lava::*}
+            replace all "<victim>" with "%victim%" in {_msg}
+            set death message to "%{_msg}%"
+        else if damage was caused by burning:
+            set {_msg} to a random element out of {data::deathmessages::burning::*}
+            replace all "<victim>" with "%victim%" in {_msg}
+            set death message to "%{_msg}%"
+        else if damage was caused by block explosion:
+            set {_msg} to a random element out of {data::deathmessages::explosion::*}
+            replace all "<victim>" with "%victim%" in {_msg}
+            set death message to "%{_msg}%"
+        else if damage was caused by suffocation:
+            set {_msg} to a random element out of {data::deathmessages::suffocation::*}
+            replace all "<victim>" with "%victim%" in {_msg}
+            set death message to "%{_msg}%"
+        else if damage was caused by wither:
+            set {_msg} to a random element out of {data::deathmessages::wither::*}
+            replace all "<victim>" with "%victim%" in {_msg}
+            set death message to "%{_msg}%"
+        else if damage was caused by poison:
+            set {_msg} to a random element out of {data::deathmessages::poison::*}
+            replace all "<victim>" with "%victim%" in {_msg}
+            set death message to "%{_msg}%"
+        else if damage was caused by void:
+            set {_msg} to a random element out of {data::deathmessages::void::*}
+            replace all "<victim>" with "%victim%" in {_msg}
+            set death message to "%{_msg}%"
+        else:
+            set {_msg} to a random element out of {data::deathmessages::other::*}
+            replace all "<victim>" with "%victim%" in {_msg}
+            set death message to "%{_msg}%"
+    if victim has permission "criminal":
+        execute console command "lp user %victim% parent remove criminal"
+        execute console command "clearall %victim%"
+        execute console command "glow toggle %victim%"
+    if victim has permission "guard":
+        wait 1 second
+        execute console command "kit give guard %victim%"
+    if victim has permission "swat":
+        wait 1 second
+        execute console command "kit give swat %victim%"
+    if victim has permission "nurse":
+        wait 1 second
+        execute console command "kit give nurse %victim%"

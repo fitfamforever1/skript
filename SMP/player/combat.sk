@@ -1,0 +1,30 @@
+function displayDamage(victim: entity, damage: number):
+    set {_radius} to 1
+    set {_theta} to random number between 0 and 360
+    set {_phi} to random number between 0 and 180
+    set {_offsetX} to {_radius} * sin({_phi}) * cos({_theta})
+    set {_offsetY} to {_radius} * cos({_phi})
+    set {_offsetZ} to {_radius} * sin({_phi}) * sin({_theta})
+
+    set {_loc} to location of {_victim}
+    add 1 to y-coordinate of {_loc} 
+    add {_offsetX} to x-coordinate of {_loc}
+    add {_offsetY} to y-coordinate of {_loc}
+    add {_offsetZ} to z-coordinate of {_loc}
+
+    spawn text display at {_loc}
+    set {_display} to last spawned text display
+    
+    set color of {_display} to rgb(0,0,0,0)
+    set billboard of {_display} to center
+    set interpolation duration of {_display} to 2 ticks
+    
+    set {_damage} to {_damage} * 2
+    set text of {_display} to "<##FF2400>%round({_damage})%"
+
+    wait 1 second
+    kill {_display}
+    
+on damage:
+    set {_d} to damage
+    displayDamage(victim, {_d})

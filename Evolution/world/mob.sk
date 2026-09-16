@@ -1,0 +1,81 @@
+# Balance: stats grow in tiers of 5 levels.
+# Within a tier (e.g. 1-5) the increase per level is small and flat.
+# Crossing into a new tier is a large jump, but the jump itself
+# grows each time you cross into a new tier - so 5->6 is a real jump,
+# 10->11 is a bigger jump than that, 15->16 bigger still, and so on.
+# Base is tuned against a level 1 player (70 HP, 8 damage) so the
+# boss starts only slightly ahead instead of dwarfing an early player.
+function getCategoryStat(stat: text, level: number) :: number:
+    set {_tier} to floor(({_level} - 1) / 5)
+    set {_posInTier} to mod({_level} - 1, 5)
+    if {_stat} is "health":
+        # each tier jump is 300 bigger than the previous tier jump (first jump = 2500)
+        set {_jumpSum} to ({_tier} * 2500) + (150 * {_tier} * ({_tier} - 1))
+        return 80 + {_jumpSum} + ({_posInTier} * 100)
+    else if {_stat} is "speed":
+        return 0.28
+    else if {_stat} is "damage":
+        # each tier jump is 15 bigger than the previous tier jump (first jump = 125)
+        set {_jumpSum} to ({_tier} * 125) + (7.5 * {_tier} * ({_tier} - 1))
+        return 10 + {_jumpSum} + ({_posInTier} * 5)
+    return 0
+
+function clampLevel(level: number) :: number:
+    if {_level} < 1:
+        return 1
+    else if {_level} > 90:
+        return 90
+    return {_level}
+
+function applyMobStats(e: entity, mobName: text, health: number, speed: number, damage: number, levelId: number, level: number):
+    set custom name of {_e} to "%{_mobName}% &8[&a%{_level}%&8]"
+    set max health of {_e} to {_health}
+    set health of {_e} to {_health}
+    set movement speed attribute of {_e} to {_speed}
+    set age of {_e} to 0
+    set knockback resistance attribute of {_e} to 100
+    set entity interaction range attribute of {_e} to 5
+    set block interaction range attribute of {_e} to 5
+    set number data tag "mobstat:damage" of {_e} to {_damage}
+    set number data tag "mobstat:level" of {_e} to {_level}
+    set text data tag "mobstat:id" of {_e} to "main"
+    set number data tag "mob:levelId" of {_e} to {_levelId}
+
+function spawn(loc: location, levelId: number) :: entity:
+    set {_level} to clampLevel({_levelId})
+    set {_health} to getCategoryStat("health", {_level})
+    set {_speed} to getCategoryStat("speed", {_level})
+    set {_damage} to getCategoryStat("damage", {_level})
+    spawn wither skeleton at {_loc}
+    set {_e} to last spawned entity
+    set tool of {_e} to air
+    set {_chest} to leather chestplate
+    dye {_chest} (33, 40, 61)
+    set chestplate of {_e} to {_chest}
+    set {_legs} to leather leggings
+    dye {_legs} (33, 40, 61)
+    set leggings of {_e} to {_legs}
+    set {_boots} to leather boots
+    dye {_boots} (33, 40, 61)
+    set boots of {_e} to {_boots}
+    set {_head} to a player head
+    set the skull texture of {_head} to "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDAyNjgzMzFhNzkxODA5OTQyNGUzN2IyNjYwOWY3OGE1ZTE1MmU0NjZlZDBkNTQ2ZmRlZjI2NDczZDYyYzdhZiJ9fX0="
+    set helmet of {_e} to {_head}
+    applyMobStats({_e}, "&cCorrupted", {_health}, {_speed}, {_damage}, {_levelId}, {_level})
+    return {_e}
+
+on death:
+    if attacker is player:
+        cancel drops
+
+on target:
+    if entity's target is not a player:
+        cancel event
+
+command /spawnboss <number>:
+    permission: admin.mob
+    trigger:
+        if player is set:
+            spawn(player's location, arg-1)
+        else:
+            send "&cThis command can only be run by a player."

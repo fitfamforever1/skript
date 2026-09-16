@@ -1,0 +1,132 @@
+function placeLootRandom(x: number, y: number, z: number, w: world):
+    set {_roll} to random integer between 1 and 100
+    # Metal Scrap
+    if {_roll} <= 40:
+        set {_id} to random integer between 1 and 26
+    # Medication
+    else if {_roll} <= 50:
+        set {_id} to random integer between 27 and 34
+    # Cloth Scrap
+    else if {_roll} <= 90:
+        set {_id} to random integer between 35 and 50
+    # Gear
+    else:
+        set {_id} to random integer between 51 and 70
+    if size of {loottemplate::%{_id}%::*} = 0:
+        stop
+    set {_loc} to location({_x}, {_y}, {_z}, {_w})
+    if "%type of block at {_loc}%" is not "barrel":
+        stop
+    loop 27 times:
+        set {_slot} to loop-number - 1
+        if {loottemplate::%{_id}%::%{_slot}%} is set:
+            set slot {_slot} of inventory of block at {_loc} to {loottemplate::%{_id}%::%{_slot}%}
+        else:
+            set slot {_slot} of inventory of block at {_loc} to air
+
+function placeLootById(x: number, y: number, z: number, w: world, id: integer):
+    set {_loc} to location({_x}, {_y}, {_z}, {_w})
+    if "%type of block at {_loc}%" is not "barrel":
+        stop
+    loop 27 times:
+        set {_slot} to loop-number - 1
+        if {loottemplate::%{_id}%::%{_slot}%} is set:
+            set slot {_slot} of inventory of block at {_loc} to {loottemplate::%{_id}%::%{_slot}%}
+        else:
+            set slot {_slot} of inventory of block at {_loc} to air
+
+command /setloot <integer>:
+    permission: admin.setloot
+    permission message: "&cNo permission."
+    trigger:
+        set {_id} to arg-1
+        set {_target} to target block of player
+        if {_target} is not set:
+            send "&8[&4SYSTEM&8] &7No block in sight." to player
+            stop
+        if "%type of {_target}%" is not "barrel":
+            send "&8[&4SYSTEM&8] &7You must be looking at a barrel." to player
+            stop
+        set {_loc} to location of {_target}
+        set metadata tag "loot_read" of player to inventory of block at {_loc}
+        delete {loottemplate::%{_id}%::*}
+        loop 27 times:
+            set {_slot} to loop-number - 1
+            set {_item} to slot {_slot} of (metadata tag "loot_read" of player)
+            if {_item} is set:
+                set {loottemplate::%{_id}%::%{_slot}%} to {_item}
+        delete metadata tag "loot_read" of player
+        set {_count} to size of {loottemplate::%{_id}%::*}
+        set {loottemplate::ids::%{_id}%} to {_id}
+        send "&8[&4SYSTEM&8] &7Template &f#%{_id}% &7saved with &f%{_count}% &7items." to player
+
+command /placeloot [<integer>]:
+    permission: admin.placeloot
+    permission message: "&cNo permission."
+    trigger:
+        set {_target} to target block of player
+        if {_target} is not set:
+            send "&8[&4SYSTEM&8] &7No block in sight." to player
+            stop
+        if "%type of {_target}%" is not "barrel":
+            send "&8[&4SYSTEM&8] &7You must be looking at a barrel." to player
+            stop
+        set {_loc} to location of {_target}
+        if arg-1 is set:
+            if size of {loottemplate::%arg-1%::*} = 0:
+                send "&8[&4SYSTEM&8] &cTemplate &f#%arg-1% &cdoes not exist." to player
+                stop
+            placeLootById(x-coordinate of {_loc}, y-coordinate of {_loc}, z-coordinate of {_loc}, world of {_loc}, arg-1)
+            send "&8[&4SYSTEM&8] &7Template &f#%arg-1% &7applied to barrel at &f%{_loc}%&7." to player
+        else:
+            placeLootRandom(x-coordinate of {_loc}, y-coordinate of {_loc}, z-coordinate of {_loc}, world of {_loc})
+            send "&8[&4SYSTEM&8] &7Random template applied to barrel at &f%{_loc}%&7." to player
+
+        
+command /listloot:
+    permission: admin.setloot
+    permission message: "&cNo permission."
+    trigger:
+        send "&e[Loot] &7Saved templates:" to player
+        if size of {loottemplate::ids::*} = 0:
+            send "&7 None saved yet." to player
+            stop
+        loop {loottemplate::ids::*}:
+            set {_id} to loop-value
+            send "&7 - &f#%{_id}% &7(&f%size of {loottemplate::%{_id}%::*}% items&7)" to player
+
+command /deleteloot <integer>:
+    permission: admin.setloot
+    permission message: "&cNo permission."
+    trigger:
+        set {_id} to arg-1
+        if size of {loottemplate::%{_id}%::*} = 0:
+            send "&8[&4SYSTEM&8] &7Template &f#%{_id}% &7does not exist." to player
+            stop
+        delete {loottemplate::%{_id}%::*}
+        send "&8[&4SYSTEM&8] &7Template &f#%{_id}% &7deleted." to player
+        delete {loottemplate::ids::%{_id}%}
+
+# Reset
+
+command /resetloot:
+    permission: admin.resetloot
+    permission message: "&cNo permission."
+    trigger:
+        broadcast "&8[&4SYSTEM&8] &7Manual loot reset triggered by &e%player%&7..."
+        loop {lootchest::world::*}:
+            wait 1 tick
+            set {_loc} to loop-value
+            set block at {_loc} to barrel[facing=up]
+            placeLootRandom(x-coordinate of {_loc}, y-coordinate of {_loc}, z-coordinate of {_loc}, world of {_loc})
+        broadcast "&8[&4SYSTEM&8] &7Loot chests have been restocked!"
+
+every 30 minutes:
+    broadcast "&8[&4SYSTEM&8] &7Automatic loot reset starting..."
+    loop {lootchest::world::*}:
+        wait 1 tick
+        set {_loc} to loop-value
+        set block at {_loc} to barrel[facing=up]
+        placeLootRandom(x-coordinate of {_loc}, y-coordinate of {_loc}, z-coordinate of {_loc}, world of {_loc})
+    broadcast "&8[&4SYSTEM&8] &7Loot chests have been restocked!"
+       

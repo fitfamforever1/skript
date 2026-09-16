@@ -1,0 +1,89 @@
+function calcModifier(atk: number, def: number) :: number:
+    set {_diff} to {_atk} - {_def}
+    if {_diff} >= 0:
+        set {_modifier} to 1.0 + ({_diff} * 0.03)
+    else:
+        set {_modifier} to 1.0 + ({_diff} * 0.02)
+    if {_modifier} < 0.30:
+        set {_modifier} to 0.30
+    return {_modifier}
+
+function calcDamage(atk: player, def: player) :: number:
+    set {_atkUUID} to uuid of {_atk}
+    set {_defUUID} to uuid of {_def}
+
+    set {_baseDmg} to {damage::%{_atkUUID}%} if {damage::%{_atkUUID}%} is set else 1.0
+    set {_defVal} to {defense::%{_defUUID}%} if {defense::%{_defUUID}%} is set else 0.0
+    set {_trueDef} to {truedefense::%{_defUUID}%} if {truedefense::%{_defUUID}%} is set else 0.0
+    set {_critChance} to {critchance::%{_atkUUID}%} if {critchance::%{_atkUUID}%} is set else 0.0
+    set {_critDamage} to {critdamage::%{_atkUUID}%} if {critdamage::%{_atkUUID}%} is set else 0.0
+
+    set {_roll} to random integer between 1 and 100
+    set {_critChanceInt} to {_critChance} * 100
+    if {_roll} <= {_critChanceInt}:
+        set {_crit::%{_atkUUID}%} to true
+        set {_finalDmg} to {_baseDmg} * (1 + {_critDamage})
+    else:
+        set {_crit::%{_atkUUID}%} to false
+        set {_finalDmg} to {_baseDmg}
+
+    set {_finalDmg} to {_finalDmg} * calcModifier({_baseDmg}, {_defVal})
+    set {_finalDmg} to {_finalDmg} - {_trueDef}
+    set {_finalDmg} to {_finalDmg} / 12
+    if {_finalDmg} < 0.1:
+        set {_finalDmg} to 0.1
+    return {_finalDmg}
+
+on damage of player:
+    attacker is a player
+    cancel event
+
+    set {_atkUUID} to "%attacker's uuid%"
+    set {_vicUUID} to "%victim's uuid%"
+
+    # Weapon cooldown gate
+    set {_toolName} to "%type of attacker's held item%" in lowercase
+    set {_cdTime} to 0
+    if {_toolName} contains "sword":
+        set {_cdTime} to 0.6
+    else if {_toolName} contains "axe":
+        set {_cdTime} to 1
+
+    if {_cdTime} > 0:
+        if {attackcd::%{_atkUUID}%} is set:
+            stop
+        set {attackcd::%{_atkUUID}%} to true
+
+    # Calculate and apply damage
+    set {_dmg} to calcDamage(attacker, victim)
+    damage victim by {_dmg} hearts
+    push the victim backwards at speed of 0.5
+
+    # Combat tag — only notify on first tag
+    set {_wasTagged} to {combat::partners::%{_atkUUID}%::%{_vicUUID}%}
+    set {combat::partners::%{_atkUUID}%::%{_vicUUID}%} to 15
+    set {combat::partners::%{_vicUUID}%::%{_atkUUID}%} to 15
+    set {combat::%{_atkUUID}%} to 15
+    set {combat::%{_vicUUID}%} to 15
+    if {_wasTagged} is not set:
+        send action bar "&c⚔ You are now in combat!" to attacker
+        send action bar "&c⚔ You are now in combat!" to victim
+
+
+    # Hit feedback
+    if {_crit::%{_atkUUID}%} is true:
+        play 3 crit particles at victim's location
+        send action bar "&6&lCRIT! &c-%{_dmg}%" to attacker
+    else:
+        play 1 damage indicator particles at victim's location
+        send action bar "&c-%{_dmg}%" to attacker
+
+    # Cooldown expiry — wait at the very end so nothing above is delayed
+    # Cooldown expiry
+    if {_cdTime} > 0:
+        set {_cd} to {_atkUUID}
+        if {_toolName} contains "sword":
+            wait 12 ticks
+        else if {_toolName} contains "axe":
+            wait 20 ticks
+        delete {attackcd::%{_cd}%}

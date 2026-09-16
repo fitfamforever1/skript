@@ -1,0 +1,25 @@
+on join:
+    set join message to "&8[&a+&8] &7%player%"
+
+on quit:
+    set quit message to "&8[&c-&8] &7%player%"
+ 
+on death of player:
+    if attacker exists:
+        set {_roll} to random integer between 1 and 6
+        strike lightning effect at victim
+        
+        if {_roll} is 1:
+            set death message to "&8[&4☠&8] &c%victim% &7got slain by &c%attacker%&7."
+        else if {_roll} is 2:
+            set death message to "&8[&4☠&8] &c%attacker% &7sent &c%victim% &7to an early grave."
+        else if {_roll} is 3:
+            set death message to "&8[&4☠&8] &c%victim% &7never saw &c%attacker% &7coming."
+        else if {_roll} is 4:
+            set death message to "&8[&4☠&8] &c%attacker% &7put &c%victim% &7six feet under."
+        else if {_roll} is 5:
+            set death message to "&8[&4☠&8] &c%victim% &7was no match for &c%attacker%&7."
+        else if {_roll} is 6:
+            set death message to "&8[&4☠&8] &c%attacker% &7ended &c%victim%'s &7life."
+    else:
+        set death message to ""

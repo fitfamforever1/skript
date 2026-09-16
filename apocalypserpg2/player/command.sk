@@ -1,0 +1,46 @@
+command /stuck:
+    cooldown: 30 seconds
+    cooldown message: &cᴡᴀɪᴛ ʜᴀʟꜰ ᴀ ᴍɪɴᴜᴛᴇ ʙᴇꜰᴏʀᴇ ʀᴇᴛʀʏɪɴɢ.
+    description: &aᴛᴇʟᴇᴘᴏʀᴛ ꜱʟɪɢʜᴛʟʏ ɪꜰ ʏᴏᴜ'ʀᴇ ꜱᴛᴜᴄᴋ.
+    trigger:
+        set {_center} to location of player
+        set {_py} to y-coordinate of {_center}
+        set {_barrier} to false
+        loop integers from -2 to 2:
+            set {_x} to loop-integer-1
+            loop integers from -2 to 2:
+                set {_z} to loop-integer-2
+                set {_check} to location((x-coordinate of {_center}) + {_x}, {_py}, (z-coordinate of {_center}) + {_z}, world of {_center})
+                if type of block at {_check} is barrier:
+                    set {_barrier} to true
+        if {_barrier} is true:
+            send action bar "&cʏᴏᴜ ᴄᴀɴ'ᴛ ɢᴇᴛ ᴜɴꜱᴛᴜᴄᴋ ʜᴇʀᴇ." to player
+            stop trigger
+        set {_tries} to 0
+        set {_success} to false
+        while {_tries} < 20:
+            if {_success} is true:
+                stop loop
+            add 1 to {_tries}
+            set {_rx} to random integer between -2 and 2
+            set {_rz} to random integer between -2 and 2
+            set {_loc} to location((x-coordinate of {_center}) + {_rx}, {_py}, (z-coordinate of {_center}) + {_rz}, world of {_center})
+            set {_belowy} to {_py} - 1
+            set {_abovey} to {_py} + 1
+            set {_below} to location(x-coordinate of {_loc}, {_belowy}, z-coordinate of {_loc}, world of {_loc})
+            set {_above} to location(x-coordinate of {_loc}, {_abovey}, z-coordinate of {_loc}, world of {_loc})
+            set {_valid} to true
+            if type of block at {_loc} is not air:
+                set {_valid} to false
+            if type of block at {_above} is not air:
+                set {_valid} to false
+            if type of block at {_below} is air:
+                set {_valid} to false
+            if type of block at {_below} is barrier:
+                set {_valid} to false
+            if {_valid} is true:
+                teleport player to {_loc}
+                send action bar "&aᴜɴꜱᴛᴜᴄᴋ!" to player
+                set {_success} to true
+        if {_success} is false:
+            send action bar "&cᴄᴏᴜʟᴅɴ'ᴛ ꜰɪɴᴅ ᴀ ꜱᴀꜰᴇ ꜱᴘᴏᴛ ɴᴇᴀʀʙʏ ᴛᴏ ᴜɴꜱᴛᴜᴄᴋ ʏᴏᴜ." to player

@@ -1,0 +1,446 @@
+command /modifyitem:
+    permission: admin.create
+    trigger:
+        openItemDialog(player)
+
+function openItemDialog(p: player):
+    open new multi action dialog to {_p}:
+        title: "&bItem Editor"
+        external_title: "Item Editor"
+        can_close_with_escape: true
+        after_action: "close"
+        inputs:
+            add text input:
+                key: "item_name"
+                label: "Item Name *"
+                width: 200
+                max_length: 32
+            add text input:
+                key: "item_type"
+                label: "Item Type *"
+                width: 200
+                max_length: 32
+            add text input:
+                key: "level"
+                label: "Level Requirement"
+                initial: "0"
+                width: 200
+            add text input:
+                key: "damage"
+                label: "Damage"
+                initial: "0"
+                width: 200
+            add text input:
+                key: "crit_chance"
+                label: "Crit Chance"
+                initial: "0"
+                width: 200
+            add text input:
+                key: "crit_damage"
+                label: "Crit Damage"
+                initial: "0"
+                width: 200
+            add text input:
+                key: "health"
+                label: "Health"
+                initial: "0"
+                width: 200
+            add text input:
+                key: "mana"
+                label: "Mana"
+                initial: "0"
+                width: 200
+            add text input:
+                key: "defense"
+                label: "Defense"
+                initial: "0"
+                width: 200
+            add text input:
+                key: "speed"
+                label: "Speed"
+                initial: "0"
+                width: 200
+        columns: 1
+        actions:
+            add callback action button:
+                label: "&aSubmit"
+                width: 200
+                trigger:
+                    set {_nbt} to event-nbt
+                    set {_p} to event-player
+
+                    set {_name} to string tag "item_name" of {_nbt}
+                    set {_type} to string tag "item_type" of {_nbt}
+                    set {_level} to string tag "level" of {_nbt}
+                    set {_damage} to string tag "damage" of {_nbt}
+                    set {_critchance} to string tag "crit_chance" of {_nbt}
+                    set {_critdamage} to string tag "crit_damage" of {_nbt}
+                    set {_health} to string tag "health" of {_nbt}
+                    set {_mana} to string tag "mana" of {_nbt}
+                    set {_defense} to string tag "defense" of {_nbt}
+                    set {_speed} to string tag "speed" of {_nbt}
+                    
+                    set data tag "itemstat:type" of {_item} to {_type}
+                    
+                    set {_typeline} to SmallCaps({_type})
+
+                    set {_item} to {_p}'s tool
+                    if {_item} is air:
+                        send "&cYou must hold an item to modify." to {_p}
+                        stop
+
+                    set {_item} to unbreakable tool
+                    set item flags of {_item} to all item flags
+                    
+                    if {_damage}, {_critchance}, {_critdamage}, {_health}, {_mana}, {_defense} or {_speed} is not 0:
+                        set {_max} to 1
+                    
+                    set name of {_item} to "&f%{_name}%"
+                    set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
+                    set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &e%{_typeline}%"
+                    set line 3 of lore of {_item} to "&8┃ &7ʟᴇᴠᴇʟ&8» &c%{_level}%"
+                    set number data tag "itemstat:level" of {_item} to ({_level} parsed as a number)
+                    
+                    if {_max} is 1:
+                        set line 4 of lore of {_item} to ""
+                        set line 5 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
+                        set {_line} to 5
+
+                        if {_damage} is not "0":
+                            add 1 to {_line}
+                            set line {_line} of lore of {_item} to "&8┃ &7ᴅᴀᴍᴀɢᴇ &8» &c+%{_damage}%"
+                            set number data tag "itemstat:damage" of {_item} to ({_damage} parsed as a number)
+                        if {_critchance} is not "0":
+                            add 1 to {_line}
+                            set line {_line} of lore of {_item} to "&8┃ &7ᴄʀɪᴛ ᴄʜᴀɴᴄᴇ &8» &9+%{_critchance}%%%"
+                            set number data tag "itemstat:crit_chance" of {_item} to ({_critchance} parsed as a number)
+                        if {_critdamage} is not "0":
+                            add 1 to {_line}
+                            set line {_line} of lore of {_item} to "&8┃ &7ᴄʀɪᴛ ᴅᴀᴍᴀɢᴇ &8» &9+%{_critdamage}%%%"
+                            set number data tag "itemstat:crit_damage" of {_item} to ({_critdamage} parsed as a number)
+                        if {_health} is not "0":
+                            add 1 to {_line}
+                            set line {_line} of lore of {_item} to "&8┃ &7ʜᴇᴀʟᴛʜ &8» &c+%{_health}%"
+                            set number data tag "itemstat:health" of {_item} to ({_health} parsed as a number)
+                        if {_defense} is not "0":
+                            add 1 to {_line}
+                            set line {_line} of lore of {_item} to "&8┃ &7ᴅᴇғᴇɴꜱᴇ &8» &a+%{_defense}%"
+                            set number data tag "itemstat:defense" of {_item} to ({_defense} parsed as a number)
+                        if {_speed} is not "0":
+                            add 1 to {_line}
+                            set line {_line} of lore of {_item} to "&8┃ &7ꜱᴘᴇᴇᴅ &8» &f+%{_speed}%"
+                            set number data tag "itemstat:speed" of {_item} to ({_speed} parsed as a number)
+                        if {_mana} is not "0":
+                            add 1 to {_line}
+                            set line {_line} of lore of {_item} to "&8┃ &7ᴍᴀɴᴀ &8» &b+%{_mana}%"
+                            set number data tag "itemstat:mana" of {_item} to ({_mana} parsed as a number)
+
+                    set {_p}'s tool to {_item}
+                    
+                    
+command /saveitem <text>:
+    permission: admin.save
+    trigger:
+        if player's tool is air:
+            send "&cYou're not holding anything!" to player
+            stop
+        set {item::%arg-1%} to player's tool
+        send "&aSaved item as &e%arg-1%" to player
+
+command /giveitem <text>:
+    permission: admin.save
+    trigger:
+        if {item::%arg-1%} is set:
+            give {item::%arg-1%} to player
+            send "&aGave you item &e%arg-1%" to player
+        else:
+            send "&cNo item found with id &e%arg-1%" to player
+            
+command /pdcset [<text>] [<text>]:
+    permission: admin.create
+    trigger:
+        set {_item} to player's held item
+        set {_key} to arg-1
+        set {_val} to arg-2
+        set data tag {_key} of {_item} to {_val}
+        set player's held item to {_item}
+        send "&aSet &e%{_key}% &a= &e%{_val}%&a on held item."
+        
+function sword(baseitem: item, name: text, level: number):: item:
+    set {_item} to {_baseitem}
+    set {_type} to "sword"
+
+    set {_damage} to round(5 + ({_level} * 1.8))
+    set {_critchance} to round(5 + ({_level} * 0.3))
+    set {_critdamage} to round(50 + ({_level} * 1.0))
+    
+    set {_typeline} to SmallCaps({_type})
+    
+    set name of {_item} to "&f%{_name}%"
+    
+    set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
+    set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &e%{_typeLine}%"
+    set line 3 of lore of {_item} to "&8┃ &7ʟᴇᴠᴇʟ &8» &c%{_level}%"
+    set line 4 of lore of {_item} to ""
+    set line 5 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
+    set line 6 of lore of {_item} to "&8┃ &7ᴅᴀᴍᴀɢᴇ &8» &c+%{_damage}%"
+    set line 7 of lore of {_item} to "&8┃ &7ᴄʀɪᴛ ᴄʜᴀɴᴄᴇ &8» &9+%{_critchance}%%%"
+    set line 8 of lore of {_item} to "&8┃ &7ᴄʀɪᴛ ᴅᴀᴍᴀɢᴇ &8» &9+%{_critdamage}%%%"
+    
+    set {_item} to unbreakable {_item}
+    set item flags of {_item} to all item flags
+    
+    set data tag "itemstat:name" of {_item} to {_name}
+    set number data tag "itemstat:level" of {_item} to {_level}
+    set data tag "itemstat:type" of {_item} to {_type}
+    set number data tag "itemstat:damage" of {_item} to {_damage}
+    set number data tag "itemstat:crit_chance" of {_item} to {_critchance}
+    set number data tag "itemstat:crit_damage" of {_item} to {_critdamage}
+    
+    return {_item}
+    
+function axe(baseitem: item, name: text, level: number):: item:
+    set {_item} to {_baseitem}
+    set {_type} to "axe"
+
+    set {_damage} to round((5 + ({_level} * 1.8)) * 1.15)
+    set {_critchance} to round(2 + ({_level} * 0.08))
+    set {_critdamage} to round(35 + ({_level} * 0.5))
+    
+    set {_typeline} to SmallCaps({_type})
+
+    set name of {_item} to "&f%{_name}%"
+
+    set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
+    set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &e%{_typeLine}%"
+    set line 3 of lore of {_item} to "&8┃ &7ʟᴇᴠᴇʟ &8» &c%{_level}%"
+    set line 4 of lore of {_item} to ""
+    set line 5 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
+    set line 6 of lore of {_item} to "&8┃ &7ᴅᴀᴍᴀɢᴇ &8» &c+%{_damage}%"
+    set line 7 of lore of {_item} to "&8┃ &7ᴄʀɪᴛ ᴄʜᴀɴᴄᴇ &8» &9+%{_critchance}%%%"
+    set line 8 of lore of {_item} to "&8┃ &7ᴄʀɪᴛ ᴅᴀᴍᴀɢᴇ &8» &9+%{_critdamage}%%%"
+    
+    set {_item} to unbreakable {_item}
+    set item flags of {_item} to all item flags
+
+    set data tag "itemstat:name" of {_item} to {_name}
+    set number data tag "itemstat:level" of {_item} to {_level}
+    set data tag "itemstat:type" of {_item} to {_type}
+    set number data tag "itemstat:damage" of {_item} to {_damage}
+    set number data tag "itemstat:crit_chance" of {_item} to {_critchance}
+    set number data tag "itemstat:crit_damage" of {_item} to {_critdamage}
+    
+    return {_item}
+    
+function dagger(baseitem: item, name: text, level: number):: item:
+    set {_item} to {_baseitem}
+    set {_type} to "dagger"
+
+    set {_damage} to round((5 + ({_level} * 1.8)) * 0.8)
+    set {_critchance} to round(10 + ({_level} * 0.5))
+    set {_critdamage} to round(80 + ({_level} * 1.4))
+    
+    set {_typeline} to SmallCaps({_type})
+
+    set name of {_item} to "&f%{_name}%"
+
+    set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
+    set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &e%{_typeLine}%"
+    set line 3 of lore of {_item} to "&8┃ &7ʟᴇᴠᴇʟ &8» &c%{_level}%"
+    set line 4 of lore of {_item} to ""
+    set line 5 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
+    set line 6 of lore of {_item} to "&8┃ &7ᴅᴀᴍᴀɢᴇ &8» &c+%{_damage}%"
+    set line 7 of lore of {_item} to "&8┃ &7ᴄʀɪᴛ ᴄʜᴀɴᴄᴇ &8» &9+%{_critchance}%%%"
+    set line 8 of lore of {_item} to "&8┃ &7ᴄʀɪᴛ ᴅᴀᴍᴀɢᴇ &8» &9+%{_critdamage}%%%"
+    
+    set {_item} to unbreakable {_item}
+    set item flags of {_item} to all item flags
+    
+
+    set data tag "itemstat:name" of {_item} to {_name}
+    set number data tag "itemstat:level" of {_item} to {_level}
+    set data tag "itemstat:type" of {_item} to {_type}
+    set number data tag "itemstat:damage" of {_item} to {_damage}
+    set number data tag "itemstat:crit_chance" of {_item} to {_critchance}
+    set number data tag "itemstat:crit_damage" of {_item} to {_critdamage}
+    
+    return {_item}
+    
+command /modifyweapon <text> <number> <text> <item type>:
+    permission: admin.item
+    trigger:
+        set {_baseitem} to arg-4
+
+        if arg-1 is "sword":
+            set {_item} to sword({_baseitem}, arg-3, arg-2)
+        else if arg-1 is "axe":
+            set {_item} to axe({_baseitem}, arg-3, arg-2)
+        else if arg-1 is "dagger":
+            set {_item} to dagger({_baseitem}, arg-3, arg-2)
+        else:
+            send "&cTypes: sword, axe, dagger"
+            stop
+        
+        give {_item} to player
+        send "&aGave &eLvl %arg-2% %arg-1% (%arg-3%)&a."
+        
+function helmet(name: text, level: number, base: text):: item:
+    set {_item} to player head
+    set {_type} to "helmet"
+    set the skull texture of {_item} to "%{_base}%"
+    set {_health} to round((30 + ({_level} * 3)) * 1.15)
+    set {_defense} to round(8 + ({_level} * 1.2))
+    set {_mana} to round(15 + ({_level} * 2))
+    
+    set {_typeline} to SmallCaps({_type})
+
+    set name of {_item} to "&f%{_name}%"
+
+    set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
+    set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &e%{_typeLine}%"
+    set line 3 of lore of {_item} to "&8┃ &7ʟᴇᴠᴇʟ &8» &c%{_level}%"
+    set line 4 of lore of {_item} to ""
+    set line 5 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
+    set line 6 of lore of {_item} to "&8┃ &7ʜᴇᴀʟᴛʜ &8» &c+%{_health}%"
+    set line 7 of lore of {_item} to "&8┃ &7ᴅᴇғᴇɴꜱᴇ &8» &a+%{_defense}%"
+    set line 8 of lore of {_item} to "&8┃ &7ᴍᴀɴᴀ &8» &b+%{_mana}%"
+    
+    set {_item} to unbreakable {_item}
+    set item flags of {_item} to all item flags
+    set data tag "itemstat:name" of {_item} to {_name}
+    set number data tag "itemstat:level" of {_item} to {_level}
+    set data tag "itemstat:type" of {_item} to {_type}
+    set number data tag "itemstat:health" of {_item} to {_health}
+    set number data tag "itemstat:defense" of {_item} to {_defense}
+    set number data tag "itemstat:mana" of {_item} to {_mana}
+    
+    return {_item}
+
+function chestplate(baseitem: item, name: text, level: number, c1: number, c2: number, c3: number):: item:
+    set {_item} to {_baseitem}
+    set {_type} to "chestplate"
+    dye {_item} ({_c1}, {_c2}, {_c3})
+    set {_health} to round((40 + ({_level} * 3.5)) * 1.15)
+    set {_defense} to round(12 + ({_level} * 1.8))
+    
+    set {_typeline} to SmallCaps({_type})
+
+    set name of {_item} to "&f%{_name}%"
+
+    set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
+    set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &e%{_typeLine}%"
+    set line 3 of lore of {_item} to "&8┃ &7ʟᴇᴠᴇʟ &8» &c%{_level}%"
+    set line 4 of lore of {_item} to ""
+    set line 5 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
+    set line 6 of lore of {_item} to "&8┃ &7ʜᴇᴀʟᴛʜ &8» &c+%{_health}%"
+    set line 7 of lore of {_item} to "&8┃ &7ᴅᴇғᴇɴꜱᴇ &8» &a+%{_defense}%"
+    
+    set {_item} to unbreakable {_item}
+    set item flags of {_item} to all item flags
+    set data tag "itemstat:name" of {_item} to {_name}
+    set number data tag "itemstat:level" of {_item} to {_level}
+    set data tag "itemstat:type" of {_item} to {_type}
+    set number data tag "itemstat:health" of {_item} to {_health}
+    set number data tag "itemstat:defense" of {_item} to {_defense}
+    
+    return {_item}
+
+function leggings(baseitem: item, name: text, level: number, c1: number, c2: number, c3: number):: item:
+    set {_item} to {_baseitem}
+    set {_type} to "leggings"
+    dye {_item} ({_c1}, {_c2}, {_c3})
+    set {_health} to round((35 + ({_level} * 3)) * 1.15)
+    set {_damage} to round(3 + ({_level} * 0.8))
+    set {_critdamage} to round(10 + ({_level} * 0.3))
+    
+    set {_typeline} to SmallCaps({_type})
+
+    set name of {_item} to "&f%{_name}%"
+
+    set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
+    set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &e%{_typeLine}%"
+    set line 3 of lore of {_item} to "&8┃ &7ʟᴇᴠᴇʟ &8» &c%{_level}%"
+    set line 4 of lore of {_item} to ""
+    set line 5 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
+    set line 6 of lore of {_item} to "&8┃ &7ʜᴇᴀʟᴛʜ &8» &c+%{_health}%"
+    set line 7 of lore of {_item} to "&8┃ &7ᴅᴀᴍᴀɢᴇ &8» &c+%{_damage}%"
+    set line 8 of lore of {_item} to "&8┃ &7ᴄʀɪᴛ ᴅᴀᴍᴀɢᴇ &8» &9+%{_critdamage}%%%"
+    
+    set {_item} to unbreakable {_item}
+    set item flags of {_item} to all item flags
+    set data tag "itemstat:name" of {_item} to {_name}
+    set number data tag "itemstat:level" of {_item} to {_level}
+    set data tag "itemstat:type" of {_item} to {_type}
+    set number data tag "itemstat:health" of {_item} to {_health}
+    set number data tag "itemstat:damage" of {_item} to {_damage}
+    set number data tag "itemstat:crit_damage" of {_item} to {_critdamage}
+    
+    return {_item}
+
+function boots(baseitem: item, name: text, level: number, c1: number, c2: number, c3: number):: item:
+   
+    set {_item} to {_baseitem}
+    set {_type} to "boots"
+    dye {_item} ({_c1}, {_c2}, {_c3})
+    set {_health} to round((25 + ({_level} * 2.5)) * 1.15)
+    set {_speed} to round(2 + ({_level} * 0.15))
+    set {_critchance} to round(1 + ({_level} * 0.06))
+    
+    set {_typeline} to SmallCaps({_type})
+
+    set name of {_item} to "&f%{_name}%"
+
+    set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
+    set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &e%{_typeLine}%"
+    set line 3 of lore of {_item} to "&8┃ &7ʟᴇᴠᴇʟ &8» &c%{_level}%"
+    set line 4 of lore of {_item} to ""
+    set line 5 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
+    set line 6 of lore of {_item} to "&8┃ &7ʜᴇᴀʟᴛʜ &8» &c+%{_health}%"
+    set line 7 of lore of {_item} to "&8┃ &7ꜱᴘᴇᴇᴅ &8» &f+%{_speed}%"
+    set line 8 of lore of {_item} to "&8┃ &7ᴄʀɪᴛ ᴄʜᴀɴᴄᴇ &8» &9+%{_critchance}%%%"
+    
+    set {_item} to unbreakable {_item}
+    set item flags of {_item} to all item flags
+    set data tag "itemstat:name" of {_item} to {_name}
+    set number data tag "itemstat:level" of {_item} to {_level}
+    set data tag "itemstat:type" of {_item} to {_type}
+    set number data tag "itemstat:health" of {_item} to {_health}
+    set number data tag "itemstat:speed" of {_item} to {_speed}
+    set number data tag "itemstat:crit_chance" of {_item} to {_critchance}
+    
+    return {_item}
+    
+function lootbox(name: text, type: text, level: number):: item:
+    set {_item} to player head
+
+    set name of {_item} to "&fUnknown %{_name}%"
+    
+    if {_level} is 1:
+        set {_min} to 1
+        set {_max} to 10
+        set the skull texture of {_item} to "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDdlYzQxZTBkZjhlMTcwZDk3ZjliOWFmMWQ2NWVkYWQ0OTc5Yzc4Yzg5YjAxYjE4MGYzODllZTA4YTYxYWY4MiJ9fX0="
+    if {_level} is 2:
+        set {_min} to 11
+        set {_max} to 20
+        set the skull texture of {_item} to "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmE2ZGFjODAzNWQzNjFiYTdmMmMyYTYxNGI0ZWJhYWZjMWU1ZTMxMDFmODViZWVmNjgzNTM2ZjMzN2U1MDkwIn19fQ=="
+    if {_level} is 3:
+        set {_min} to 21
+        set {_max} to 30
+        set the skull texture of {_item} to "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMmQwYmRmMzliNTRmNDk2OTJmYjM3OWI0ZWIwNGQxZWI0YTAwZTc4ZWQzOTExYWQzYjYzYTdlNWJmMzE3NjgzNyJ9fX0="
+    
+    set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
+    set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &eʟᴏᴏᴛ ʙᴏx"
+    set line 3 of lore of {_item} to "&8┃ &7ʟᴇᴠᴇʟ &8» &b%{_min}%&8‐&b%{_max}%"
+    
+    set {_item} to unbreakable {_item}
+    set item flags of {_item} to all item flags
+    set number data tag "lootbox:status" of {_item} to 1
+    set number data tag "lootbox:level" of {_item} to {_level}
+    set data tag "lootbox:type" of {_item} to {_type}
+    
+    return {_item}
+    
+command /giveloot <number> <number>:
+    permission: admin.item
+    trigger:
+        giveLoot(player, arg-1, arg-2)

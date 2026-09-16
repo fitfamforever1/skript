@@ -1,0 +1,171 @@
+function sword1Shift(p: player):
+    make 150 of campfire_signal_smoke particle at {_p}'s location with offset vector(1, 3, 0.5) with extra 0.5 with force
+    make 150 of flame particle at {_p}'s location with offset vector(1, 3, 0.5) with extra 0.5 with force
+    play sound "entity.generic.burn" with volume 1 and pitch 0.8 to all players within 5 blocks of {_p}'s location
+    play sound "entity.breeze.shoot" with volume 1 and pitch 0.8 to all players within 5 blocks of {_p}'s location
+    play sound "entity.breeze.hurt" with volume 1 and pitch 0.8 to all players within 5 blocks of {_p}'s location
+    loop all entities within 7 blocks of {_p}:
+        if loop-entity is not {_p}:
+            damage loop-entity by 4
+            set {_distance} to distance between {_p} and loop-entity
+            set {_speed} to 2 * (1 - ({_distance} / 7))
+            push loop-entity away from {_p}'s location at speed {_speed}
+            push loop-entity upwards at speed 0.5
+            ignite loop-entity for 4 seconds
+
+function sword2Shift(p: player):
+    set {_loc} to location of {_p}
+    make 8 of gust particle at {_loc} with offset vector(1, 1, 1) with extra 1 with force
+    play sound "entity.breeze.shoot" with volume 3 and pitch 1 to all players within 20 blocks of {_loc}
+    push {_p} forwards at speed 2
+    
+on projectile hit:
+    if event-projectile is a wind charge:
+        stop
+    if event-projectile is a fireball:
+        if {fireballHit::%event-projectile%} is set:
+            stop
+
+        set {fireballHit::%event-projectile%} to true
+
+        set {_shooter} to shooter of event-projectile
+
+        if {_shooter} is a player:
+            loop entities in radius 2 around event-location:
+                if loop-entity is {_shooter}:
+                    stop loop
+
+                damage loop-entity by 6
+
+        delete {fireballHit::%event-projectile%}
+    
+on sneak toggle:
+    wait 1 tick
+    set {_id} to number data tag "sword:id" of player's tool
+    if {_id} is 1:
+        if player is sneaking:
+            if {sword1shift::%player%} is not set:
+                set {sword1shift::%player%} to true
+                sword1Shift(player)
+                set {_seconds} to 15
+                while {_seconds} > 0:
+                    send action bar "&6Scalding Wave Cooldown: &e%{_seconds}%s" to player
+                    wait 1 second
+                    remove 1 from {_seconds}
+                delete {sword1shift::%player%}
+            else:
+                stop
+
+    else if {_id} is 2:
+        if player is sneaking:
+            if {sword2shift::%player%} is not set:
+                set {sword2shift::%player%} to true
+                sword2Shift(player)
+                set {_seconds} to 5
+                while {_seconds} > 0:
+                    send action bar "&6Air Dash Cooldown: &e%{_seconds}%s" to player
+                    wait 1 second
+                    remove 1 from {_seconds}
+                delete {sword2shift::%player%}
+            else:
+                stop
+                
+    else if {_id} is 3:
+        if player is sneaking:
+            set {cloak::%player%} to true
+            while {cloak::%player%} is true:
+                if player is not sneaking:
+                    delete {cloak::%player%}
+                    stop loop
+                send action bar "&6Cloak Mode is active!"
+                sword3Shift(player)
+                wait 19 ticks
+        else:
+            delete {cloak::%player%}
+
+function sword3Shift(p: player):
+    apply invisibility to {_p} for 1 second
+    apply hunger 50 to {_p} for 1 second:
+        hide particles
+    apply weakness 3 to {_p} for 1 second:
+        hide particles
+
+    loop all players within 30 blocks of {_p}'s location:
+        if loop-player is not {_p}:
+            apply glowing to loop-player for 1 second
+
+on right click with netherite sword:
+    set {_id} to number data tag "sword:id" of player's tool
+
+    if {_id} is 1:
+        if {sword1right::%player%} is not set:
+            set {sword1right::%player%} to true
+            play sound "entity.blaze.shoot" with volume 1 and pitch 0.8 to all players within 5 blocks of player
+            shoot a fireball from player with speed 1.5
+            set item cooldown of player's tool for player to 17 seconds
+            wait 17 seconds
+            delete {sword1right::%player%}
+        else:
+            stop
+
+    if {_id} is 2:
+        if {sword2right::%player%} is not set:
+            set {sword2right::%player%} to true
+            shoot a wind charge from player at speed 1
+            play sound "entity.breeze.jump" with volume 1 and pitch 1 to all players within 5 blocks of player
+            set item cooldown of player's tool for player to 1 seconds
+            wait 1 seconds
+            delete {sword2right::%player%}
+        else:
+            stop
+
+    
+            
+on left click with netherite sword:
+    set {_id} to number data tag "sword:id" of player's tool
+    
+    if {_id} is 1:
+        make 3 of flame particle at player's location with offset vector(0.5, 1.5, 0.5) with extra 0 with force
+        
+on damage:
+    set {_id} to number data tag "sword:id" of attacker's tool
+    
+    if {_id} is 1:
+        make 3 of flame particle at attacker's location with offset vector(0.5, 1.5, 0.5) with extra 0 with force
+        
+    if {_id} is 2:
+        make 1 of gust particle at attacker's location with offset vector(0.5, 1.5, 0.5) with extra 0 with force
+        push victim away from attacker's location at speed 0.7
+        apply slow falling 1 to victim for 1 second:
+            hide the particles
+    
+    if {_id} is 3:
+        set glow color override of victim to dark aqua
+        chance of 25%:
+            set damage to damage * 2
+            play sound "entity_zombie_attack_iron_door" with volume 1 and pitch 1 to all players within 5 blocks of attacker's location
+            play sound "entity_player_attack_crit" with volume 1 and pitch 1 to all players within 5 blocks of attacker's location
+            play sound "entity_warden_attack_impact" with volume 1 and pitch 1 to all players within 5 blocks of attacker's location
+        set glowing of victim to true
+        wait 3 seconds
+        set glowing of victim to false
+        
+        
+command /sword <number>:
+    permission: admin
+    trigger:
+        set {_item} to player's tool 
+        set number data tag "sword:id" of {_item} to arg-1
+        set player's tool to {_item}
+        
+command /resetability:
+    permission: admin
+    trigger:
+        set {_target} to player
+
+        delete {sword1shift::%{_target}%}
+        delete {sword2shift::%{_target}%}
+        delete {sword1right::%{_target}%}
+        delete {sword2right::%{_target}%}
+
+        send "&aAbility cooldowns reset for &e%{_target}%&a." to player

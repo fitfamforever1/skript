@@ -1,0 +1,28 @@
+on join:
+ set join message to "&8[&a+&8] &7%player%"
+
+on first join:
+    set balance of player to 1000
+    set join message to "&8[&a+&8] &b%player%"
+
+    wait 2 ticks
+
+    set {_head} to placeholder "rp_head" from player
+
+    send "&8&m--------------------------------------------------" to player
+    send "&6&l%{_head}%" to player
+    send "" to player
+    send "&7Welcome, &b%player%&7!" to player
+    send "&7Begin your journey with slayers, fishing," to player
+    send "&7mining, collections, bounties, and more." to player
+    send "" to player
+    send "&e/help &8» &7View the server introduction" to player
+    send "&e/store &8» &7Official server store" to player
+    send "" to player
+    send "&aEnjoy your adventure! ✔" to player
+    send "&8&m--------------------------------------------------" to player
+
+
+on quit:
+ set quit message to "&8[&c-&8] &7%player%"
+

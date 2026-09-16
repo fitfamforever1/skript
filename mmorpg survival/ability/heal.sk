@@ -1,0 +1,128 @@
+on right click holding a stick:
+    if name of player's tool is "&fWand of Mending":
+        set {_uuid} to uuid of player
+
+        if {mana::%{_uuid}%} is not set:
+            set {mana::%{_uuid}%} to 0
+
+        if {mana::%{_uuid}%} < 10:
+            send action bar "&cNot enough mana." to player
+            stop
+
+        if {mending.active::%{_uuid}%} is true:
+            send action bar "&7Healing doesn't stack" to player
+            stop
+
+        remove 10 from {mana::%{_uuid}%}
+        clampMana(player)
+        saveMana(player)
+
+        set {mending.active::%{_uuid}%} to true
+        send action bar "&fHealing &b -10 Mana" to player
+        wait 1 second
+        heal player by 1
+        wait 1 second
+        heal player by 1
+        wait 1 second
+        heal player by 1
+        wait 1 second
+        heal player by 1
+        wait 1 second
+        heal player by 1
+        wait 1 second
+        heal player by 1
+        wait 1 second
+        heal player by 1
+        wait 1 second
+        heal player by 1
+        wait 1 second
+        heal player by 1
+        wait 1 second
+        heal player by 1
+        delete {mending.active::%{_uuid}%}
+
+on right click holding a stick:
+    if name of player's tool is "&fWand of Restoration":
+        set {_uuid} to uuid of player
+
+        if {mana::%{_uuid}%} is not set:
+            set {mana::%{_uuid}%} to 0
+
+        if {mana::%{_uuid}%} < 20:
+            send action bar "&cNot enough mana." to player
+            stop
+
+        if {mending2.active::%{_uuid}%} is true:
+            send action bar "&7Healing doesn't stack" to player
+            stop
+
+        remove 20 from {mana::%{_uuid}%}
+        clampMana(player)
+        saveMana(player)
+
+        set {mending2.active::%{_uuid}%} to true
+        send action bar "&fHealing &b -10 Mana" to player
+        wait 1 second
+        heal player by 2
+        wait 1 second
+        heal player by 2
+        wait 1 second
+        heal player by 2
+        wait 1 second
+        heal player by 2
+        wait 1 second
+        heal player by 2
+        wait 1 second
+        heal player by 2
+        wait 1 second
+        heal player by 2
+        wait 1 second
+        heal player by 2
+        wait 1 second
+        heal player by 2
+        wait 1 second
+        heal player by 2
+        delete {mending2.active::%{_uuid}%}
+
+on right click holding a stick:
+    if name of player's tool is "&fWand of Divine Renewal":
+        set {_uuid} to uuid of player
+
+        if {mana::%{_uuid}%} is not set:
+            set {mana::%{_uuid}%} to 0
+
+        if {mana::%{_uuid}%} < 30:
+            send action bar "&cNot enough mana." to player
+            stop
+
+        if {mending3.active::%{_uuid}%} is true:
+            send action bar "&7Healing doesn't stack" to player
+            stop
+
+        remove 30 from {mana::%{_uuid}%}
+        clampMana(player)
+        saveMana(player)
+
+        set {mending3.active::%{_uuid}%} to true
+        send action bar "&fHealing &b -10 Mana" to player
+        wait 1 second
+        heal player by 3
+        wait 1 second
+        heal player by 3
+        wait 1 second
+        heal player by 3
+        wait 1 second
+        heal player by 3
+        wait 1 second
+        heal player by 3
+        wait 1 second
+        heal player by 3
+        wait 1 second
+        heal player by 3
+        wait 1 second
+        heal player by 3
+        wait 1 second
+        heal player by 3
+        wait 1 second
+        heal player by 3
+        delete {mending3.active::%{_uuid}%}

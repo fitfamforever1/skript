@@ -1,0 +1,43 @@
+command /admin:
+    permission: admin.area
+    trigger:
+        teleport player to location(51.5, -60, 70.5,"world",-180,0)
+
+command /bcast <text>:
+    permission: admin.bcast
+    trigger:
+        set {_ann} to SmallCaps(arg-1)
+        broadcast "&8[&cᴀɴɴᴏᴜɴᴄᴇᴍᴇɴᴛ&8] &f%{_ann}%"
+        send title "&c&lᴀɴɴᴏᴜɴᴄᴇᴍᴇɴᴛ" with subtitle "&f%{_ann}%" to all players for 1 seconds with fade in 5 ticks and fade out 5 ticks
+        loop all players:
+            play sound "sound:sound.ui.error" with volume 1 and pitch 1 to loop-player
+
+command /clearchat:
+    permission: admin.chat
+    permission message: &8[&4ꜱʏꜱᴛᴇᴍ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪꜱꜱɪᴏɴ ᴛᴏ ᴜꜱᴇ ᴛʜɪꜱ ᴄᴏᴍᴍᴀɴᴅ.
+    trigger:
+        loop all players:
+            loop 150 times:
+                send "&r" to loop-player-1
+        broadcast "&8[&4ꜱʏꜱᴛᴇᴍ&8] &fᴄʜᴀᴛ ᴡᴀꜱ ᴄʟᴇᴀʀᴇᴅ ʙʏ &e%player%&f."
+
+variables:
+    {chat.locked} = false
+
+command /lockchat:
+    permission: admin.chat
+    permission message: &8[&4ꜱʏꜱᴛᴇᴍ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪꜱꜱɪᴏɴ ᴛᴏ ᴜꜱᴇ ᴛʜɪꜱ ᴄᴏᴍᴍᴀɴᴅ.
+    trigger:
+        if {chat.locked} is true:
+            set {chat.locked} to false
+            broadcast "&8[&4ꜱʏꜱᴛᴇᴍ&8] &fᴄʜᴀᴛ ʜᴀꜱ ʙᴇᴇɴ &aᴜɴʟᴏᴄᴋᴇᴅ&f ʙʏ &e%player%&f."
+        else:
+            set {chat.locked} to true
+            broadcast "&8[&4ꜱʏꜱᴛᴇᴍ&8] &fᴄʜᴀᴛ ʜᴀꜱ ʙᴇᴇɴ &cʟᴏᴄᴋᴇᴅ&f ʙʏ &e%player%&f."
+
+on chat:
+    if {chat.locked} is true:
+        if player doesn't have permission "admin.chat":
+            cancel event
+            send "&8[&4ꜱʏꜱᴛᴇᴍ&8] &cᴄʜᴀᴛ ɪꜱ ᴄᴜʀʀᴇɴᴛʟʏ ʟᴏᴄᴋᴇᴅ. ᴘʟᴇᴀꜱᴇ ᴡᴀɪᴛ." to player
+            play sound "sound:sound.ui.disable" with volume 1 and pitch 1 to player

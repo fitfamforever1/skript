@@ -1,0 +1,209 @@
+function getFireDelay(rate: number) :: number:
+    if {_rate} <= 60:
+        return 10
+    else if {_rate} <= 120:
+        return 9
+    else if {_rate} <= 240:
+        return 8
+    else if {_rate} <= 360:
+        return 7
+    else if {_rate} <= 480:
+        return 6
+    else if {_rate} <= 600:
+        return 5
+    else if {_rate} <= 720:
+        return 4
+    else if {_rate} <= 840:
+        return 3
+    else if {_rate} <= 960:
+        return 2
+    else:
+        return 1
+
+function countAmmo(p: player, type: text) :: number:
+    set {_count} to 0
+
+    loop items in inventory of {_p}:
+        if data tag "gun:ammo" of loop-item is {_type}:
+            add amount of loop-item to {_count}
+
+    return {_count}
+
+function removeAmmo(p: player, type: text, amount: integer) :: boolean:
+    set {_remaining} to {_amount}
+    loop items in inventory of {_p}:
+        if data tag "gun:ammo" of loop-item is {_type}:
+            if amount of loop-item >= {_remaining}:
+                remove {_remaining} of loop-item from inventory of {_p}
+                return true
+            else:
+                subtract amount of loop-item from {_remaining}
+                remove loop-item from inventory of {_p}
+    return false
+
+function fireOneShot(p: player, damage: number):
+    set {gun::pendingdamage::%{_p}%} to {_damage}
+    shoot arrow from {_p} at speed 8
+
+on load:
+    delete {gun::damage::*}
+    delete {gun::pendingdamage::*}
+    delete {gun::cooldown::*}
+
+    set {gun::soundtable::1} to "sound:sound.gun.fiveseven"
+    set {gun::soundtable::2} to "sound:sound.gun.glock"
+    set {gun::soundtable::3} to "sound:sound.gun.colt1911"
+    set {gun::soundtable::4} to "sound:sound.gun.doublebarrel"
+    set {gun::soundtable::5} to "sound:sound.gun.rpg.stereo"
+    set {gun::soundtable::6} to "sound:sound.gun.mac10.stereo"
+    set {gun::soundtable::7} to "sound:sound.gun.uzi.stereo"
+    set {gun::soundtable::8} to "sound:sound.gun.mp40.stereo"
+    set {gun::soundtable::9} to "sound:sound.gun.thompson.stereo"
+    set {gun::soundtable::10} to "sound:sound.gun.mp18.stereo"
+    set {gun::soundtable::11} to "sound:sound.gun.mp5.stereo"
+    set {gun::soundtable::12} to "sound:sound.gun.ak74u.stereo"
+    set {gun::soundtable::13} to "sound:sound.gun.ak47.stereo"
+    set {gun::soundtable::14} to "sound:sound.gun.m4a1.stereo"
+    set {gun::soundtable::15} to "sound:sound.gun.m1garand"
+    set {gun::soundtable::16} to "sound:sound.gun.mosin"
+
+    set {gun::ammotable::1} to "1"
+    set {gun::ammotable::2} to "1"
+    set {gun::ammotable::3} to "1"
+    set {gun::ammotable::4} to "3"
+    set {gun::ammotable::5} to "4"
+    set {gun::ammotable::6} to "1"
+    set {gun::ammotable::7} to "1"
+    set {gun::ammotable::8} to "1"
+    set {gun::ammotable::9} to "1"
+    set {gun::ammotable::10} to "1"
+    set {gun::ammotable::11} to "1"
+    set {gun::ammotable::12} to "1"
+    set {gun::ammotable::13} to "2"
+    set {gun::ammotable::14} to "2"
+    set {gun::ammotable::15} to "2"
+    set {gun::ammotable::16} to "2"
+
+on shoot:
+    if projectile is an arrow:
+        set {_arrow} to event-projectile
+        set gravity of {_arrow} to false
+        set {gun::damage::%{_arrow}%} to {gun::pendingdamage::%shooter%}
+        delete {gun::pendingdamage::%shooter%}
+        
+        wait 3 seconds
+        delete {_arrow}
+        delete {gun::damage::%{_arrow}%}
+
+on right click with paper:
+    if {clicklock::%player%} is true:
+        stop trigger
+    set {clicklock::%player%} to true
+
+    set {_item} to player's tool
+    if {_item} is not set:
+        delete {clicklock::%player%}
+        stop trigger
+    if data tag "stat:gun" of {_item} is not set:
+        delete {clicklock::%player%}
+        stop trigger
+        
+    set {_id} to (data tag "gun:id" of {_item}) parsed as number
+    set {_fireRate} to data tag "stat:firerate" of {_item}
+    set {_delayTicks} to getFireDelay({_fireRate})
+    set {_delayTime} to "%{_delayTicks}% ticks" parsed as timespan
+    set {lastclick::%player%} to now
+
+    if {gun::cooldown::%player%} is set:
+        if difference between {gun::cooldown::%player%} and now is less than {_delayTime}:
+            delete {clicklock::%player%}
+            stop trigger
+    set {gun::cooldown::%player%} to now
+    set {_damage} to data tag "stat:gundamage" of {_item}
+
+    set {_sound} to {gun::soundtable::%{_id}%}
+    
+    # AMMO
+    set {_magazine} to data tag "stat:magazine" of {_item}
+    if data tag "gun:mag" of {_item} is not set:
+        set {_item} to player's tool
+        set data tag "gun:mag" of {_item} to {_magazine}
+        set player's tool to {_item}
+    set {_ammo} to data tag "gun:mag" of {_item}
+
+    
+    if {_ammo} <= 0:
+        set {_ammoType} to {gun::ammotable::%{_id}%}
+        
+        set {_reloadAmmo} to countAmmo(player, {_ammoType})
+        if {_reloadAmmo} >= 1:
+            if {_reloadAmmo} <= {_magazine}:
+                removeAmmo(player, {_ammoType}, {_reloadAmmo})
+                set data tag "gun:mag" of {_item} to {_reloadAmmo}
+            else:
+                removeAmmo(player, {_ammoType}, {_magazine})
+                set data tag "gun:mag" of {_item} to {_magazine}
+            play sound "sound:sound.gun.reload" with volume 1 to the player
+            send action bar "&aʀᴇʟᴏᴀᴅᴇᴅ!" to player
+            set player's tool to {_item}
+        else:
+            send title "&4&lᴏᴜᴛ ᴏꜰ ᴀᴍᴍᴏ" with subtitle "&cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴇɴᴏᴜɢʜ ᴀᴍᴍᴏ!" to player for 1 seconds
+        delete {clicklock::%player%}
+        
+        stop trigger
+
+    if data tag "minecraft:gun" of {_item} is set:
+        loop all players within 40 blocks of player:
+            set {_distance} to distance between player and loop-player
+            set {_volume} to 1 - ({_distance} / 40)
+        
+            if {_volume} < 0:
+                set {_volume} to 0
+        
+            play sound "%{_sound}%" with volume {_volume} to loop-player
+        
+        set {_mode} to data tag "minecraft:gun" of {_item}
+        if {_mode} is "single":
+            fireOneShot(player, {_damage})
+            subtract 1 from {_ammo}
+            set data tag "gun:mag" of {_item} to {_ammo}
+        else if {_mode} is "double":
+            if {firing::%player%} is true:
+                delete {clicklock::%player%}
+                stop trigger
+            set {firing::%player%} to true
+            delete {clicklock::%player%}
+            while {firing::%player%} is true:
+                set {_ammo} to data tag "gun:mag" of {_item}
+                if {_ammo} <= 0:
+                    delete {firing::%player%}
+                    send title "&4&lᴏᴜᴛ ᴏꜰ ᴀᴍᴍᴏ" with subtitle "&cʀɪɢʜᴛ ᴄʟɪᴄᴋ ᴛᴏ ʀᴇʟᴏᴀᴅ!" to player for 1 seconds
+                    stop trigger
+                fireOneShot(player, {_damage})
+                subtract 1 from {_ammo}
+                set data tag "gun:mag" of {_item} to {_ammo}
+                set player's tool to {_item}
+                send action bar "&a%{_ammo}%/%{_magazine}%" to player
+                wait {_delayTime}
+                if difference between {lastclick::%player%} and now is more than {_delayTime}:
+                    delete {firing::%player%}
+            stop trigger
+    delete {clicklock::%player%}
+    wait 1 tick
+    
+    set player's tool to {_item}
+    send action bar "&a%{_ammo}%/%{_magazine}%"
+
+on damage:
+    projectile is an arrow
+    {gun::damage::%projectile%} is set
+    cancel event
+    delete projectile
+    set {_dmg} to {gun::damage::%projectile%} / 2
+    set {_entity} to victim
+    delete {gun::damage::%projectile%}
+    damage {_entity} by {_dmg}
+    
+on projectile hit:
+    delete projectile
+    delete {gun::damage::%projectile%}

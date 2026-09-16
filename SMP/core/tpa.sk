@@ -1,0 +1,198 @@
+command /tpaclose:
+    prefix: minecraft
+    trigger:
+        if data tag "tpa:blocked" of player is set:
+            send "&8[<##AA00FF>ᴛᴘᴀ&8] &7ʏᴏᴜʀ ᴛᴇʟᴇᴘᴏʀᴛꜱ ᴀʀᴇ ᴀʟʀᴇᴀᴅʏ &cᴄʟᴏꜱᴇᴅ&7."
+            stop
+
+        set data tag "tpa:blocked" of player to true
+
+        send "&8[<##AA00FF>ᴛᴘᴀ&8] &7ʏᴏᴜ ᴀʀᴇ ɴᴏ ʟᴏɴɢᴇʀ ᴀᴄᴄᴇᴘᴛɪɴɢ ᴛᴇʟᴇᴘᴏʀᴛ ʀᴇǫᴜᴇꜱᴛꜱ. ᴜꜱᴇ &a/tpaopen &7ᴛᴏ ʀᴇ-ᴇɴᴀʙʟᴇ."
+
+
+command /tpaopen:
+    prefix: minecraft
+    trigger:
+        if data tag "tpa:blocked" of player is not set:
+            send "&8[<##AA00FF>ᴛᴘᴀ&8] &7ʏᴏᴜʀ ᴛᴇʟᴇᴘᴏʀᴛꜱ ᴀʀᴇ ᴀʟʀᴇᴀᴅʏ &aᴏᴘᴇɴ&7."
+            stop
+
+        delete data tag "tpa:blocked" of player
+
+        send "&8[<##AA00FF>ᴛᴘᴀ&8] &7ʏᴏᴜ ᴀʀᴇ ɴᴏᴡ ᴀᴄᴄᴇᴘᴛɪɴɢ ᴛᴇʟᴇᴘᴏʀᴛ ʀᴇǫᴜᴇꜱᴛꜱ."
+        
+command /tpa <player>:
+    prefix: minecraft
+    trigger:
+        if arg-1 is not set:
+            send "&8[<##AA00FF>ᴛᴘᴀ&8] &7/ᴛᴘᴀ <ᴘʟᴀʏᴇʀ>"
+            stop
+
+        set {_target} to arg-1
+
+        if {_target} is player:
+            send "&8[<##AA00FF>ᴛᴘᴀ&8] &cʏᴏᴜ ᴄᴀɴ'ᴛ ᴛᴇʟᴇᴘᴏʀᴛ ᴛᴏ ʏᴏᴜʀꜱᴇʟꜰ!"
+            stop
+
+        set {_targetSC} to SmallCaps("%{_target}%")
+
+        if data tag "tpa:blocked" of {_target} is set:
+            send "&8[<##AA00FF>ᴛᴘᴀ&8] &e%{_targetSC}% &7ɪꜱ ɴᴏᴛ ᴀᴄᴄᴇᴘᴛɪɴɢ ᴛᴇʟᴇᴘᴏʀᴛ ʀᴇǫᴜᴇꜱᴛꜱ."
+            stop
+
+        if text data tag "tpa:sender" of {_target} is "%player's name%":
+            send "&8[<##AA00FF>ᴛᴘᴀ&8] &7ʏᴏᴜ ᴀʟʀᴇᴀᴅʏ ʜᴀᴠᴇ ᴀ ᴘᴇɴᴅɪɴɢ ʀᴇǫᴜᴇꜱᴛ ᴛᴏ &e%{_targetSC}%&7."
+            stop
+
+        set text data tag "tpa:id" of arg-1 to "tpa"
+        set text data tag "tpa:sender" of arg-1 to "%player's name%"
+
+        send "&8[<##AA00FF>ᴛᴘᴀ&8] &7ᴛᴇʟᴇᴘᴏʀᴛ ʀᴇǫᴜᴇꜱᴛ ꜱᴇɴᴛ ᴛᴏ &e%{_targetSC}%&7."
+
+        set {_senderSC} to SmallCaps("%player%")
+
+        send "&8[<##AA00FF>ᴛᴘᴀ&8] &e%{_senderSC}% &7ᴡᴀɴᴛꜱ ᴛᴏ ᴛᴇʟᴇᴘᴏʀᴛ ᴛᴏ ʏᴏᴜ. &8[&a/ᴛᴘᴀᴀᴄᴄᴇᴘᴛ&8] &8[&c/ᴛᴘᴀᴅᴇɴʏ&8]" to {_target}
+
+        set {_sender} to player's name
+        set {_targetOff} to {_target}
+        wait 40 seconds
+        if text data tag "tpa:sender" of {_targetOff} is "%{_sender}%":
+            delete data tag "tpa:sender" of {_targetOff}
+            delete data tag "tpa:id" of {_targetOff}
+            if {_sender} parsed as offline player is online:
+                send "&8[<##AA00FF>ᴛᴘᴀ&8] &7ʏᴏᴜʀ ᴛᴇʟᴇᴘᴏʀᴛ ʀᴇǫᴜᴇꜱᴛ ᴛᴏ &e%{_targetSC}% &7ʜᴀꜱ &cᴇxᴘɪʀᴇᴅ&7." to ({_sender} parsed as player)
+            if {_targetOff} is online:
+                send "&8[<##AA00FF>ᴛᴘᴀ&8] &7ᴛʜᴇ ᴛᴇʟᴇᴘᴏʀᴛ ʀᴇǫᴜᴇꜱᴛ ꜰʀᴏᴍ &e%{_senderSC}% &7ʜᴀꜱ &cᴇxᴘɪʀᴇᴅ&7." to ({_targetOff} parsed as player)
+
+
+command /tpahere <player>:
+    prefix: minecraft
+    trigger:
+        if arg-1 is not set:
+            send "&8[<##AA00FF>ᴛᴘᴀ&8] &7/ᴛᴘᴀʜᴇʀᴇ <ᴘʟᴀʏᴇʀ>"
+            stop
+
+        set {_target} to arg-1
+
+        if {_target} is player:
+            send "&8[<##AA00FF>ᴛᴘᴀ&8] &cʏᴏᴜ ᴄᴀɴ'ᴛ ᴛᴇʟᴇᴘᴏʀᴛ ʏᴏᴜʀꜱᴇʟꜰ!"
+            stop
+
+        set {_targetSC} to SmallCaps("%{_target}%")
+
+        if data tag "tpa:blocked" of {_target} is set:
+            send "&8[<##AA00FF>ᴛᴘᴀ&8] &e%{_targetSC}% &7ɪꜱ ɴᴏᴛ ᴀᴄᴄᴇᴘᴛɪɴɢ ᴛᴇʟᴇᴘᴏʀᴛ ʀᴇǫᴜᴇꜱᴛꜱ."
+            stop
+
+        if text data tag "tpa:sender" of {_target} is "%player's name%":
+            send "&8[<##AA00FF>ᴛᴘᴀ&8] &7ʏᴏᴜ ᴀʟʀᴇᴀᴅʏ ʜᴀᴠᴇ ᴀ ᴘᴇɴᴅɪɴɢ ʀᴇǫᴜᴇꜱᴛ ᴛᴏ &e%{_targetSC}%&7."
+            stop
+
+        set text data tag "tpa:id" of {_target} to "tpahere"
+        set text data tag "tpa:sender" of {_target} to "%player's name%"
+
+        send "&8[<##AA00FF>ᴛᴘᴀ&8] &7ᴛᴇʟᴇᴘᴏʀᴛ ʀᴇǫᴜᴇꜱᴛ ꜱᴇɴᴛ ᴛᴏ &e%{_targetSC}%&7."
+
+        set {_senderSC} to SmallCaps("%player%")
+
+        send "&8[<##AA00FF>ᴛᴘᴀ&8] &e%{_senderSC}% &7ᴡᴀɴᴛꜱ ʏᴏᴜ ᴛᴏ ᴛᴇʟᴇᴘᴏʀᴛ ᴛᴏ ᴛʜᴇᴍ. &8[&a/ᴛᴘᴀᴀᴄᴄᴇᴘᴛ&8] &8[&c/ᴛᴘᴀᴅᴇɴʏ&8]" to {_target}
+
+        set {_sender} to player's name
+        set {_targetOff} to {_target}
+        wait 40 seconds
+        if text data tag "tpa:sender" of {_targetOff} is "%{_sender}%":
+            delete data tag "tpa:sender" of {_targetOff}
+            delete data tag "tpa:id" of {_targetOff}
+            if {_sender} parsed as offline player is online:
+                send "&8[<##AA00FF>ᴛᴘᴀ&8] &7ʏᴏᴜʀ ᴛᴇʟᴇᴘᴏʀᴛ ʀᴇǫᴜᴇꜱᴛ ᴛᴏ &e%{_targetSC}% &7ʜᴀꜱ &cᴇxᴘɪʀᴇᴅ&7." to ({_sender} parsed as player)
+            if {_targetOff} is online:
+                send "&8[<##AA00FF>ᴛᴘᴀ&8] &7ᴛʜᴇ ᴛᴇʟᴇᴘᴏʀᴛ ʀᴇǫᴜᴇꜱᴛ ꜰʀᴏᴍ &e%{_senderSC}% &7ʜᴀꜱ &cᴇxᴘɪʀᴇᴅ&7." to ({_targetOff} parsed as player)
+        
+function tpaDoTeleport(mover: player, dest: player, requester: text, acceptor: text, type: text):
+    set data tag "tpa:froze" of {_mover} to true
+    set {_requesterSC} to SmallCaps("%{_requester}%")
+    set {_acceptorSC} to SmallCaps("%{_acceptor}%")
+    set {_loc} to location of {_mover}
+    loop 5 times:
+        wait 1 second
+        if data tag "tpa:froze" of {_mover} is not true:
+            send "&8[<##AA00FF>ᴛᴘᴀ&8] &cᴛᴇʟᴇᴘᴏʀᴛ ᴄᴀɴᴄᴇʟʟᴇᴅ — ʏᴏᴜ ᴍᴏᴠᴇᴅ!" to {_mover}
+            stop
+        if distance between location of {_mover} and {_loc} > 0.05:
+            set data tag "tpa:froze" of {_mover} to false
+            send "&8[<##AA00FF>ᴛᴘᴀ&8] &cᴛᴇʟᴇᴘᴏʀᴛ ᴄᴀɴᴄᴇʟʟᴇᴅ — ʏᴏᴜ ᴍᴏᴠᴇᴅ!" to {_mover}
+            stop
+        set {_remaining} to 5 - loop-number
+        if {_remaining} > 0:
+            send action bar "&8[<##AA00FF>ᴛᴘᴀ&8] &7ᴛᴇʟᴇᴘᴏʀᴛɪɴɢ ɪɴ &a%{_remaining}%&7..." to {_mover}
+    set data tag "tpa:froze" of {_mover} to false
+
+    if {_mover} is online:
+        teleport {_mover} to {_dest}
+        if {_type} is "tpa":
+            send "&8[<##AA00FF>ᴛᴘᴀ&8] &7ᴛᴇʟᴇᴘᴏʀᴛᴇᴅ ᴛᴏ &e%{_acceptorSC}%&7." to {_mover}
+            send "&8[<##AA00FF>ᴛᴘᴀ&8] &e%{_requesterSC}% &7ʜᴀꜱ ʙᴇᴇɴ ᴛᴇʟᴇᴘᴏʀᴛᴇᴅ ᴛᴏ ʏᴏᴜ." to {_dest}
+        else if {_type} is "tpahere":
+            send "&8[<##AA00FF>ᴛᴘᴀ&8] &7ᴛᴇʟᴇᴘᴏʀᴛᴇᴅ ᴛᴏ &e%{_requesterSC}%&7." to {_mover}
+            send "&8[<##AA00FF>ᴛᴘᴀ&8] &e%{_acceptorSC}% &7ʜᴀꜱ ᴛᴇʟᴇᴘᴏʀᴛᴇᴅ ᴛᴏ ʏᴏᴜ." to {_dest}
+
+command /tpaaccept:
+    prefix: minecraft
+    trigger:
+        set {_requester} to text data tag "tpa:sender" of player
+        if {_requester} is not set:
+            send "&8[<##AA00FF>ᴛᴘᴀ&8] &7ɴᴏ ᴘᴇɴᴅɪɴɢ ʀᴇǫᴜᴇꜱᴛ."
+            stop
+        set {_type} to text data tag "tpa:id" of player
+        set {_requesterSC} to SmallCaps("%{_requester}%")
+        set {_acceptorSC} to SmallCaps("%player%")
+        delete data tag "tpa:sender" of player
+        delete data tag "tpa:id" of player
+        if {_requester} parsed as offline player is not online:
+            send "&8[<##AA00FF>ᴛᴘᴀ&8] &e%{_requesterSC}% &7ɪꜱ ɴᴏ ʟᴏɴɢᴇʀ ᴏɴʟɪɴᴇ."
+            stop
+
+        send "&8[<##AA00FF>ᴛᴘᴀ&8] &7ʏᴏᴜ ᴀᴄᴄᴇᴘᴛᴇᴅ &e%{_requesterSC}%'ꜱ &7ᴛᴇʟᴇᴘᴏʀᴛ ʀᴇǫᴜᴇꜱᴛ."
+        send "&8[<##AA00FF>ᴛᴘᴀ&8] &e%{_acceptorSC}% &7ʜᴀꜱ ᴀᴄᴄᴇᴘᴛᴇᴅ ʏᴏᴜʀ ᴛᴇʟᴇᴘᴏʀᴛ ʀᴇǫᴜᴇꜱᴛ." to ({_requester} parsed as player)
+
+        if {_type} is "tpa":
+            tpaDoTeleport({_requester} parsed as player, player, {_requester}, player's name, "tpa")
+        else if {_type} is "tpahere":
+            tpaDoTeleport(player, {_requester} parsed as player, {_requester}, player's name, "tpahere")
+            
+command /tpadeny:
+    prefix: minecraft
+    trigger:
+        set {_requester} to text data tag "tpa:sender" of player
+        if {_requester} is not set:
+            send "&8[<##AA00FF>ᴛᴘᴀ&8] &7ɴᴏ ᴘᴇɴᴅɪɴɢ ʀᴇǫᴜᴇꜱᴛ."
+            stop
+
+        set {_requesterSC} to SmallCaps("%{_requester}%")
+
+        delete data tag "tpa:sender" of player
+        delete data tag "tpa:id" of player
+
+        send "&8[<##AA00FF>ᴛᴘᴀ&8] &cʏᴏᴜ ᴅᴇɴɪᴇᴅ ᴛʜᴇ ᴛᴇʟᴇᴘᴏʀᴛ ʀᴇǫᴜᴇꜱᴛ ꜰʀᴏᴍ &e%{_requesterSC}%&7."
+
+        if {_requester} parsed as offline player is online:
+            set {_p} to SmallCaps("%player's name%")
+            send "&8[<##AA00FF>ᴛᴘᴀ&8] &e%{_p}%'ꜱ &cᴅᴇɴɪᴇᴅ &7ʏᴏᴜʀ ᴛᴇʟᴇᴘᴏʀᴛ ʀᴇǫᴜᴇꜱᴛ." to ({_requester} parsed as player)
+            
+on death of player:
+    set {_victim} to victim
+    set data tag "tpa:deathloc" of {_victim} to location of {_victim}
+
+
+command /back:
+    prefix: minecraft
+    trigger:
+        if data tag "tpa:deathloc" of player is not set:
+            send "&8[<##AA00FF>ᴛᴘᴀ&8] &7ʏᴏᴜ ʜᴀᴠᴇ ɴᴏ ᴅᴇᴀᴛʜ ʟᴏᴄᴀᴛɪᴏɴ ᴛᴏ ʀᴇᴛᴜʀɴ ᴛᴏ."
+            stop
+
+        set {_loc} to data tag "tpa:deathloc" of player
+        delete data tag "tpa:deathloc" of player
+
+        teleport player to {_loc}
+        send "&8[<##AA00FF>ᴛᴘᴀ&8] &7ᴛᴇʟᴇᴘᴏʀᴛᴇᴅ ᴛᴏ ʏᴏᴜʀ ʟᴀꜱᴛ ᴅᴇᴀᴛʜ ʟᴏᴄᴀᴛɪᴏɴ."

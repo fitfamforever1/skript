@@ -1,0 +1,131 @@
+function getRarityLine(rarity: text) :: text:
+    if {_rarity} is "legendary":
+        return "&7ʀᴀʀɪᴛʏ: &6&lʟᴇɢᴇɴᴅᴀʀʏ"
+    if {_rarity} is "epic":
+        return "&7ʀᴀʀɪᴛʏ: &5&lᴇᴘɪᴄ"
+    if {_rarity} is "rare":
+        return "&7ʀᴀʀɪᴛʏ: &9&lʀᴀʀᴇ"
+    if {_rarity} is "uncommon":
+        return "&7ʀᴀʀɪᴛʏ: &a&lᴜɴᴄᴏᴍᴍᴏɴ"
+    if {_rarity} is "common":
+        return "&7ʀᴀʀɪᴛʏ: &f&lᴄᴏᴍᴍᴏɴ"
+    return ""
+
+function isValidRarity(rarity: text) :: boolean:
+    if {_rarity} is "legendary":
+        return true
+    if {_rarity} is "epic":
+        return true
+    if {_rarity} is "rare":
+        return true
+    if {_rarity} is "uncommon":
+        return true
+    if {_rarity} is "common":
+        return true
+    return false
+
+function Rarity(item: item) :: item:
+    set {_nbtRarity} to string tag "Rarity" of custom nbt of {_item}
+
+    if {_nbtRarity} is set:
+        set {_rarity} to {_nbtRarity} in lowercase
+    else:
+        set {_mat} to "%type of {_item}%" in lowercase
+        replace all " " in {_mat} with "_"
+        if {rarity::global::%{_mat}%} is set:
+            set {_rarity} to {rarity::global::%{_mat}%}
+        else:
+            set {_rarity} to "common"
+
+    if isValidRarity({_rarity}) is false:
+        return {_item}
+
+    set {_line} to getRarityLine({_rarity})
+    if {_line} is "":
+        return {_item}
+
+    set {_currentLore::*} to lore of {_item}
+    set {_newLore::*} to {_currentLore::*}
+    add "" to {_newLore::*}
+    add {_line} to {_newLore::*}
+    set lore of {_item} to {_newLore::*}
+
+    set string tag "Rarity" of custom nbt of {_item} to {_rarity}
+    return {_item}
+
+on inventory slot change:
+    if event-item stack is air:
+        stop
+    if string tag "Rarity" of custom nbt of event-item stack is set:
+        stop
+    set {_updated} to Rarity(event-item stack)
+    set event-slot to {_updated}
+    
+command /rarityset <text> <text>:
+    permission: admin
+    trigger:
+        set {_mat} to arg 1 in lowercase
+        replace all " " in {_mat} with "_"
+        set {_rar} to arg 2 in lowercase
+        if isValidRarity({_rar}) is false:
+            send "&cInvalid rarity. Choose: common, uncommon, rare, epic, legendary" to player
+            stop
+        set {rarity::global::%{_mat}%} to {_rar}
+        send "&aGlobal rarity for &e%{_mat}%&a set to &e%{_rar}%&a." to player
+
+command /rarityremove <text>:
+    permission: admin
+    trigger:
+        set {_mat} to arg 1 in lowercase
+        replace all " " in {_mat} with "_"
+        if {rarity::global::%{_mat}%} is not set:
+            send "&cNo global rarity found for &e%{_mat}%&c." to player
+            stop
+        delete {rarity::global::%{_mat}%}
+        send "&aRemoved global rarity for &e%{_mat}%&a." to player
+
+command /raritysetnbt <text>:
+    permission: admin
+    trigger:
+        if player's tool is air:
+            send "&cYou must hold an item." to player
+            stop
+        set {_rar} to arg 1 in lowercase
+        if isValidRarity({_rar}) is false:
+            send "&cInvalid rarity. Choose: common, uncommon, rare, epic, legendary" to player
+            stop
+        delete string tag "Rarity" of custom nbt of player's tool
+        set string tag "Rarity" of custom nbt of player's tool to {_rar}
+        set {_updated} to Rarity(player's tool)
+        set player's tool to {_updated}
+        send "&aSet per-item rarity to &e%{_rar}%&a on held item." to player
+
+command /rarityremovenbt:
+    permission: admin
+    trigger:
+        if player's tool is air:
+            send "&cYou must hold an item." to player
+            stop
+        if string tag "Rarity" of custom nbt of player's tool is not set:
+            send "&cThis item has no per-item rarity tag." to player
+            stop
+        delete string tag "Rarity" of custom nbt of player's tool
+        send "&aRemoved per-item rarity tag from held item." to player
+
+command /raritylist:
+    permission: admin
+    trigger:
+        send "&6--- Global Rarities ---" to player
+        set {_found} to false
+        loop {rarity::global::*}:
+            set {_mat} to loop-index
+            replace all "rarity::global::" in {_mat} with ""
+            send " &7%{_mat}%&8: &e%loop-value%" to player
+            set {_found} to true
+        if {_found} is false:
+            send " &8(none set)" to player
+
+
+on preparing craft:
+    if string tag "Rarity" of custom nbt of recipe result is not set:
+        set recipe result to Rarity(recipe result)

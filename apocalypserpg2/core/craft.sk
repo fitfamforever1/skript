@@ -1,0 +1,258 @@
+on script load:
+    delete {craft::*}
+    delete {recipe::*}
+    loop 18 times:
+        delete {loot::%loop-number%}
+    
+function count(p: player, type: text) :: number:
+    set {_count} to 0
+    loop items in inventory of {_p}:
+        if data tag "mat:id" of loop-item is {_type}:
+            add amount of loop-item to {_count}
+    return {_count}
+
+function remove(p: player, type: text, amount: integer) :: boolean:
+    set {_remaining} to {_amount}
+    loop items in inventory of {_p}:
+        if data tag "mat:id" of loop-item is {_type}:
+            if amount of loop-item >= {_remaining}:
+                remove {_remaining} of loop-item from inventory of {_p}
+                return true
+            else:
+                subtract amount of loop-item from {_remaining}
+                remove loop-item from inventory of {_p}
+    return false
+
+command /craft1:
+    trigger:
+        if count(player, "1") >= 1:
+            if count(player, "4") >= 3:
+                remove(player, "1", 1)
+                remove(player, "4", 3)
+                give player 4 of {loot::ammo1}
+                
+            else:
+                send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀᴇǫᴜɪʀᴇᴅ ɪᴛᴇᴍꜱ ᴛᴏ ᴄʀᴀꜰᴛ."
+        else:
+            send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀᴇǫᴜɪʀᴇᴅ ɪᴛᴇᴍꜱ ᴛᴏ ᴄʀᴀꜰᴛ."
+
+command /craft2:
+    trigger:
+        if count(player, "1") >= 2:
+            if count(player, "4") >= 5:
+                remove(player, "1", 2)
+                remove(player, "4", 5)
+                give player 5 of {loot::ammo2}
+                
+            else:
+                send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀᴇǫᴜɪʀᴇᴅ ɪᴛᴇᴍꜱ ᴛᴏ ᴄʀᴀꜰᴛ."
+        else:
+            send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀᴇǫᴜɪʀᴇᴅ ɪᴛᴇᴍꜱ ᴛᴏ ᴄʀᴀꜰᴛ."
+
+command /craft3:
+    trigger:
+        if count(player, "1") >= 2:
+            if count(player, "4") >= 4:
+                remove(player, "1", 2)
+                remove(player, "4", 4)
+                give player 2 of {loot::ammo3}
+                
+            else:
+                send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀᴇǫᴜɪʀᴇᴅ ɪᴛᴇᴍꜱ ᴛᴏ ᴄʀᴀꜰᴛ."
+        else:
+            send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀᴇǫᴜɪʀᴇᴅ ɪᴛᴇᴍꜱ ᴛᴏ ᴄʀᴀꜰᴛ."
+
+command /craft4:
+    trigger:
+        if count(player, "1") >= 6:
+            if count(player, "4") >= 8:
+                remove(player, "1", 6)
+                remove(player, "4", 8)
+                give player 1 of {loot::ammo4}
+                
+            else:
+                send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀᴇǫᴜɪʀᴇᴅ ɪᴛᴇᴍꜱ ᴛᴏ ᴄʀᴀꜰᴛ."
+        else:
+            send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀᴇǫᴜɪʀᴇᴅ ɪᴛᴇᴍꜱ ᴛᴏ ᴄʀᴀꜰᴛ."
+
+command /craft5:
+    trigger:
+        if count(player, "4") >= 4:
+            remove(player, "4", 4)
+            give player 1 of {loot::melee3}
+            
+        else:
+            send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀᴇǫᴜɪʀᴇᴅ ɪᴛᴇᴍꜱ ᴛᴏ ᴄʀᴀꜰᴛ."
+
+command /craft6:
+    trigger:
+        if count(player, "4") >= 8:
+            remove(player, "4", 8)
+            give player 1 of {loot::melee7}
+            
+        else:
+            send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀᴇǫᴜɪʀᴇᴅ ɪᴛᴇᴍꜱ ᴛᴏ ᴄʀᴀꜰᴛ."
+
+command /craft7:
+    trigger:
+        if count(player, "4") >= 8:
+            remove(player, "4", 8)
+            give player 1 of {loot::mat5}
+            
+        else:
+            send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀᴇǫᴜɪʀᴇᴅ ɪᴛᴇᴍꜱ ᴛᴏ ᴄʀᴀꜰᴛ."
+
+command /craft8:
+    trigger:
+        if count(player, "5") >= 3:
+            remove(player, "5", 3)
+            give player 1 of {loot::gun2}
+            
+        else:
+            send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀᴇǫᴜɪʀᴇᴅ ɪᴛᴇᴍꜱ ᴛᴏ ᴄʀᴀꜰᴛ."
+
+command /craft9:
+    trigger:
+        if count(player, "5") >= 5:
+            remove(player, "5", 5)
+            give player 1 of {loot::gun4}
+            
+        else:
+            send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀᴇǫᴜɪʀᴇᴅ ɪᴛᴇᴍꜱ ᴛᴏ ᴄʀᴀꜰᴛ."
+
+command /craft10:
+    trigger:
+        if count(player, "5") >= 6:
+            remove(player, "5", 6)
+            give player 1 of {loot::gun7}
+            
+        else:
+            send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀᴇǫᴜɪʀᴇᴅ ɪᴛᴇᴍꜱ ᴛᴏ ᴄʀᴀꜰᴛ."
+
+command /craft11:
+    trigger:
+        if count(player, "5") >= 8:
+            remove(player, "5", 8)
+            give player 1 of {loot::gun13}
+            
+        else:
+            send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀᴇǫᴜɪʀᴇᴅ ɪᴛᴇᴍꜱ ᴛᴏ ᴄʀᴀꜰᴛ."
+
+command /craft12:
+    trigger:
+        if count(player, "2") >= 1:
+            if count(player, "1") >= 1:
+                remove(player, "2", 1)
+                remove(player, "1", 1)
+                give player 1 of {loot::med1}
+                
+            else:
+                send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀᴇǫᴜɪʀᴇᴅ ɪᴛᴇᴍꜱ ᴛᴏ ᴄʀᴀꜰᴛ."
+        else:
+            send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀᴇǫᴜɪʀᴇᴅ ɪᴛᴇᴍꜱ ᴛᴏ ᴄʀᴀꜰᴛ."
+
+command /craft13:
+    trigger:
+        if count(player, "2") >= 6:
+            remove(player, "2", 6)
+            give player 1 of {loot::med3}
+            
+        else:
+            send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀᴇǫᴜɪʀᴇᴅ ɪᴛᴇᴍꜱ ᴛᴏ ᴄʀᴀꜰᴛ."
+
+command /craft14:
+    trigger:
+        if count(player, "2") >= 8:
+            if count(player, "1") >= 3:
+                remove(player, "2", 8)
+                remove(player, "1", 3)
+                give player 1 of {loot::med5}
+                
+            else:
+                send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀᴇǫᴜɪʀᴇᴅ ɪᴛᴇᴍꜱ ᴛᴏ ᴄʀᴀꜰᴛ."
+        else:
+            send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀᴇǫᴜɪʀᴇᴅ ɪᴛᴇᴍꜱ ᴛᴏ ᴄʀᴀꜰᴛ."
+
+command /craft15:
+    trigger:
+        if count(player, "2") >= 4:
+            if count(player, "5") >= 1:
+                remove(player, "2", 4)
+                remove(player, "5", 1)
+                give player 1 of {loot::armor5}
+                
+            else:
+                send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀᴇǫᴜɪʀᴇᴅ ɪᴛᴇᴍꜱ ᴛᴏ ᴄʀᴀꜰᴛ."
+        else:
+            send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀᴇǫᴜɪʀᴇᴅ ɪᴛᴇᴍꜱ ᴛᴏ ᴄʀᴀꜰᴛ."
+
+command /craft16:
+    trigger:
+        if count(player, "2") >= 6:
+            if count(player, "5") >= 2:
+                remove(player, "2", 6)
+                remove(player, "5", 2)
+                give player 1 of {loot::armor6}
+                
+            else:
+                send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀᴇǫᴜɪʀᴇᴅ ɪᴛᴇᴍꜱ ᴛᴏ ᴄʀᴀꜰᴛ."
+        else:
+            send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀᴇǫᴜɪʀᴇᴅ ɪᴛᴇᴍꜱ ᴛᴏ ᴄʀᴀꜰᴛ."
+
+command /craft17:
+    trigger:
+        if count(player, "2") >= 5:
+            if count(player, "5") >= 2:
+                remove(player, "2", 5)
+                remove(player, "5", 2)
+                give player 1 of {loot::armor7}
+                
+            else:
+                send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀᴇǫᴜɪʀᴇᴅ ɪᴛᴇᴍꜱ ᴛᴏ ᴄʀᴀꜰᴛ."
+        else:
+            send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀᴇǫᴜɪʀᴇᴅ ɪᴛᴇᴍꜱ ᴛᴏ ᴄʀᴀꜰᴛ."
+
+command /craft18:
+    trigger:
+        if count(player, "2") >= 4:
+            remove(player, "2", 4)
+            give player 1 of {loot::armor8}
+            
+        else:
+            send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀᴇǫᴜɪʀᴇᴅ ɪᴛᴇᴍꜱ ᴛᴏ ᴄʀᴀꜰᴛ."
+            
+command /craft19:
+    trigger:
+        if count(player, "4") >= 3:
+            remove(player, "4", 3)
+            give player 1 of {loot::tool1}
+            
+        else:
+            send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀᴇǫᴜɪʀᴇᴅ ɪᴛᴇᴍꜱ ᴛᴏ ᴄʀᴀꜰᴛ."
+            
+command /craft20:
+    trigger:
+        if count(player, "4") >= 3:
+            remove(player, "4", 3)
+            give player 1 of {loot::tool2}
+            
+        else:
+            send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀᴇǫᴜɪʀᴇᴅ ɪᴛᴇᴍꜱ ᴛᴏ ᴄʀᴀꜰᴛ."
+            
+command /craft21:
+    trigger:
+        if count(player, "5") >= 3:
+            remove(player, "5", 3)
+            give player 1 of {loot::tool3}
+            
+        else:
+            send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀᴇǫᴜɪʀᴇᴅ ɪᴛᴇᴍꜱ ᴛᴏ ᴄʀᴀꜰᴛ."
+            
+command /craft22:
+    trigger:
+        if count(player, "5") >= 3:
+            remove(player, "5", 3)
+            give player 1 of {loot::tool4}
+            
+        else:
+            send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀᴇǫᴜɪʀᴇᴅ ɪᴛᴇᴍꜱ ᴛᴏ ᴄʀᴀꜰᴛ."

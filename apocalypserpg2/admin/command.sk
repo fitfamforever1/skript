@@ -1,0 +1,68 @@
+command /admin:
+    permission: admin
+    trigger:
+        teleport player to location(-869.5,54,-2236.5,"world",90,0)
+        
+command /gmc:
+    permission: admin
+    trigger:
+        set player's gamemode to creative
+        
+command /gmsp:
+    permission: admin
+    trigger:
+        set player's gamemode to spectator
+        
+command /gms:
+    permission: admin
+    trigger:
+        set player's gamemode to survival
+        
+command /gma:
+    permission: admin
+    trigger:
+        set player's gamemode to adventure
+        
+command /bcast <text>:
+    permission: admin
+    trigger:
+        set {_ann} to SmallCaps(arg-1)
+        broadcast "&8[&cᴀɴɴᴏᴜɴᴄᴇᴍᴇɴᴛ&8] &f%{_ann}%"
+        send title "&c&lᴀɴɴᴏᴜɴᴄᴇᴍᴇɴᴛ" with subtitle "&f%{_ann}%" to all players for 3 seconds with fade in 5 ticks and fade out 5 ticks
+        loop all players:
+            play sound "sound:sound.ui.error" with volume 1 and pitch 1 to loop-player
+
+command /clearchat:
+    permission: warn.chat
+    permission message: &8[&4ꜱʏꜱᴛᴇᴍ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪꜱꜱɪᴏɴ ᴛᴏ ᴜꜱᴇ ᴛʜɪꜱ ᴄᴏᴍᴍᴀɴᴅ.
+    trigger:
+        loop all players:
+            loop 150 times:
+                send "&r" to loop-player-1
+        broadcast "&8[&4ꜱʏꜱᴛᴇᴍ&8] &fᴄʜᴀᴛ ᴡᴀꜱ ᴄʟᴇᴀʀᴇᴅ ʙʏ &e%player%&f."
+
+variables:
+    {chat.locked} = false
+
+command /lockchat:
+    permission: warn.chat
+    permission message: &8[&4ꜱʏꜱᴛᴇᴍ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪꜱꜱɪᴏɴ ᴛᴏ ᴜꜱᴇ ᴛʜɪꜱ ᴄᴏᴍᴍᴀɴᴅ.
+    trigger:
+        if {chat.locked} is true:
+            set {chat.locked} to false
+            broadcast "&8[&4ꜱʏꜱᴛᴇᴍ&8] &fᴄʜᴀᴛ ʜᴀꜱ ʙᴇᴇɴ &aᴜɴʟᴏᴄᴋᴇᴅ&f ʙʏ &e%player%&f."
+        else:
+            set {chat.locked} to true
+            broadcast "&8[&4ꜱʏꜱᴛᴇᴍ&8] &fᴄʜᴀᴛ ʜᴀꜱ ʙᴇᴇɴ &cʟᴏᴄᴋᴇᴅ&f ʙʏ &e%player%&f."
+
+on chat:
+    if {chat.locked} is true:
+        if player doesn't have permission "warn.chat":
+            cancel event
+            send "&8[&4ꜱʏꜱᴛᴇᴍ&8] &cᴄʜᴀᴛ ɪꜱ ᴄᴜʀʀᴇɴᴛʟʏ ʟᴏᴄᴋᴇᴅ. ᴘʟᴇᴀꜱᴇ ᴡᴀɪᴛ." to player
+            play sound "sound:sound.ui.disable" with volume 1 and pitch 1 to player
+            
+command /flyspeed [<number>]:
+    permission: admin
+    trigger:
+        set the player's fly speed to arg-1 * 0.1

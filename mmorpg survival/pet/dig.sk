@@ -1,0 +1,183 @@
+every 5 minutes:
+    loop {sifted::*}:
+        if {sifted::%loop-index%} is true:
+            delete {sifted::%loop-index%}
+
+on right click with stone shovel:
+    if name of player's held item is "&fDigger Shovel":
+        cancel event
+        set {_loc} to "%world of clicked block%_%x of location of clicked block%_%y of location of clicked block%_%z of location of clicked block%"
+        if clicked block is sand, gravel, soul sand, coarse dirt or clay:
+            if {sifted::%{_loc}%} is set:
+                send action bar "&8[<##963c15>DIGGING&8] &7This spot has already been sifted! Come back later." to player
+                stop
+            set {sifted::%{_loc}%} to true
+            if clicked block is sand:
+                send action bar "&8[<##963c15>DIGGING&8] &eSifting sand..." to player
+                play sound "block.sand.break" at player
+                
+                set {_roll} to a random integer between 1 and 100
+                execute console command "level addxp 10 %player% true"
+                if {_roll} <= 30:
+                    give player 1 of iron nugget
+                    send action bar "&8[<##963c15>DIGGING&8] &7You sifted out an &eiron nugget&7!" to player
+                else if {_roll} <= 50:
+                    give player 1 of gold nugget
+                    send action bar "&8[<##963c15>DIGGING&8] &7You sifted out a &egold nugget&7!" to player
+                else if {_roll} <= 65:
+                    give player 1 of flint
+                    send action bar "&8[<##963c15>DIGGING&8] &7You sifted out some &eflint&7!" to player
+                else if {_roll} <= 75:
+                    give player 1 of cactus
+                    send action bar "&8[<##963c15>DIGGING&8] &7You sifted out a &ecactus&7!" to player
+                else if {_roll} <= 82:
+                    give player 1 of dead bush
+                    send action bar "&8[<##963c15>DIGGING&8] &7You sifted out a &edead bush&7!" to player
+                else if {_roll} <= 88:
+                    give player 1 of prismarine shard
+                    send action bar "&8[<##963c15>DIGGING&8] &7You sifted out &eprismarine shard&7!" to player
+                else if {_roll} <= 93:
+                    give player 1 of emerald
+                    send action bar "&8[<##963c15>DIGGING&8] &7You sifted out an &eemerald&7!" to player
+                else if {_roll} <= 97:
+                    give player 1 of diamond
+                    send action bar "&8[<##963c15>DIGGING&8] &7You sifted out a &ediamond&7!" to player
+                else if {_roll} <= 99:
+                    execute console command "/si give fossil 1 %player% true"
+                    execute console command "level addxp 500 %player% true"
+                    send "&8[<##963c15>DIGGING&8] &7You sifted out a &eFossil&7!" to player
+                else:
+                    send action bar "&8[<##963c15>DIGGING&8] &7Just sand... nothing useful this time." to player
+            else if clicked block is gravel:
+                send action bar "&8[<##963c15>DIGGING&8] &eSifting gravel..." to player
+                play sound "block.gravel.break" at player
+                
+                set {_roll} to a random integer between 1 and 100
+                execute console command "level addxp 10 %player% true"
+                if {_roll} <= 35:
+                    give player 1 of flint
+                    send action bar "&8[<##963c15>DIGGING&8] &7You sifted out some &eflint&7!" to player
+                else if {_roll} <= 55:
+                    give player 1 of iron nugget
+                    send action bar "&8[<##963c15>DIGGING&8] &7You sifted out an &eiron nugget&7!" to player
+                else if {_roll} <= 68:
+                    give player 1 of coal
+                    send action bar "&8[<##963c15>DIGGING&8] &7You sifted out some &ecoal&7!" to player
+                else if {_roll} <= 78:
+                    give player 1 of lapis lazuli
+                    send action bar "&8[<##963c15>DIGGING&8] &7You sifted out some &elapis lazuli&7!" to player
+                else if {_roll} <= 86:
+                    give player 1 of copper ingot
+                    send action bar "&8[<##963c15>DIGGING&8] &7You sifted out a &ecopper ingot&7!" to player
+                else if {_roll} <= 92:
+                    give player 1 of iron ingot
+                    send action bar "&8[<##963c15>DIGGING&8] &7You sifted out an &eiron ingot&7!" to player
+                else if {_roll} <= 97:
+                    give player 1 of gold ingot
+                    send action bar "&8[<##963c15>DIGGING&8] &7You sifted out a &egold ingot&7!" to player
+                else if {_roll} <= 99:
+                    execute console command "/si give fossil 1 %player% true"
+                    execute console command "level addxp 500 %player% true"
+                    send "&8[<##963c15>DIGGING&8] &7You sifted out a &eFossil&7!" to player
+                else:
+                    send action bar "&8[<##963c15>DIGGING&8] &7Just gravel... nothing useful this time." to player
+            else if clicked block is soul sand:
+                send action bar "&8[<##963c15>DIGGING&8] &5Sifting soul sand..." to player
+                play sound "block.soul_sand.break" at player
+                
+                set {_roll} to a random integer between 1 and 100
+                execute console command "level addxp 10 %player% true"
+                if {_roll} <= 30:
+                    give player 1 of bone
+                    send action bar "&8[<##963c15>DIGGING&8] &7You sifted out a &ebone&7!" to player
+                else if {_roll} <= 50:
+                    give player 1 of quartz
+                    send action bar "&8[<##963c15>DIGGING&8] &7You sifted out some &equartz&7!" to player
+                else if {_roll} <= 65:
+                    give player 1 of gold nugget
+                    send action bar "&8[<##963c15>DIGGING&8] &7You sifted out a &egold nugget&7!" to player
+                else if {_roll} <= 76:
+                    give player 1 of magma cream
+                    send action bar "&8[<##963c15>DIGGING&8] &7You sifted out some &emagma cream&7!" to player
+                else if {_roll} <= 85:
+                    give player 1 of blaze powder
+                    send action bar "&8[<##963c15>DIGGING&8] &7You sifted out some &eblaze powder&7!" to player
+                else if {_roll} <= 91:
+                    give player 1 of gold ingot
+                    send action bar "&8[<##963c15>DIGGING&8] &7You sifted out a &egold ingot&7!" to player
+                else if {_roll} <= 96:
+                    give player 1 of ancient debris
+                    send action bar "&8[<##963c15>DIGGING&8] &6&lYou sifted out &eancient debris!" to player
+                else if {_roll} <= 99:
+                    execute console command "/si give fossil 1 %player% true"
+                    execute console command "level addxp 500 %player% true"
+                    send "&8[<##963c15>DIGGING&8] &7You sifted out a &eFossil&7!" to player
+                else:
+                    send action bar "&8[<##963c15>DIGGING&8] &7Just soul sand... nothing useful this time." to player
+            else if clicked block is coarse dirt:
+                send action bar "&8[<##963c15>DIGGING&8] &eSifting coarse dirt..." to player
+                play sound "block.gravel.break" at player
+                
+                set {_roll} to a random integer between 1 and 100
+                execute console command "level addxp 10 %player% true"
+                if {_roll} <= 30:
+                    give player 1 of bone meal
+                    send action bar "&8[<##963c15>DIGGING&8] &7You sifted out some &ebone meal&7!" to player
+                else if {_roll} <= 50:
+                    give player 1 of wheat seeds
+                    send action bar "&8[<##963c15>DIGGING&8] &7You sifted out some &ewheat seeds&7!" to player
+                else if {_roll} <= 63:
+                    give player 1 of beetroot seeds
+                    send action bar "&8[<##963c15>DIGGING&8] &7You sifted out some &ebeetroot seeds&7!" to player
+                else if {_roll} <= 73:
+                    give player 1 of pumpkin seeds
+                    send action bar "&8[<##963c15>DIGGING&8] &7You sifted out some &epumpkin seeds&7!" to player
+                else if {_roll} <= 82:
+                    give player 1 of melon seeds
+                    send action bar "&8[<##963c15>DIGGING&8] &7You sifted out some &emelon seeds&7!" to player
+                else if {_roll} <= 89:
+                    give player 1 of oak sapling
+                    send action bar "&8[<##963c15>DIGGING&8] &7You sifted out an &eoak sapling&7!" to player
+                else if {_roll} <= 95:
+                    give player 1 of emerald
+                    send action bar "&8[<##963c15>DIGGING&8] &7You sifted out an &eemerald&7!" to player
+                else if {_roll} <= 99:
+                    execute console command "/si give fossil 1 %player% true"
+                    execute console command "level addxp 500 %player% true"
+                    send "&8[<##963c15>DIGGING&8] &7You sifted out a &eFossil&7!" to player
+                else:
+                    send action bar "&8[<##963c15>DIGGING&8] &7Just dirt... nothing useful this time." to player
+            else if clicked block is clay:
+                send action bar "&8[<##963c15>DIGGING&8] &eSifting clay..." to player
+                play sound "block.gravel.break" at player
+                
+                set {_roll} to a random integer between 1 and 100
+                execute console command "level addxp 10 %player% true"
+                if {_roll} <= 30:
+                    give player 1 of clay ball
+                    send action bar "&8[<##963c15>DIGGING&8] &7You sifted out a &eclay ball&7!" to player
+                else if {_roll} <= 50:
+                    give player 1 of brick
+                    send action bar "&8[<##963c15>DIGGING&8] &7You sifted out a &ebrick&7!" to player
+                else if {_roll} <= 63:
+                    give player 1 of iron nugget
+                    send action bar "&8[<##963c15>DIGGING&8] &7You sifted out an &eiron nugget&7!" to player
+                else if {_roll} <= 73:
+                    give player 1 of copper ingot
+                    send action bar "&8[<##963c15>DIGGING&8] &7You sifted out a &ecopper ingot&7!" to player
+                else if {_roll} <= 82:
+                    give player 1 of lapis lazuli
+                    send action bar "&8[<##963c15>DIGGING&8] &7You sifted out some &elapis lazuli&7!" to player
+                else if {_roll} <= 89:
+                    give player 1 of nautilus shell
+                    send action bar "&8[<##963c15>DIGGING&8] &7You sifted out a &bnautilus shell&7!" to player
+                else if {_roll} <= 95:
+                    give player 1 of heart of the sea
+                    send action bar "&8[<##963c15>DIGGING&8] &a✔ &7You sifted out a &eheart of the sea&7!" to player
+                else if {_roll} <= 99:
+                    execute console command "/si give fossil 1 %player% true"
+                    execute console command "level addxp 500 %player% true"
+                    send "&8[<##963c15>DIGGING&8] &7You sifted out a &eFossil&7!" to player
+                else:
+                    send action bar "&8[<##963c15>DIGGING&8] &7Just clay... nothing useful this time." to player
+            damage player's tool by 1

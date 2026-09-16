@@ -1,0 +1,55 @@
+function CompressInventory(p: player):
+    loop items in inventory of {_p}:
+        set {_name} to data tag "mat:id" of loop-item
+        if {_name} is "1":
+            set {_id} to "comp1"
+        else if {_name} is "2":
+            set {_id} to "comp2"
+        else if {_name} is "3":
+            set {_id} to "comp3"
+        else if {_name} is "4":
+            set {_id} to "comp4"
+        else if {_name} is "5":
+            set {_id} to "comp5"
+        else if {_name} is "6":
+            set {_id} to "comp6"
+        else if {_name} is "7":
+            set {_id} to "comp7"
+        else if {_name} is "8":
+            set {_id} to "comp8"
+        else if {_name} is "9":
+            set {_id} to "comp9"
+        else:
+            continue
+        set {_amount} to amount of loop-item
+        if {_amount} < 64:
+            continue
+        set {_stacks} to floor({_amount} / 64)
+        set {_remainder} to {_amount} - ({_stacks} * 64)
+        remove (amount of loop-item) of loop-item from inventory of {_p}
+        loop {_stacks} times:
+            give {loot::%{_id}%} to {_p}
+        if {_remainder} > 0:
+            give {_remainder} of (type of loop-item) to {_p}
+
+
+every 1 second:
+    loop all players:
+        if {compress::enabled::%loop-player%} is not true:
+            continue
+        CompressInventory(loop-player)
+        
+command /compression:
+    trigger:
+        if {compress::enabled::%player%} is true:
+            set {compress::enabled::%player%} to false
+            send "&cᴀᴜᴛᴏ ᴄᴏᴍᴘʀᴇꜱꜱɪᴏɴ ᴅɪꜱᴀʙʟᴇᴅ!" to player
+            play sound "sound:sound.ui.disable" with volume 1 for player
+        else:
+            set {compress::enabled::%player%} to true
+            send "&aᴀᴜᴛᴏ ᴄᴏᴍᴘʀᴇꜱꜱɪᴏɴ ᴇɴᴀʙʟᴇᴅ!" to player
+            play sound "sound:sound.ui.enable" with volume 1 for player
+
+on join:
+    if {compress::enabled::%player%} is not set:
+        set {compress::enabled::%player%} to true

@@ -1,0 +1,120 @@
+function wipePlayer(p: player):
+    loop integers from 1 to 23:
+        set {_n} to loop-value
+        set {petid::%{_p}%::pet%{_n}%} to "unactive"
+        delete {pet::%uuid of {_p}%::pet%{_n}%}
+
+    delete {petability::%{_p}%::invis}
+    delete {petability::%{_p}%::bloodfrenzy.active}
+    delete {petability::%{_p}%::bloodfrenzy.stacks}
+    delete {petability::%{_p}%::bloodfrenzy.lastTarget}
+    delete {petability::%{_p}%::bloodfrenzy.hitCount}
+    delete {petability::%{_p}%::pet11.ready}
+    delete {petability::%{_p}%::pet11.cooldown}
+    delete {petability::pet16_marked::%{_p}%}
+    delete {petability::bleed::%{_p}%}
+    delete {petability::pet23.aliveTimer::%uuid of {_p}%}
+    delete {petability::pet23.stackLevel::%uuid of {_p}%}
+    delete {petability::pet23.roarCooldown::%uuid of {_p}%}
+
+    remove speed from {_p}
+    remove strength from {_p}
+    remove jump boost from {_p}
+    set {_p}'s follow range attribute to 32
+
+    set {_uuid} to "%uuid of {_p}%"
+    set {_p}'s balance to 1100
+    delete {bank.balance::%{_uuid}%}
+    delete {bank.upgradelevel::%{_uuid}%}
+
+    clear {_p}'s inventory
+    clear {_p}'s armor
+    clear {_p}'s ender chest
+
+    execute console command "level set 0 %{_p}% true"
+    execute console command "collection reset %{_p}% all all true"
+    execute console command "attribute %{_p}% minecraft:max_health base set 20"
+    execute console command "teama leave %{_p}%"
+    execute console command "quest reset %{_p}% global all true"
+    execute console command "quest reset %{_p}% daily all true"
+    execute console command "quest reset %{_p}% weekly all true"
+    execute console command "bounties remove %{_p}%"
+    execute console command "delhome %{_p}%:*"
+    execute console command "lp user %{_p}% permission clear"
+    execute console command "lp user %{_p}% parent set default"
+    
+    teleport {_p} to location(28.5, 150, -29.5, world "spawn")
+
+    delete {wipe::pending::%{_p}%}
+
+
+    wait 1 seconds
+
+    kick {_p} due to "&4ʏᴏᴜ ʜᴀᴠᴇ ʙᴇᴇɴ ᴡɪᴘᴇᴅ%nl%%nl%&7ʀᴇᴀꜱᴏɴ&f: &eᴡɪᴘᴇᴅ ʙʏ ᴀᴅᴍɪɴ%nl%%nl%&7ʀᴇᴠɪᴇᴡ ᴛʜᴇ ʀᴜʟᴇꜱ:&8 /ʀᴜʟᴇꜱ"
+
+
+command /wipe [<player>]:
+    permission: admin
+    permission message: "&7You don't have permission to use this command."
+    trigger:
+        if arg 1 is not set:
+            send "&8[&cWIPE&8] &7Usage: &f/wipe <player>"
+            stop
+
+        set {_target} to arg 1
+        if {_target} is not set:
+            send "&8[&cWIPE&8] &7Player &f%arg 1%&7 was not found."
+            stop
+
+        set {wipe::pending::%player%} to {_target}
+
+        send ""
+        send "&8▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬"
+        send " &c&l⚠ WIPE CONFIRMATION"
+        send ""
+        send " &7You are about to permanently wipe all data for:"
+        send "  &e%{_target}%"
+        send ""
+        send " &7This will permanently delete:"
+        send " &8• &7All inventory & items"
+        send " &8• &7Team membership"
+        send " &8• &7All pets & ability data"
+        send " &8• &7Economy & bank data"
+        send " &8• &7XP, quests & collections"
+        send ""
+        send " &a✔ /yes&7 to confirm  &c✘ /no&7 to cancel"
+        send "&8▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬"
+        send ""
+
+
+command /yes:
+    permission: admin
+    permission message: "&7You don't have permission to use this command."
+    trigger:
+        if {wipe::pending::%player%} is not set:
+            send "&8[&cWIPE&8] &7You have no pending wipe confirmation."
+            stop
+
+        set {_target} to {wipe::pending::%player%}
+        wipePlayer({_target})
+
+        send ""
+        send "&8[&cWIPE&8] &a✔ &7Successfully wiped all data for &e%{_target}%&7."
+        send ""
+
+        if {_target} is online:
+            send "&8[&cWIPE&8] &7Your account data has been wiped by an administrator." to {_target}
+
+
+command /no:
+    permission: admin
+    permission message: "&7You don't have permission to use this command."
+    trigger:
+        if {wipe::pending::%player%} is not set:
+            send "&8[&cWIPE&8] &7You have no pending wipe confirmation."
+            stop
+
+        set {_target} to {wipe::pending::%player%}
+        delete {wipe::pending::%player%}
+
+        send "&8[&cWIPE&8] &7Wipe for &e%{_target}% &7has been &ccancelled&7."

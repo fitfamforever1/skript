@@ -1,0 +1,48 @@
+on break of obsidian:
+    if player is not set:
+        stop
+    set {_item} to player's tool
+    if {_item} is air:
+        cancel event
+        send action bar "&8[&4SYSTEM&8] &cYou need a drill to mine this block." to player
+        stop
+    if data tag "drill:passive" of {_item} is not set:
+        cancel event
+        send action bar "&8[&4SYSTEM&8] &cThis block requires a drill." to player
+        stop
+    set {_tier} to text data tag "drill:passive" of {_item}
+    set {_tier} to {_tier} parsed as number
+    if {_tier} is not set:
+        cancel event
+        send action bar "&8[&4SYSTEM&8] &cInvalid drill tier." to player
+        stop
+    if {_tier} >= 1:
+        stop
+    cancel event
+    send action bar "&8[&4SYSTEM&8] &cDrill T-133 required to mine this block." to player
+
+on break of reinforced_deepslate:
+    if player is not set:
+        stop
+    set {_item} to player's tool
+    if {_item} is air:
+        cancel event
+        send action bar "&8[&4SYSTEM&8] &cYou need a drill to mine this block." to player
+        stop
+    if data tag "drill:passive" of {_item} is not set:
+        cancel event
+        send action bar "&8[&4SYSTEM&8] &cThis block requires a drill." to player
+        stop
+    set {_tier} to text data tag "drill:passive" of {_item}
+    set {_tier} to {_tier} parsed as number
+    if {_tier} is not set:
+        cancel event
+        send action bar "&8[&4SYSTEM&8] &cInvalid drill tier." to player
+        stop
+    if {_tier} >= 2:
+        stop
+    cancel event
+    if {_tier} is 1:
+        send action bar "&8[&4SYSTEM&8] &cDrill T-244 required to mine Reinforced Steel." to player
+    else:
+        send action bar "&8[&4SYSTEM&8] &cThis block requires a more powerful drill." to player

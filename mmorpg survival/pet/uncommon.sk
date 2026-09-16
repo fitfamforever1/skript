@@ -1,0 +1,169 @@
+# Crab | pet9
+on damage of player:
+    if {petid::%victim%::pet9} is "active":
+        set {_maxhp} to max health of victim
+        set {_hp}    to health of victim
+        if {_hp} <= ({_maxhp} * 0.5):
+            send action bar "Shell Guard" to victim
+            apply resistance 4 to victim for 3 seconds:
+                hide particles
+                hide icon
+
+on damage by player:
+    if {petid::%attacker%::pet9} is "active":
+        if chance of 5%:
+            send action bar "&c7Stunned!" to victim
+            apply slowness 4 to victim for 2 seconds:
+                hide particles
+                hide icon
+            apply mining fatigue 4 to victim for 2 seconds:
+                hide particles
+                hide icon
+
+# Dire Wolf | pet10
+options:
+    FRENZY_CAP: 8
+    FRENZY_BONUS: 0.04
+    FRENZY_DECAY: 80
+
+on damage:
+    attacker is a player
+    victim is a living entity
+    if {petability::%attacker%::bloodfrenzy.active} is true:
+        apply strength 2 to attacker for 5 seconds
+
+on damage:
+    attacker is a player
+    victim is a living entity
+    {petability::%attacker%::bloodfrenzy.active} is true
+
+    set {_p} to attacker
+    set {_targetUUID} to "%uuid of victim%"
+
+    if {petability::%{_p}%::bloodfrenzy.lastTarget} is {_targetUUID}:
+        if {petability::%{_p}%::bloodfrenzy.stacks} < {@FRENZY_CAP}:
+            add 1 to {petability::%{_p}%::bloodfrenzy.stacks}
+    else:
+        set {petability::%{_p}%::bloodfrenzy.stacks} to 1
+        set {petability::%{_p}%::bloodfrenzy.lastTarget} to {_targetUUID}
+
+    add 1 to {petability::%{_p}%::bloodfrenzy.hitCount}
+    set {_snap} to {petability::%{_p}%::bloodfrenzy.hitCount}
+
+    wait {@FRENZY_DECAY} ticks
+    if {petability::%{_p}%::bloodfrenzy.hitCount} is {_snap}:
+        set {petability::%{_p}%::bloodfrenzy.stacks} to 0
+        set {petability::%{_p}%::bloodfrenzy.lastTarget} to ""
+        send action bar "&7Blood Frenzy faded." to {_p}
+
+on damage:
+    attacker is a player
+    victim is a living entity
+    {petability::%attacker%::bloodfrenzy.active} is true
+    {petability::%attacker%::bloodfrenzy.stacks} > 0
+
+    set {_stacks} to {petability::%attacker%::bloodfrenzy.stacks}
+    set {_frenzyBonus} to damage * ({_stacks} * {@FRENZY_BONUS})
+    increase damage by {_frenzyBonus}
+
+    set {_bar} to ""
+    loop {_stacks} times:
+        set {_bar} to "%{_bar}%&c▮"
+    set {_remaining} to {@FRENZY_CAP} - {_stacks}
+    loop {_remaining} times:
+        set {_bar} to "%{_bar}%&8▯"
+    set {_pct} to {_stacks} * 4
+    send action bar "&4🩸 &eFrenzy &7[%{_bar}%&7] &c+%{_pct}%%%" to attacker
+
+# Boar | pet11
+on sprint toggle:
+    if {petid::%player%::pet11} is "active":
+        if {petability::%player%::pet11.cooldown} is set:
+            stop
+
+        if player is not sprinting:
+            set {petability::%player%::pet11.ready} to true
+            play sound "entity.experience_orb.pickup" with volume 0.5 to player
+            draw 4 witch particles with a distribution of vector(0.3, 0.5, 0.3) at player's location
+
+        else:
+            delete {petability::%player%::pet11.ready}
+
+on damage of entity:
+    attacker is a player
+    if {petid::%attacker%::pet11} is "active":
+        if {petability::%attacker%::pet11.ready} is true:
+            delete {petability::%attacker%::pet11.ready}
+            set {petability::%attacker%::pet11.cooldown} to true
+
+            set damage to damage * 5
+
+            play sound "entity.player.attack.crit" with volume 1 to attacker
+            play sound "block.note_block.pling" with volume 0.8 to attacker
+            draw 20 crit particles with a distribution of vector(0.4, 0.4, 0.4) at victim's location
+            draw 8 electric spark particles with a velocity of vector(0, 0.6, 0) at victim's location
+            send action bar "<gold>⚔ Sprint Crit! <white>5x Damage" to attacker
+
+            wait 30 seconds
+            delete {petability::%attacker%::pet11.cooldown}
+            send action bar "<green>⚔ Sprint Crit <white>Ready!" to attacker
+
+on entity potion effect of poison, wither or hunger added:
+    event-entity is a player
+    if {petid::%event-player%::pet11} is "active":
+        cancel event
+        send action bar "&7Pet cured <red>%event-potion effect type%" to event-player
+
+on quit:
+    delete {petability::%player%::pet11.ready}
+
+# SkyHawk | pet12
+on damage:
+    victim is a player
+    attacker is a player
+    
+    {petid::%attacker%::pet12} is "active"
+    
+    set {_maxHp} to max health of attacker
+    set {_currentHp} to health of attacker
+    set {_percent} to {_currentHp} / {_maxHp}
+    
+    {_percent} >= 0.85
+    
+    set damage to damage * 2
+
+on damage:
+    victim is a player
+    damage cause is fall
+    if {petid::%victim%::pet12} is "active":
+        cancel event
+
+# Spider | pet13
+on damage:
+    if {petid::%damager%::pet13} is "active":
+        chance of 20%:
+            set block at location of victim to cobweb
+            wait 3 seconds
+            if block at location of victim is cobweb:
+                set block at location of victim to air
+
+every 1 second:
+    loop all players:
+        if {petid::%loop-player%::pet13} is "active":
+            set {_maxhp} to max health of loop-player
+            set {_heal} to {_maxhp} * 0.05
+            heal loop-player by {_heal}
+
+# Bear | pet14
+on food level change:
+    set {_player} to event-player
+    if {petid::%{_player}%::pet14} is "active":
+        cancel event
+
+on damage of player:
+    set {_victim} to victim
+    if {petid::%{_victim}%::pet14} is "active":
+        set {_chance} to random integer between 1 and 100
+        if {_chance} <= 20:
+            cancel event
+            send action bar "&aDamage Blocked By Fur!" to {_victim}

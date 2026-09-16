@@ -1,0 +1,60 @@
+placeholderapi placeholder with the prefix "pet":
+    if the identifier is "current_pet_name":
+        loop integers from 1 to 23:
+            set {_n} to loop-value
+            if {petid::%player%::pet%{_n}%} is "active":
+                set the result to getPetName("pet%{_n}%")
+                stop
+        set the result to "No pet"
+
+    if the identifier is "current_pet_id":
+        loop integers from 1 to 23:
+            set {_n} to loop-value
+            if {petid::%player%::pet%{_n}%} is "active":
+                set the result to "pet%{_n}%"
+                stop
+        set the result to "none"
+
+    if the identifier is "total_owned":
+        set {_count} to 0
+        set {_uuid} to uuid of player
+        loop integers from 1 to 23:
+            set {_n} to loop-value
+            if {pet::%{_uuid}%::pet%{_n}%} is set:
+                add 1 to {_count}
+        set the result to "%{_count}%"
+
+    if the identifier is "has_active":
+        loop integers from 1 to 23:
+            set {_n} to loop-value
+            if {petid::%player%::pet%{_n}%} is "active":
+                set the result to "true"
+                stop
+        set the result to "false"
+
+    if the identifier is "owned_list":
+        set {_uuid} to uuid of player
+        set {_list} to ""
+        loop integers from 1 to 23:
+            set {_n} to loop-value
+            if {pet::%{_uuid}%::pet%{_n}%} is set:
+                if {_list} is "":
+                    set {_list} to "pet%{_n}%"
+                else:
+                    set {_list} to "%{_list}% pet%{_n}%"
+        if {_list} is "":
+            set the result to "None"
+        else:
+            set the result to {_list}
+
+    if the identifier is "max_slots":
+        set the result to "23"
+
+    if the identifier starts with "owns_":
+        set {_slot} to the identifier
+        replace "owns_" with "" in {_slot}
+        set {_uuid} to uuid of player
+        if {pet::%{_uuid}%::%{_slot}%} is set:
+            set the result to "true"
+        else:
+            set the result to "false"

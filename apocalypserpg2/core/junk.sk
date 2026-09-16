@@ -1,0 +1,53 @@
+function junkconvert(p: player):
+    set {_chemical} to 0
+    set {_fabric} to 0
+    set {_plastic} to 0
+    set {_metal} to 0
+    set {_total} to 0
+    loop integers from 0 to 35:
+        if loop-value is between 9 and 17:
+            continue
+        set {_item} to slot loop-value of {_p}'s inventory
+        if {_item} is air:
+            continue
+        if {_item} is not set:
+            continue
+        set {_tag} to data tag "junk:id" of {_item}
+        if {_tag} is not set:
+            continue
+        if {_tag} is "1":
+            set {_stack} to amount of {_item}
+            add {_stack} to {_chemical}
+            add {_stack} to {_total}
+            clear slot loop-value of {_p}'s inventory
+        if {_tag} is "2":
+            set {_stack} to amount of {_item}
+            add {_stack} to {_fabric}
+            add {_stack} to {_total}
+            clear slot loop-value of {_p}'s inventory
+        if {_tag} is "3":
+            set {_stack} to amount of {_item}
+            add {_stack} to {_plastic}
+            add {_stack} to {_total}
+            clear slot loop-value of {_p}'s inventory
+        if {_tag} is "4":
+            set {_stack} to amount of {_item}
+            add {_stack} to {_metal}
+            add {_stack} to {_total}
+            clear slot loop-value of {_p}'s inventory
+
+    if {_total} is 0:
+        send "&8[<##aa4f30>ʀᴇᴄʏᴄʟᴇʀ&8] &4ɴᴏ ꜱᴄʀᴀᴘ ꜰᴏᴜɴᴅ ɪɴ ʏᴏᴜʀ ɪɴᴠᴇɴᴛᴏʀʏ." to {_p}
+        stop
+
+    if {_chemical} > 0:
+        give {_chemical} of {loot::mat1} to {_p}
+    if {_fabric} > 0:
+        give {_fabric} of {loot::mat2} to {_p}
+    if {_plastic} > 0:
+        give {_plastic} of {loot::mat3} to {_p}
+    if {_metal} > 0:
+        give {_metal} of {loot::mat4} to {_p}
+
+    send "&8[<##aa4f30>ʀᴇᴄʏᴄʟᴇʀ&8] &aʀᴇᴄʏᴄʟᴇᴅ &f%{_total}% &aᴍᴀᴛᴇʀɪᴀʟ." to {_p}
+

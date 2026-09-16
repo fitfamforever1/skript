@@ -1,0 +1,14 @@
+command /rules:
+    trigger:
+        send "" to player
+        send "&8&m----------------------------------------" to player
+        send "        <##FE7300>[RULES]" to player
+        send "&8&m----------------------------------------" to player
+        send "" to player
+        send "&e&l#1 &8» &fPrisoners are be protected as long as they not in restricted area or have any contraband." to player
+        send "" to player
+        send "&e&l#2 &8» &fStay in character. This is a roleplay server." to player
+        send "" to player
+        send "&e&l#3 &8» &fDo not force actions on other players without consent." to player
+        send "" to player
+        send "&e&l#4 &8» &fPrison Staff may not abuse their power or randomly kill prisoners." to player

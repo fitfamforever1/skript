@@ -1,0 +1,62 @@
+on respawn:
+    wait 1 tick
+    if player's bed location is set:
+        stop
+    set {_r} to random integer between 1 and 5
+    if {_r} is 1:
+        teleport player to location(-123.5, 59, -1389.5, world "world", 0, 0)
+    else if {_r} is 2:
+        teleport player to location(-289.5, 62, -1300.5, world "world", -90, 0)
+    else if {_r} is 3:
+        teleport player to location(-229.5, 55, -1331.5, world "world", 90, 0)
+    else if {_r} is 4:
+        teleport player to location(-160.5, 61, -1218.5, world "world", -90, 0)
+    else if {_r} is 5:
+        teleport player to location(-96.5, 59, -1443.5, world "world", 0, 0)
+        
+command /discord:
+    trigger:
+        send formatted "&9<click:open_url:'https://discord.gg/hpM9G6JhHa'>Discord Link</click>" to player
+
+command /guide:
+    trigger:
+        send "" to player
+        send "&8&l━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" to player
+        send "&c&lᴀᴘᴏᴄᴀʟʏᴘꜱᴇ ʀᴘɢ - ꜱᴜʀᴠɪᴠᴀʟ ɢᴜɪᴅᴇ" to player
+        send "&8&l━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" to player
+        send "" to player
+        send "&e&lʟᴏᴏᴛɪɴɢ" to player
+        send "&7  Loot chests spawn inside buildings across Ashvale." to player
+        send "&7  Use &e/scrapconvert &7to convert scrap into materials." to player
+        send "&7  Use &e/recipes &7to view all custom crafting recipes." to player
+        send "" to player
+        send "&e&lʙᴏɴᴇꜱ" to player
+        send "&7  You have &e7 bones&7. Each hit has a &c10%% chance &7to break one." to player
+        send "&7  2+ broken: Debuffed. All 7 broken: Instant death. Resets on death." to player
+        send "&7  Heal: &eBandage &7(1 bone) &7| &eMedkit + Rubber Ball &7(up to 6 bones)" to player
+        send "" to player
+        send "&e&lɪɴꜰᴇᴄᴛɪᴏɴ" to player
+        send "&7  Zombie hits have a &c10%% infection chance&7. Bloater death infects nearby players." to player
+        send "&7  Infected players &cdie in 20 minutes&7. Cure with &eVaccine &7(loot or Nurse merchant)." to player
+        send "" to player
+        send "&e&lʙᴀᴄᴋᴘᴀᴄᴋꜱ &c[ʙᴇᴛᴀ]" to player
+        send "&7  Can be used to store items. Small = 1 chest | Large = 2 chests. Check &e/recipes&7." to player
+        send "" to player
+        send "&7  Use &e/merchants &7to view all merchant locations." to player
+        send "&8&l━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" to player
+
+command /merchants:
+    trigger:
+        send "" to player
+        send "&8&l━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" to player
+        send "&c&lᴀᴘᴏᴄᴀʟʏᴘꜱᴇ ʀᴘɢ - ᴍᴇʀᴄʜᴀɴᴛꜱ" to player
+        send "&8&l━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" to player
+        send "" to player
+        send "&e  Nurse &8[Medicines] &7-215 54 -1184" to player
+        send "&e  Radio Operator &8[Radios] &7-194 59 -1385" to player
+        send "&e  Foundry Engineer &8[Metals, Coins & Steel] &7-102 55 -1389" to player
+        send "&e  Farmer &8[Food] &7-575 63 -1596" to player
+        send "&e  Warden &8[Armor & Weapons] &7185 73 -1900" to player
+        send "&e  Cult Leader &8[???] &7-447 54 -1403" to player
+        send "" to player
+        send "&8&l━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" to player

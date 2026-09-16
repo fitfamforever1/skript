@@ -1,0 +1,87 @@
+function recalcDefense(p: player):
+    set {_uuid} to uuid of {_p}
+    set {_totalDef} to 0.0
+    set {_totalTrueDef} to 0.0
+
+    loop {_p}'s helmet, {_p}'s chestplate, {_p}'s leggings, {_p}'s boots:
+        if loop-value is not air:
+            set {_val} to data tag "itemstat:defense" of loop-value
+            if {_val} is set:
+                add {_val} to {_totalDef}
+            set {_val} to data tag "itemstat:resistance" of loop-value
+            if {_val} is set:
+                add {_val} to {_totalTrueDef}
+
+    set {defense::%{_uuid}%} to {_totalDef}
+    set {truedefense::%{_uuid}%} to {_totalTrueDef}
+
+function recalcDamage(p: player):
+    set {_uuid} to uuid of {_p}
+    set {_total} to 1.0
+    set {_critChance} to 0.0
+    set {_critDamage} to 0.0
+    set {_tool} to {_p}'s tool
+    set {_name} to "%type of {_tool}%"
+    
+    if {_name} contains "sword":
+        set {_total} to data tag "itemstat:damage" of {_tool}
+        set {_critChance} to data tag "itemstat:critchance" of {_tool}
+        set {_critDamage} to data tag "itemstat:critdamage" of {_tool}
+    if {_name} contains "axe":
+        set {_total} to data tag "itemstat:damage" of {_tool}
+        set {_critChance} to data tag "itemstat:critchance" of {_tool}
+        set {_critDamage} to data tag "itemstat:critdamage" of {_tool}
+    
+    set {damage::%{_uuid}%} to {_total}
+    set {critchance::%{_uuid}%} to {_critChance}
+    set {critdamage::%{_uuid}%} to {_critDamage}
+
+function recalcFarmingFortune(p: player):
+    set {_uuid} to uuid of {_p}
+    set {_tool} to tool of {_p}
+
+    set {_fortune} to 1
+
+    if {_tool} is an iron hoe:
+        set {_nbtFortune} to number data tag "itemstat:farming_luck" of {_tool}
+        if {_nbtFortune} is set:
+            set {_fortune} to {_nbtFortune}
+
+    set {farmingfortune::%{_uuid}%} to {_fortune}
+
+on join:
+    recalcDefense(player)
+    recalcDamage(player)
+    recalcFarmingFortune(player)
+
+on quit:
+    set {_uuid} to uuid of player
+    delete {defense::%{_uuid}%}
+    delete {truedefense::%{_uuid}%}
+    delete {damage::%{_uuid}%}
+    delete {critchance::%{_uuid}%}
+    delete {critdamage::%{_uuid}%}
+    delete {farmingfortune::%{_uuid}%}
+
+on armor change:
+    wait 1 tick
+    recalcDefense(player)
+
+on player's held item change:
+    wait 1 tick
+    recalcDamage(player)
+    recalcFarmingFortune(player)
+    set {_uuid} to uuid of player
+    
+
+command /armordbg:
+    trigger:
+        recalcDefense(player)
+        set {_uuid} to uuid of player
+        send "&eDebug &7» &fDefense: &a%{defense::%{_uuid}%}% &7| &fTrue Defense: &b%{truedefense::%{_uuid}%}%" to player
+
+command /weapondbg:
+    trigger:
+        recalcDamage(player)
+        set {_uuid} to uuid of player
+        send "&eDebug &7» &fDamage: &c%{damage::%{_uuid}%}% &7| &fCrit Chance: &e%{critchance::%{_uuid}%}% &7| &fCrit Damage: &6%{critdamage::%{_uuid}%}%" to player

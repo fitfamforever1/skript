@@ -1,0 +1,25 @@
+on right click:
+    if type of player's held item is ender pearl:
+        cancel event
+        if {reversepearl::cooldown::%player%} is set:
+            send "<##FE7300>[SYSTEM] &cReverse pearl on cooldown!" to player
+            stop
+        set {reversepearl::origin::%player%} to player's location
+        send "<##FE7300>[SYSTEM] &eReverse pearl activated! You will be teleported back in 5s." to player
+        play sound "entity.enderman.teleport" at player
+        remove 1 of ender pearl from player's inventory
+        set {reversepearl::cooldown::%player%} to true
+        set item cooldown of ender pearl for player to 5 seconds
+
+        wait 5 seconds
+
+        if {reversepearl::origin::%player%} is not set:
+            stop
+        teleport player to {reversepearl::origin::%player%}
+        delete {reversepearl::origin::%player%}
+        send "<##FE7300>[SYSTEM] &aTeleported back!" to player
+        play sound "entity.enderman.teleport" at player
+        set item cooldown of ender pearl for player to 15 seconds
+
+        wait 15 seconds
+        delete {reversepearl::cooldown::%player%}

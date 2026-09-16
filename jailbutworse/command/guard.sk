@@ -1,0 +1,59 @@
+command /guard <player>:
+    permission: warden
+    permission message: <##FE7300>[SYSTEM] &cYou do not have permission to use this command.
+    trigger:
+        set {_target} to arg-1
+        set {_warden} to player
+        if {_target} is {_warden}:
+            send "<##FE7300>[SYSTEM] &cYou cannot send a guard request to yourself." to {_warden}
+            stop
+        if {_target} has permission "guard":
+            send "<##FE7300>[SYSTEM] &e%{_target}% &calready has a role." to {_warden}
+            stop
+        if {_target} has permission "swat":
+            send "<##FE7300>[SYSTEM] &e%{_target}% &calready has a role." to {_warden}
+            stop
+        if {_target} has permission "nurse":
+            send "<##FE7300>[SYSTEM] &e%{_target}% &calready has a role." to {_warden}
+            stop
+        set {_count} to 0
+        loop all players:
+            if loop-player has permission "guard":
+                add 1 to {_count}
+        if {_count} >= 3:
+            send "<##FE7300>[SYSTEM] &cThe guard team is full! &7(&e%{_count}%&7/&e3&7)" to {_warden}
+            stop
+        if {role::pending::%{_target}%} is set:
+            send "<##FE7300>[SYSTEM] &c%{_target}% already has a pending role request." to {_warden}
+            stop
+        if {role::cooldown::%{_warden}%::%{_target}%} is set:
+            send "<##FE7300>[SYSTEM] &cYou must wait before sending another request to &e%{_target}%&c." to {_warden}
+            stop
+        set {warden::%{_target}%} to {_warden}
+        set {role::pending::%{_target}%} to "guard"
+        set {role::sender::%{_target}%} to {_warden}
+        send "<##FE7300>[SYSTEM] &7A <##4BA5BF>guard &7request has been sent to &e%{_target}%&7. Awaiting response..." to {_warden}
+        send "" to {_target}
+        send "<##FE7300>[SYSTEM] &7You have been invited to become a <##4BA5BF>Guard &7by &e%{_warden}%&7!" to {_target}
+        send "<##FE7300>[SYSTEM] &7Type &a/accept &r&7to accept or &c/deny &r&7to decline." to {_target}
+        send "" to {_target}
+        wait 60 seconds
+        if {role::pending::%{_target}%} is set:
+            delete {role::pending::%{_target}%}
+            delete {role::sender::%{_target}%}
+            delete {warden::%{_target}%}
+            set {role::cooldown::%{_warden}%::%{_target}%} to true
+            wait 1 minute
+            delete {role::cooldown::%{_warden}%::%{_target}%}
+            if {_warden} is online:
+                send "<##FE7300>[SYSTEM] &7Your <##4BA5BF>guard&7 request to &e%{_target}% &cexpired (no response)." to {_warden}
+
+command /resignguard:
+    trigger:
+        set {_p} to player
+        if {_p} does not have permission "guard":
+            send "<##FE7300>[SYSTEM] &cYou are not a <##4BA5BF>guard&7." to {_p}
+            stop
+        execute console command "clearall %{_p}%"
+        execute console command "lp user %{_p}% parent remove guard"
+        send "<##FE7300>[SYSTEM] &7You have resigned from the <##4BA5BF>Guard&7, &e%{_p}%&7." to {_p}

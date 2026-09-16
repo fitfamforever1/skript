@@ -1,0 +1,181 @@
+function getPetName(slot: text) :: text:
+    if {_slot} is "pet1":
+        return "Rat"
+    if {_slot} is "pet2":
+        return "Lizard"
+    if {_slot} is "pet3":
+        return "Chicken"
+    if {_slot} is "pet4":
+        return "Frog"
+    if {_slot} is "pet5":
+        return "Fish"
+    if {_slot} is "pet6":
+        return "Bettle"
+    if {_slot} is "pet7":
+        return "Snake"
+    if {_slot} is "pet8":
+        return "Bat"
+    if {_slot} is "pet9":
+        return "Crab"
+    if {_slot} is "pet10":
+        return "Dire Wolf"
+    if {_slot} is "pet11":
+        return "Boar"
+    if {_slot} is "pet12":
+        return "SkyHawk"
+    if {_slot} is "pet13":
+        return "Spider"
+    if {_slot} is "pet14":
+        return "Bear"
+    if {_slot} is "pet15":
+        return "Panther"
+    if {_slot} is "pet16":
+        return "Scorpian"
+    if {_slot} is "pet17":
+        return "Raptor"
+    if {_slot} is "pet18":
+        return "Armor Titan"
+    if {_slot} is "pet19":
+        return "Hydra"
+    if {_slot} is "pet20":
+        return "Phoenix"
+    if {_slot} is "pet21":
+        return "Kraken"
+    if {_slot} is "pet22":
+        return "Qilin"
+    if {_slot} is "pet23":
+        return "Dragon"
+    return {_slot}
+
+
+command /pet [<text>]:
+    trigger:
+
+        if arg 1 is not set:
+            set {_anyActive} to false
+            loop integers from 1 to 23:
+                set {_n} to loop-value
+                if {petid::%player%::pet%{_n}%} is "active":
+                    set {_anyActive} to true
+            if {_anyActive} is false:
+                send "&8[<##CC5500>PET&8] &7You have no active pet to disable."
+                stop
+            loop integers from 1 to 23:
+                set {_n} to loop-value
+                set {petid::%player%::pet%{_n}%} to "unactive"
+
+            delete {petability::%player%::invis}
+            delete {petability::%player%::bloodfrenzy.active}
+            delete {petability::%player%::bloodfrenzy.stacks}
+            delete {petability::%player%::bloodfrenzy.lastTarget}
+            delete {petability::%player%::bloodfrenzy.hitCount}
+            delete {petability::%player%::pet11.ready}
+            delete {petability::%player%::pet11.cooldown}
+            delete {petability::pet16_marked::%player%}
+            delete {petability::bleed::%player%}
+            delete {petability::pet23.aliveTimer::%player's uuid%}
+            delete {petability::pet23.stackLevel::%player's uuid%}
+            delete {petability::pet23.roarCooldown::%player's uuid%}
+
+            remove speed from player
+            remove strength from player
+            remove jump boost from player
+
+            send "&8[<##CC5500>PET&8] &7Your pet has been &cdisabled&7."
+            stop
+
+        set {_slot} to arg 1 in lowercase
+
+        set {_valid} to false
+        if {petid::%player%::%{_slot}%} is "active":
+            set {_anyActive} to false
+            loop integers from 1 to 23:
+                set {_n} to loop-value
+                set {petid::%player%::pet%{_n}%} to "unactive"
+
+            delete {petability::%player%::invis}
+            delete {petability::%player%::bloodfrenzy.active}
+            delete {petability::%player%::bloodfrenzy.stacks}
+            delete {petability::%player%::bloodfrenzy.lastTarget}
+            delete {petability::%player%::bloodfrenzy.hitCount}
+            delete {petability::%player%::pet11.ready}
+            delete {petability::%player%::pet11.cooldown}
+            delete {petability::pet16_marked::%player%}
+            delete {petability::bleed::%player%}
+            delete {petability::pet23.aliveTimer::%player's uuid%}
+            delete {petability::pet23.stackLevel::%player's uuid%}
+            delete {petability::pet23.roarCooldown::%player's uuid%}
+
+            remove speed from player
+            remove strength from player
+            remove jump boost from player
+
+            send "&8[<##CC5500>PET&8] &7Your pet has been &cdisabled&7."
+            stop
+        loop integers from 1 to 23:
+            set {_n} to loop-value
+            if {_slot} is "pet%{_n}%":
+                set {_valid} to true
+        if {_valid} is false:
+            send "&cInvalid petid! Contant admin!"
+
+        set {_uuid} to uuid of player
+        if {pet::%{_uuid}%::%{_slot}%} is not set:
+            set {_name} to getPetName({_slot})
+            send "&8[<##CC5500>PET&8] &7You don't own &e%{_name}%&c!"
+            stop
+
+        loop integers from 1 to 23:
+            set {_n} to loop-value
+            set {petid::%player%::pet%{_n}%} to "unactive"
+        set {petid::%player%::%{_slot}%} to "active"
+
+        delete {petability::%player%::invis}
+        delete {petability::%player%::bloodfrenzy.active}
+        delete {petability::%player%::bloodfrenzy.stacks}
+        delete {petability::%player%::bloodfrenzy.lastTarget}
+        delete {petability::%player%::bloodfrenzy.hitCount}
+        delete {petability::%player%::pet11.ready}
+        delete {petability::%player%::pet11.cooldown}
+        delete {petability::pet16_marked::%player%}
+        delete {petability::bleed::%player%}
+        delete {petability::pet23.aliveTimer::%player's uuid%}
+        delete {petability::pet23.stackLevel::%player's uuid%}
+        delete {petability::pet23.roarCooldown::%player's uuid%}
+
+        set player's follow range attribute to 32
+
+        remove speed from player
+        remove strength from player
+        remove jump boost from player
+
+        if {_slot} is "pet15":
+            set player's follow range attribute to 4
+            apply invisibility 1 to player for 4 seconds:
+                hide particles
+                hide icon
+        if {_slot} is "pet3":
+            apply infinite speed 2 to player:
+                hide particles
+                hide icon
+            apply infinite jump boost 1 to player:
+                hide particles
+                hide icon
+        if {_slot} is "pet17":
+            apply infinite speed 3 to player:
+                hide particles
+                hide icon
+            apply infinite jump boost 2 to player:
+                hide particles
+                hide icon
+        if {_slot} is "pet22":
+            set player's follow range attribute to 1
+            apply infinite speed 4 to player:
+                hide particles
+                hide icon
+            apply infinite jump boost 3 to player:
+                hide particles
+                hide icon
+
+        set {_name} to getPetName({_slot})
+        send "&8[<##CC5500>PET&8] &e%{_name}% &7is now your active pet &a✔"

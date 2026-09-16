@@ -1,0 +1,19 @@
+on chat:
+    if {chat.muted} is set:
+        if player is op:
+            stop
+        cancel event
+        send "&c⚠ Chat is currently muted."
+        play sound "minecraft:entity.villager.no" to player
+        stop
+            
+            
+command /mutechat:
+    permission: chat.admin
+    trigger:
+        if {chat.muted} is not set:
+            set {chat.muted} to true
+            broadcast "&c⚠ Chat has been muted by an administrator."
+        else:
+            delete {chat.muted}
+            broadcast "&a✔ Chat has been unmuted."

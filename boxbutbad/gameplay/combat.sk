@@ -1,0 +1,116 @@
+on damage:
+    attacker is a player
+
+    set {_atkUUID} to "%attacker's uuid%"
+    set {_vicUUID} to "%victim's uuid%"
+    
+    if {defense::%{_vicUUID}%} = 0:
+        if IsInCombat(victim) is false:
+            send action bar "&8[<#E74C3C>ᴄᴏᴍʙᴀᴛ&8] &7ɴᴀᴋᴇᴅ ᴋɪʟʟɪɴɢ ɪꜱ ɴᴏᴛ ᴀʟʟᴏᴡᴇᴅ&7." to attacker
+            cancel event
+            stop
+    
+    set {_toolName} to "%type of attacker's held item%" in lowercase
+    if attack cooldown of attacker < 1:
+        cancel event
+        stop
+        
+    if IsInCombat(victim) is false:
+        send "&8[<#E74C3C>ᴄᴏᴍʙᴀᴛ&8] &7ʏᴏᴜ ᴀʀᴇ ɴᴏᴡ &cɪɴ ᴄᴏᴍʙᴀᴛ&7!" to victim
+    if IsInCombat(attacker) is false:
+        send "&8[<#E74C3C>ᴄᴏᴍʙᴀᴛ&8] &7ʏᴏᴜ ᴀʀᴇ ɴᴏᴡ &cɪɴ ᴄᴏᴍʙᴀᴛ&7!" to attacker
+    
+    EnterCombat(victim)
+    EnterCombat(attacker)
+    execute console command "tab bossbar send %victim% combat 20"
+    execute console command "tab bossbar send %attacker% combat 20"
+    
+    if random integer between 1 and 100 <= {critchance::%{_atkUUID}%}:
+        set {_isCrit} to true
+    
+    if {_isCrit} is true:
+        set {_dmg} to calculateCritDamage({damage::%{_atkUUID}%},{critdamage::%{_atkUUID}%},{defense::%{_vicUUID}%},{truedefense::%{_vicUUID}%})
+    
+        set damage to ({_dmg} / 2)
+        play 3 crit particles at victim's location
+        send action bar "&6&lᴄʀɪᴛ! &c-%{_dmg}%" to the attacker
+    else:
+        set {_dmg} to calculateDamage({damage::%{_atkUUID}%},{defense::%{_vicUUID}%},{truedefense::%{_vicUUID}%})
+    
+        set damage to ({_dmg} / 2)
+        play 1 damage indicator particles at victim's location
+        send action bar "&c-%{_dmg}%" to attacker
+        
+function InitCombatTag(player: player):
+    if number data tag "combat:time" of {_player} is not set:
+        set number data tag "combat:time" of {_player} to 0
+    if text data tag "combat:status" of {_player} is not set:
+        set text data tag "combat:status" of {_player} to "disabled"
+
+
+function IsInCombat(player: player) :: boolean:
+    InitCombatTag({_player})
+    if text data tag "combat:status" of {_player} is "enabled":
+        return true
+    return false
+
+
+function EnterCombat(player: player):
+    InitCombatTag({_player})
+    set number data tag "combat:time" of {_player} to 20
+    set text data tag "combat:status" of {_player} to "enabled"
+
+
+function ExitCombat(player: player):
+    set number data tag "combat:time" of {_player} to 0
+    set text data tag "combat:status" of {_player} to "disabled"
+    send action bar "&8[<#E74C3C>ᴄᴏᴍʙᴀᴛ&8] &7ʏᴏᴜ ᴀʀᴇ ɴᴏ ʟᴏɴɢᴇʀ ɪɴ ᴄᴏᴍʙᴀᴛ&7." to {_player}
+    send "&8[<#E74C3C>ᴄᴏᴍʙᴀᴛ&8] &7ʏᴏᴜ ᴀʀᴇ ɴᴏ ʟᴏɴɢᴇʀ ɪɴ ᴄᴏᴍʙᴀᴛ&7." to {_player}
+
+
+function GetCombatTime(player: player) :: integer:
+    InitCombatTag({_player})
+    return number data tag "combat:time" of {_player}
+
+
+on first join:
+    InitCombatTag(player)
+    
+every 1 ticks:
+    loop all players:
+        InitCombatTag(loop-player)
+
+        if text data tag "combat:status" of loop-player is "enabled":
+            set {_time} to number data tag "combat:time" of loop-player
+
+            if {_time} <= 0:
+                ExitCombat(loop-player)
+                set the loop-player's balance to 20
+            else:
+                subtract 0.05 from {_time}
+                set number data tag "combat:time" of loop-player to {_time}
+                set the loop-player's balance to {_time}
+
+
+on quit:
+    if IsInCombat(player) is true:
+        set {_player} to SmallCaps("%player%")
+        broadcast "&8[<#E74C3C>ᴄᴏᴍʙᴀᴛ&8] &7%{_player}% &cᴄᴏᴍʙᴀᴛ ʟᴏɢɢᴇᴅ&7!"
+        kill player
+        
+on command:
+    if player have permission "admin.combat":
+        stop
+    if IsInCombat(player) is true:
+        cancel event
+        send "&8[<#E74C3C>ᴄᴏᴍʙᴀᴛ&8] &7ʏᴏᴜ ᴄᴀɴ'ᴛ ᴜꜱᴇ ᴄᴏᴍᴍᴀɴᴅꜱ ɪɴ ᴄᴏᴍʙᴀᴛ!"
+       
+       
+on player enters a chunk:
+    if event-chunk = chunk at location(16, 0, 32, "world"):
+        if past event-chunk is not chunk at location(16, 0, 32, "world"):
+            if IsInCombat(player) is true:
+                cancel event
+                wait 1 tick
+                teleport player to location(21,-60,27,"world")
+                send "&8[<#E74C3C>ᴄᴏᴍʙᴀᴛ&8] &7ʏᴏᴜ ᴄᴀɴ'ᴛ ᴇɴᴛʀʏ ꜱᴘᴀᴡɴ ɪɴ ᴄᴏᴍʙᴀᴛ!"

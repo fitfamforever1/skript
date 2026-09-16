@@ -1,0 +1,8 @@
+on join:
+    set join message to "&8[&a+&8] &7%player%"
+
+on quit:
+    set quit message to "&8[&c-&8] &7%player%"
+ 
+on death of player:
+    set death message to ""

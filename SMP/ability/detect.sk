@@ -1,0 +1,60 @@
+# Click Casting System
+# Detects Right Click sequences followed by 1-3 Left/Right clicks
+# Expires after 3 seconds
+# Uses data tags (PDC) for storage
+
+on player right click:
+    set {_seq} to data tag "casting:sequence" of player
+    
+    # Start new sequence if none exists
+    if {_seq} is not set:
+        set data tag "casting:sequence" of player to "R"
+        send action bar "&b[Casting] &7R" to player
+        
+        # Set 3 second timeout
+        schedule 3 seconds later as "cast_timeout_%uuid of player%":
+            clear_sequence(player)
+    
+    # Add to existing sequence if not full
+    else if size of {_seq} < 7:
+        set {_seq} to {_seq} + " R"
+        set data tag "casting:sequence" of player to {_seq}
+        send action bar "&b[Casting] &7%{_seq}%" to player
+        
+        # Check if sequence is complete (4 inputs)
+        if size of {_seq} == 7:
+            cast_spell(player)
+            clear_sequence(player)
+    
+    # Sequence full - cast the spell
+    else:
+        cast_spell(player)
+        clear_sequence(player)
+    
+    cancel event
+
+on player left click:
+    set {_seq} to data tag "casting:sequence" of player
+    
+    # Only accept if sequence exists and not full
+    if {_seq} is set and size of {_seq} < 7:
+        set {_seq} to {_seq} + " L"
+        set data tag "casting:sequence" of player to {_seq}
+        send action bar "&b[Casting] &7%{_seq}%" to player
+        
+        # Check if sequence is complete (4 inputs)
+        if size of {_seq} == 7:
+            cast_spell(player)
+            clear_sequence(player)
+        
+        cancel event
+
+function clear_sequence(p):
+    message "&c[Casting] Sequence expired" to {p}
+    delete data tag "casting:sequence" of {p}
+
+function cast_spell(p):
+    set {_seq} to data tag "casting:sequence" of {p}
+    message "&6[Casting] Cast spell: &b%{_seq}%" to {p}
+    
+    #####

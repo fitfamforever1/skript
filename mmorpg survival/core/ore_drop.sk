@@ -1,0 +1,68 @@
+function miningDrop(p: player, name: string):
+    send "&8[<##818589>MINING&8] &7You mined a &e%{_name}%&7!" to {_p}
+
+on break:
+    set {_fortune} to enchantment level of fortune on player's tool
+    set {_base} to 5
+    set {_chance} to {_base} + ({_fortune} * ({_base} * 0.5))
+
+    set {_active} to false
+    loop player's helmet, player's chestplate, player's leggings, player's boots:
+        if loop-value is not air:
+            set {_armor} to loop-value
+            set {_id} to getDoubleDropId({_armor})
+            if {_id} != 0:
+                if {doubledrop::%{_id}%::wear} is true:
+                    set {_active} to true
+
+    if event-block is diamond ore or deepslate diamond ore:
+        if chance of {_chance}%:
+            execute console command "si give mithril_ore 1 %player% true"
+            execute console command "collection add %player% mining mithril 1 true"
+            execute console command "level addxp 800 %player% true"
+            miningDrop(player, "Mithril Ore")
+            if {_active} is true:
+                execute console command "si give mithril_ore 1 %player% true"
+                execute console command "collection add %player% mining mithril 1 true"
+
+    if event-block is amethyst block:
+        if chance of {_chance}%:
+            execute console command "si give demonite_ore 1 %player% true"
+            execute console command "collection add %player% mining demonite 1 true"
+            execute console command "level addxp 800 %player% true"
+            miningDrop(player, "Demonite Ore")
+            if {_active} is true:
+                execute console command "si give demonite_ore 1 %player% true"
+                execute console command "collection add %player% mining demonite 1 true"
+
+    if event-block is iron ore or deepslate iron ore:
+        if chance of {_chance}%:
+            execute console command "si give steel_ore 1 %player% true"
+            execute console command "collection add %player% mining steel 1 true"
+            execute console command "level addxp 800 %player% true"
+            miningDrop(player, "Raw Steel")
+            if {_active} is true:
+                execute console command "si give steel_ore 1 %player% true"
+                execute console command "collection add %player% mining steel 1 true"
+
+    if event-block is end stone:
+        set {_enderChance} to 1 + {_fortune}
+        if chance of {_enderChance}%:
+            execute console command "si give enderite_ore 1 %player% true"
+            execute console command "collection add %player% mining enderite 1 true"
+            execute console command "level addxp 800 %player% true"
+            miningDrop(player, "Enderite Ore")
+            if {_active} is true:
+                execute console command "si give enderite_ore 1 %player% true"
+                execute console command "collection add %player% mining enderite 1 true"
+
+    if event-block is stone:
+        set {_stoneChance} to 0.1 + ({_fortune} * 0.1)
+        if chance of {_stoneChance}%:
+            execute console command "si give hardstone 1 %player% true"
+            execute console command "collection add %player% mining hardstone 1 true"
+            execute console command "level addxp 1500 %player% true"
+            miningDrop(player, "Hardstone")
+            if {_active} is true:
+                execute console command "si give hardstone 1 %player% true"
+                execute console command "collection add %player% mining hardstone 1 true"

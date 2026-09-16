@@ -1,0 +1,36 @@
+placeholderapi placeholder with the prefix "event":
+    if the identifier is "until_fishing":
+        set {_day} to {farming.day_counter}
+        if {_day} is 0:
+            set the result to "40m"
+        else if {_day} is 1:
+            set the result to "20m"
+        else if {_day} is 2:
+            set the result to "Happening"
+        else if {_day} is 3:
+            set the result to "40m"
+
+    if the identifier is "until_farming":
+        set {_day} to {farming.day_counter}
+        if {_day} is 0:
+            set the result to "60m"
+        else if {_day} is 1:
+            set the result to "40m"
+        else if {_day} is 2:
+            set the result to "20m"
+        else if {_day} is 3:
+            set the result to "Happening"
+
+on load:
+    if {farming.day_counter} is not set:
+        set {farming.day_counter} to 0
+
+at 0:00 in "world":
+    add 1 to {farming.day_counter}
+    if {farming.day_counter} is 2:
+        execute console command "/startfishingevent"
+    if {farming.day_counter} is 3:
+        execute console command "/startfarmingevent"
+    if {farming.day_counter} is 4:
+        execute console command "/endfarmingevent"
+        set {farming.day_counter} to 0

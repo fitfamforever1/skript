@@ -1,0 +1,93 @@
+command /3x3pick:
+    permission: admin
+    trigger:
+        if player's tool is air:
+            send "&cHold the item you want to turn into a 3x3 pick."
+            stop
+        set {_item} to player's tool
+        set data tag "fitfam:3x3pick" of {_item} to true
+        set player's tool to {_item}
+        send "&aYour held item now mines in a 3x3x1 pattern."
+
+function isProtected(b: block) :: boolean:
+    if {_b} is bedrock or barrier or command block or chain command block or repeating command block or structure block or structure void or jigsaw or end portal frame or end portal or end gateway or spawner or light or trial spawner or vault or obsidian:
+        return true
+    else:
+        return false
+
+function isSafeRegion(l: location) :: boolean:
+    if {_l} is part of region "safe_spawn":
+        return true
+    if {_l} is part of region "outerspawn":
+        return true
+    if {_l} is part of region "outerspawn1":
+        return true
+    if {_l} is part of region "outerspawn2":
+        return true
+    if {_l} is part of region "outerspawn3":
+        return true
+    return false
+
+on break:
+    set {_item} to player's tool
+    data tag "fitfam:3x3pick" of {_item} is set:
+        set {_center} to event-block
+        if isProtected({_center}) is true:
+            cancel event
+            send action bar "&cYou can't mine that block." to player
+            stop
+        if isSafeRegion(location of {_center}) is true:
+            cancel event
+            send action bar "&cYou can't mine here." to player
+            stop
+        set {_pitch} to pitch of player
+        set {_absPitch} to abs({_pitch})
+        set {_yaw} to player's yaw
+        if {_yaw} < 0:
+            add 360 to {_yaw}
+        delete {_targets::*}
+        set {_facingEW} to false
+        if {_yaw} is between 45 and 135:
+            set {_facingEW} to true
+        if {_yaw} is between 225 and 315:
+            set {_facingEW} to true
+        if {_absPitch} > 60:
+            loop integers from -1 to 1:
+                set {_dx} to loop-value-1
+                loop integers from -1 to 1:
+                    set {_dz} to loop-value-2
+                    set {_skip} to false
+                    if {_dx} is 0:
+                        if {_dz} is 0:
+                            set {_skip} to true
+                    if {_skip} is false:
+                        set {_b} to block at location((x-coordinate of {_center}) + {_dx}, y-coordinate of {_center}, (z-coordinate of {_center}) + {_dz}, world of {_center})
+                        add {_b} to {_targets::*}
+        else if {_facingEW} is true:
+            loop integers from -1 to 1:
+                set {_dy} to loop-value-1
+                loop integers from -1 to 1:
+                    set {_dz} to loop-value-2
+                    set {_skip} to false
+                    if {_dy} is 0:
+                        if {_dz} is 0:
+                            set {_skip} to true
+                    if {_skip} is false:
+                        set {_b} to block at location(x-coordinate of {_center}, (y-coordinate of {_center}) + {_dy}, (z-coordinate of {_center}) + {_dz}, world of {_center})
+                        add {_b} to {_targets::*}
+        else:
+            loop integers from -1 to 1:
+                set {_dy} to loop-value-1
+                loop integers from -1 to 1:
+                    set {_dx} to loop-value-2
+                    set {_skip} to false
+                    if {_dy} is 0:
+                        if {_dx} is 0:
+                            set {_skip} to true
+                    if {_skip} is false:
+                        set {_b} to block at location((x-coordinate of {_center}) + {_dx}, (y-coordinate of {_center}) + {_dy}, z-coordinate of {_center}, world of {_center})
+                        add {_b} to {_targets::*}
+        loop {_targets::*}:
+            if isProtected(loop-value) is false:
+                if isSafeRegion(location of loop-value) is false:
+                    break loop-value using player's tool

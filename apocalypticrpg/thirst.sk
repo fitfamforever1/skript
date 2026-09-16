@@ -1,0 +1,46 @@
+on join:
+    wait 2 ticks
+    if {thirst::%player%} is not set:
+        set {thirst::%player%} to 20
+
+on join:
+    while player is online:
+        send action bar "&bThirst: &f%{thirst::%player%}%&7/&f20" to player
+        wait 1 second
+
+on death:
+    if victim is a player:
+        set {thirst::%victim%} to 20
+
+every 60 seconds:
+    loop all players:
+        if gamemode of loop-player is survival or adventure:
+            if {thirst::%loop-player%} > 0:
+                remove 1 from {thirst::%loop-player%}
+            set {_t} to {thirst::%loop-player%}
+            if {_t} <= 0:
+                set {thirst::%loop-player%} to 0
+                kill loop-player
+            else if {_t} < 4:
+                apply slowness 20 to loop-player for 35 seconds
+            else if {_t} < 10:
+                apply slowness 1 to loop-player for 35 seconds
+            else:
+                remove slowness from loop-player
+
+on consume:
+    if player's tool is a glass bottle:
+        add 5 to {thirst::%player%}
+        if {thirst::%player%} > 20:
+            set {thirst::%player%} to 20
+            
+on right click:
+    set {_target} to targeted block
+    if {_target} is water:
+        loop 20 times:
+            send action bar "&9Drinking..." to player
+            wait 2 ticks
+        add 5 to {thirst::%player%}
+        if {thirst::%player%} > 20:
+            set {thirst::%player%} to 20
+            

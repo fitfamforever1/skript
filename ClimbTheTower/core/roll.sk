@@ -1,0 +1,147 @@
+function giveLoot(p: player, id: number, level: number):: item:
+    switch {_id}:
+        case 1:
+            set {_item} to lootbox("Sword", "sword", {_level})
+        case 2:
+            set {_item} to lootbox("Dagger", "dagger", {_level})
+        case 3:
+            set {_item} to lootbox("Axe", "axe", {_level})
+        case 4:
+            set {_item} to lootbox("Helmet", "helmet", {_level})
+        case 5:
+            set {_item} to lootbox("Chestplate", "chestplate", {_level})
+        case 6:
+            set {_item} to lootbox("Leggings", "leggings", {_level})
+        case 7:
+            set {_item} to lootbox("Boots", "boots", {_level})
+    give {_item} to {_p}
+        
+function lootroll(p: player, level: number) :: item:
+    set {_temp} to random integer between 1 and 7
+    set {_tier} to 1
+    if {_level} > 20:
+        set {_tier} to 3
+    else if {_level} > 10:
+        set {_tier} to 2
+    return giveLoot({_p}, {_temp}, {_tier})
+    
+
+on right click with player head:
+    set {_item} to player's tool
+    set {_status} to number data tag "lootbox:status" of {_item}
+    if {_status} is 1:
+        set {_id} to number data tag "lootbox:level" of {_item}
+        set {_type} to data tag "lootbox:type" of {_item}
+        spinBoxes(player, "%{_type}%", {_id})
+        remove {_item} from player
+    else:
+        remove {_item} from player
+        set {_item2} to player's helmet
+        give {_item2} to player
+        set player's helmet to {_item}
+        
+
+function spinBoxes(p: player, type: text, id: number):
+    set {_radius} to 2.5
+    set {_ticks} to 60     
+    set {_speed} to 6        
+
+    if {_id} is 1:
+        set {_base} to 0 
+    else if {_id} is 2:
+        set {_base} to 10  
+    else if {_id} is 3:
+        set {_base} to 20   
+    else:
+        stop
+
+    set {_giveid} to {_base} + (a random integer between 1 and 10)
+
+    delete {_item::*}
+    delete {_displays::*}
+    delete {_baseangle::*}
+
+    loop 10 times:
+        set {_thisid} to {_base} + loop-number
+        if {_type} is "helmet":
+            set {_item::%loop-number%} to giveHelmet({_p}, {_thisid})
+        else if {_type} is "chestplate":
+            set {_item::%loop-number%} to giveChestplate({_p}, {_thisid})
+        else if {_type} is "leggings":
+            set {_item::%loop-number%} to giveLeggings({_p}, {_thisid})
+        else if {_type} is "boots":
+            set {_item::%loop-number%} to giveBoots({_p}, {_thisid})
+        else if {_type} is "sword":
+            set {_item::%loop-number%} to giveSword({_p}, {_thisid})
+        else if {_type} is "axe":
+            set {_item::%loop-number%} to giveAxe({_p}, {_thisid})
+        else if {_type} is "dagger":
+            set {_item::%loop-number%} to giveDagger({_p}, {_thisid})
+        else:
+            stop
+
+    set {_origin} to location of {_p}
+    loop 10 times:
+        set {_baseangle::%loop-number%} to (loop-number - 1) * 36
+        set {_dx} to {_radius} * cos({_baseangle::%loop-number%})
+        set {_dz} to {_radius} * sin({_baseangle::%loop-number%})
+
+        set {_facex} to {_origin}'s x - ({_origin}'s x + {_dx})
+        set {_facez} to {_origin}'s z - ({_origin}'s z + {_dz})
+        set {_faceyaw} to atan2({_facex}, {_facez})
+        set {_faceyaw} to {_faceyaw} * -1
+
+        set {_spawnloc} to location({_origin}'s x + {_dx}, {_origin}'s y + 1, {_origin}'s z + {_dz}, world of {_origin}, {_faceyaw}, 0)
+        spawn item display at {_spawnloc}
+        set {_display} to last spawned entity
+        set item of {_display} to {_item::%loop-number%}
+        set interpolation duration of {_display} to 0 tick
+        set interpolation delay of {_display} to 0 ticks
+        add {_display} to {_displays::*}
+
+    set {_yawoffset} to 0
+    loop {_ticks} times:
+        add {_speed} to {_yawoffset}
+        set {_i} to 0
+        loop {_displays::*}:
+            set {_disp} to {_displays::%loop-index%}
+            add 1 to {_i}
+            set {_angle} to {_baseangle::%{_i}%} + {_yawoffset}
+            set {_dx} to {_radius} * cos({_angle})
+            set {_dz} to {_radius} * sin({_angle})
+
+            set {_facex} to {_origin}'s x - ({_origin}'s x + {_dx})
+            set {_facez} to {_origin}'s z - ({_origin}'s z + {_dz})
+            set {_faceyaw} to atan2({_facex}, {_facez})
+            set {_faceyaw} to {_faceyaw} * -1
+
+            set {_newloc} to location({_origin}'s x + {_dx}, {_origin}'s y + 1, {_origin}'s z + {_dz}, world of {_origin}, {_faceyaw}, 0)
+            teleport {_disp} to {_newloc}
+        wait 1 tick
+
+    loop {_displays::*}:
+        set {_disp} to {_displays::%loop-index%}
+        kill {_disp}
+    delete {_displays::*}
+    delete {_baseangle::*}
+
+    if {_type} is "helmet":
+        give giveHelmet({_p}, {_giveid}) to {_p}
+    else if {_type} is "chestplate":
+        give giveChestplate({_p}, {_giveid}) to {_p}
+    else if {_type} is "leggings":
+        give giveLeggings({_p}, {_giveid}) to {_p}
+    else if {_type} is "boots":
+        give giveBoots({_p}, {_giveid}) to {_p}
+    else if {_type} is "sword":
+        give giveSword({_p}, {_giveid}) to {_p}
+    else if {_type} is "axe":
+        give giveAxe({_p}, {_giveid}) to {_p}
+    else if {_type} is "dagger":
+        give giveDagger({_p}, {_giveid}) to {_p}
+
+    delete {_item::*}
+
+command /spinboxes <text> <number>:
+    trigger:
+        spinBoxes(player, arg-1, arg-2)
