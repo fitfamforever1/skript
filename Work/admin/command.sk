@@ -42,8 +42,6 @@ function SmallCaps(input: text) :: text:
                 set {_result} to "%{_result}%%loop-value%"
     return {_result}
 
-# Hi
-
 command /gmc:
     permission: admin.gamemode
     trigger:
