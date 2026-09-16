@@ -18,12 +18,12 @@ on join:
         set number data tag "playerstat:damage" of player to 1
         set number data tag "playerstat:defense" of player to 0
         set number data tag "playerstat:speed" of player to 10
-        set number data tag "playerstat:health" of player to 50
+        set number data tag "playerstat:health" of player to 100
         set number data tag "playerstat:mana" of player to 100
         set number data tag "playerstat:lvl" of player to 1
 
         set number data tag "current:mana" of player to 100
-        set number data tag "current:health" of player to 50
+        set number data tag "current:health" of player to 100
 
         set number data tag "playerstat:crit_chance" of player to 30
         set number data tag "playerstat:crit_damage" of player to 50
@@ -34,11 +34,11 @@ command /statreset <player>:
         set number data tag "playerstat:damage" of arg-1 to 1
         set number data tag "playerstat:defense" of arg-1 to 0
         set number data tag "playerstat:speed" of arg-1 to 10
-        set number data tag "playerstat:health" of arg-1 to 50
+        set number data tag "playerstat:health" of arg-1 to 100
         set number data tag "playerstat:mana" of arg-1 to 100
         set number data tag "playerstat:lvl" of arg-1 to 1
         set number data tag "current:mana" of arg-1 to 100
-        set number data tag "current:health" of arg-1 to 50
+        set number data tag "current:health" of arg-1 to 100
 
         set number data tag "playerstat:crit_chance" of arg-1 to 30
         set number data tag "playerstat:crit_damage" of arg-1 to 50
