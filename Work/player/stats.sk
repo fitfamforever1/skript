@@ -120,14 +120,7 @@ function removeHealth(p: player, amount: number):
             stop
         set {respawning::%{_p}%} to true
 
-        set {_room} to number data tag "room:id" of {_p}
-        set {_floor} to number data tag "room%{_room}%:floor" of {_p}
-
         death({_p})
-
-        if {_floor} is not 0:
-            EndRoom({_p}, {_room}, {_floor})
-            send "&cYou have failed the run." to {_p}
 
 function DamagePlayer(p: player, damage: number):
     set {_defense} to number data tag "stat:defense" of {_p}
