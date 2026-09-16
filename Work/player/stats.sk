@@ -42,10 +42,12 @@ command /statreset <player>:
 
         set number data tag "playerstat:crit_chance" of arg-1 to 30
         set number data tag "playerstat:crit_damage" of arg-1 to 50
+        stat(player)
 
 command /stat <player>:
     permission: admin.stat
     trigger:
+        stat(player)
         send message "&a&lSTATS SET" to arg-1
         send message "&7Damage: &f%data tag "stat:damage" of arg-1%" to arg-1
         send message "&7Defense: &f%data tag "stat:defense" of arg-1%" to arg-1
