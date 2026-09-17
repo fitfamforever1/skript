@@ -1,117 +1,69 @@
+# ========================================
+# STAT SYSTEM - Organized & Clean
+# ========================================
+
+# ========================================
+# CORE STAT FUNCTIONS
+# ========================================
+
 function statAdd(p: player, t: string, a: number):
     set {_current} to number data tag "playerstat:%{_t}%" of {_p}
     set number data tag "playerstat:%{_t}%" of {_p} to ({_current} + {_a})
     send "%{_current}% | %{_a}%" to {_p}
 
-function Actionbar(p: player):
-    set {_health} to number data tag "stat:health" of {_p}
-    set {_current1} to number data tag "current:health" of {_p}
-    set {_mana} to number data tag "stat:mana" of {_p}
-    set {_current2} to number data tag "current:mana" of {_p}
+function stat(p: player):
+    set {_damage} to number data tag "playerstat:damage" of {_p}
+    set {_defense} to number data tag "playerstat:defense" of {_p}
+    set {_speed} to number data tag "playerstat:speed" of {_p}
+    set {_health} to number data tag "playerstat:health" of {_p}
+    set {_crit_chance} to number data tag "playerstat:crit_chance" of {_p}
+    set {_crit_damage} to number data tag "playerstat:crit_damage" of {_p}
 
-    set {_current1} to round({_current1})
+    # Equipment bonuses
+    loop helmet of {_p}, chestplate of {_p}, leggings of {_p} and boots of {_p}:
+        if loop-value is not air:
+            if levelreq({_p}, loop-value) is true:
+                add number data tag "itemstat:damage" of loop-value to {_damage}
+                add number data tag "itemstat:defense" of loop-value to {_defense}
+                add number data tag "itemstat:speed" of loop-value to {_speed}
+                add number data tag "itemstat:health" of loop-value to {_health}
+                add number data tag "itemstat:crit_chance" of loop-value to {_crit_chance}
+                add number data tag "itemstat:crit_damage" of loop-value to {_crit_damage}
 
-    send action bar "&c%{_current1}%&8/&c%{_health}% &8| <##0096FF>%{_current2}%&8/<##0096FF>%{_mana}%" to {_p}
+    # Weapon bonuses
+    set {_item} to {_p}'s tool
+    if {_item} is not air:
+        if levelreq({_p}, {_item}) is true:
+            set {_temp} to data tag "itemstat:type" of {_item}
+            if {_temp} is "sword", "dagger" or "axe":
+                add number data tag "itemstat:damage" of {_item} to {_damage}
+                add number data tag "itemstat:defense" of {_item} to {_defense}
+                add number data tag "itemstat:speed" of {_item} to {_speed}
+                add number data tag "itemstat:health" of {_item} to {_health}
+                add number data tag "itemstat:crit_chance" of {_item} to {_crit_chance}
+                add number data tag "itemstat:crit_damage" of {_item} to {_crit_damage}
 
-on join:
-    if number data tag "playerstat:lvl" of player is not set:
-        set number data tag "playerstat:damage" of player to 1
-        set number data tag "playerstat:defense" of player to 0
-        set number data tag "playerstat:speed" of player to 10
-        set number data tag "playerstat:health" of player to 100
-        set number data tag "playerstat:mana" of player to 100
-        set number data tag "playerstat:lvl" of player to 1
+    set number data tag "stat:damage" of {_p} to {_damage}
+    set number data tag "stat:defense" of {_p} to {_defense}
+    set number data tag "stat:speed" of {_p} to {_speed}
+    set number data tag "stat:health" of {_p} to {_health}
+    set number data tag "stat:crit_chance" of {_p} to {_crit_chance}
+    set number data tag "stat:crit_damage" of {_p} to {_crit_damage}
 
-        set number data tag "current:mana" of player to 100
-        set number data tag "current:health" of player to 100
+function levelreq(p: player, item: item) :: boolean:
+    set {_temp1} to number data tag "playerstat:lvl" of {_p}
+    set {_temp2} to number data tag "itemstat:level" of {_item}
+    if {_temp1} >= {_temp2}:
+        return true
+    return false
 
-        set number data tag "playerstat:crit_chance" of player to 30
-        set number data tag "playerstat:crit_damage" of player to 50
+# ========================================
+# HEALTH & REGENERATION
+# ========================================
 
-command /statreset <player>:
-    permission: admin.stat
-    trigger:
-        set number data tag "playerstat:damage" of arg-1 to 1
-        set number data tag "playerstat:defense" of arg-1 to 0
-        set number data tag "playerstat:speed" of arg-1 to 10
-        set number data tag "playerstat:health" of arg-1 to 100
-        set number data tag "playerstat:mana" of arg-1 to 100
-        set number data tag "playerstat:lvl" of arg-1 to 1
-        set number data tag "current:mana" of arg-1 to 100
-        set number data tag "current:health" of arg-1 to 100
-
-        set number data tag "playerstat:crit_chance" of arg-1 to 30
-        set number data tag "playerstat:crit_damage" of arg-1 to 50
-        stat(player)
-
-command /stat <player>:
-    permission: admin.stat
-    trigger:
-        stat(player)
-        send message "&a&lSTATS SET" to arg-1
-        send message "&7Damage: &f%data tag "stat:damage" of arg-1%" to arg-1
-        send message "&7Defense: &f%data tag "stat:defense" of arg-1%" to arg-1
-        send message "&7Speed: &f%data tag "stat:speed" of arg-1%" to arg-1
-        send message "&7Health: &f%data tag "stat:health" of arg-1%" to arg-1
-        send message "&7Mana: &f%data tag "stat:mana" of arg-1%" to arg-1
-        send message "&7Level: &f%data tag "playerstat:lvl" of arg-1%" to arg-1
-        send message "&7Current Mana: &f%data tag "current:mana" of arg-1%" to arg-1
-        send message "&7Current Health: &f%data tag "current:health" of arg-1%" to arg-1
-        send message "&7Crit Chance: &f%data tag "stat:crit_chance" of arg-1%%%" to arg-1
-        send message "&7Crit Damage: &f%data tag "stat:crit_damage" of arg-1%%%" to arg-1
-
-command /setlevel <number>:
-    trigger:
-        set number data tag "playerstat:lvl" of player to arg-1
-
-command /statadd <text> <number>:
-    permission: admin.stat
-    trigger:
-        if arg-1 is "damage", "speed", "mana", "health", "defense", "crit_damage" or "crit_chance":
-            statAdd(player, arg-1, arg-2)
-            send "&aAdded %arg-2% to %player%'s %arg-1%." to player
-        else:
-            send "&cInvalid stat." to player
-
-
-function RegenPlayer(p: player):
-    set {_health} to number data tag "stat:health" of {_p}
-    set {_current1} to number data tag "current:health" of {_p}
-
-    set {_mana} to number data tag "stat:mana" of {_p}
-    set {_current2} to number data tag "current:mana" of {_p}
-
-    set {_temp} to {_mana} / 20
-    set {_temp} to {_temp} + {_current2}
-    if {_temp} >= {_mana}:
-        set {_temp} to {_mana}
-    set {_temp} to round({_temp})
-    set number data tag "current:mana" of {_p} to {_temp}
-
-    set {_temp} to {_health} / 80
-    set {_temp} to {_temp} + {_current1}
-    if {_temp} >= {_health}:
-        set {_temp} to {_health}
-    set {_temp} to round({_temp})
+function heal(p: player):
+    set {_temp} to number data tag "stat:health" of {_p}
     set number data tag "current:health" of {_p} to {_temp}
-
-
-function SyncSpeed(p: player):
-    set {_temp} to number data tag "stat:speed" of {_p}
-    set {_temp} to {_temp} / 100
-
-    set {_p}'s movement speed attribute to {_temp}
-
-every 1 second in "world":
-    loop all players:
-        if loop-player is alive:
-            SyncSpeed(loop-player)
-            RegenPlayer(loop-player)
-
-every 2 tick in "world":
-    loop all players:
-        if loop-player is alive:
-            Actionbar(loop-player)
 
 function removeHealth(p: player, amount: number):
     set {_current} to (number data tag "current:health" of {_p}) - {_amount}
@@ -121,8 +73,22 @@ function removeHealth(p: player, amount: number):
         if {respawning::%{_p}%} is set:
             stop
         set {respawning::%{_p}%} to true
-
         death({_p})
+
+function RegenPlayer(p: player):
+    set {_health} to number data tag "stat:health" of {_p}
+    set {_current1} to number data tag "current:health" of {_p}
+
+    set {_temp} to {_health} / 80
+    set {_temp} to {_temp} + {_current1}
+    if {_temp} >= {_health}:
+        set {_temp} to {_health}
+    set {_temp} to round({_temp})
+    set number data tag "current:health" of {_p} to {_temp}
+
+# ========================================
+# DAMAGE & COMBAT
+# ========================================
 
 function DamagePlayer(p: player, damage: number):
     set {_defense} to number data tag "stat:defense" of {_p}
@@ -137,60 +103,15 @@ function DamagePlayer(p: player, damage: number):
 
     removeHealth({_p}, {_finalDamage})
 
-function removeMana(p: player, amount: number) :: boolean:
-    set {_current} to number data tag "current:mana" of {_p}
-
-    if {_current} >= {_amount}:
-        remove {_amount} from {_current}
-        if {_current} < 0:
-            set {_current} to 0
-        set number data tag "current:mana" of {_p} to {_current}
-        return true
-    else:
-        send action bar "&cɴᴏᴛ ᴇɴᴏᴜɢʜ ᴍᴀɴᴀ." to {_p}
-        return false
-
-command /removemana <player> <number>:
-    permission: admin.stat
-    trigger:
-        if removeMana(arg-1, arg-2) is true:
-            send "&9Removed &f%arg-2%&9 qi from &f%arg-1%&9." to player
-
-command /removehealth <player> <number>:
-    permission: admin.stat
-    trigger:
-        removeHealth(arg-1, arg-2)
-        send "&cRemoved &f%arg-2%&c health from &f%arg-1%" to player
-
-
-function heal(p: player):
-    set {_temp} to number data tag "stat:mana" of {_p}
-    set number data tag "current:mana" of {_p} to {_temp}
-
-    set {_temp} to number data tag "stat:health" of {_p}
-    set number data tag "current:health" of {_p} to {_temp}
-
-on join:
-    heal(player)
-
-
-command /damage <player> <number>:
-    permission: admin.stat
-    trigger:
-        DamagePlayer(arg-1, arg-2)
-
 function calculateAttack(p: player) :: number:
     set {_base} to number data tag "stat:damage" of {_p}
-    set {_finalDamage} to {_base}
-
-    return {_finalDamage}
+    return {_base}
 
 function calculateCrit(p: player) :: number:
     set {_base} to number data tag "stat:damage" of {_p}
     set {_critDamage} to number data tag "stat:crit_damage" of {_p}
     set {_critDamage} to {_critDamage} / 100
     set {_finalDamage} to {_base} + ({_base} * {_critDamage})
-
     return {_finalDamage}
 
 function displayDamage(victim: entity, damage: number):
@@ -213,11 +134,136 @@ function displayDamage(victim: entity, damage: number):
     set color of {_display} to rgb(0,0,0,0)
     set billboard of {_display} to center
     set interpolation duration of {_display} to 2 ticks
-
     set text of {_display} to "<##FF2400>%round({_damage})%"
 
     wait 1 second
     kill {_display}
+
+function death(p: player):
+    delete {respawning::%{_p}%}
+    set {_p}'s fall distance to 0
+    teleport {_p} to location(0,0,0,"world")
+    heal({_p})
+    send title "&4ʏᴏᴜ ʜᴀᴠᴇ ᴅɪᴇᴅ!" with subtitle "&cʀᴇꜱᴘᴀᴡɴᴇᴅ ᴀᴛ ꜱᴘᴀᴡɴ." to {_p} for 0.8 seconds with fadein 0.2 second and fade out 0.2 second
+
+# ========================================
+# PLAYER SYNCHRONIZATION & UI
+# ========================================
+
+function SyncSpeed(p: player):
+    set {_temp} to number data tag "stat:speed" of {_p}
+    set {_temp} to {_temp} / 100
+    set {_p}'s movement speed attribute to {_temp}
+
+function Actionbar(p: player):
+    set {_health} to number data tag "stat:health" of {_p}
+    set {_current1} to number data tag "current:health" of {_p}
+    set {_current1} to round({_current1})
+    send action bar "&c%{_current1}%&8/&c%{_health}%" to {_p}
+
+# ========================================
+# RECURRING TASKS
+# ========================================
+
+every 1 second in "world":
+    loop all players:
+        if loop-player is alive:
+            SyncSpeed(loop-player)
+            RegenPlayer(loop-player)
+
+every 2 tick in "world":
+    loop all players:
+        if loop-player is alive:
+            Actionbar(loop-player)
+
+# ========================================
+# COMMANDS
+# ========================================
+
+command /stat <player>:
+    permission: admin.stat
+    trigger:
+        stat(arg-1)
+        send message "&a&lSTATS SET" to arg-1
+        send message "&7Damage: &f%data tag "stat:damage" of arg-1%" to arg-1
+        send message "&7Defense: &f%data tag "stat:defense" of arg-1%" to arg-1
+        send message "&7Speed: &f%data tag "stat:speed" of arg-1%" to arg-1
+        send message "&7Health: &f%data tag "stat:health" of arg-1%" to arg-1
+        send message "&7Level: &f%data tag "playerstat:lvl" of arg-1%" to arg-1
+        send message "&7Current Health: &f%data tag "current:health" of arg-1%" to arg-1
+        send message "&7Crit Chance: &f%data tag "stat:crit_chance" of arg-1%%%" to arg-1
+        send message "&7Crit Damage: &f%data tag "stat:crit_damage" of arg-1%%%" to arg-1
+
+command /statreset <player>:
+    permission: admin.stat
+    trigger:
+        set number data tag "playerstat:damage" of arg-1 to 1
+        set number data tag "playerstat:defense" of arg-1 to 0
+        set number data tag "playerstat:speed" of arg-1 to 10
+        set number data tag "playerstat:health" of arg-1 to 100
+        set number data tag "playerstat:lvl" of arg-1 to 1
+        set number data tag "current:health" of arg-1 to 100
+        set number data tag "playerstat:crit_chance" of arg-1 to 30
+        set number data tag "playerstat:crit_damage" of arg-1 to 50
+        stat(arg-1)
+        send message "&aStats reset for %arg-1%." to player
+
+command /statadd <text> <number>:
+    permission: admin.stat
+    trigger:
+        if arg-1 is "damage", "speed", "health", "defense", "crit_damage" or "crit_chance":
+            statAdd(player, arg-1, arg-2)
+            send "&aAdded %arg-2% to %player%'s %arg-1%." to player
+        else:
+            send "&cInvalid stat. Valid stats: damage, speed, health, defense, crit_damage, crit_chance" to player
+
+command /setlevel <number>:
+    trigger:
+        set number data tag "playerstat:lvl" of player to arg-1
+        send "&aLevel set to %arg-1%." to player
+
+command /damage <player> <number>:
+    permission: admin.stat
+    trigger:
+        DamagePlayer(arg-1, arg-2)
+        send "&cDamaged %arg-1% for %arg-2% health." to player
+
+command /removehealth <player> <number>:
+    permission: admin.stat
+    trigger:
+        removeHealth(arg-1, arg-2)
+        send "&cRemoved &f%arg-2%&c health from &f%arg-1%" to player
+
+# ========================================
+# EVENT HANDLERS
+# ========================================
+
+on join:
+    if number data tag "playerstat:lvl" of player is not set:
+        set number data tag "playerstat:damage" of player to 1
+        set number data tag "playerstat:defense" of player to 0
+        set number data tag "playerstat:speed" of player to 10
+        set number data tag "playerstat:health" of player to 100
+        set number data tag "playerstat:lvl" of player to 1
+        set number data tag "current:health" of player to 100
+        set number data tag "playerstat:crit_chance" of player to 30
+        set number data tag "playerstat:crit_damage" of player to 50
+
+    stat(player)
+    heal(player)
+    apply transient attribute modifier to player:
+        attribute: attack speed
+        id: "my_mods:set_attack_speed"
+        amount: 100
+        operation: add_number
+
+on armor change:
+    wait 1 tick
+    stat(player)
+
+on player's held item change:
+    wait 1 tick
+    stat(player)
 
 on damage:
     if victim is a player:
@@ -258,79 +304,6 @@ on damage:
 
         displayDamage(victim, {_temp})
         set damage to {_temp}
-
-
-function death(p: player):
-    delete {respawning::%{_p}%}
-    set {_p}'s fall distance to 0
-    teleport {_p} to location(0,0,0,"world")
-    heal({_p})
-    send title "&4ʏᴏᴜ ʜᴀᴠᴇ ᴅɪᴇᴅ!" with subtitle "&cʀᴇꜱᴘᴀᴡɴᴇᴅ ᴀᴛ ꜱᴘᴀᴡɴ." to {_p} for 0.8 seconds with fadein 0.2 second and fade out 0.2 second
-
-
-function stat(p: player):
-    set {_damage} to number data tag "playerstat:damage" of {_p}
-    set {_defense} to number data tag "playerstat:defense" of {_p}
-    set {_speed} to number data tag "playerstat:speed" of {_p}
-    set {_health} to number data tag "playerstat:health" of {_p}
-    set {_mana} to number data tag "playerstat:mana" of {_p}
-    set {_crit_chance} to number data tag "playerstat:crit_chance" of {_p}
-    set {_crit_damage} to number data tag "playerstat:crit_damage" of {_p}
-
-    loop helmet of {_p}, chestplate of {_p}, leggings of {_p} and boots of {_p}:
-        if loop-value is not air:
-            if levelreq({_p}, loop-value) is true:
-                add number data tag "itemstat:damage" of loop-value to {_damage}
-                add number data tag "itemstat:defense" of loop-value to {_defense}
-                add number data tag "itemstat:speed" of loop-value to {_speed}
-                add number data tag "itemstat:health" of loop-value to {_health}
-                add number data tag "itemstat:mana" of loop-value to {_mana}
-                add number data tag "itemstat:crit_chance" of loop-value to {_crit_chance}
-                add number data tag "itemstat:crit_damage" of loop-value to {_crit_damage}
-
-    set {_item} to {_p}'s tool
-    if {_item} is not air:
-        if levelreq({_p}, {_item}) is true:
-            set {_temp} to data tag "itemstat:type" of {_item}
-            if {_temp} is "sword", "dagger" or "axe":
-                add number data tag "itemstat:damage" of {_item} to {_damage}
-                add number data tag "itemstat:defense" of {_item} to {_defense}
-                add number data tag "itemstat:speed" of {_item} to {_speed}
-                add number data tag "itemstat:health" of {_item} to {_health}
-                add number data tag "itemstat:mana" of {_item} to {_mana}
-                add number data tag "itemstat:crit_chance" of {_item} to {_crit_chance}
-                add number data tag "itemstat:crit_damage" of {_item} to {_crit_damage}
-
-    set number data tag "stat:damage" of {_p} to {_damage}
-    set number data tag "stat:defense" of {_p} to {_defense}
-    set number data tag "stat:speed" of {_p} to {_speed}
-    set number data tag "stat:health" of {_p} to {_health}
-    set number data tag "stat:mana" of {_p} to {_mana}
-    set number data tag "stat:crit_chance" of {_p} to {_crit_chance}
-    set number data tag "stat:crit_damage" of {_p} to {_crit_damage}
-
-function levelreq(p: player, item: item) :: boolean:
-    set {_temp1} to number data tag "playerstat:lvl" of {_p}
-    set {_temp2} to number data tag "itemstat:level" of {_item}
-    if {_temp1} >= {_temp2}:
-        return true
-    return false
-
-on join:
-    stat(player)
-    apply transient attribute modifier to player:
-        attribute: attack speed
-        id: "my_mods:set_attack_speed"
-        amount: 100
-        operation: add_number
-
-on armor change:
-    wait 1 tick
-    stat(player)
-
-on player's held item change:
-    wait 1 tick
-    stat(player)
 
 on food level change:
     cancel event
