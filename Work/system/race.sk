@@ -52,8 +52,7 @@ command /race:
 
 command /raceset <number>:
     trigger:
-        set {_num} to arg-1 parsed as number
-        set number data tag "race:id" of player to {_num}
+        set number data tag "race:id" of player to arg-1
         set {_race} to getRaceByNumber({_num})
         set {_rarity} to getRaceRarity({_num})
         send "&aRace set to %{_race}% &8[%{_rarity}%&8]"
