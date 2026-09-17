@@ -43,8 +43,17 @@ function getRaceRarity(num: number) :: text:
         case 27 -> "&6legendary"
         default -> "&7unknown"
 
-command /race <number>:
+command /race:
     trigger:
-        set {_race} to getRaceByNumber(arg-1)
-        set {_rarity} to getRaceRarity(arg-1)
+        set {_num} to number data tag "race:id" of player
+        set {_race} to getRaceByNumber({_num})
+        set {_rarity} to getRaceRarity({_num})
         send "%{_race}% &8[%{_rarity}%&8]"
+
+command /raceset <number>:
+    trigger:
+        set {_num} to arg-1 parsed as number
+        set number data tag "race:id" of player to {_num}
+        set {_race} to getRaceByNumber({_num})
+        set {_rarity} to getRaceRarity({_num})
+        send "&aRace set to %{_race}% &8[%{_rarity}%&8]"
