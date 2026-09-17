@@ -1,60 +1,33 @@
-function getRaceByNumber(num: number):: text:
-    if num = 1:
-        return "werewolf"
-    else if num = 2:
-        return "vampire"
-    else if num = 3:
-        return "orc"
-    else if num = 4:
-        return "dwarf"
-    else if num = 5:
-        return "goblin"
-    else if num = 6:
-        return "merfolk"
-    else if num = 7:
-        return "elf"
-    else if num = 8:
-        return "troll"
-    else if num = 9:
-        return "kobold"
-    else if num = 10:
-        return "gnome"
-    else if num = 11:
-        return "kitsune"
-    else if num = 12:
-        return "naga"
-    else if num = 13:
-        return "oni"
-    else if num = 14:
-        return "harpy"
-    else if num = 15:
-        return "djinn"
-    else if num = 16:
-        return "minotaur"
-    else if num = 17:
-        return "yeti"
-    else if num = 18:
-        return "dryad"
-    else if num = 19:
-        return "phoenix"
-    else if num = 20:
-        return "hydra"
-    else if num = 21:
-        return "griffin"
-    else if num = 22:
-        return "kraken"
-    else if num = 23:
-        return "wendigo"
-    else if num = 24:
-        return "angel"
-    else if num = 25:
-        return "demon"
-    else if num = 26:
-        return "devil"
-    else if num = 27:
-        return "dragon"
-    else:
-        return "unknown"
+function getRaceByNumber(num: number) :: text:
+    return switch return {_num}:
+        case 1 -> "werewolf"
+        case 2 -> "vampire"
+        case 3 -> "orc"
+        case 4 -> "dwarf"
+        case 5 -> "goblin"
+        case 6 -> "merfolk"
+        case 7 -> "elf"
+        case 8 -> "troll"
+        case 9 -> "kobold"
+        case 10 -> "gnome"
+        case 11 -> "kitsune"
+        case 12 -> "naga"
+        case 13 -> "oni"
+        case 14 -> "harpy"
+        case 15 -> "djinn"
+        case 16 -> "minotaur"
+        case 17 -> "yeti"
+        case 18 -> "dryad"
+        case 19 -> "phoenix"
+        case 20 -> "hydra"
+        case 21 -> "griffin"
+        case 22 -> "kraken"
+        case 23 -> "wendigo"
+        case 24 -> "angel"
+        case 25 -> "demon"
+        case 26 -> "devil"
+        case 27 -> "dragon"
+        default -> "unknown"
 
 command /racename <number>:
     trigger:
