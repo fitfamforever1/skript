@@ -42,4 +42,4 @@ command /race <number>:
     trigger:
         set {_race} to getRaceByNumber(arg-1)
         set {_rarity} to getRaceRarity(arg-1)
-        send "The race corresponding to number %arg-1% is %{_race}% (%{_rarity}%)."
+        send "%{_race}% (%{_rarity}%)."
