@@ -10,6 +10,7 @@ function getRaceByNumber(num: number) :: text:
         case 8 -> "Troll"
         case 9 -> "Kobold"
         case 10 -> "Gnome"
+
         case 11 -> "Kitsune"
         case 12 -> "Naga"
         case 13 -> "Oni"
@@ -18,15 +19,19 @@ function getRaceByNumber(num: number) :: text:
         case 16 -> "Minotaur"
         case 17 -> "Yeti"
         case 18 -> "Dryad"
+
         case 19 -> "Phoenix"
         case 20 -> "Hydra"
         case 21 -> "Griffin"
         case 22 -> "Kraken"
         case 23 -> "Wendigo"
+
         case 24 -> "Angel"
         case 25 -> "Demon"
         case 26 -> "Devil"
+
         case 27 -> "Dragon"
+
         default -> "Unknown"
 
 function getRaceRarity(num: number) :: text:
@@ -42,4 +47,4 @@ command /race <number>:
     trigger:
         set {_race} to getRaceByNumber(arg-1)
         set {_rarity} to getRaceRarity(arg-1)
-        send "%{_race}% (%{_rarity}%)."
+        send "%{_race}% &8[&e%{_rarity}%&8]"
