@@ -10,18 +10,14 @@ function getModelId(itemId: number) :: number:
     else:
         return 5
 
-function setAbilitySlot(slotIndex: number, abilityId: number) :: void:
+function setSlot(player: player, slotIndex: number, abilityId: number) :: void:
+    set {_prefix} to slotIndex - 7
     set {_model_id} to getModelId({abilityId})
 
     set {_item} to air
-    set item model of {_item} to "icon/%{slotIndex}%%{_model_id}%"
-    set player's inventory slot {slotIndex} to {_item}
+    set item model of {_item} to "icon/%{_prefix}%%{_model_id}%"
+    set {player}'s inventory slot {slotIndex} to {_item}
 
-command /slot <number> <number>:
+command /setslots <number> <number>:
     trigger:
-        set {_slot_index} to arg-1
-        set {_ability_id} to arg-2
-
-        setAbilitySlot({_slot_index}, {_ability_id})
-
-        send "&aSet slot %{_slot_index}% item model to: (ability %{_ability_id}%)"
+        setSlot(player, arg-1, arg-2)
