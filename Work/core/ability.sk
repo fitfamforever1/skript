@@ -10,7 +10,7 @@ function getModelId(itemId: number) :: number:
     else:
         return 5
 
-function setSlot(player: player, slotIndex: number, abilityId: number) :: void:
+function setSlot(player: player, slotIndex: number, abilityId: number):
     set {_prefix} to slotIndex - 7
     set {_model_id} to getModelId({abilityId})
 
