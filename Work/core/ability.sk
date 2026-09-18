@@ -9,25 +9,21 @@ function getModelId(itemId: number) :: number:
         return 4
     else:
         return 5
-    else:
-        return 0
 
 command /slot8 <number>:
     trigger:
         set {_ability_id} to arg-1
         set {_model_id} to getModelId({_ability_id})
 
-        else:
-            set player's inventory slot 8 to air
-            set item model of player's inventory slot 8 to "icon/1%{_model_id}%"
-            send "&aSet slot 8 item model to: %{_model_id}% (ability %{_ability_id}%)"
+        set player's inventory slot 8 to air
+        set item model of player's inventory slot 8 to "icon/1%{_model_id}%"
+        send "&aSet slot 8 item model to: %{_model_id}% (ability %{_ability_id}%)"
 
 command /slot9 <number>:
     trigger:
         set {_ability_id} to arg-1
         set {_model_id} to getModelId({_ability_id})
 
-        else:
-            set player's inventory slot 9 to air
-            set item model of player's inventory slot 9 to "icon/2%{_model_id}%"
-            send "&aSet slot 9 item model to: %{_model_id}% (ability %{_ability_id}%)"
+        set player's inventory slot 9 to air
+        set item model of player's inventory slot 9 to "icon/2%{_model_id}%"
+        send "&aSet slot 9 item model to: %{_model_id}% (ability %{_ability_id}%)")
