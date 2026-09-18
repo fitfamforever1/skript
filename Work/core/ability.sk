@@ -1,13 +1,13 @@
 function getModelId(itemId: number) :: number:
-    if {itemId} >= 1 and {itemId} <= 10:
+    if {itemId} <= 10:
         return 1
-    else if {itemId} >= 11 and {itemId} <= 20:
+    else if {itemId} <= 20:
         return 2
-    else if {itemId} >= 21 and {itemId} <= 30:
+    else if {itemId} <= 30:
         return 3
-    else if {itemId} >= 31 and {itemId} <= 40:
+    else if {itemId} <= 40:
         return 4
-    else if {itemId} >= 41 and {itemId} <= 50:
+    else:
         return 5
     else:
         return 0
@@ -21,7 +21,7 @@ command /slot8 <number>:
             send "&cInvalid ability ID! Please use 1-50"
         else:
             set player's inventory slot 8 to air
-            set item model of player's inventory slot 8 to "custom:ability_%{_model_id}%"
+            set item model of player's inventory slot 8 to "icon/1%{_model_id}%"
             send "&aSet slot 8 item model to: %{_model_id}% (ability %{_ability_id}%)"
 
 command /slot9 <number>:
@@ -33,5 +33,5 @@ command /slot9 <number>:
             send "&cInvalid ability ID! Please use 1-50"
         else:
             set player's inventory slot 9 to air
-            set item model of player's inventory slot 9 to "custom:ability_%{_model_id}%"
+            set item model of player's inventory slot 9 to "icon/2%{_model_id}%"
             send "&aSet slot 9 item model to: %{_model_id}% (ability %{_ability_id}%)"
