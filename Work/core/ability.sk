@@ -16,7 +16,7 @@ function setSlot(player: player, slotIndex: number, abilityId: number):
 
     set {_item} to paper
     set item model of {_item} to "icon/%{_prefix}%%{_model_id}%"
-    set slot {slotIndex} of {player} to {_item}
+    set slot {_slotIndex} of {_player} to {_item}
 
 command /setslots <number> <number>:
     trigger:
