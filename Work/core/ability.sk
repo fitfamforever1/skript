@@ -11,7 +11,7 @@ function getModelId(itemId: number) :: number:
         return 5
 
 function setSlot(player: player, slotIndex: number, abilityId: number):
-    set {_prefix} to {_slotIndex} - 7
+    set {_prefix} to {_slotIndex} - 6
     set {_model_id} to getModelId({abilityId})
 
     set {_item} to paper
