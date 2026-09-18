@@ -1,8 +1,5 @@
 function getModelId(itemId: number) :: number:
-    if {itemId} < 1 or > 50:
-        return 0
-    else:
-        return ((({itemId} - 1) / 10) + 1) rounded down
+    return ((({itemId} - 1) / 10) + 1) rounded down
 
 command /slot8 <number>:
     trigger:
