@@ -17,8 +17,6 @@ command /slot8 <number>:
         set {_ability_id} to arg-1
         set {_model_id} to getModelId({_ability_id})
 
-        if {_model_id} == 0:
-            send "&cInvalid ability ID! Please use 1-50"
         else:
             set player's inventory slot 8 to air
             set item model of player's inventory slot 8 to "icon/1%{_model_id}%"
@@ -29,8 +27,6 @@ command /slot9 <number>:
         set {_ability_id} to arg-1
         set {_model_id} to getModelId({_ability_id})
 
-        if {_model_id} == 0:
-            send "&cInvalid ability ID! Please use 1-50"
         else:
             set player's inventory slot 9 to air
             set item model of player's inventory slot 9 to "icon/2%{_model_id}%"
