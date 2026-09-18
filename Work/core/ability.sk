@@ -14,7 +14,7 @@ function setSlot(player: player, slotIndex: number, abilityId: number):
     set {_prefix} to {_slotIndex} - 7
     set {_model_id} to getModelId({abilityId})
 
-    set {_item} to air
+    set {_item} to paper
     set item model of {_item} to "icon/%{_prefix}%%{_model_id}%"
     set slot {slotIndex} of {player} to {_item}
 
