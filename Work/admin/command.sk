@@ -118,3 +118,4 @@ command /flyspeed [<number>]:
     permission: admin
     trigger:
         set the player's fly speed to arg-1 * 0.1
+        
