@@ -46,13 +46,17 @@ function item(base: item, buy: number, sell: number):: item:
 function buyItem(p: player, item: item, amount: number):
     set {_id} to string data tag "item:id" of {_item}
     set {_price} to (number data tag "item:buy" of {_item}) * {_amount}
-    set {_bal} to number data tag "money:amm" of {_p}
+    set {_bal} to balance of {_p}
     if {_bal} < {_price}:
         send "&8[<##E9BF35>ꜱʜᴏᴘ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴇɴᴏᴜɢʜ ᴍᴏɴᴇʏ!" to {_p}
         stop
     remove {_price} from {_bal}
-    set number data tag "money:amm" of {_p} to {_bal}
+    set balance of {_p} to {_bal}
     give {_amount} of {_id} parsed as item to {_p}
+
+
+
+
 
     set {_spriteid} to {_id}
     replace all " " with "_" in {_spriteid}
@@ -70,9 +74,12 @@ function sellItem(p: player, item: item, amount: number):
         send "&8[<##E9BF35>ꜱʜᴏᴘ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴇɴᴏᴜɢʜ ɪᴛᴇᴍꜱ!" to {_p}
         stop
     remove {_amount} of {_id} parsed as item from {_p}
-    set {_bal} to number data tag "money:amm" of {_p}
+    set {_bal} to balance of {_p}
     add {_price} to {_bal}
-    set number data tag "money:amm" of {_p} to {_bal}
+    set balance of {_p} to {_bal}
+
+
+
 
     set {_spriteid} to {_id}
     replace all " " with "_" in {_spriteid}
