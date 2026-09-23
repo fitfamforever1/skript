@@ -17,5 +17,5 @@ function raceName(p: player):: text:
         
 command /races:
     trigger:
-        set {_name} to RaceName(player)
+        set {_name} to raceName(player)
         send "%{_name}%"
