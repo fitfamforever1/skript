@@ -6,14 +6,14 @@ command /raceset <number>:
 function raceName(p: player):: text:
     set {_race} to number data tag "race:id" of {_p}
     return switch return {_race}:
-        case 1 -> "\u029c\u1d1c\u1d0d\u1d00\u0274"
-        case 2 -> "\u1d07\u029f\ua730"
-        case 3 -> "\u1d05\u1d21\u1d00\u0280\ua730"
-        case 4 -> "\u1d0f\u0280\u1d04"
-        case 5 -> "\u1d0d\u1d07\u0280\ua730\u1d0f\u029f\u1d0b"
-        case 6 -> "\u1d20\u1d00\u1d0d\u1d18\u026a\u0280\u1d07"
-        case 7 -> "\u1d05\u1d07\u1d0d\u1d0f\u0274"
-        case 8 -> "\u1d1c\u0274\u1d05\u1d07\u1d00\u1d05"
+        case 1 -> "ʜᴜᴍᴀɴ"
+        case 2 -> "ᴇʟꜰ"
+        case 3 -> "ᴅᴡᴀʀꜰ"
+        case 4 -> "ᴏʀᴄ"
+        case 5 -> "ᴍᴇʀꜰʟᴏᴋ"
+        case 6 -> "ᴠᴀᴍᴘɪʀᴇ"
+        case 7 -> "ᴅᴇᴍᴏɴ"
+        case 8 -> "ᴜɴᴅᴇᴀᴅ"
     
         
 command /races:
