@@ -74,9 +74,7 @@ function sellItem(p: player, item: item, amount: number):
         send "&8[<##E9BF35>ꜱʜᴏᴘ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴇɴᴏᴜɢʜ ɪᴛᴇᴍꜱ!" to {_p}
         stop
     remove {_amount} of {_id} parsed as item from {_p}
-    set {_bal} to balance of {_p}
-    add {_price} to {_bal}
-    set balance of {_p} to {_bal}
+    add {_price} to balance of {_p}
 
 
 
@@ -89,6 +87,9 @@ function sellItem(p: player, item: item, amount: number):
         send action bar formatted "&8[<##E9BF35>ꜱʜᴏᴘ&8] &7ʏᴏᴜ ꜱᴏʟᴅ &e%{_amount}% &f<sprite:blocks:block/%{_spriteid}%> &7ғᴏʀ &e$%{_price}%&7." to {_p}
         stop
     send action bar formatted "&8[<##E9BF35>ꜱʜᴏᴘ&8] &7ʏᴏᴜ ꜱᴏʟᴅ &e%{_amount}% &f<sprite:items:item/%{_spriteid}%> &7ғᴏʀ &e$%{_price}%&7." to {_p}
+    
+    
+    
     
 on inventory click:
     if name of event-inventory is "<##E9BF35>ᴏʀᴇ ꜱʜᴏᴘ", "<##E9BF35>ʙʟᴏᴄᴋ ꜱʜᴏᴘ", "<##E9BF35>ꜰᴀʀᴍ ꜱʜᴏᴘ", "<##E9BF35>ᴍᴏʙ ꜱʜᴏᴘ", "<##E9BF35>ᴍɪᴄꜱ ꜱʜᴏᴘ" or "<##E9BF35>ꜰᴏᴏᴅ ꜱʜᴏᴘ":
