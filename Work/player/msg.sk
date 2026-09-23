@@ -1,0 +1,53 @@
+on join:
+    set {_p} to SmallCaps("%player%")
+    set join message to "&8[&a+&8] &7%{_p}%"
+
+on quit:
+    set {_p} to SmallCaps("%player%")
+    set quit message to "&8[&c-&8] &7%{_p}%"
+ 
+on death of player:
+    set {_v} to SmallCaps("%victim%")
+    set {_a} to SmallCaps("%attacker%")
+    if attacker exists:
+        set {_roll} to random integer between 1 and 6
+        strike lightning effect at victim
+        
+        if {_roll} is 1:
+            set death message to "&8[&4☠&8] &c%{_v}% &7ɢᴏᴛ ꜱʟᴀɪɴ ʙʏ &c%{_a}%&7."
+        else if {_roll} is 2:
+            set death message to "&8[&4☠&8] &c%{_a}% &7ꜱᴇɴᴛ &c%{_v}% &7ᴛᴏ ᴀɴ ᴇᴀʀʟʏ ɢʀᴀᴠᴇ."
+        else if {_roll} is 3:
+            set death message to "&8[&4☠&8] &c%{_v}% &7ɴᴇᴠᴇʀ ꜱᴀᴡ &c%{_a}% &7ᴄᴏᴍɪɴɢ."
+        else if {_roll} is 4:
+            set death message to "&8[&4☠&8] &c%{_a}% &7ᴘᴜᴛ &c%{_v}% &7ꜱɪx ꜰᴇᴇᴛ ᴜɴᴅᴇʀ."
+        else if {_roll} is 5:
+            set death message to "&8[&4☠&8] &c%{_v}% &7ᴡᴀꜱ ɴᴏ ᴍᴀᴛᴄʜ ꜰᴏʀ &c%{_a}%&7."
+        else if {_roll} is 6:
+            set death message to "&8[&4☠&8] &c%{_a}% &7ᴇɴᴅᴇᴅ &c%{_v}%'s &7ʟɪꜰᴇ."
+    else:
+        set death message to "&8[&4☠&8] &c%{_v}% &7ʜᴀꜱ ᴅɪᴇᴅ."
+        
+on chat:
+    cancel event
+    set {_check} to the placeholder "betterteams_inTeam" from player
+    set {_prefix} to ""
+    if {_check} is "true":
+        set {_name} to the placeholder "betterteams_name" from player
+        set {_color} to the placeholder "betterteams_color" from player
+        set {_name} to SmallCaps("%{_name}%")
+        set {_prefix} to "&8[%{_color}%%{_name}%&8] "
+    broadcast "%{_prefix}%&7%player%&8: &f%message%"
+
+placeholderapi placeholder with the prefix "name":
+    if the identifier is "team":
+        set {_check} to the placeholder "betterteams_inTeam" from player
+        set {_prefix} to ""
+        if {_check} is "true":
+            set {_name} to the placeholder "betterteams_name" from player
+            set {_color} to the placeholder "betterteams_color" from player
+            set {_name} to SmallCaps("%{_name}%")
+            set {_prefix} to "&8[%{_color}%%{_name}%&8] &r"
+            set the result to {_prefix}
+        else:
+            set the result to ""
