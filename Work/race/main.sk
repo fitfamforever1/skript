@@ -2,7 +2,20 @@ command /race <number>:
     trigger:
         set number data tag "race:id" of player to arg-1
         
+function raceName(p: player):: text:
+        set {_race} to number data tag "race:id" of {_p}
+        return switch return {_race}:
+            case 1 -> "Human"
+            case 2 -> "Elf"
+            case 3 -> "Dwarf"
+            case 4 -> "Orc"
+            case 5 -> "Merfolk"
+            case 6 -> "Vampire"
+            case 7 -> "Demon"
+            case 8 -> "Undead"
+    
+        
 command /races:
     trigger:
-        set {_race} to number data tag "race:id" of player
-        send "%{_race}%"
+        set {_name} to RaceName(player)
+        send "%{_name}%"
