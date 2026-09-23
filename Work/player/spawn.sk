@@ -4,7 +4,7 @@ on respawn:
         stop
     set {_locations::*} to location(2339.5, 107, 2626.5, world "world", 0, 0), location(2141.5, 104, 2947.5, world "world", 0, 0), location(2708.5, 117, 1900.5, world "world", 0, 0), location(2721.5, 155, 2552.5, world "world", 0, 0), location(2156.5, 142, 2332.5, world "world", 0, 0), location(2871.5, 68, 2705.5, world "world", 0, 0)
     set {_random} to random integer between 1 and 6
-    set respawn location of player to {_locations::%{_random}%}
+    set respawn location to {_locations::%{_random}%}
     
 on first join:
     wait 1 tick
