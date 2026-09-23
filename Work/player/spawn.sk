@@ -1,5 +1,5 @@
 on respawn:
-    wait 1 tick
+    wait 5 tick
     if player's bed location is set:
         stop
     set {_locations::*} to location(2339.5, 107, 2626.5, world "world", 0, 0), location(2141.5, 104, 2947.5, world "world", 0, 0), location(2708.5, 117, 1900.5, world "world", 0, 0), location(2721.5, 155, 2552.5, world "world", 0, 0), location(2156.5, 142, 2332.5, world "world", 0, 0), location(2871.5, 68, 2705.5, world "world", 0, 0)
