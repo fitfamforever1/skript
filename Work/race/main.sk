@@ -3,7 +3,7 @@ command /race <number>:
         set number data tag "race:id" of player to arg-1
         
 function raceName(p: player):: text:
-        set {_race} to number data tag "race:id" of {_p}
+    set {_race} to number data tag "race:id" of {_p}
         return switch return {_race}:
             case 1 -> "Human"
             case 2 -> "Elf"
