@@ -4,9 +4,9 @@ command /bal [<player>]:
         if arg-1 is set:
             if player has permission "admin.bal":
                 set {_p} to SmallCaps("%arg-1%")
-                send "&8[<##65b9d3>ᴍᴏɴᴇʏ&8]&e %{_p}%'s &7ᴄᴜʀʀᴇɴᴛ ʙᴀʟᴀɴᴄᴇ ɪꜱ &e$%arg-1's money%&7."
+                send "&8[<##65b9d3>ᴍᴏɴᴇʏ&8]&e %{_p}%'s &7ᴄᴜʀʀᴇɴᴛ ʙᴀʟᴀɴᴄᴇ ɪꜱ &e%arg-1's money%&7."
                 stop
-        send "&8[<##65b9d3>ᴍᴏɴᴇʏ&8]&7 ʏᴏᴜʀ ᴄᴜʀʀᴇɴᴛ ʙᴀʟᴀɴᴄᴇ ɪꜱ &e$%player's money%&7."
+        send "&8[<##65b9d3>ᴍᴏɴᴇʏ&8]&7 ʏᴏᴜʀ ᴄᴜʀʀᴇɴᴛ ʙᴀʟᴀɴᴄᴇ ɪꜱ &e%player's money%&7."
         
 command /pay [<player>] [<number>]:
     trigger:
@@ -26,15 +26,15 @@ command /pay [<player>] [<number>]:
             send "&8[<##65b9d3>ᴍᴏɴᴇʏ&8]&c ʏᴏᴜ ᴄᴀɴ'ᴛ ꜱᴇɴᴅ ᴍᴏɴᴇʏ ᴇǫᴜᴀʟ ᴏʀ ʟᴇꜱꜱ ᴛʜᴇɴ ᴢᴇʀᴏ."
             stop
 
-        set {_senderBal} to number data tag "money:amm" of player
-        set {_receiverBal} to number data tag "money:amm" of arg-1
+        set {_senderBal} to balance of player
+        set {_receiverBal} to balance of arg-1
 
         if {_senderBal} < arg-2:
             send "&8[<##65b9d3>ᴍᴏɴᴇʏ&8]&c ʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴇɴᴏᴜɢʜ ᴍᴏɴᴇʏ."
             stop
 
-        set number data tag "money:amm" of player to {_senderBal} - arg-2
-        set number data tag "money:amm" of arg-1 to {_receiverBal} + arg-2
+        set balance of player to {_senderBal} - arg-2
+        set balance of arg-1 to {_receiverBal} + arg-2
 
         set {_sender} to SmallCaps("%player%")
         set {_receiver} to SmallCaps("%arg-1%")
