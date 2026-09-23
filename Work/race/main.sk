@@ -1,0 +1,8 @@
+command /race <number>:
+    trigger:
+        set number data tag "race:id" of player to arg-1
+        
+command /races:
+    trigger:
+        set {_race} to number data tag "race:id" of player
+        send "%{_race}%"
