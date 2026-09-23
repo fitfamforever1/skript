@@ -47,13 +47,13 @@ on death of player:
         set {_victim} to SmallCaps("%victim%")
         set {_attacker} to SmallCaps("%attacker%")
 
-        set {_victimMoney} to number data tag "money:amm" of victim
+        set {_victimMoney} to balance of victim
         set {_stolen} to round({_victimMoney} * 0.1)
 
-        set {_attackerMoney} to number data tag "money:amm" of attacker
+        set {_attackerMoney} to balance of attacker
 
-        set number data tag "money:amm" of victim to ({_victimMoney} - {_stolen})
-        set number data tag "money:amm" of attacker to ({_attackerMoney} + {_stolen})
+        set balance of victim to ({_victimMoney} - {_stolen})
+        set balance of attacker to ({_attackerMoney} + {_stolen})
 
         send "&8[<##65b9d3>ᴍᴏɴᴇʏ&8]&7 ʏᴏᴜ ꜱᴛᴏʟᴇ &e$%{_stolen}%&7 ꜰʀᴏᴍ &e%{_victim}%&7." to attacker
         send "&8[<##65b9d3>ᴍᴏɴᴇʏ&8]&7 &e%{_attacker}%&7 ꜱᴛᴏʟᴇ &e$%{_stolen}%&7 ꜰʀᴏᴍ ʏᴏᴜ&7." to victim
