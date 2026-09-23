@@ -50,13 +50,8 @@ function buyItem(p: player, item: item, amount: number):
     if {_bal} < {_price}:
         send "&8[<##E9BF35>ꜱʜᴏᴘ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴇɴᴏᴜɢʜ ᴍᴏɴᴇʏ!" to {_p}
         stop
-    remove {_price} from {_bal}
-    set balance of {_p} to {_bal}
+    remove {_price} from balance of {_p}
     give {_amount} of {_id} parsed as item to {_p}
-
-
-
-
 
     set {_spriteid} to {_id}
     replace all " " with "_" in {_spriteid}
