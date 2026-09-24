@@ -36,6 +36,9 @@ function syncRace(p: player):
 every 5 ticks:
     loop all players:
         set {_race} to number data tag "race:id" of loop-player
+        
+        set max health of loop-player to 10
+        set scale attribute of loop-player to 1
 
         if {_race} is 2:
             apply night vision 1 to loop-player for 10 ticks:
