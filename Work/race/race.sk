@@ -89,4 +89,12 @@ on mine:
         if event-block is iron ore, deepslate iron ore, gold ore, deepslate gold ore, coal ore, deepslate coal ore, diamond ore, deepslate diamond ore, emerald ore, deepslate emerald ore, lapis ore, deepslate lapis ore, redstone ore, deepslate redstone ore, nether quartz ore, nether gold ore or ancient debris:
             if player's tool is not enchanted with silk touch:
                 drop drops of event-block at event-block's location
+                
+on damage:
+    if attacker is player:
+        if number data tag "race:id" of attacker is 6:
+            if attacker's tool is not air:
+                set {_heal} to damage * 0.1
+                heal attacker by {_heal}
+            
             
