@@ -40,8 +40,8 @@ every 5 ticks:
         if {_race} is 2:
             apply speed 1 to loop-player for 10 ticks:
                 hide icon
-                hide particle
+                hide particles
             if biome at loop-player is forest, birch forest, old growth birch forest, dark forest, flower forest, or pale garden:
                 apply speed 2 to loop-player for 10 ticks:
                     hide icon
-                    hide particle
+                    hide particles
