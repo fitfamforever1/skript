@@ -56,6 +56,14 @@ every 5 ticks:
                 hide particles
             set scale attribute of loop-player to 0.5
             
+        if {_race} is 4:
+            apply strength 1 to loop-player for 10 ticks:
+                hide icon
+                hide particles
+            set max health of loop-player to 15
+            set scale attribute of loop-player to 1.5
+            
+            
 on mine:
     if number data tag "race:id" of player is 3:
         if event-block is iron ore, deepslate iron ore, gold ore, deepslate gold ore, coal ore, deepslate coal ore, diamond ore, deepslate diamond ore, emerald ore, deepslate emerald ore, lapis ore, deepslate lapis ore, redstone ore, deepslate redstone ore, nether quartz ore, nether gold ore or ancient debris:
