@@ -15,8 +15,7 @@ function raceName(p: player):: text:
         case 7 -> "ᴅᴇᴍᴏɴ"
         case 8 -> "ᴜɴᴅᴇᴀᴅ"
     
-        
-command /races:
+command /race:
     trigger:
         set {_name} to raceName(player)
         send "&7ʏᴏᴜʀ ʀᴀᴄᴇ ɪꜱ &e%{_name}%&7."

@@ -1,0 +1,45 @@
+function syncRace(p: player):
+    set {_race} to number data tag "race:id" of {_p}
+
+    # Human
+    if {_race} is 1:
+        stop
+
+    # Elf
+    if {_race} is 2:
+        stop
+
+    # Dwarf
+    if {_race} is 3:
+        stop
+
+    # Orc
+    if {_race} is 4:
+        stop
+
+    # Merfolk
+    if {_race} is 5:
+        stop
+
+    # Vampire
+    if {_race} is 6:
+        stop
+
+    # Demon
+    if {_race} is 7:
+        stop
+
+    # Undead
+    if {_race} is 8:
+        stop
+        
+every 5 ticks:
+    loop all players:
+        set {_race} to number data tag "race:id" of loop-player
+
+        if {_race} is 2:
+            if biome at loop-player is forest, birch forest, old growth birch forest, dark forest, flower forest, or pale garden:
+                if loop-player is sprinting:
+                    apply speed 2 to loop-player for 10 ticks
+                else:
+                    apply speed 1 to loop-player for 10 ticks
