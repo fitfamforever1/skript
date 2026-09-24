@@ -54,5 +54,5 @@ every 5 ticks:
             apply haste 1 to loop-player for 10 ticks:
                 hide icon
                 hide particles
-            set scale of loop-player to 1
+            set scale of loop-player to vector(1, 1, 1)
             
