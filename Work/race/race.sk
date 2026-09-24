@@ -49,3 +49,10 @@ every 5 ticks:
                 apply speed 2 to loop-player for 10 ticks:
                     hide icon
                     hide particles
+                    
+        if {_race} is 3:
+            apply haste 1 to loop-player for 10 ticks:
+                hide icon
+                hide particles
+            set scale of loop-player to 1
+            
