@@ -57,6 +57,7 @@ every 5 ticks:
             set scale attribute of loop-player to 0.5
             
 on mine:
-    if block is iron ore, gold ore, coal ore, diamond ore, emerald ore, lapis ore, redstone ore, nether quartz ore, nether gold ore or ancient debris:
-        double drops of block
+    if number data tag "race:id" of player is 3:
+        if event-block is iron ore, gold ore, coal ore, diamond ore, emerald ore, lapis ore, redstone ore, nether quartz ore, nether gold ore or ancient debris:
+            drop drops of event-block at event-block's location
             
