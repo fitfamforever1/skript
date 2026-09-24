@@ -75,7 +75,7 @@ every 5 ticks:
                 hide particles
             
         if {_race} is 6:
-            if time in world "world" is between 13000 and 23000:
+            if time in player's world is between 13000 and 23000:
                 apply strength 5 to loop-player for 10 ticks:
                     hide icon
                     hide particles
