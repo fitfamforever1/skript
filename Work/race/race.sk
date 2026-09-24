@@ -38,6 +38,10 @@ every 5 ticks:
         set {_race} to number data tag "race:id" of loop-player
 
         if {_race} is 2:
+            apply night vision 1 to loop-player for 10 ticks:
+                hide icon
+                hide particles
+            set max health of loop-player to 25
             apply speed 1 to loop-player for 10 ticks:
                 hide icon
                 hide particles
