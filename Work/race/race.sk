@@ -41,7 +41,7 @@ every 5 ticks:
             apply night vision 1 to loop-player for 10 ticks:
                 hide icon
                 hide particles
-            set max health of loop-player to 25
+            set max health of loop-player to 12.5
             apply speed 1 to loop-player for 10 ticks:
                 hide icon
                 hide particles
