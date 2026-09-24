@@ -64,7 +64,7 @@ every 5 ticks:
             set scale attribute of loop-player to 1.5
             
         if {_race} is 5:
-            apply dolphins grace 4 to loop-player for 10 ticks:
+            apply dolphins grace 5 to loop-player for 10 ticks:
                 hide icon
                 hide particles
             apply water breathing 1 to loop-player for 10 ticks:
