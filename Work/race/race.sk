@@ -59,6 +59,6 @@ every 5 ticks:
 on mine:
     if number data tag "race:id" of player is 3:
         if event-block is iron ore, gold ore, coal ore, diamond ore, emerald ore, lapis ore, redstone ore, nether quartz ore, nether gold ore or ancient debris:
-            if player's tool doesn't have silk touch:
+            if player's tool is not enchanted with silk touch:
                 drop drops of event-block at event-block's location
             
