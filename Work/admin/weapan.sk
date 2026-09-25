@@ -4,153 +4,170 @@ command /createweapan <integer> <integer>:
         set {_type} to arg-1
         set {_material} to arg-2
 
-        if {_type} = 1:
-            set {_weapon} to "Katana"
-            set {_damage::wood} to 2.5
-            set {_damage::stone} to 3
-            set {_damage::copper} to 3
-            set {_damage::iron} to 4
-            set {_damage::gold} to 2.5
-            set {_damage::diamond} to 5
-            set {_damage::netherite} to 6
+        # \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+        # WEAPON TYPE
+        # 1 = Katana
+        # 2 = Knife
+        # 3 = Saber
+        # 4 = Longsword
+        # 5 = Rapier
+        # 6 = Scythe
+        # \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
 
+        if {_type} = 1:
+            set {_name} to "&fKatana"
             set {_speed} to 1.7
-            set {_reach} to 3.0
+            set {_wood} to 2.5
+            set {_stone} to 3
+            set {_copper} to 3
+            set {_iron} to 4
+            set {_gold} to 2.5
+            set {_diamond} to 5
+            set {_netherite} to 6
 
         else if {_type} = 2:
-            set {_weapon} to "Knife"
-            set {_damage::wood} to 1
-            set {_damage::stone} to 1.5
-            set {_damage::copper} to 1.5
-            set {_damage::iron} to 2
-            set {_damage::gold} to 1
-            set {_damage::diamond} to 3
-            set {_damage::netherite} to 4
-
+            set {_name} to "&fKnife"
             set {_speed} to 3.0
-            set {_reach} to 2.5
+            set {_wood} to 1
+            set {_stone} to 1.5
+            set {_copper} to 1.5
+            set {_iron} to 2
+            set {_gold} to 1
+            set {_diamond} to 3
+            set {_netherite} to 4
 
         else if {_type} = 3:
-            set {_weapon} to "Saber"
-            set {_damage::wood} to 3
-            set {_damage::stone} to 4
-            set {_damage::copper} to 4
-            set {_damage::iron} to 5
-            set {_damage::gold} to 3
-            set {_damage::diamond} to 6
-            set {_damage::netherite} to 7
-
+            set {_name} to "&fSaber"
             set {_speed} to 2.2
-            set {_reach} to 3.0
+            set {_wood} to 3
+            set {_stone} to 4
+            set {_copper} to 4
+            set {_iron} to 5
+            set {_gold} to 3
+            set {_diamond} to 6
+            set {_netherite} to 7
 
         else if {_type} = 4:
-            set {_weapon} to "Longsword"
-            set {_damage::wood} to 4
-            set {_damage::stone} to 5
-            set {_damage::copper} to 5
-            set {_damage::iron} to 6
-            set {_damage::gold} to 4
-            set {_damage::diamond} to 7
-            set {_damage::netherite} to 8
-
+            set {_name} to "&fLongsword"
             set {_speed} to 1.2
-            set {_reach} to 3.25
+            set {_wood} to 4
+            set {_stone} to 5
+            set {_copper} to 5
+            set {_iron} to 6
+            set {_gold} to 4
+            set {_diamond} to 7
+            set {_netherite} to 8
 
         else if {_type} = 5:
-            set {_weapon} to "Rapier"
-            set {_damage::wood} to 2
-            set {_damage::stone} to 2.5
-            set {_damage::copper} to 2.5
-            set {_damage::iron} to 3
-            set {_damage::gold} to 2
-            set {_damage::diamond} to 4
-            set {_damage::netherite} to 5
-
+            set {_name} to "&fRapier"
             set {_speed} to 1.9
-            set {_reach} to 3.0
+            set {_wood} to 2
+            set {_stone} to 2.5
+            set {_copper} to 2.5
+            set {_iron} to 3
+            set {_gold} to 2
+            set {_diamond} to 4
+            set {_netherite} to 5
 
         else if {_type} = 6:
-            set {_weapon} to "Scythe"
-            set {_damage::wood} to 6
-            set {_damage::stone} to 6.5
-            set {_damage::copper} to 6.5
-            set {_damage::iron} to 7
-            set {_damage::gold} to 6
-            set {_damage::diamond} to 8
-            set {_damage::netherite} to 9
-
+            set {_name} to "&fScythe"
             set {_speed} to 1.0
-            set {_reach} to 3.5
+            set {_wood} to 6
+            set {_stone} to 6.5
+            set {_copper} to 6.5
+            set {_iron} to 7
+            set {_gold} to 6
+            set {_diamond} to 8
+            set {_netherite} to 9
 
         else:
             send "&cInvalid weapon type."
-            send "&7Types: &f1 Katana, 2 Knife, 3 Saber, 4 Longsword, 5 Rapier, 6 Scythe"
             stop
 
+        # \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+        # MATERIAL
+        # 1 = Wood
+        # 2 = Stone
+        # 3 = Copper
+        # 4 = Iron
+        # 5 = Gold
+        # 6 = Diamond
+        # 7 = Netherite
+        # \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+
         if {_material} = 1:
-            set {_item} to wooden sword named {_weapon}
-            set {_damage} to {_damage::wood}
+            set {_item} to wooden sword
+            set {_damage} to {_wood}
 
         else if {_material} = 2:
-            set {_item} to stone sword named {_weapon}
-            set {_damage} to {_damage::stone}
+            set {_item} to stone sword
+            set {_damage} to {_stone}
 
         else if {_material} = 3:
-            set {_item} to copper sword named {_weapon}
-            set {_damage} to {_damage::copper}
+            set {_item} to copper sword
+            set {_damage} to {_copper}
 
         else if {_material} = 4:
-            set {_item} to iron sword named {_weapon}
-            set {_damage} to {_damage::iron}
+            set {_item} to iron sword
+            set {_damage} to {_iron}
 
         else if {_material} = 5:
-            set {_item} to golden sword named {_weapon}
-            set {_damage} to {_damage::gold}
+            set {_item} to golden sword
+            set {_damage} to {_gold}
 
         else if {_material} = 6:
-            set {_item} to diamond sword named {_weapon}
-            set {_damage} to {_damage::diamond}
+            set {_item} to diamond sword
+            set {_damage} to {_diamond}
 
         else if {_material} = 7:
-            set {_item} to netherite sword named {_weapon}
-            set {_damage} to {_damage::netherite}
+            set {_item} to netherite sword
+            set {_damage} to {_netherite}
 
         else:
             send "&cInvalid material."
-            send "&7Materials: &f1 Wood, 2 Stone, 3 Copper, 4 Iron, 5 Gold, 6 Diamond, 7 Netherite"
             stop
 
+        # \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+        # NAME
+        # \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
 
-        delete attack damage modifier of {_item}
-        delete attack speed modifier of {_item}
-        delete entity interaction range modifier of {_item}
+        set name of {_item} to {_name}
+
+        # \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+        # ATTACK DAMAGE
+        #
+        # Displayed damage = modifier + 1
+        #
+        # Example:
+        # Desired 5 damage
+        # Modifier = 4
+        # \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+
+        set {_damageModifier} to {_damage} - 1
 
         apply attribute modifier to {_item}:
+            id: "minecraft:base_attack_damage"
             attribute: attack damage
-            id: "fitfam:weapon_damage"
-            amount: {_damage}
-            operation: add_number
+            amount: {_damageModifier}
             slot: mainhand_slot_group
+            operation: add_number
+
+        # \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+        # ATTACK SPEED
+        #
+        # Player base attack speed = 4
+        # Modifier = desired speed - 4
+        # \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
 
         set {_speedModifier} to {_speed} - 4
 
         apply attribute modifier to {_item}:
-            attribute: attack damage
-            id: "minecraft:attack_damage"
-            amount: {_damage}
-            operation: add_number
+            id: "minecraft:base_attack_speed"
+            attribute: attack speed
+            amount: {_speedModifier}
             slot: mainhand_slot_group
+            operation: add_number
 
+        give player {_item}
 
-        set {_reachModifier} to {_reach} - 3
-
-        if {_reachModifier} is not 0:
-            apply attribute modifier to {_item}:
-                attribute: attack speed
-                id: "minecraft:attack_speed"
-                amount: {_speed} - 4
-                operation: add_number
-                slot: mainhand_slot_group
-
-        give {_item} to player
-        send "&aCreated &f%{_item}%&a."
+        send "&aCreated %{_name}% &7(Material: %{_material}%)"
