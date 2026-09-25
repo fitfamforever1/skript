@@ -18,7 +18,7 @@ on chat:
             set {_censor} to "%{_censor}%*"
         set {_censor} to "%{_censor}%%{_last}%"
         
-        set {_msg} to {_msg} replaced with regex "(?i)%{_word}%" with {_censor}
+        regex replace {_word} in {_msg} with {_censor}
     
     cancel event
     broadcast "&7%player%&8: &7%{_msg}%"
