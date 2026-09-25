@@ -1,4 +1,5 @@
 on player's held item change:
-    set {_temp} to data tag "weapan:id" of player's tool
+    set {_item} to player's tool
+    set {_temp} to data tag "weapan:id" of {_item}
     send "%{_temp}%"
     
