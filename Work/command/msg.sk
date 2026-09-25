@@ -17,6 +17,7 @@ command /msg [<player>] [<text>]:
         set {_target2} to SmallCaps("%player%")
         
         set text data tag "msg:last" of player to "%{_target}%" 
+        send "%{_target}%"
         
         send "&8[&e%{_target1}% &b→ &e%{_target2}%&8] &7%arg-2%"
         send "&8[&e%{_target1}% &b→ &e%{_target2}%&8] &7%arg-2%" to arg-1
