@@ -41,6 +41,7 @@ on damage:
 
         if {_temp} is "5":
             if victim is blocking:
+                send "test"
                 interrupt the usage of the victim's current item
                 set item cooldown of victim's tool for victim to 2 seconds
             
