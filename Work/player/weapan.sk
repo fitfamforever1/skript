@@ -1,12 +1,12 @@
 on player's held item change:
     set {_item} to player's tool
     set {_temp} to data tag "weapan:id" of {_item}
-    send "%{_temp}%"
-    if {_temp} is "1":
-        send "katana"
     
 on damage:
     if attacker is player:
         if attacker's offhand tool is air:
-            set damage to damage * 1.5
+            set {_item} to player's tool
+            set {_temp} to data tag "weapan:id" of {_item}
+            if {_temp} is "1":
+                set damage to damage * 1.5
         
