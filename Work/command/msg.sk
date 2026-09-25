@@ -9,9 +9,6 @@ command /msg [<player>] [<text>]:
         if {_target} is not online:
             send "&8[&4ꜱʏꜱᴛᴇᴍ&8] ᴘʟᴀʏᴇʀ ɪꜱ ɴᴏᴛ ᴏɴʟɪɴᴇ."
             stop
-        if {_target} is player:
-            send "&8[&4ꜱʏꜱᴛᴇᴍ&8] ʏᴏᴜʀ ᴄᴀɴ'ᴛ ᴍꜱɢ ʏᴏᴜʀꜱᴇʟꜰ."
-            stop
         
         set {_target1} to SmallCaps("%arg-1%")
         set {_target2} to SmallCaps("%player%")
