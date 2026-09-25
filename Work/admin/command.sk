@@ -42,6 +42,11 @@ function SmallCaps(input: text) :: text:
                 set {_result} to "%{_result}%%loop-value%"
     return {_result}
 
+command /admin:
+    permission: admin.area
+    trigger:
+        teleport player to location(2.5, -63, 4.5,"world",-180,0)
+
 command /gmc:
     permission: admin.gamemode
     trigger:

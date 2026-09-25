@@ -1,7 +1,7 @@
 command /admin:
     permission: admin.area
     trigger:
-        teleport player to location(51.5, -60, 70.5,"world",-180,0)
+        teleport player to location(2.5, -63, 4.5,"world",-180,0)
 
 command /bcast <text>:
     permission: admin.bcast
