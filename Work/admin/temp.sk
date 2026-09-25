@@ -1,0 +1,7 @@
+command /reach <number>:
+    trigger:
+        set {_item} to player's tool
+        apply attack range component to {_item}:
+            min_reach: 0.0
+            max_reach: arg-1
+        set player's tool to {_item}
