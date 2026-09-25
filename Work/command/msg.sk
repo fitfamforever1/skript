@@ -1,0 +1,17 @@
+command /msg <player> <text>:
+    trigger:
+        if arg-1 is not set:
+            send "&8[&4ꜱʏꜱᴛᴇᴍ&8] &7/ᴍꜱɢ <ᴘʟᴀʏᴇʀ> <ᴛᴇxᴛ>"
+            stop
+        if arg-1 is not online:
+            send "&8[&4ꜱʏꜱᴛᴇᴍ&8] ᴘʟᴀʏᴇʀ ɪꜱ ɴᴏᴛ ᴏɴʟɪɴᴇ."
+            stop
+        if arg-1's name is "%player%":
+            send "&8[&4ꜱʏꜱᴛᴇᴍ&8] ᴘʟᴀʏᴇʀ ɪꜱ ɴᴏᴛ ᴏɴʟɪɴᴇ."
+            stop
+        
+        set {_target1} to SmallCaps("%arg-1%")
+        set {_target2} to SmallCaps("%player%")
+        
+        send "&8[&e%{_target1}% &b→ &e%{_target2}%&8] &7%arg-2%"
+        send "&8[&e%{_target1}% &b→ &e%{_target2}%&8] &7%arg-2%" to arg-1
