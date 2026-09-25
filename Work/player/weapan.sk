@@ -7,9 +7,64 @@ on player's held item change:
     
 on damage:
     if attacker is player:
-        if attacker's offhand tool is air:
-            set {_item} to attacker's tool
-            set {_temp} to data tag "weapan:id" of {_item}
-            if {_temp} is "1":
+        set {_item} to attacker's tool
+        set {_temp} to data tag "weapan:id" of {_item}
+        
+        if {_temp} is "1":
+            if attacker's offhand tool is air:
                 set damage to damage * 1.5
+                
+        if {_temp} is "2":
+            if victim's chestplate is air:
+                set damage to damage * 2
+        
+            if {consecutive_hits::%attacker%} is not set:
+                set {consecutive_hits::%attacker%} to 0
+        
+            if {last_hit::%attacker%} is victim:
+                add 1 to {consecutive_hits::%attacker%}
+            else:
+                set {last_hit::%attacker%} to victim
+                set {consecutive_hits::%attacker%} to 1
+        
+            if {consecutive_hits::%attacker%} >= 3:
+                apply strength 1 to attacker for 5 seconds
+                set {consecutive_hits::%attacker%} to 0
+                
+        if {_temp} is "3":
+            if victim is sprinting:
+                set damage to damage * 1.5
+        
+        if {_temp} is "4":
+            if attacker's offhand tool is air:
+                set damage to damage * 1.5
+
+        if {_temp} is "5":
+            if victim is blocking:
+                interrupt the usage of the victim's current item
+                set item cooldown of victim's tool for victim to 2 seconds
+            
+            set {_armor} to 0
+        
+            if attacker's helmet is not air:
+                add 1 to {_armor}
+            if attacker's chestplate is not air:
+                add 1 to {_armor}
+            if attacker's leggings are not air:
+                add 1 to {_armor}
+            if attacker's boots are not air:
+                add 1 to {_armor}
+        
+            set damage to damage * (1 + ({_armor} * 0.05))
+            
+        if {_temp} is "6":
+            if attacker's offhand tool is air:
+                set damage to damage * 1.5
+        
+            if attacker's chestplate is air:
+                set damage to damage * 1.5
+            
+            
+                
+        
         
