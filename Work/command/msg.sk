@@ -2,12 +2,12 @@ command /msg [<player>] [<text>]:
     trigger:
         
         set {_target} to arg-1
+        if {_target} is not online:
+            send "&8[&4ꜱʏꜱᴛᴇᴍ&8] &7ᴘʟᴀʏᴇʀ ɪꜱ ɴᴏᴛ ᴏɴʟɪɴᴇ."
+            stop
         
         if arg-1 is not set:
             send "&8[&4ꜱʏꜱᴛᴇᴍ&8] &7/ᴍꜱɢ <ᴘʟᴀʏᴇʀ> <ᴛᴇxᴛ>"
-            stop
-        if {_target} is not online:
-            send "&8[&4ꜱʏꜱᴛᴇᴍ&8] &7ᴘʟᴀʏᴇʀ ɪꜱ ɴᴏᴛ ᴏɴʟɪɴᴇ."
             stop
         if {_target} is player:
             send "&8[&4ꜱʏꜱᴛᴇᴍ&8] &7ʏᴏᴜʀ ᴄᴀɴ'ᴛ ᴍꜱɢ ʏᴏᴜʀꜱᴇʟꜰ."
