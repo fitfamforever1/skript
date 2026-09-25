@@ -1,4 +1,4 @@
-command /msg <player> <text>:
+command /msg [<player>] [<text>]:
     trigger:
         if arg-1 is not set:
             send "&8[&4ꜱʏꜱᴛᴇᴍ&8] &7/ᴍꜱɢ <ᴘʟᴀʏᴇʀ> <ᴛᴇxᴛ>"
