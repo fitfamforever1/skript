@@ -135,9 +135,9 @@ command /createweapan <integer> <integer>:
         set {_speedModifier} to {_speed} - 4
 
         apply attribute modifier to {_item}:
-            attribute: attack speed
-            id: "fitfam:weapon_speed"
-            amount: {_speedModifier}
+            attribute: attack damage
+            id: "minecraft:attack_damage"
+            amount: {_damage}
             operation: add_number
             slot: mainhand_slot_group
 
@@ -146,9 +146,9 @@ command /createweapan <integer> <integer>:
 
         if {_reachModifier} is not 0:
             apply attribute modifier to {_item}:
-                attribute: entity interaction range
-                id: "fitfam:weapon_reach"
-                amount: {_reachModifier}
+                attribute: attack speed
+                id: "minecraft:attack_speed"
+                amount: {_speed} - 4
                 operation: add_number
                 slot: mainhand_slot_group
 
