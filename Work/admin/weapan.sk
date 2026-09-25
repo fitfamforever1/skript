@@ -4,16 +4,6 @@ command /createweapan <integer> <integer>:
         set {_type} to arg-1
         set {_material} to arg-2
 
-        # \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
-        # WEAPON TYPE
-        # 1 = Katana
-        # 2 = Knife
-        # 3 = Saber
-        # 4 = Longsword
-        # 5 = Rapier
-        # 6 = Scythe
-        # \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
-
         if {_type} = 1:
             set {_name} to "&fKatana"
             set {_speed} to 1.7
@@ -84,64 +74,48 @@ command /createweapan <integer> <integer>:
             send "&cInvalid weapon type."
             stop
 
-        # \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
-        # MATERIAL
-        # 1 = Wood
-        # 2 = Stone
-        # 3 = Copper
-        # 4 = Iron
-        # 5 = Gold
-        # 6 = Diamond
-        # 7 = Netherite
-        # \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
-
         if {_material} = 1:
             set {_item} to wooden sword
             set {_damage} to {_wood}
-
+            set {_materialName} to "Wood"
+        
         else if {_material} = 2:
             set {_item} to stone sword
             set {_damage} to {_stone}
-
+            set {_materialName} to "Stone"
+        
         else if {_material} = 3:
             set {_item} to copper sword
             set {_damage} to {_copper}
-
+            set {_materialName} to "Copper"
+        
         else if {_material} = 4:
             set {_item} to iron sword
             set {_damage} to {_iron}
-
+            set {_materialName} to "Iron"
+        
         else if {_material} = 5:
             set {_item} to golden sword
             set {_damage} to {_gold}
-
+            set {_materialName} to "Gold"
+        
         else if {_material} = 6:
             set {_item} to diamond sword
             set {_damage} to {_diamond}
-
+            set {_materialName} to "Diamond"
+        
         else if {_material} = 7:
             set {_item} to netherite sword
             set {_damage} to {_netherite}
-
+            set {_materialName} to "Netherite"
+        
         else:
             send "&cInvalid material."
             stop
-
-        # \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+        
         # NAME
-        # \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+        set name of {_item} to "%{_materialName}% %{_name}%"
 
-        set name of {_item} to {_name}
-
-        # \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
-        # ATTACK DAMAGE
-        #
-        # Displayed damage = modifier + 1
-        #
-        # Example:
-        # Desired 5 damage
-        # Modifier = 4
-        # \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
 
         set {_damageModifier} to {_damage} - 1
 
@@ -152,12 +126,6 @@ command /createweapan <integer> <integer>:
             slot: mainhand_slot_group
             operation: add_number
 
-        # \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
-        # ATTACK SPEED
-        #
-        # Player base attack speed = 4
-        # Modifier = desired speed - 4
-        # \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
 
         set {_speedModifier} to {_speed} - 4
 
