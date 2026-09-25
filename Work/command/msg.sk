@@ -25,6 +25,8 @@ command /r [<text>]:
     trigger:
         set {_target} to text data tag "msg:last" of player
         
+        send "%{_target}%"
+        
         if arg-1 is not set:
             send "&8[&4ꜱʏꜱᴛᴇᴍ&8] &7/ʀ <ᴛᴇxᴛ>"
             stop
