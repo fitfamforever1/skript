@@ -2,19 +2,9 @@ on load:
     load yaml "plugins/Skript/yaml/blocked_words.yml" as "blocked"
     set {blocked_words::*} to yaml list "blocked_words" from "blocked"
     broadcast "&7Loaded %size of {blocked_words::*}% blocked words"
-
-function normalize(input: text) -> text:
-    set {_text} to {input} in lowercase
-    replace "4" with "a" in {_text}
-    replace "3" with "e" in {_text}
-    replace "1" with "i" in {_text}
-    replace "0" with "o" in {_text}
-    replace "5" with "s" in {_text}
-    replace "7" with "t" in {_text}
-    replace "@" with "a" in {_text}
-    replace "$" with "s" in {_text}
-    replace "!" with "i" in {_text}
-    return {_text}
+    # Debug: show what loaded
+    loop {blocked_words::*}:
+        broadcast "  - %loop-value%"
 
 on chat:
     cancel event
@@ -27,15 +17,12 @@ on chat:
         set {_prefix} to "&8[%{_color}%%{_name}%&8] "
     
     set {_msg} to message
-    set {_normalized} to normalize({_msg})
+    set {_lower} to message in lowercase
     
     loop {blocked_words::*}:
         set {_word} to loop-value
-        set {_length} to length of {_word}
-
-        set {_spaced} to {_word}
-        replace "" with " " in {_spaced}
-        if {_normalized} contains {_word}:
+        if {_lower} contains {_word}:
+            set {_length} to length of {_word}
             set {_first} to first character of {_word}
             set {_last} to last character of {_word}
             
@@ -44,6 +31,7 @@ on chat:
                 set {_censor} to "%{_censor}%*"
             set {_censor} to "%{_censor}%%{_last}%"
             
-            regex replace {_word} in {_msg} with {_censor}
+            # Use case-insensitive regex
+            regex replace "(?i)%{_word}%" in {_msg} with {_censor}
     
     broadcast "%{_prefix}%&7%player%&8: &f%{_msg}%"
