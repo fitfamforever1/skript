@@ -1,7 +1,7 @@
 on load:
-    set {blocked_words::1} to "fuck"
-    set {blocked_words::2} to "sex"
-    set {blocked_words::3} to "nigga"
+    load yaml "plugins/Skript/blocked_words.yml" as "blocked"
+    set {blocked_words::*} to yaml list "blocked_words" from "blocked"
+    broadcast "&7Loaded %size of {blocked_words::*}% blocked words"
 
 on chat:
     cancel event
