@@ -3,7 +3,7 @@ on player's held item change:
     set {_temp} to data tag "weapan:id" of {_item}
     
     if {_temp} is "1":
-        set movement speed attribute of player to 0.2
+        set movement speed attribute of player to 0.15
     
 on damage:
     if attacker is player:
