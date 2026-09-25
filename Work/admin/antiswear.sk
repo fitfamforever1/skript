@@ -1,10 +1,7 @@
 on load:
     load yaml "plugins/Skript/yaml/blocked_words.yml" as "blocked"
     set {blocked_words::*} to yaml list "blocked_words" from "blocked"
-    broadcast "&7Loaded %size of {blocked_words::*}% blocked words"
-    # Debug: show what loaded
     loop {blocked_words::*}:
-        broadcast "  - %loop-value%"
 
 on chat:
     cancel event
@@ -31,7 +28,6 @@ on chat:
                 set {_censor} to "%{_censor}%*"
             set {_censor} to "%{_censor}%%{_last}%"
             
-            # Use case-insensitive regex
             regex replace "(?i)%{_word}%" in {_msg} with {_censor}
     
     broadcast "%{_prefix}%&7%player%&8: &f%{_msg}%"
