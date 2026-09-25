@@ -44,7 +44,7 @@ on damage:
             if victim is blocking:
                 send "test" to victim
                 interrupt the usage of the victim's current item
-                set item cooldown of victim's tool for victim to 2 seconds
+                set item cooldown of victim's current tool for victim to 2 seconds
             
             set {_armor} to 0
         
