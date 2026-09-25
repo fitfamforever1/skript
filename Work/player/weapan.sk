@@ -6,7 +6,7 @@ on player's held item change:
         set movement speed attribute of player to 0.15
     
 on damage:
-    if attacker is player:
+    if attacker is not player:
         set {_item} to attacker's tool
         set {_temp} to data tag "weapan:id" of {_item}
         
@@ -41,7 +41,7 @@ on damage:
 
         if {_temp} is "5":
             if victim is blocking:
-                send "test"
+                send "test" to attacker
                 interrupt the usage of the victim's current item
                 set item cooldown of victim's tool for victim to 2 seconds
             
