@@ -7,5 +7,4 @@ command /reach <number>:
             min_creative_reach: 0
             max_creative_reach: arg-1
             hitbox_margin: 0.3
-            mob_factor: 1
         set player's tool to {_i}
