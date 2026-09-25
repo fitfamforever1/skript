@@ -28,16 +28,6 @@ on death of player:
     else:
         set death message to "&8[&4☠&8] &c%{_v}% &7ʜᴀꜱ ᴅɪᴇᴅ."
         
-on chat:
-    cancel event
-    set {_check} to the placeholder "betterteams_inTeam" from player
-    set {_prefix} to ""
-    if {_check} is "true":
-        set {_name} to the placeholder "betterteams_name" from player
-        set {_color} to the placeholder "betterteams_color" from player
-        set {_name} to SmallCaps("%{_name}%")
-        set {_prefix} to "&8[%{_color}%%{_name}%&8] "
-    broadcast "%{_prefix}%&7%player%&8: &f%message%"
 
 placeholderapi placeholder with the prefix "name":
     if the identifier is "team":

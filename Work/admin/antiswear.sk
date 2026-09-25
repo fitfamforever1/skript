@@ -4,8 +4,16 @@ on load:
     set {blocked_words::3} to "nigga"
 
 on chat:
-    set {_msg} to message
+    cancel event
+    set {_check} to the placeholder "betterteams_inTeam" from player
+    set {_prefix} to ""
+    if {_check} is "true":
+        set {_name} to the placeholder "betterteams_name" from player
+        set {_color} to the placeholder "betterteams_color" from player
+        set {_name} to SmallCaps("%{_name}%")
+        set {_prefix} to "&8[%{_color}%%{_name}%&8] "
     
+    set {_msg} to message
     loop {blocked_words::*}:
         set {_word} to loop-value
         set {_length} to length of {_word}
@@ -20,5 +28,6 @@ on chat:
         
         regex replace {_word} in {_msg} with {_censor}
     
-    cancel event
-    broadcast "&7%player%&8: &7%{_msg}%"
+    broadcast "%{_prefix}%&7%player%&8: &f%{_msg}%"
+    
+    
