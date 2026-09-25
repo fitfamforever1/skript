@@ -1,0 +1,24 @@
+on load:
+    set {blocked_words::1} to "fuck"
+    set {blocked_words::2} to "sex"
+    set {blocked_words::3} to "nigga"
+
+on chat:
+    set {_msg} to message
+    
+    loop {blocked_words::*}:
+        set {_word} to loop-value
+        set {_length} to length of {_word}
+        
+        set {_first} to first character of {_word}
+        set {_last} to last character of {_word}
+        
+        set {_censor} to "%{_first}%"
+        loop ({_length} - 2) times:
+            set {_censor} to "%{_censor}%*"
+        set {_censor} to "%{_censor}%%{_last}%"
+        
+        set {_msg} to {_msg} replaced with regex "(?i)%{_word}%" with {_censor}
+    
+    cancel event
+    broadcast "&7%player%&8: &7%{_msg}%"
