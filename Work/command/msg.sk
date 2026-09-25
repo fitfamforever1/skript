@@ -7,14 +7,39 @@ command /msg [<player>] [<text>]:
             send "&8[&4ꜱʏꜱᴛᴇᴍ&8] &7/ᴍꜱɢ <ᴘʟᴀʏᴇʀ> <ᴛᴇxᴛ>"
             stop
         if {_target} is not online:
-            send "&8[&4ꜱʏꜱᴛᴇᴍ&8] ᴘʟᴀʏᴇʀ ɪꜱ ɴᴏᴛ ᴏɴʟɪɴᴇ."
+            send "&8[&4ꜱʏꜱᴛᴇᴍ&8] &7ᴘʟᴀʏᴇʀ ɪꜱ ɴᴏᴛ ᴏɴʟɪɴᴇ."
             stop
         if {_target} is player:
-            send "&8[&4ꜱʏꜱᴛᴇᴍ&8] ʏᴏᴜʀ ᴄᴀɴ'ᴛ ᴍꜱɢ ʏᴏᴜʀꜱᴇʟꜰ."
+            send "&8[&4ꜱʏꜱᴛᴇᴍ&8] &7ʏᴏᴜʀ ᴄᴀɴ'ᴛ ᴍꜱɢ ʏᴏᴜʀꜱᴇʟꜰ."
             stop
         
         set {_target1} to SmallCaps("%arg-1%")
         set {_target2} to SmallCaps("%player%")
         
+        set text data tag "msg:last" of player to "%{_target}%" 
+        
         send "&8[&e%{_target1}% &b→ &e%{_target2}%&8] &7%arg-2%"
         send "&8[&e%{_target1}% &b→ &e%{_target2}%&8] &7%arg-2%" to arg-1
+        
+command /r [<text>]:
+    trigger:
+        set {_target} to text data tag "msg:last" of player
+        
+        if arg-1 is not set:
+            send "&8[&4ꜱʏꜱᴛᴇᴍ&8] &7/ʀ <ᴛᴇxᴛ>"
+            stop
+        if {_target} is not set:
+            send "&8[&4ꜱʏꜱᴛᴇᴍ&8] &7ʏᴏᴜ ʜᴀᴠᴇ ɴᴏ ᴏɴᴇ ᴛᴏ ʀᴇᴘʟʏ ᴛᴏ."
+            stop
+        if ({_target} parsed as player) is not online:
+            send "&8[&4ꜱʏꜱᴛᴇᴍ&8] &7ᴘʟᴀʏᴇʀ ɪꜱ ɴᴏᴛ ᴏɴʟɪɴᴇ."
+            stop
+        
+        set {_target1} to SmallCaps("%{_target}%")
+        set {_target2} to SmallCaps("%player%")
+
+        set text data tag "msg:last" of player to "%{_target}%" 
+        
+        send "&8[&e%{_target1}% &b→ &e%{_target2}%&8] &7%arg-1%"
+        send "&8[&e%{_target1}% &b→ &e%{_target2}%&8] &7%arg-2%" to ({_target} parsed as player)
+        
