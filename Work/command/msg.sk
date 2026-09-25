@@ -41,5 +41,5 @@ command /r [<text>]:
         set text data tag "msg:last" of player to "%{_target}%" 
         
         send "&8[&e%{_target1}% &b→ &e%{_target2}%&8] &7%arg-1%"
-        send "&8[&e%{_target1}% &b→ &e%{_target2}%&8] &7%arg-2%" to ({_target} parsed as player)
+        send "&8[&e%{_target1}% &b→ &e%{_target2}%&8] &7%arg-1%" to ({_target} parsed as player)
         
