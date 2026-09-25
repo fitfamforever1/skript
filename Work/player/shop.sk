@@ -22,7 +22,7 @@ command /pdcset [<text>] [<text>]:
         set {_item} to player's held item
         set {_key} to arg-1
         set {_val} to arg-2
-        set data tag {_key} of {_item} to {_val}
+        set number data tag {_key} of {_item} to {_val}
         set player's held item to {_item}
         send "&aSet &e%{_key}% &a= &e%{_val}%&a on held item."
 
