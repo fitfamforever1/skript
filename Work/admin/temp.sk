@@ -1,4 +1,5 @@
 command /reach <number>:
+    permission: admin
     trigger:
         set {_i} to player's tool
         apply attack range component to {_i}:
