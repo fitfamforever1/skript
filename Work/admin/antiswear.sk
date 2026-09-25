@@ -1,5 +1,5 @@
 on load:
-    load yaml "plugins/Skript/blocked_words.yml" as "blocked"
+    load yaml "plugins/Skript/yaml/blocked_words.yml" as "blocked"
     set {blocked_words::*} to yaml list "blocked_words" from "blocked"
     broadcast "&7Loaded %size of {blocked_words::*}% blocked words"
 
