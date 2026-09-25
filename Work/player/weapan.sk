@@ -2,4 +2,13 @@ on player's held item change:
     set {_item} to player's tool
     set {_temp} to data tag "weapan:id" of {_item}
     send "%{_temp}%"
+    if {_temp} is not set:
+        delete number range input:
+            key "custom"
+    if {_temp} is "1":
+        send "katana"
+        add number range input:
+            key: "custom"
+            start: 0
+            end: 3
     
