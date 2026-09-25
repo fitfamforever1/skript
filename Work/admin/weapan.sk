@@ -114,7 +114,7 @@ command /createweapan <integer> <integer>:
             stop
         
         # NAME
-        set name of {_item} to "%{_materialName}% %{_name}%"
+        set name of {_item} to "&f%{_materialName}% %{_name}%"
 
 
         set {_damageModifier} to {_damage} - 1
