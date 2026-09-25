@@ -1,0 +1,156 @@
+command /createweapan <integer> <integer>:
+    permission: op
+    trigger:
+        set {_type} to arg-1
+        set {_material} to arg-2
+
+        if {_type} = 1:
+            set {_weapon} to "Katana"
+            set {_damage::wood} to 2.5
+            set {_damage::stone} to 3
+            set {_damage::copper} to 3
+            set {_damage::iron} to 4
+            set {_damage::gold} to 2.5
+            set {_damage::diamond} to 5
+            set {_damage::netherite} to 6
+
+            set {_speed} to 1.7
+            set {_reach} to 3.0
+
+        else if {_type} = 2:
+            set {_weapon} to "Knife"
+            set {_damage::wood} to 1
+            set {_damage::stone} to 1.5
+            set {_damage::copper} to 1.5
+            set {_damage::iron} to 2
+            set {_damage::gold} to 1
+            set {_damage::diamond} to 3
+            set {_damage::netherite} to 4
+
+            set {_speed} to 3.0
+            set {_reach} to 2.5
+
+        else if {_type} = 3:
+            set {_weapon} to "Saber"
+            set {_damage::wood} to 3
+            set {_damage::stone} to 4
+            set {_damage::copper} to 4
+            set {_damage::iron} to 5
+            set {_damage::gold} to 3
+            set {_damage::diamond} to 6
+            set {_damage::netherite} to 7
+
+            set {_speed} to 2.2
+            set {_reach} to 3.0
+
+        else if {_type} = 4:
+            set {_weapon} to "Longsword"
+            set {_damage::wood} to 4
+            set {_damage::stone} to 5
+            set {_damage::copper} to 5
+            set {_damage::iron} to 6
+            set {_damage::gold} to 4
+            set {_damage::diamond} to 7
+            set {_damage::netherite} to 8
+
+            set {_speed} to 1.2
+            set {_reach} to 3.25
+
+        else if {_type} = 5:
+            set {_weapon} to "Rapier"
+            set {_damage::wood} to 2
+            set {_damage::stone} to 2.5
+            set {_damage::copper} to 2.5
+            set {_damage::iron} to 3
+            set {_damage::gold} to 2
+            set {_damage::diamond} to 4
+            set {_damage::netherite} to 5
+
+            set {_speed} to 1.9
+            set {_reach} to 3.0
+
+        else if {_type} = 6:
+            set {_weapon} to "Scythe"
+            set {_damage::wood} to 6
+            set {_damage::stone} to 6.5
+            set {_damage::copper} to 6.5
+            set {_damage::iron} to 7
+            set {_damage::gold} to 6
+            set {_damage::diamond} to 8
+            set {_damage::netherite} to 9
+
+            set {_speed} to 1.0
+            set {_reach} to 3.5
+
+        else:
+            send "&cInvalid weapon type."
+            send "&7Types: &f1 Katana, 2 Knife, 3 Saber, 4 Longsword, 5 Rapier, 6 Scythe"
+            stop
+
+        if {_material} = 1:
+            set {_item} to wooden sword named {_weapon}
+            set {_damage} to {_damage::wood}
+
+        else if {_material} = 2:
+            set {_item} to stone sword named {_weapon}
+            set {_damage} to {_damage::stone}
+
+        else if {_material} = 3:
+            set {_item} to copper sword named {_weapon}
+            set {_damage} to {_damage::copper}
+
+        else if {_material} = 4:
+            set {_item} to iron sword named {_weapon}
+            set {_damage} to {_damage::iron}
+
+        else if {_material} = 5:
+            set {_item} to golden sword named {_weapon}
+            set {_damage} to {_damage::gold}
+
+        else if {_material} = 6:
+            set {_item} to diamond sword named {_weapon}
+            set {_damage} to {_damage::diamond}
+
+        else if {_material} = 7:
+            set {_item} to netherite sword named {_weapon}
+            set {_damage} to {_damage::netherite}
+
+        else:
+            send "&cInvalid material."
+            send "&7Materials: &f1 Wood, 2 Stone, 3 Copper, 4 Iron, 5 Gold, 6 Diamond, 7 Netherite"
+            stop
+
+
+        delete attack damage modifier of {_item}
+        delete attack speed modifier of {_item}
+        delete entity interaction range modifier of {_item}
+
+        apply attribute modifier to {_item}:
+            attribute: attack damage
+            id: "fitfam:weapon_damage"
+            amount: {_damage}
+            operation: add_number
+            slot: mainhand_slot_group
+
+        set {_speedModifier} to {_speed} - 4
+
+        apply attribute modifier to {_item}:
+            attribute: attack speed
+            id: "fitfam:weapon_speed"
+            amount: {_speedModifier}
+            operation: add_number
+            slot: mainhand_slot_group
+
+
+        set {_reachModifier} to {_reach} - 3
+
+        if {_reachModifier} is not 0:
+            apply attribute modifier to {_item}:
+                attribute: entity interaction range
+                id: "fitfam:weapon_reach"
+                amount: {_reachModifier}
+                operation: add_number
+                slot: mainhand_slot_group
+
+        give {_item} to player
+        send "&aCreated &f%{_item}%&a."
