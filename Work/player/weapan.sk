@@ -31,15 +31,15 @@ on damage:
                 apply strength 1 to attacker for 5 seconds
                 set {consecutive_hits::%attacker%} to 0
                 
-        if {_temp} is "3":
+        if {_temp} is "5":
             if victim is sprinting:
                 set damage to damage * 1.5
         
-        if {_temp} is "4":
+        if {_temp} is "3":
             if attacker's offhand tool is air:
                 set damage to damage * 1.5
 
-        if {_temp} is "5":
+        if {_temp} is "4":
             send "test" to victim
             if victim is blocking:
                 send "test" to victim
