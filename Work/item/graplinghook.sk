@@ -1,3 +1,33 @@
-on fishing state change:
-    wait 1 second
-    teleport player to fishing hook
+command /grappling_hook:
+ permission: hook.cmd
+ trigger:
+  send "&2[&bSkyHook&2] &8Given &aGrappling Hook"
+  give player 1 fishing rod named "&aGrappling Hook" with lore "&7Travel around in style using" and "&7this Grappling Hook." and "&82 Second Cooldown" and " " and "&a&lUNCOMMON"
+        
+on right click:
+   if name of player's tool is "&aGrappling Hook":
+      execute player command "/grapplinghook" 
+
+
+command /grapplinghook:    
+        cooldown: 2 seconds
+        cooldown message: &cPlease wait 2 seconds!
+        trigger:
+                push player forwards at speed 3 
+        
+
+on damage:
+   damage cause is fall:
+      victim's held item is fishing rod named "&aGrappling Hook"
+      cancel event
+      
+command /skyhook:
+  permission: skyhook.cmd
+  trigger:
+    send "&fRunning version <version> beta1.1"
+ 
+command /SHook reload:
+    trigger:
+        make console execute command "/sk reload SkyHook"
+        send "&2[&bSkyHook&2] &eReloaded!"
+    permission: shook.cmd
