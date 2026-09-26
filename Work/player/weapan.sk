@@ -65,8 +65,12 @@ on damage:
         
             if attacker's chestplate is air:
                 set damage to damage * 1.5
-            
-            
                 
+        if {_temp} is "6":
+            add 1 to {battleaxe_hits::%attacker%}
+        
+            if {battleaxe_hits::%attacker%} >= 3:
+                set damage to damage * 1.5
+                set {battleaxe_hits::%attacker%} to 0
         
         
