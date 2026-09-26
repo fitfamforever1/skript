@@ -24,14 +24,14 @@ command /weapan <number> <number>:
         apply attribute modifier to {_item}:
             id: "minecraft:base_attack_damage"
             attribute: attack damage
-            amount: arg-1 -1
+            amount: %arg-1% - 1
             slot: mainhand_slot_group
             operation: add_number
 
         apply attribute modifier to {_item}:
             id: "minecraft:base_attack_speed"
             attribute: attack speed
-            amount: arg-2 - 4
+            amount: %arg-2% - 4
             slot: mainhand_slot_group
             operation: add_number
 
