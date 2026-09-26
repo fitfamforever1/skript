@@ -13,5 +13,5 @@ command /reach <number>:
 command /durability <integer>:
     permission: admin
     trigger:
-        set max damage component of player's tool to arg-1
-        set damage component of player's tool to 0
+        set max durability of player's tool to arg-1
+        set durability of player's tool to 0
