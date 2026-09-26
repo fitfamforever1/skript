@@ -55,3 +55,7 @@ placeholderapi placeholder with the prefix "name":
             set the result to {_prefix}
         else:
             set the result to ""
+            
+placeholderapi placeholder with the prefix "name":
+    if the identifier is "player":
+        set the result to SmallCaps("%player%")
