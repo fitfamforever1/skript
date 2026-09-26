@@ -52,7 +52,7 @@ placeholderapi placeholder with the prefix "name":
         if {_check} is "true":
             set {_name} to the placeholder "betterteams_name" from player
             set {_name} to SmallCaps("%{_name}%")
-            set {_prefix} to "[%%{_name}%] "
+            set {_prefix} to "[%{_name}%] "
             set the result to {_prefix}
         else:
             set the result to ""
