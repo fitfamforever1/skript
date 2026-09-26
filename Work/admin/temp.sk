@@ -10,3 +10,8 @@ command /reach <number>:
             hitbox_margin: 0.3
         set player's tool to {_i}
         
+command /durability <integer>:
+    permission: admin
+    trigger:
+        set max damage component of player's tool to arg-1
+        set damage component of player's tool to 0
