@@ -20,18 +20,21 @@ command /weapan <number> <number>:
     permission: admin
     trigger:
         set {_item} to player's tool
-
+        {_temp1} to arg-1
+        {_temp2} to arg-2
+        
+        
         apply attribute modifier to {_item}:
             id: "minecraft:base_attack_damage"
             attribute: attack damage
-            amount: %arg-1% - 1
+            amount: %{_temp1}% - 1
             slot: mainhand_slot_group
             operation: add_number
 
         apply attribute modifier to {_item}:
             id: "minecraft:base_attack_speed"
             attribute: attack speed
-            amount: %arg-2% - 4
+            amount: %{_temp2}% - 4
             slot: mainhand_slot_group
             operation: add_number
 
