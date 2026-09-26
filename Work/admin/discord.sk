@@ -1,6 +1,17 @@
-# Discord-Minecraft Bridge Bot using Disky
+# Discord-Minecraft Bridge Bot using Disky v4
 # Bridges messages between Discord and Minecraft chat
 # Also announces server events
+
+# Bot Definition
+define new bot named "MinecraftBridge":
+    token: "MTM5OTY5NDEwMDc0MzA2NTYxMg.GGteeZ.AhSvPA5RynnFUNFmCcujwsZGuWeWw1rLdgAbPA"
+    intents: default intents, message content, guild members
+    policy: all
+    auto reconnect: true
+    compress: none
+    
+    on ready:
+        send "%event-bot% is online!" to console
 
 # Configuration
 on load:
@@ -9,93 +20,101 @@ on load:
     broadcast "&6[Bridge] &aDiscord-Minecraft bridge loaded successfully"
 
 # === MESSAGE RELAY: Discord -> Minecraft ===
-on discord message received:
-    set {_guild} to event-guild
-    set {_channel} to event-channel
-    
+on message received seen by "MinecraftBridge":
     # Check if message is from the correct guild and channel
-    if id of {_guild} is {discord.guild} and id of {_channel} is {discord.channel}:
-        set {_author} to author of event-message
-        set {_content} to content of event-message
-        
-        # Ignore bot messages
-        if {_author} is a bot:
-            stop
-        
-        # Ignore empty messages
-        if {_content} is empty:
-            stop
-        
-        # Relay to Minecraft
-        broadcast "&b[Discord] &f%username of {_author}%&7: &f%{_content}%"
+    if event is from guild:
+        if discord id of event-guild is {discord.guild} and discord id of event-channel is {discord.channel}:
+            set {_author} to event-user
+            set {_content} to event-message
+            
+            # Ignore bot messages
+            if {_author} is a bot:
+                stop
+            
+            # Ignore empty messages
+            if {_content} is empty:
+                stop
+            
+            # Relay to Minecraft
+            broadcast "&b[Discord] &f%name of {_author}%&7: &f%{_content}%"
 
 # === MESSAGE RELAY: Minecraft -> Discord ===
 on chat:
+    set {_player} to player
     set {_message} to message
     
-    # Create Discord message
-    set {_embed} to a new embed
-    set the title of {_embed} to "%player's display name%"
-    set the description of {_embed} to {_message}
-    set the color of {_embed} to cyan
-    set the footer of {_embed} to "Minecraft Server"
+    # Create Discord embed
+    make embed and store it in {_embed}:
+        set title of embed to "%{_player}'s display name%"
+        set description of embed to {_message}
+        set embed color of embed to cyan
+        set footer of embed to "Minecraft Server"
+        set timestamp of embed to now
     
-    send {_embed} to channel with id {discord.channel} in guild with id {discord.guild}
+    post {_embed} to text channel with id {discord.channel}
 
 # === SERVER START ANNOUNCEMENT ===
 on server start:
-    set {_embed} to a new embed
-    set the title of {_embed} to "🟢 Server Started"
-    set the description of {_embed} to "The Minecraft server has started!"
-    set the color of {_embed} to green
-    set the footer of {_embed} to "Minecraft Server"
+    make embed and store it in {_embed}:
+        set title of embed to "🟢 Server Started"
+        set description of embed to "The Minecraft server has started!"
+        set embed color of embed to green
+        set footer of embed to "Minecraft Server"
+        set timestamp of embed to now
     
-    send {_embed} to channel with id {discord.channel} in guild with id {discord.guild}
+    post {_embed} to text channel with id {discord.channel}
 
 # === SERVER STOP ANNOUNCEMENT ===
 on server stop:
-    set {_embed} to a new embed
-    set the title of {_embed} to "🔴 Server Stopped"
-    set the description of {_embed} to "The Minecraft server has stopped!"
-    set the color of {_embed} to red
-    set the footer of {_embed} to "Minecraft Server"
+    make embed and store it in {_embed}:
+        set title of embed to "🔴 Server Stopped"
+        set description of embed to "The Minecraft server has stopped!"
+        set embed color of embed to red
+        set footer of embed to "Minecraft Server"
+        set timestamp of embed to now
     
-    send {_embed} to channel with id {discord.channel} in guild with id {discord.guild}
+    post {_embed} to text channel with id {discord.channel}
 
 # === PLAYER JOIN ANNOUNCEMENT ===
 on player join:
-    set {_embed} to a new embed
-    set the title of {_embed} to "➕ Player Joined"
-    set the description of {_embed} to "%player's display name% has joined the server!"
-    set the color of {_embed} to green
-    set the footer of {_embed} to "Minecraft Server"
+    set {_player} to player
     
-    send {_embed} to channel with id {discord.channel} in guild with id {discord.guild}
+    make embed and store it in {_embed}:
+        set title of embed to "➕ Player Joined"
+        set description of embed to "%{_player}'s display name% has joined the server!"
+        set embed color of embed to green
+        set footer of embed to "Minecraft Server"
+        set timestamp of embed to now
+    
+    post {_embed} to text channel with id {discord.channel}
 
 # === PLAYER LEAVE ANNOUNCEMENT ===
 on player quit:
-    set {_embed} to a new embed
-    set the title of {_embed} to "➖ Player Left"
-    set the description of {_embed} to "%player's display name% has left the server!"
-    set the color of {_embed} to red
-    set the footer of {_embed} to "Minecraft Server"
+    set {_player} to player
     
-    send {_embed} to channel with id {discord.channel} in guild with id {discord.guild}
+    make embed and store it in {_embed}:
+        set title of embed to "➖ Player Left"
+        set description of embed to "%{_player}'s display name% has left the server!"
+        set embed color of embed to red
+        set footer of embed to "Minecraft Server"
+        set timestamp of embed to now
+    
+    post {_embed} to text channel with id {discord.channel}
 
 # === COMMAND: Manual Server Status ===
 command /serverstatus:
     description: Sends current server status to Discord
     permission: op
     trigger:
-        set {_embed} to a new embed
-        set the title of {_embed} to "📊 Server Status"
-        set the description of {_embed} to "Online Players: %size of all players%"
-        add "Players Online:" to {_list::*}
-        loop all players:
-            add "  • %loop-value's display name%" to {_list::*}
-        set the description of {_embed} to {_list::*} joined by newline
-        set the color of {_embed} to blue
-        set the footer of {_embed} to "Minecraft Server"
+        make embed and store it in {_embed}:
+            set title of embed to "📊 Server Status"
+            set embed color of embed to blue
+            set footer of embed to "Minecraft Server"
+            set timestamp of embed to now
+            set description of embed to "**Online Players: %size of all players%**"
+            
+            loop all players:
+                add inline field named "%loop-number%" with value "%loop-value's display name%" to fields of embed
         
-        send {_embed} to channel with id {discord.channel} in guild with id {discord.guild}
+        post {_embed} to text channel with id {discord.channel}
         message "&6[Bridge] &aServer status sent to Discord!"
