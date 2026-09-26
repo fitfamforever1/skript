@@ -20,8 +20,8 @@ command /weapan <number> <number>:
     permission: admin
     trigger:
         set {_item} to player's tool
-        {_temp1} to arg-1
-        {_temp2} to arg-2
+        set {_temp1} to arg-1
+        set {_temp2} to arg-2
         
         
         apply attribute modifier to {_item}:
