@@ -67,6 +67,12 @@ on damage:
                 set damage to damage * 1.5
                 
         if {_temp} is "6":
+            set {_offhand} to attacker's offhand tool
+            set {_offhand_id} to data tag "weapan:id" of {_offhand}
+        
+            if {_offhand_id} is "6":
+                set damage to damage * 1.5
+        
             add 1 to {battleaxe_hits::%attacker%}
         
             if {battleaxe_hits::%attacker%} >= 3:
