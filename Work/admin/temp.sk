@@ -21,29 +21,18 @@ command /weapan <number> <number>:
     trigger:
         set {_item} to player's tool
 
-        apply attack damage component to {_item}:
-            value: arg-1
-            operation: add_value
+        apply attribute modifier to {_item}:
+            id: "minecraft:base_attack_damage"
+            attribute: attack damage
+            amount: arg-1
+            slot: mainhand_slot_group
+            operation: add_number
 
-        apply attack speed component to {_item}:
-            value: arg-2
-            operation: add_value
-
-        set player's tool to {_item}
-        
-command /armor <number> [<number>]:
-    permission: admin
-    trigger:
-        set {_item} to player's tool
-
-        apply armor component to {_item}:
-            value: arg-1
-            operation: add_value
-        
-        if arg-2 is set:
-            apply attack speed component to {_item}:
-                value: arg-2
-                operation: add_value
+        apply attribute modifier to {_item}:
+            id: "minecraft:base_attack_speed"
+            attribute: attack speed
+            amount: arg-1
+            slot: mainhand_slot_group
+            operation: add_number
 
         set player's tool to {_item}
-       
