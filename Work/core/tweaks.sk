@@ -1,3 +1,6 @@
+on unknown command:
+    set component unknown command message to text component from "&8[&4ꜱʏꜱᴛᴇᴍ&8]&7 ᴛʜɪꜱ ᴄᴏᴍᴍᴀɴᴅ ᴅᴏᴇꜱɴ'ᴛ ᴇxɪꜱᴛ ᴏʀ ɪꜱ ɪɴᴄᴏʀʀᴇᴄᴛ."
+    
 on join:
     set {_p} to SmallCaps("%player%")
     set join message to "&8[&a+&8] &7%{_p}%"
