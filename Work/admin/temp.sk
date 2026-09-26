@@ -9,3 +9,23 @@ command /reach <number>:
             max_creative_reach: arg-1
             hitbox_margin: 0.3
         set player's tool to {_i}
+        
+command /battleaxe:
+    trigger:
+        set {_item} to 1 of diamond axe
+
+        apply attack damage component to {_item}:
+            value: 9
+            operation: add_value
+
+        apply attack speed component to {_item}:
+            value: 0.9
+            operation: add_value
+
+        apply attack range component to {_item}:
+            min_reach: 0.0
+            max_reach: 3.75
+            min_creative_reach: 0.0
+            max_creative_reach: 3.75
+
+        set player's tool to {_item}
