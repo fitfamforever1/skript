@@ -1,29 +1,3 @@
-on fish:
-    if fishing state is reel in:
-        if unformatted name of player's tool is "Grappling Hook (Right-Click)":
-            if lore of player's tool contains "&8Grapple":
-                if {grapple::cooldown::%player's uuid%} isn't set:
-                    set {grapple::falldamage::%player's uuid%} to true
-                    push player upwards at speed 1
-                    push player forwards at speed 2
-                    damage player's tool by 10
-                    set {grapple::cooldown::%player's uuid%} to 5 seconds from now
-                    wait 5 seconds
-                    delete {grapple::cooldown::%player's uuid%}
-                    delete {grapple::falldamage::%player's uuid%}
-                else if {grapple::cooldown::%player's uuid%} is set:
-                    send "&cYour grappling hook is on cooldown. &7(%difference between now and {grapple::cooldown::%player's uuid%}%)"
-                    set {_item} to player's tool
-                    set player's tool to air
-                    set player's tool to {_item}
-
-command /grapplinghook [<text>]:
-    permission: admin
-    permission message: &cYou don't have access to this command.
-    trigger:
-        give fishing rod named "&6Grappling Hook &8(&7Right-Click&8)" with lore "&8Grapple" to player
-
-on damage:
-    if "%damage cause%" is "fall":
-        if {grapple::cooldown::%victim's uuid%} is set:
-            cancel event
+on fish line cast:
+    wait a second
+    teleport player to fishing hook
