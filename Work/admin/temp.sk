@@ -15,3 +15,35 @@ command /durability <integer>:
     trigger:
         set max durability of player's tool to arg-1
         set durability of player's tool to arg-1
+        
+command /weapan <number> <number>:
+    permission: admin
+    trigger:
+        set {_item} to player's tool
+
+        apply attack damage component to {_item}:
+            value: arg-1
+            operation: add_value
+
+        apply attack speed component to {_item}:
+            value: arg-2
+            operation: add_value
+
+        set player's tool to {_item}
+        
+command /armor <number> [<number>]:
+    permission: admin
+    trigger:
+        set {_item} to player's tool
+
+        apply armor component to {_item}:
+            value: arg-1
+            operation: add_value
+        
+        if arg-2 is set:
+            apply attack speed component to {_item}:
+                value: arg-2
+                operation: add_value
+
+        set player's tool to {_item}
+       
