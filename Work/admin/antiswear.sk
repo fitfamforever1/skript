@@ -1,0 +1,25 @@
+on load:
+    load yaml "plugins/Skript/yaml/blocked_words.yml" as "blocked"
+    set {blocked_words::*} to yaml list "blocked_words" from "blocked"
+
+on chat:
+    cancel event
+    set {_prefix} to ""
+    set {_msg} to message
+    set {_lower} to message in lowercase
+    
+    loop {blocked_words::*}:
+        set {_word} to loop-value
+        if {_lower} contains {_word}:
+            set {_length} to length of {_word}
+            set {_first} to first character of {_word}
+            set {_last} to last character of {_word}
+            
+            set {_censor} to "%{_first}%"
+            loop ({_length} - 2) times:
+                set {_censor} to "%{_censor}%*"
+            set {_censor} to "%{_censor}%%{_last}%"
+            
+            regex replace "(?i)%{_word}%" in {_msg} with {_censor}
+    
+    broadcast "&7%player%&8: &f%{_msg}%"

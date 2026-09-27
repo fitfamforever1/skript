@@ -1,0 +1,41 @@
+command /reach <number>:
+    permission: admin
+    trigger:
+        set {_i} to player's tool
+        apply attack range component to {_i}:
+            min_reach: 0
+            max_reach: arg-1
+            min_creative_reach: 0
+            max_creative_reach: arg-1
+            hitbox_margin: 0.3
+        set player's tool to {_i}
+        
+command /durability <integer>:
+    permission: admin
+    trigger:
+        set max durability of player's tool to arg-1
+        set durability of player's tool to arg-1
+        
+command /weapan <number> <number>:
+    permission: admin
+    trigger:
+        set {_item} to player's tool
+        set {_temp1} to arg-1
+        set {_temp2} to arg-2
+        
+        
+        apply attribute modifier to {_item}:
+            id: "minecraft:base_attack_damage"
+            attribute: attack damage
+            amount: {_temp1} - 1
+            slot: mainhand_slot_group
+            operation: add_number
+
+        apply attribute modifier to {_item}:
+            id: "minecraft:base_attack_speed"
+            attribute: attack speed
+            amount: {_temp2} - 4
+            slot: mainhand_slot_group
+            operation: add_number
+
+        set player's tool to {_item}
