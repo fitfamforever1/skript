@@ -1,0 +1,30 @@
+ if player's held item's name is "&aGrappling Hook":
+        if "%fish state%" is "CAUGHT" or "REEL_IN" or "IN_GROUND":
+            set {cooldown.%player%} to true
+            set {nofalldamage.grapplinghook.%player%} to true
+            repair player's held item
+            set {_ploc.x} to x coordinate of player
+            set {_floc.x} to x coordinate of fishing hook
+            set {_ang} to {_floc.x} - {_ploc.x}
+            set {_ploc.z} to z coordinate of player
+            set {_floc.z} to z coordinate of fishing hook
+            set {_ang.2} to {_floc.z} - {_ploc.z}
+            set velocity of player to new Vector {_ang}, 1, {_ang.2}
+            wait 2 seconds
+            delete {cooldown.%player%}
+
+on join:
+    delete {cooldown.%player%}
+    delete {nofalldamage.grapplinghook.%player%}
+
+every 2 seconds:
+    loop all players:
+        if {nofalldamage.grapplinghook.%loop-player%} is true:
+            if block below loop-player is solid:
+                delete {nofalldamage.grapplinghook.%loop-player%}
+
+on damage of player:
+    if damage cause is fall:
+        if {nofalldamage.grapplinghook.%victim%} is true:
+            cancel event
+            delete {nofalldamage.grapplinghook.%victim%} 
