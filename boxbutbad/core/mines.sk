@@ -23,46 +23,50 @@ every 1 minute:
         stop
     set {reset.running} to true
     send action bar "&8[&4ꜱʏꜱᴛᴇᴍ&8] &fᴀʟʟ ᴍɪɴᴇꜱ ʜᴀᴠᴇ ʙᴇᴇɴ ʀᴇꜱᴇᴛ!" to all players
-    fillRegion(11, -57, 23, 4, -60, 16, oak_planks, oak_log, 60)
+    fillRegion(-67, -56, 52, -62, -59, 57, oak_planks, oak_log, 60)
     wait 5 ticks
-    fillRegion(7, -57, 5, 0, -60, -2, copper_ore, copper_block, 80)
+    fillRegion(-58, -56, 33, -53, -59, 28, stone, cobblestone, 80)
     wait 5 ticks
-    fillRegion(-2, -57, -14, 5, -60, -21, iron_ore, iron_block, 80)
+    fillRegion(-58, -56, 16, -63, -59, 11, coal_ore, coal_block, 80)
     wait 5 ticks
-    fillRegion(2, -57, -33, 9, -60, -40, gold_ore, gold_block, 80)
+    fillRegion(-53, -56, -4, -48, -59, -9, copper_ore, copper_block, 80)
     wait 5 ticks
-    fillRegion(25, -60, -44, 32, -57, -51, deepslate_lapis_ore, lapis_block, 80)
+    fillRegion(-22, -57, -8, -17, -60, -13, iron_ore, iron_block, 80)
     wait 5 ticks
-    fillRegion(39, -57, -37, 46, -60, -30, deepslate_redstone_ore, redstone_block, 80)
+    fillRegion(4, -56, -8, 9, -59, -3, gold_ore, gold_block, 80)
     wait 5 ticks
-    fillRegion(47, -57, -20, 54, -60, -13, deepslate_diamond_ore, diamond_block, 90)
+    fillRegion(25, -56, 7, 30, -59, 12, deepslate_lapis_ore, lapis_block, 80)
     wait 5 ticks
-    fillRegion(48, -57, -4, 41, -60, 3, deepslate_emerald_ore, emerald_block, 90)
+    fillRegion(11, -57, 19, 6, -60, 24, deepslate_redstone_ore, redstone_block, 80)
     wait 5 ticks
-    fillRegion(45, -60, 10, 38, -57, 17, ancient_debris, netherite_block, 90)
+    fillRegion(34, -57, 50, 39, -60, 55, deepslate_diamond_ore, diamond_block, 90)
+    wait 5 ticks
+    fillRegion(27, -57, 71, 22, -60, 76, deepslate_emerald_ore, emerald_block, 90)
     set {reset.running} to false
 
 command /reset:
     permission: admin
     trigger:
         send action bar "&8[&4ꜱʏꜱᴛᴇᴍ&8] &fᴀʟʟ ᴍɪɴᴇꜱ ʜᴀᴠᴇ ʙᴇᴇɴ ʀᴇꜱᴇᴛ!" to all players
-        fillRegion(11, -57, 23, 4, -60, 16, oak_planks, oak_log, 60)
+        fillRegion(-67, -56, 52, -62, -59, 57, oak_planks, oak_log, 60)
         wait 5 ticks
-        fillRegion(7, -57, 5, 0, -60, -2, copper_ore, copper_block, 80)
+        fillRegion(-58, -56, 33, -53, -59, 28, stone, cobblestone, 80)
         wait 5 ticks
-        fillRegion(-2, -57, -14, 5, -60, -21, iron_ore, iron_block, 80)
+        fillRegion(-58, -56, 16, -63, -59, 11, coal_ore, coal_block, 80)
         wait 5 ticks
-        fillRegion(2, -57, -33, 9, -60, -40, gold_ore, gold_block, 80)
+        fillRegion(-53, -56, -4, -48, -59, -9, copper_ore, copper_block, 80)
         wait 5 ticks
-        fillRegion(25, -60, -44, 32, -57, -51, deepslate_lapis_ore, lapis_block, 80)
+        fillRegion(-22, -57, -8, -17, -60, -13, iron_ore, iron_block, 80)
         wait 5 ticks
-        fillRegion(39, -57, -37, 46, -60, -30, deepslate_redstone_ore, redstone_block, 80)
+        fillRegion(4, -56, -8, 9, -59, -3, gold_ore, gold_block, 80)
         wait 5 ticks
-        fillRegion(47, -57, -20, 54, -60, -13, deepslate_diamond_ore, diamond_block, 80)
+        fillRegion(25, -56, 7, 30, -59, 12, deepslate_lapis_ore, lapis_block, 80)
         wait 5 ticks
-        fillRegion(48, -57, -4, 41, -60, 3, deepslate_emerald_ore, emerald_block, 80)
+        fillRegion(11, -57, 19, 6, -60, 24, deepslate_redstone_ore, redstone_block, 80)
         wait 5 ticks
-        fillRegion(45, -60, 10, 38, -57, 17, ancient_debris, netherite_block, 90)
+        fillRegion(34, -57, 50, 39, -60, 55, deepslate_diamond_ore, diamond_block, 90)
+        wait 5 ticks
+        fillRegion(27, -57, 71, 22, -60, 76, deepslate_emerald_ore, emerald_block, 90)
 
 command /togglereset:
     permission: admin.mine
