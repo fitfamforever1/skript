@@ -5,21 +5,21 @@ command /spawn [<player>]:
             if player does not have permission "admin.spawn":
                 send "&c✖ &7| &cYou do not have permission to teleport others!" to player
                 stop
-            teleport arg-1 to location(-95.5, -58, 44.5, world "world", 180, 0)
+            teleport arg-1 to location(-95.5, -58, 44.5, world "world", -90, 0)
             play sound "sound:sound.ui.enable" at arg-1 for arg-1
             send title "&a✔ &aTeleported to spawn!" with subtitle "&7By administrator!" to player for 1.6 seconds
             send "&a✔ &7| &aTeleported &e%arg-1% &ato spawn!" to player
             stop
-        teleport player to location(-95.5, -58, 44.5, world "world", 180, 0)
+        teleport player to location(-95.5, -58, 44.5, world "world", -90, 0)
         play sound "sound:sound.ui.enable" at player for player
         send title "&a✔ &aTeleported to spawn!" to player for 1.6 seconds
 
 on respawn:
     wait 20 ticks
-    teleport player to location(-95.5, -58, 44.5, world "world", 180, 0)
+    teleport player to location(-95.5, -58, 44.5, world "world", -90, 0)
     send title "&a✔ &aTeleported to spawn!" with subtitle "&4You have died!" to player for 1.6 seconds
 
 on join:
     wait 1 tick
-    teleport player to location(-95.5, -58, 44.5, world "world", 180, 0)
+    teleport player to location(-95.5, -58, 44.5, world "world", -90, 0)
     send title "&a✔ &aWelcome to the server!" to player for 1.6 seconds
