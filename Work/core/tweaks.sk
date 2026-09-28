@@ -30,3 +30,7 @@ on death of player:
             set death message to "&8[&4☠&8] &c%{_a}% &7ᴇɴᴅᴇᴅ &c%{_v}%'s &7ʟɪꜰᴇ."
     else:
         set death message to "&8[&4☠&8] &c%{_v}% &7ʜᴀꜱ ᴅɪᴇᴅ."
+        
+on craft:
+    cancel event
+        
