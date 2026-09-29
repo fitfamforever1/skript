@@ -1,0 +1,123 @@
+command /saveitem <text>:
+    permission: admin.save
+    usage: /saveitem <id>
+    trigger:
+        if player's tool is air:
+            send "&cYou're not holding anything!" to player
+            stop
+        set {item::%arg-1%} to player's tool
+        send "&aSaved item as &e%arg-1%" to player
+
+command /giveitem <text>:
+    permission: admin.save
+    usage: /giveitem <id>
+    trigger:
+        if {item::%arg-1%} is set:
+            give {item::%arg-1%} to player
+            send "&aGave you item &e%arg-1%" to player
+        else:
+            send "&cNo item found with id &e%arg-1%" to player
+            
+function getRarityLine(rarity: text) :: text:
+    if {_rarity} is "special":
+        return "&cꜱᴘᴇᴄɪᴀʟ"
+    if {_rarity} is "divine":
+        return "&bᴅɪᴠɪɴᴇ"
+    if {_rarity} is "mythic":
+        return "&dᴍʏᴛʜɪᴄᴀʟ"
+    if {_rarity} is "legendary":
+        return "&6ʟᴇɢᴇɴᴅᴀʀʏ"
+    if {_rarity} is "epic":
+        return "&5ᴇᴘɪᴄ"
+    if {_rarity} is "rare":
+        return "&9ʀᴀʀᴇ"
+    if {_rarity} is "uncommon":
+        return "&aᴜɴᴄᴏᴍᴍᴏɴ"
+    if {_rarity} is "common":
+        return "&fᴄᴏᴍᴍᴏɴ"
+    return ""
+    
+function SmallCaps(text: text) :: text:
+    set {_result} to ""
+    set {_chars::*} to {_text} split at ""
+    set {_map::a} to "ᴀ"
+    set {_map::b} to "ʙ"
+    set {_map::c} to "ᴄ"
+    set {_map::d} to "ᴅ"
+    set {_map::e} to "ᴇ"
+    set {_map::f} to "ꜰ"
+    set {_map::g} to "ɢ"
+    set {_map::h} to "ʜ"
+    set {_map::i} to "ɪ"
+    set {_map::j} to "ᴊ"
+    set {_map::k} to "ᴋ"
+    set {_map::l} to "ʟ"
+    set {_map::m} to "ᴍ"
+    set {_map::n} to "ɴ"
+    set {_map::o} to "ᴏ"
+    set {_map::p} to "ᴘ"
+    set {_map::q} to "q"
+    set {_map::r} to "ʀ"
+    set {_map::s} to "ꜱ"
+    set {_map::t} to "ᴛ"
+    set {_map::u} to "ᴜ"
+    set {_map::v} to "ᴠ"
+    set {_map::w} to "ᴡ"
+    set {_map::x} to "x"
+    set {_map::y} to "ʏ"
+    set {_map::z} to "ᴢ"
+    loop {_chars::*}:
+        if loop-value is "&":
+            set {_skipNext} to true
+            set {_result} to "%{_result}%&"
+        else if {_skipNext} is true:
+            set {_result} to "%{_result}%%loop-value%"
+            set {_skipNext} to false
+        else:
+            set {_char} to loop-value in lowercase
+            if {_map::%{_char}%} is set:
+                set {_result} to "%{_result}%%{_map::%{_char}%}%"
+            else:
+                set {_result} to "%{_result}%%loop-value%"
+    return {_result}
+
+function sword(item: item, rarity: text, level: number):: item:
+    set {_damage} to round(5 + ({_level} * 1.8))
+    set {_critchance} to round(5 + ({_level} * 0.3))
+    set {_critdamage} to round(50 + ({_level} * 1.0))
+    set {_dps} to round({_damage} * 1.6, 1)
+    
+    set {_rarityline} to getRarityLine({_rarity})
+    
+    set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
+    set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &eꜱᴡᴏʀᴅ"
+    set line 3 of lore of {_item} to "&8┃ &7ʀᴀʀɪᴛʏ &8» %{_rarityline}%"
+    set line 4 of lore of {_item} to ""
+    set line 5 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
+    set line 6 of lore of {_item} to "&8┃ &7ᴅᴘꜱ &8» &c+%{_dps}%"
+    set line 7 of lore of {_item} to ""
+    set line 8 of lore of {_item} to "&8┃ &7ᴄʀɪᴛ ᴄʜᴀɴᴄᴇ &8» &9+%{_critchance}%%%"
+    set line 9 of lore of {_item} to "&8┃ &7ᴄʀɪᴛ ᴅᴀᴍᴀɢᴇ &8» &9+%{_critdamage}%%%"
+
+    set {_item} to unbreakable {_item}
+    set item flags of {_item} to all item flags
+  
+    apply attribute modifier to {_item}:
+            id: "minecraft:base_attack_speed"
+            attribute: attack speed
+            amount: -2.4
+            slot: mainhand_slot_group
+            operation: add_number  
+  
+    set text data tag "itemstat:type" of {_item} to "sword"
+    set number data tag "itemstat:damage" of {_item} to {_damage}
+    set number data tag "itemstat:crit_chance" of {_item} to {_critchance}
+    set number data tag "itemstat:crit_damage" of {_item} to {_critdamage}
+   
+    return {_item}
+    
+command /test <text> <number>:
+    trigger:
+        set {_item} to player's tool
+        set player's tool to sword({_item}, arg-1, arg-2)
+    
