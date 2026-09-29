@@ -40,9 +40,10 @@ function getRarityLine(rarity: text) :: text:
 
 function sword(item: item, rarity: text, level: number):: item:
     set {_damage} to round(5 + ({_level} * 1.8))
-    set {_critchance} to round(5 + ({_level} * 0.3))
-    set {_critdamage} to round(50 + ({_level} * 1.0))
-    set {_dps} to round({_damage} * 1.6, 1)
+    set {_attackspeed} to 1.6
+    set {_critchance} to round(8 + ({_level} * 0.5))
+    set {_critdamage} to round(50 + ({_level} * 2))
+    set {_dps} to round({_damage} * {_attackspeed}, 1)
     
     set {_rarityline} to getRarityLine({_rarity})
     
@@ -72,8 +73,93 @@ function sword(item: item, rarity: text, level: number):: item:
    
     return {_item}
     
-command /test <text> <number>:
+function dagger(item: item, rarity: text, level: number):: item:
+    set {_damage} to round(3.5 + ({_level} * 1.45))
+    set {_attackspeed} to 2.0
+    set {_critchance} to round(12 + ({_level} * 0.6))
+    set {_critdamage} to round(45 + ({_level} * 1.5))
+    set {_dps} to round({_damage} * {_attackspeed}, 1)
+    
+    set {_rarityline} to getRarityLine({_rarity})
+    
+    set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
+    set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &eꜱᴡᴏʀᴅ"
+    set line 3 of lore of {_item} to "&8┃ &7ʀᴀʀɪᴛʏ &8» %{_rarityline}%"
+    set line 4 of lore of {_item} to ""
+    set line 5 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
+    set line 6 of lore of {_item} to "&8┃ &7ᴅᴘꜱ &8» &c+%{_dps}%"
+    set line 7 of lore of {_item} to "&8┃ &7ᴄʀɪᴛ ᴄʜᴀɴᴄᴇ &8» &9+%{_critchance}%%%"
+    set line 8 of lore of {_item} to "&8┃ &7ᴄʀɪᴛ ᴅᴀᴍᴀɢᴇ &8» &9+%{_critdamage}%%%"
+
+    set {_item} to unbreakable {_item}
+    set item flags of {_item} to all item flags
+  
+    apply attribute modifier to {_item}:
+        id: "minecraft:base_attack_speed"
+        attribute: attack speed
+        amount: -2.0
+        slot: mainhand_slot_group
+        operation: add_number  
+  
+    set text data tag "itemstat:type" of {_item} to "sword"
+    set number data tag "itemstat:damage" of {_item} to {_damage}
+    set number data tag "itemstat:crit_chance" of {_item} to {_critchance}
+    set number data tag "itemstat:crit_damage" of {_item} to {_critdamage}
+   
+    return {_item}
+    
+function axe(item: item, rarity: text, level: number):: item:
+    set {_damage} to round(7 + ({_level} * 3.0))
+    set {_attackspeed} to 1.0
+    set {_critchance} to round(5 + ({_level} * 0.35))
+    set {_critdamage} to round(65 + ({_level} * 2.5))
+    set {_dps} to round({_damage} * {_attackspeed}, 1)
+    
+    set {_rarityline} to getRarityLine({_rarity})
+    
+    set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
+    set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &eꜱᴡᴏʀᴅ"
+    set line 3 of lore of {_item} to "&8┃ &7ʀᴀʀɪᴛʏ &8» %{_rarityline}%"
+    set line 4 of lore of {_item} to ""
+    set line 5 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
+    set line 6 of lore of {_item} to "&8┃ &7ᴅᴘꜱ &8» &c+%{_dps}%"
+    set line 7 of lore of {_item} to "&8┃ &7ᴄʀɪᴛ ᴄʜᴀɴᴄᴇ &8» &9+%{_critchance}%%%"
+    set line 8 of lore of {_item} to "&8┃ &7ᴄʀɪᴛ ᴅᴀᴍᴀɢᴇ &8» &9+%{_critdamage}%%%"
+
+    set {_item} to unbreakable {_item}
+    set item flags of {_item} to all item flags
+  
+    apply attribute modifier to {_item}:
+        id: "minecraft:base_attack_speed"
+        attribute: attack speed
+        amount: -3.0
+        slot: mainhand_slot_group
+        operation: add_number  
+  
+    set text data tag "itemstat:type" of {_item} to "sword"
+    set number data tag "itemstat:damage" of {_item} to {_damage}
+    set number data tag "itemstat:crit_chance" of {_item} to {_critchance}
+    set number data tag "itemstat:crit_damage" of {_item} to {_critdamage}
+   
+    return {_item}
+    
+command /modifysword <text> <number>:
+    permission: admin.item
     trigger:
         set {_item} to player's tool
         set player's tool to sword({_item}, arg-1, arg-2)
+
+command /modifyaxe <text> <number>:
+    permission: admin.item
+    trigger:
+        set {_item} to player's tool
+        set player's tool to axe({_item}, arg-1, arg-2)
+
+command /modifydagger <text> <number>:
+    permission: admin.item
+    trigger:
+        set {_item} to player's tool
+        set player's tool to dagger({_item}, arg-1, arg-2)
+        
+        
     
