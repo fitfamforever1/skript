@@ -146,20 +146,14 @@ function axe(item: item, rarity: text, level: number):: item:
 command /modifysword <text> <number>:
     permission: admin.item
     trigger:
-        set {_item} to player's tool
-        set player's tool to sword({_item}, arg-1, arg-2)
+        give player sword(honeycomb, arg-1, arg-2)
 
 command /modifyaxe <text> <number>:
     permission: admin.item
     trigger:
-        set {_item} to player's tool
-        set player's tool to axe({_item}, arg-1, arg-2)
+        give player axe(honeycomb, arg-1, arg-2)
 
 command /modifydagger <text> <number>:
     permission: admin.item
     trigger:
-        set {_item} to player's tool
-        set player's tool to dagger({_item}, arg-1, arg-2)
-        
-        
-    
+        give player dagger(honeycomb, arg-1, arg-2)
