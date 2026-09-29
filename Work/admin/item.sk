@@ -67,6 +67,7 @@ function sword(item: item, rarity: text, level: number):: item:
         operation: add_number  
   
     set text data tag "itemstat:type" of {_item} to "sword"
+    set number data tag "itemstat:level" of {_item} to {_level}
     set number data tag "itemstat:damage" of {_item} to {_damage}
     set number data tag "itemstat:crit_chance" of {_item} to {_critchance}
     set number data tag "itemstat:crit_damage" of {_item} to {_critdamage}
@@ -102,6 +103,7 @@ function dagger(item: item, rarity: text, level: number):: item:
         operation: add_number  
   
     set text data tag "itemstat:type" of {_item} to "sword"
+    set number data tag "itemstat:level" of {_item} to {_level}
     set number data tag "itemstat:damage" of {_item} to {_damage}
     set number data tag "itemstat:crit_chance" of {_item} to {_critchance}
     set number data tag "itemstat:crit_damage" of {_item} to {_critdamage}
@@ -137,6 +139,7 @@ function axe(item: item, rarity: text, level: number):: item:
         operation: add_number  
   
     set text data tag "itemstat:type" of {_item} to "sword"
+    set number data tag "itemstat:level" of {_item} to {_level}
     set number data tag "itemstat:damage" of {_item} to {_damage}
     set number data tag "itemstat:crit_chance" of {_item} to {_critchance}
     set number data tag "itemstat:crit_damage" of {_item} to {_critdamage}
@@ -176,6 +179,7 @@ function helmet(item: item, rarity: text, level: number):: item:
     set item flags of {_item} to all item flags
     
     set text data tag "itemstat:type" of {_item} to "helmet"
+    set number data tag "itemstat:level" of {_item} to {_level}
     set number data tag "itemstat:health" of {_item} to {_health}
     set number data tag "itemstat:defense" of {_item} to {_defense}
     
@@ -199,6 +203,7 @@ function chestplate(item: item, rarity: text, level: number):: item:
     set item flags of {_item} to all item flags
     
     set text data tag "itemstat:type" of {_item} to "chestplate"
+    set number data tag "itemstat:level" of {_item} to {_level}
     set number data tag "itemstat:health" of {_item} to {_health}
     set number data tag "itemstat:defense" of {_item} to {_defense}
     
@@ -222,6 +227,7 @@ function leggings(item: item, rarity: text, level: number):: item:
     set item flags of {_item} to all item flags
     
     set text data tag "itemstat:type" of {_item} to "leggings"
+    set number data tag "itemstat:level" of {_item} to {_level}
     set number data tag "itemstat:health" of {_item} to {_health}
     set number data tag "itemstat:defense" of {_item} to {_defense}
     
@@ -245,6 +251,7 @@ function boots(item: item, rarity: text, level: number):: item:
     set item flags of {_item} to all item flags
     
     set text data tag "itemstat:type" of {_item} to "boots"
+    set number data tag "itemstat:level" of {_item} to {_level}
     set number data tag "itemstat:health" of {_item} to {_health}
     set number data tag "itemstat:defense" of {_item} to {_defense}
     
