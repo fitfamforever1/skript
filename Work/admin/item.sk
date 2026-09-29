@@ -83,7 +83,7 @@ function dagger(item: item, rarity: text, level: number):: item:
     set {_rarityline} to getRarityLine({_rarity})
     
     set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
-    set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &eꜱᴡᴏʀᴅ"
+    set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &eᴅᴀɢɢᴇʀ"
     set line 3 of lore of {_item} to "&8┃ &7ʀᴀʀɪᴛʏ &8» %{_rarityline}%"
     set line 4 of lore of {_item} to ""
     set line 5 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
@@ -118,7 +118,7 @@ function axe(item: item, rarity: text, level: number):: item:
     set {_rarityline} to getRarityLine({_rarity})
     
     set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
-    set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &eꜱᴡᴏʀᴅ"
+    set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &eᴀxᴇ"
     set line 3 of lore of {_item} to "&8┃ &7ʀᴀʀɪᴛʏ &8» %{_rarityline}%"
     set line 4 of lore of {_item} to ""
     set line 5 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
