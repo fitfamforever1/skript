@@ -37,49 +37,6 @@ function getRarityLine(rarity: text) :: text:
         return "&fᴄᴏᴍᴍᴏɴ"
     return ""
     
-function SmallCaps(text: text) :: text:
-    set {_result} to ""
-    set {_chars::*} to {_text} split at ""
-    set {_map::a} to "ᴀ"
-    set {_map::b} to "ʙ"
-    set {_map::c} to "ᴄ"
-    set {_map::d} to "ᴅ"
-    set {_map::e} to "ᴇ"
-    set {_map::f} to "ꜰ"
-    set {_map::g} to "ɢ"
-    set {_map::h} to "ʜ"
-    set {_map::i} to "ɪ"
-    set {_map::j} to "ᴊ"
-    set {_map::k} to "ᴋ"
-    set {_map::l} to "ʟ"
-    set {_map::m} to "ᴍ"
-    set {_map::n} to "ɴ"
-    set {_map::o} to "ᴏ"
-    set {_map::p} to "ᴘ"
-    set {_map::q} to "q"
-    set {_map::r} to "ʀ"
-    set {_map::s} to "ꜱ"
-    set {_map::t} to "ᴛ"
-    set {_map::u} to "ᴜ"
-    set {_map::v} to "ᴠ"
-    set {_map::w} to "ᴡ"
-    set {_map::x} to "x"
-    set {_map::y} to "ʏ"
-    set {_map::z} to "ᴢ"
-    loop {_chars::*}:
-        if loop-value is "&":
-            set {_skipNext} to true
-            set {_result} to "%{_result}%&"
-        else if {_skipNext} is true:
-            set {_result} to "%{_result}%%loop-value%"
-            set {_skipNext} to false
-        else:
-            set {_char} to loop-value in lowercase
-            if {_map::%{_char}%} is set:
-                set {_result} to "%{_result}%%{_map::%{_char}%}%"
-            else:
-                set {_result} to "%{_result}%%loop-value%"
-    return {_result}
 
 function sword(item: item, rarity: text, level: number):: item:
     set {_damage} to round(5 + ({_level} * 1.8))
@@ -103,11 +60,11 @@ function sword(item: item, rarity: text, level: number):: item:
     set item flags of {_item} to all item flags
   
     apply attribute modifier to {_item}:
-            id: "minecraft:base_attack_speed"
-            attribute: attack speed
-            amount: -2.4
-            slot: mainhand_slot_group
-            operation: add_number  
+        id: "minecraft:base_attack_speed"
+        attribute: attack speed
+        amount: -2.4
+        slot: mainhand_slot_group
+        operation: add_number  
   
     set text data tag "itemstat:type" of {_item} to "sword"
     set number data tag "itemstat:damage" of {_item} to {_damage}
