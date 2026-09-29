@@ -157,3 +157,119 @@ command /modifydagger <text> <number>:
     permission: admin.item
     trigger:
         give player dagger(honeycomb, arg-1, arg-2)
+        
+function helmet(item: item, rarity: text, level: number):: item:
+    set {_health} to round((8 + ({_level} * 1.5)) * 1.15)
+    set {_defense} to round(8 + ({_level} * 1.2))
+    
+    set {_rarityline} to getRarityLine({_rarity})
+
+    set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
+    set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &eʜᴇʟᴍᴇᴛ"
+    set line 3 of lore of {_item} to "&8┃ &7ʀᴀʀɪᴛʏ &8» %{_rarityline}%"
+    set line 4 of lore of {_item} to ""
+    set line 5 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
+    set line 6 of lore of {_item} to "&8┃ &7ʜᴇᴀʟᴛʜ &8» &c+%{_health}%"
+    set line 7 of lore of {_item} to "&8┃ &7ᴅᴇғᴇɴꜱᴇ &8» &a+%{_defense}%"
+    
+    set {_item} to unbreakable {_item}
+    set item flags of {_item} to all item flags
+    
+    set text data tag "itemstat:type" of {_item} to "helmet"
+    set number data tag "itemstat:health" of {_item} to {_health}
+    set number data tag "itemstat:defense" of {_item} to {_defense}
+    
+    return {_item}
+        
+function chestplate(item: item, rarity: text, level: number):: item:
+    set {_health} to round((8 + ({_level} * 1.5)) * 1.15)
+    set {_defense} to round(8 + ({_level} * 1.2))
+    
+    set {_rarityline} to getRarityLine({_rarity})
+
+    set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
+    set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &eᴄʜᴇꜱᴛᴘʟᴀᴛᴇ"
+    set line 3 of lore of {_item} to "&8┃ &7ʀᴀʀɪᴛʏ &8» %{_rarityline}%"
+    set line 4 of lore of {_item} to ""
+    set line 5 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
+    set line 6 of lore of {_item} to "&8┃ &7ʜᴇᴀʟᴛʜ &8» &c+%{_health}%"
+    set line 7 of lore of {_item} to "&8┃ &7ᴅᴇғᴇɴꜱᴇ &8» &a+%{_defense}%"
+    
+    set {_item} to unbreakable {_item}
+    set item flags of {_item} to all item flags
+    
+    set text data tag "itemstat:type" of {_item} to "chestplate"
+    set number data tag "itemstat:health" of {_item} to {_health}
+    set number data tag "itemstat:defense" of {_item} to {_defense}
+    
+    return {_item}
+        
+function leggings(item: item, rarity: text, level: number):: item:
+    set {_health} to round((8 + ({_level} * 1.5)) * 1.15)
+    set {_defense} to round(8 + ({_level} * 1.2))
+    
+    set {_rarityline} to getRarityLine({_rarity})
+
+    set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
+    set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &eʟᴇɢɢɪɴɢꜱ"
+    set line 3 of lore of {_item} to "&8┃ &7ʀᴀʀɪᴛʏ &8» %{_rarityline}%"
+    set line 4 of lore of {_item} to ""
+    set line 5 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
+    set line 6 of lore of {_item} to "&8┃ &7ʜᴇᴀʟᴛʜ &8» &c+%{_health}%"
+    set line 7 of lore of {_item} to "&8┃ &7ᴅᴇғᴇɴꜱᴇ &8» &a+%{_defense}%"
+    
+    set {_item} to unbreakable {_item}
+    set item flags of {_item} to all item flags
+    
+    set text data tag "itemstat:type" of {_item} to "leggings"
+    set number data tag "itemstat:health" of {_item} to {_health}
+    set number data tag "itemstat:defense" of {_item} to {_defense}
+    
+    return {_item}
+        
+function boots(item: item, rarity: text, level: number):: item:
+    set {_health} to round((8 + ({_level} * 1.5)) * 1.15)
+    set {_defense} to round(8 + ({_level} * 1.2))
+    
+    set {_rarityline} to getRarityLine({_rarity})
+
+    set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
+    set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &eʙᴏᴏᴛꜱ"
+    set line 3 of lore of {_item} to "&8┃ &7ʀᴀʀɪᴛʏ &8» %{_rarityline}%"
+    set line 4 of lore of {_item} to ""
+    set line 5 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
+    set line 6 of lore of {_item} to "&8┃ &7ʜᴇᴀʟᴛʜ &8» &c+%{_health}%"
+    set line 7 of lore of {_item} to "&8┃ &7ᴅᴇғᴇɴꜱᴇ &8» &a+%{_defense}%"
+    
+    set {_item} to unbreakable {_item}
+    set item flags of {_item} to all item flags
+    
+    set text data tag "itemstat:type" of {_item} to "boots"
+    set number data tag "itemstat:health" of {_item} to {_health}
+    set number data tag "itemstat:defense" of {_item} to {_defense}
+    
+    return {_item}
+    
+command /modifyhelmet <text> <number>:
+    permission: admin.item
+    trigger:
+        set {_item} to player's tool
+        set player's tool to helmet({_item}, arg-1, arg-2)
+    
+command /modifychestplate <text> <number>:
+    permission: admin.item
+    trigger:
+        set {_item} to player's tool
+        set player's tool to chestplate({_item}, arg-1, arg-2)
+    
+command /modifyleggings <text> <number>:
+    permission: admin.item
+    trigger:
+        set {_item} to player's tool
+        set player's tool to leggings({_item}, arg-1, arg-2)
+    
+command /modifyboots <text> <number>:
+    permission: admin.item
+    trigger:
+        set {_item} to player's tool
+        set player's tool to boots({_item}, arg-1, arg-2)
