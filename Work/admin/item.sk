@@ -52,9 +52,8 @@ function sword(item: item, rarity: text, level: number):: item:
     set line 4 of lore of {_item} to ""
     set line 5 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
     set line 6 of lore of {_item} to "&8┃ &7ᴅᴘꜱ &8» &c+%{_dps}%"
-    set line 7 of lore of {_item} to ""
-    set line 8 of lore of {_item} to "&8┃ &7ᴄʀɪᴛ ᴄʜᴀɴᴄᴇ &8» &9+%{_critchance}%%%"
-    set line 9 of lore of {_item} to "&8┃ &7ᴄʀɪᴛ ᴅᴀᴍᴀɢᴇ &8» &9+%{_critdamage}%%%"
+    set line 7 of lore of {_item} to "&8┃ &7ᴄʀɪᴛ ᴄʜᴀɴᴄᴇ &8» &9+%{_critchance}%%%"
+    set line 8 of lore of {_item} to "&8┃ &7ᴄʀɪᴛ ᴅᴀᴍᴀɢᴇ &8» &9+%{_critdamage}%%%"
 
     set {_item} to unbreakable {_item}
     set item flags of {_item} to all item flags
