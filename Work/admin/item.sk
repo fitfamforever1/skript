@@ -322,3 +322,19 @@ command /modifymaterial2 <text> <number>:
     trigger:
         set {_item} to player's tool
         set player's tool to comp({_item}, arg-1, arg-2)
+        
+command /modifyname [<text>] [<text>]:
+    permission: admin
+
+    trigger:
+        if arg-1 is not set:
+            send "&cUsage: /modifyname <last name> <first name>"
+            stop
+        set {_part1} to arg-1
+        set {_part2} to arg-2
+
+        set {_newName} to "%{_part2}% %{_part1}%"
+
+        set name of player's tool to "&f%{_newName}%"
+
+        send "&aItem renamed to &f%{_newName}%"
