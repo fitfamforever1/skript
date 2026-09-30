@@ -14,11 +14,6 @@ command /spawn [<player>]:
         play sound "sound:sound.ui.enable" at player for player
         send title "&a✔ &aTeleported to spawn!" to player for 1.6 seconds
 
-on respawn:
-    wait 20 ticks
-    teleport player to location(-95.5, -58, 44.5, world "world", -90, 0)
-    send title "&a✔ &aTeleported to spawn!" with subtitle "&4You have died!" to player for 1.6 seconds
-
 on join:
     wait 1 tick
     teleport player to location(-95.5, -58, 44.5, world "world", -90, 0)
