@@ -280,3 +280,45 @@ command /modifyboots <text> <number>:
     trigger:
         set {_item} to player's tool
         set player's tool to boots({_item}, arg-1, arg-2)
+        
+function basic(item: item, rarity: text, level: number):: item:
+    set {_rarityline} to getRarityLine({_rarity})
+
+    set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
+    set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &eᴍᴀᴛᴇʀɪᴀʟ"
+    set line 3 of lore of {_item} to "&8┃ &7ʀᴀʀɪᴛʏ &8» %{_rarityline}%"
+    
+    set {_item} to unbreakable {_item}
+    set item flags of {_item} to all item flags
+    
+    set text data tag "itemstat:type" of {_item} to "basic"
+    set number data tag "itemstat:level" of {_item} to {_level}
+    
+    return {_item}
+    
+function comp(item: item, rarity: text, level: number):: item:
+    set {_rarityline} to getRarityLine({_rarity})
+
+    set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
+    set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &eᴍᴀᴛᴇʀɪᴀʟ"
+    set line 3 of lore of {_item} to "&8┃ &7ʀᴀʀɪᴛʏ &8» %{_rarityline}%"
+    
+    set {_item} to unbreakable {_item}
+    set item flags of {_item} to all item flags
+    
+    set text data tag "itemstat:type" of {_item} to "comp"
+    set number data tag "itemstat:level" of {_item} to {_level}
+    
+    return {_item}
+    
+command /modifymaterial <text> <number>:
+    permission: admin.item
+    trigger:
+        set {_item} to player's tool
+        set player's tool to basic({_item}, arg-1, arg-2)
+        
+command /modifymaterial2 <text> <number>:
+    permission: admin.item
+    trigger:
+        set {_item} to player's tool
+        set player's tool to comp({_item}, arg-1, arg-2)
