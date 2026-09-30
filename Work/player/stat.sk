@@ -208,12 +208,6 @@ on join:
     stat(player)
     heal(player)
 
-    apply transient attribute modifier to player:
-        attribute: attack speed
-        id: "my_mods:set_attack_speed"
-        amount: 100
-        operation: add_number
-
 on armor change:
     wait 1 tick
     stat(player)
