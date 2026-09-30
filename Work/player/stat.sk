@@ -243,13 +243,9 @@ command /stat [<offlineplayer>]:
             stop
 
         stat({_target})
-        realmStage({_target})
 
         send "%prefix()%&8&m--------------------------------&r" to player
         send "%prefix()%&7ᴘʟᴀʏᴇʀ&8: &f%{_target}%" to player
-        send "%prefix()%&7ʀᴇᴀʟᴍ&8: &f%data tag "playerstat:realm" of {_target}%" to player
-        send "%prefix()%&7sᴛᴀɢᴇ&8: &f%data tag "playerstat:stage" of {_target}%" to player
-        send "%prefix()%&7ʟᴇᴠᴇʟ&8: &f%data tag "playerstat:lvl" of {_target}%" to player
         send "%prefix()%&8&m--------------------------------&r" to player
         send "%prefix()%&7ᴅᴀᴍᴀɢᴇ&8: &f%data tag "stat:damage" of {_target}%" to player
         send "%prefix()%&7ᴅᴇꜰᴇɴsᴇ&8: &f%data tag "stat:defense" of {_target}%" to player
