@@ -376,5 +376,5 @@ command /speedcap [<text>]:
         
 # MINING
 
-on block damage of oak log:
+on block damage:
     send "test"
