@@ -383,7 +383,7 @@ on block damage:
     set {_id} to {-breakid::%uuid of player%}
 
     loop 10 times:
-        wait 2 tick
+        wait 1 tick
         if {-breakid::%uuid of player%} is not {_id}:
             stop
         send "%loop-number%"
