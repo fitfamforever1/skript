@@ -379,51 +379,16 @@ on block damage:
     cancel event
     if gamemode of player is not survival:
         stop
-    set {_b} to event-block
     add 1 to {-breakid::%uuid of player%}
     set {_id} to {-breakid::%uuid of player%}
 
-    wait 1 tick
-    if {-breakid::%uuid of player%} is not {_id}:
-        stop
-    make player see damage of {_b} as 0.1
-    wait 1 tick
-    if {-breakid::%uuid of player%} is not {_id}:
-        stop
-    make player see damage of {_b} as 0.2
-    wait 1 tick
-    if {-breakid::%uuid of player%} is not {_id}:
-        stop
-    make player see damage of {_b} as 0.3
-    wait 1 tick
-    if {-breakid::%uuid of player%} is not {_id}:
-        stop
-    make player see damage of {_b} as 0.4
-    wait 1 tick
-    if {-breakid::%uuid of player%} is not {_id}:
-        stop
-    make player see damage of {_b} as 0.5
-    wait 1 tick
-    if {-breakid::%uuid of player%} is not {_id}:
-        stop
-    make player see damage of {_b} as 0.6
-    wait 1 tick
-    if {-breakid::%uuid of player%} is not {_id}:
-        stop
-    make player see damage of {_b} as 0.7
-    wait 1 tick
-    if {-breakid::%uuid of player%} is not {_id}:
-        stop
-    make player see damage of {_b} as 0.8
-    wait 1 tick
-    if {-breakid::%uuid of player%} is not {_id}:
-        stop
-    make player see damage of {_b} as 0.9
-    wait 1 tick
-    if {-breakid::%uuid of player%} is not {_id}:
-        stop
-    make player see damage of {_b} as 1
-    break {_b} naturally using player's tool
+    loop 10 times:
+        wait 1 tick
+        if {-breakid::%uuid of player%} is not {_id}:
+            stop
+        make player see damage of event-block as (loop-number / 10)
+
+    break event-block naturally using player's tool
 
 on block damage abort:
     add 1 to {-breakid::%uuid of player%}
