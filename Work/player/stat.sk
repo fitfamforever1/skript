@@ -404,3 +404,13 @@ on block damage abort:
 
 on quit:
     delete {-breakid::%uuid of player%}
+    
+on join:
+    apply infinite mining fatigue of tier 255 to player:
+        hide icon
+        hide particles
+
+on respawn:
+    apply infinite mining fatigue of tier 255 to player:
+        hide icon
+        hide particles
