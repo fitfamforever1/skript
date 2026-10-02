@@ -383,7 +383,7 @@ on block damage:
     set {_id} to {-breakid::%uuid of player%}
 
     loop 10 times:
-        wait 1 tick
+        wait 2 tick
         if {-breakid::%uuid of player%} is not {_id}:
             stop
         make player see damage of event-block as (loop-number / 10)
