@@ -380,37 +380,28 @@ on block damage:
     if gamemode of player is not survival:
         stop
     set {_b} to event-block
-    add 1 to {-breakid::%uuid of player%}
-    set {_id} to {-breakid::%uuid of player%}
 
-    loop 10 times:
-        wait 3 ticks
-        
-        if player is not online:
-            stop
-        if {-breakid::%uuid of player%} is not {_id}:
-            stop
-        if {_b} is air:
-            stop
-        send "%loop-number%" to player
-        make player see damage of {_b} as (loop-number / 10)
-
+    wait 3 ticks
+    make player see damage of {_b} as 0.1
+    wait 3 ticks
+    make player see damage of {_b} as 0.2
+    wait 3 ticks
+    make player see damage of {_b} as 0.3
+    wait 3 ticks
+    make player see damage of {_b} as 0.4
+    wait 3 ticks
+    make player see damage of {_b} as 0.5
+    wait 3 ticks
+    make player see damage of {_b} as 0.6
+    wait 3 ticks
+    make player see damage of {_b} as 0.7
+    wait 3 ticks
+    make player see damage of {_b} as 0.8
+    wait 3 ticks
+    make player see damage of {_b} as 0.9
+    wait 3 ticks
     make player see damage of {_b} as 1
     break {_b} naturally using player's tool
 
 on block damage abort:
-    add 1 to {-breakid::%uuid of player%}
     make player see damage of event-block as 0
-
-on quit:
-    delete {-breakid::%uuid of player%}
-    
-on join:
-    apply infinite mining fatigue of tier 255 to player:
-        hide icon
-        hide particles
-
-on respawn:
-    apply infinite mining fatigue of tier 255 to player:
-        hide icon
-        hide particles
