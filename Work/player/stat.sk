@@ -379,6 +379,7 @@ command /speedcap [<text>]:
 on block damage:
     cancel event
     loop 10 times:
-        wait 1 ticks
+        wait 3 ticks
+        send "%loop-number%"
         make player see damage of {_b} as (loop-number / 10)
     delete block
