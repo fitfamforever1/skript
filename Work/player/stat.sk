@@ -6,8 +6,8 @@ function reset(p: player):
     set number data tag "playerstat:defense" of {_p} to 0
     set number data tag "playerstat:speed" of {_p} to 10
     set number data tag "playerstat:health" of {_p} to 20
-    set number data tag "playerstat:mining_speed" of {_p} to 20
-    set number data tag "playerstat:mining_luck" of {_p} to 20
+    set number data tag "playerstat:mining_speed" of {_p} to 1
+    set number data tag "playerstat:mining_luck" of {_p} to 0
     set number data tag "playerstat:crit_chance" of {_p} to 30
     set number data tag "playerstat:crit_damage" of {_p} to 50
 
@@ -255,8 +255,8 @@ command /stat [<offlineplayer>]:
         send "%prefix()%&7ᴄʀɪᴛ ᴅᴀᴍᴀɢᴇ&8: &f%data tag "stat:crit_damage" of {_target}%%%" to player
         send "%prefix()%&8&m--------------------------------&r" to player
         send "%prefix()%&7ʜᴇᴀʟᴛʜ&8: &f%data tag "current:health" of {_target}%&8/&f%data tag "stat:health" of {_target}%" to player
-        send "%prefix()%&7ᴍɪɴɪɴɢ ꜱᴘᴇᴇᴅ&8: &f%data tag "stat:mining_speed" of {_target}%%%" to player
-        send "%prefix()%&7ᴍɪɴɪɴɢ ʟᴜᴄᴋ&8: &f%data tag "stat:mining_luck" of {_target}%%%" to player
+        send "%prefix()%&7ᴍɪɴɪɴɢ ꜱᴘᴇᴇᴅ&8: &f%data tag "stat:mining_speed" of {_target}%" to player
+        send "%prefix()%&7ᴍɪɴɪɴɢ ʟᴜᴄᴋ&8: &f%data tag "stat:mining_luck" of {_target}%" to player
         send "%prefix()%&8&m--------------------------------&r" to player
 
 
