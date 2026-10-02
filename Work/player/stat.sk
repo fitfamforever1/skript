@@ -382,23 +382,13 @@ on block damage:
     set {_b} to event-block
 
     wait 3 ticks
-    make player see damage of {_b} as 0.1
-    wait 3 ticks
     make player see damage of {_b} as 0.2
-    wait 3 ticks
-    make player see damage of {_b} as 0.3
     wait 3 ticks
     make player see damage of {_b} as 0.4
     wait 3 ticks
-    make player see damage of {_b} as 0.5
-    wait 3 ticks
     make player see damage of {_b} as 0.6
     wait 3 ticks
-    make player see damage of {_b} as 0.7
-    wait 3 ticks
     make player see damage of {_b} as 0.8
-    wait 3 ticks
-    make player see damage of {_b} as 0.9
     wait 3 ticks
     make player see damage of {_b} as 1
     break {_b} naturally using player's tool
