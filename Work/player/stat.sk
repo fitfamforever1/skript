@@ -375,26 +375,10 @@ command /speedcap [<text>]:
         send "%prefix()%&aᴍᴏᴠᴇᴍᴇɴᴛ sᴘᴇᴇᴅ ᴄᴀᴘᴘᴇᴅ ᴀᴛ &f%{_amount}%&a." to player
         
 # MINING
+
 on block damage:
     cancel event
-    # stop the animation from stacking if they click again mid-break
-    if {breaking::%uuid of player%} is set:
-        stop
-    set {breaking::%uuid of player%} to true
-    set {_b} to event-block
-
     loop 10 times:
         wait 3 ticks
-        # cancel if they looked away or left
-        if player is not online:
-            delete {breaking::%uuid of player%}
-            stop
-        if target block of player is not {_b}:
-            make player see damage of {_b} as 0
-            delete {breaking::%uuid of player%}
-            stop
         make player see damage of {_b} as (loop-number / 10)
-
-    make player see damage of {_b} as 0
-    break {_b} naturally using player's tool
-    delete {breaking::%uuid of player%}
+    delete block
