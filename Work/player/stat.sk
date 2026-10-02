@@ -56,8 +56,8 @@ function stat(p: player):
     set number data tag "stat:defense" of {_p} to {_defense}
     set number data tag "stat:speed" of {_p} to {_speed}
     set number data tag "stat:health" of {_p} to {_health}
-    set number data tag "playerstat:mining_speed" of {_p} to {_mining_speed}
-    set number data tag "playerstat:mining_luck" of {_p} to {_mining_luck}
+    set number data tag "stat:mining_speed" of {_p} to {_mining_speed}
+    set number data tag "stat:mining_luck" of {_p} to {_mining_luck}
     set number data tag "stat:crit_chance" of {_p} to {_critChance}
     set number data tag "stat:crit_damage" of {_p} to {_critDamage}
 
