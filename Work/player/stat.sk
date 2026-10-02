@@ -375,11 +375,32 @@ command /speedcap [<text>]:
         send "%prefix()%&aᴍᴏᴠᴇᴍᴇɴᴛ sᴘᴇᴇᴅ ᴄᴀᴘᴘᴇᴅ ᴀᴛ &f%{_amount}%&a." to player
         
 # MINING
-
 on block damage:
     cancel event
+    if gamemode of player is not survival:
+        stop
+    set {_b} to event-block
+    add 1 to {-breakid::%uuid of player%}
+    set {_id} to {-breakid::%uuid of player%}
+
     loop 10 times:
         wait 3 ticks
-        send "%loop-number%"
-        make player see damage of block as (loop-number / 10)
-    delete block
+        
+        if player is not online:
+            stop
+        if {-breakid::%uuid of player%} is not {_id}:
+            stop
+        if {_b} is air:
+            stop
+        send "%loop-number%" to player
+        make player see damage of {_b} as (loop-number / 10)
+
+    make player see damage of {_b} as 1
+    break {_b} naturally using player's tool
+
+on block damage abort:
+    add 1 to {-breakid::%uuid of player%}
+    make player see damage of event-block as 0
+
+on quit:
+    delete {-breakid::%uuid of player%}
