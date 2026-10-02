@@ -6,6 +6,8 @@ function reset(p: player):
     set number data tag "playerstat:defense" of {_p} to 0
     set number data tag "playerstat:speed" of {_p} to 10
     set number data tag "playerstat:health" of {_p} to 20
+    set number data tag "playerstat:mining_speed" of {_p} to 20
+    set number data tag "playerstat:mining_luck" of {_p} to 20
     set number data tag "playerstat:crit_chance" of {_p} to 30
     set number data tag "playerstat:crit_damage" of {_p} to 50
 
@@ -20,7 +22,8 @@ function stat(p: player):
     set {_defense} to number data tag "playerstat:defense" of {_p}
     set {_speed} to number data tag "playerstat:speed" of {_p}
     set {_health} to number data tag "playerstat:health" of {_p}
-    set {_mana} to number data tag "playerstat:mana" of {_p}
+    set {_mining_speed} to number data tag "playerstat:mining_speed" of {_p}
+    set {_mining_luck} to number data tag "playerstat:mining_luck" of {_p}
     set {_critChance} to number data tag "playerstat:crit_chance" of {_p}
     set {_critDamage} to number data tag "playerstat:crit_damage" of {_p}
 
@@ -31,6 +34,8 @@ function stat(p: player):
             add number data tag "itemstat:speed" of loop-value to {_speed}
             add number data tag "itemstat:health" of loop-value to {_health}
             add number data tag "itemstat:mana" of loop-value to {_mana}
+            add number data tag "itemstat:mining_speed" of loop-value to {_mining_speed}
+            add number data tag "itemstat:mining_fortune" of loop-value to {_mining_luck}
             add number data tag "itemstat:crit_chance" of loop-value to {_critChance}
             add number data tag "itemstat:crit_damage" of loop-value to {_critDamage}
 
@@ -42,7 +47,8 @@ function stat(p: player):
             add number data tag "itemstat:defense" of {_item} to {_defense}
             add number data tag "itemstat:speed" of {_item} to {_speed}
             add number data tag "itemstat:health" of {_item} to {_health}
-            add number data tag "itemstat:mana" of {_item} to {_mana}
+            add number data tag "itemstat:mining_speed" of loop-value to {_mining_speed}
+            add number data tag "itemstat:mining_fortune" of loop-value to {_mining_luck}
             add number data tag "itemstat:crit_chance" of {_item} to {_critChance}
             add number data tag "itemstat:crit_damage" of {_item} to {_critDamage}
 
@@ -50,7 +56,8 @@ function stat(p: player):
     set number data tag "stat:defense" of {_p} to {_defense}
     set number data tag "stat:speed" of {_p} to {_speed}
     set number data tag "stat:health" of {_p} to {_health}
-    set number data tag "stat:mana" of {_p} to {_mana}
+    set number data tag "playerstat:mining_speed" of {_p} to {_mining_speed}
+    set number data tag "playerstat:mining_luck" of {_p} to {_mining_luck}
     set number data tag "stat:crit_chance" of {_p} to {_critChance}
     set number data tag "stat:crit_damage" of {_p} to {_critDamage}
 
@@ -248,6 +255,8 @@ command /stat [<offlineplayer>]:
         send "%prefix()%&7ᴄʀɪᴛ ᴅᴀᴍᴀɢᴇ&8: &f%data tag "stat:crit_damage" of {_target}%%%" to player
         send "%prefix()%&8&m--------------------------------&r" to player
         send "%prefix()%&7ʜᴇᴀʟᴛʜ&8: &f%data tag "current:health" of {_target}%&8/&f%data tag "stat:health" of {_target}%" to player
+        send "%prefix()%&7ᴍɪɴɪɴɢ ꜱᴘᴇᴇᴅ&8: &f%data tag "stat:mining_speed" of {_target}%%%" to player
+        send "%prefix()%&7ᴍɪɴɪɴɢ ʟᴜᴄᴋ&8: &f%data tag "stat:mining_luck" of {_target}%%%" to player
         send "%prefix()%&8&m--------------------------------&r" to player
 
 
@@ -288,7 +297,7 @@ command /statadd <text> <number> [<offlineplayer>]:
             send "%prefix()%&cᴘʟᴀʏᴇʀ ɴᴏᴛ ꜰᴏᴜɴᴅ ᴏʀ ɴᴏᴛ ᴏɴʟɪɴᴇ." to player
             stop
 
-        if arg-1 is "damage", "defense", "speed", "health", "mana", "crit_chance" or "crit_damage":
+        if arg-1 is "damage", "defense", "speed", "health", "mana", "crit_chance", "mining_speed", "mining_luck" or "crit_damage":
             statAdd({_target}, arg-1, arg-2)
             stat({_target})
             send "%prefix()%&aᴀᴅᴅᴇᴅ &f%arg-2%&a ᴛᴏ &f%{_target}%&a's &f%arg-1%&a." to player

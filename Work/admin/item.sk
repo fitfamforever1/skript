@@ -338,3 +338,32 @@ command /modifyname [<text>] [<text>]:
         set name of player's tool to "&f%{_newName}%"
 
         send "&aItem renamed to &f%{_newName}%"
+        
+function pickaxe(item: item, rarity: text, level: number):: item:
+    set {_damage} to round(7 + ({_level} * 3.0))
+    set {_attackspeed} to 1.0
+    set {_critchance} to round(5 + ({_level} * 0.35))
+    set {_critdamage} to round(65 + ({_level} * 2.5))
+    set {_dps} to round({_damage} * {_attackspeed}, 1)
+    
+    set {_rarityline} to getRarityLine({_rarity})
+    
+    set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
+    set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &eᴀxᴇ"
+    set line 3 of lore of {_item} to "&8┃ &7ʀᴀʀɪᴛʏ &8» %{_rarityline}%"
+    set line 4 of lore of {_item} to ""
+    set line 5 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
+    set line 6 of lore of {_item} to "&8┃ &7ᴇꜰꜰɪᴄɪᴇɴᴄʏ &8» &c+%{_dps}%"
+    set line 7 of lore of {_item} to "&8┃ &7ꜰᴏʀᴛᴜɴᴇ &8» &9+%{_critchance}%%%"
+    set line 8 of lore of {_item} to "&8┃ &7ᴛᴏᴜɢʜɴᴇꜱꜱ &8» &9+%{_critdamage}%%%"
+
+    set {_item} to unbreakable {_item}
+    set item flags of {_item} to all item flags
+  
+    set text data tag "itemstat:type" of {_item} to "pickaxe"
+    set number data tag "itemstat:level" of {_item} to {_level}
+    set number data tag "itemstat:damage" of {_item} to {_damage}
+    set number data tag "itemstat:crit_chance" of {_item} to {_critchance}
+    set number data tag "itemstat:crit_damage" of {_item} to {_critdamage}
+   
+    return {_item}
