@@ -376,7 +376,6 @@ command /speedcap [<text>]:
         
 # MINING
 on block damage:
-    cancel event
     if gamemode of player is not survival:
         stop
     add 1 to {-breakid::%player%}
