@@ -381,5 +381,5 @@ on block damage:
     loop 10 times:
         wait 3 ticks
         send "%loop-number%"
-        make player see damage of {_b} as (loop-number / 10)
+        make player see damage of block as (loop-number / 10)
     delete block
