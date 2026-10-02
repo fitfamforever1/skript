@@ -386,6 +386,7 @@ on block damage:
         wait 2 tick
         if {-breakid::%uuid of player%} is not {_id}:
             stop
+        send "%loop-number%"
         make player see damage of event-block as (loop-number / 10)
 
     break event-block naturally using player's tool
