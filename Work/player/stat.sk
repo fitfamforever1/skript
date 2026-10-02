@@ -373,3 +373,8 @@ command /speedcap [<text>]:
         set number data tag "playerstat:speedcap" of player to {_amount}
         syncSpeed(player)
         send "%prefix()%&aᴍᴏᴠᴇᴍᴇɴᴛ sᴘᴇᴇᴅ ᴄᴀᴘᴘᴇᴅ ᴀᴛ &f%{_amount}%&a." to player
+        
+# MINING
+
+on break of oak_log:
+    send "test"
