@@ -47,8 +47,8 @@ function stat(p: player):
             add number data tag "itemstat:defense" of {_item} to {_defense}
             add number data tag "itemstat:speed" of {_item} to {_speed}
             add number data tag "itemstat:health" of {_item} to {_health}
-            add number data tag "itemstat:mining_speed" of loop-value to {_mining_speed}
-            add number data tag "itemstat:mining_fortune" of loop-value to {_mining_luck}
+            add number data tag "itemstat:mining_speed" of {_item} to {_mining_speed}
+            add number data tag "itemstat:mining_fortune" of {_item} to {_mining_luck}
             add number data tag "itemstat:crit_chance" of {_item} to {_critChance}
             add number data tag "itemstat:crit_damage" of {_item} to {_critDamage}
 
