@@ -378,4 +378,14 @@ command /speedcap [<text>]:
 
 on block damage:
     cancel event
+    make player see damage of target block as 0.1
+    make player see damage of target block as 0.2
+    make player see damage of target block as 0.3
+    make player see damage of target block as 0.4
     make player see damage of target block as 0.5
+    make player see damage of target block as 0.6
+    make player see damage of target block as 0.7
+    make player see damage of target block as 0.8
+    make player see damage of target block as 0.9
+    make player see damage of target block as 1.0
+    delete block
