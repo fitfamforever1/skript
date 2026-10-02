@@ -377,4 +377,5 @@ command /speedcap [<text>]:
 # MINING
 
 on block damage:
-    send "test"
+    cancel event
+    make player see damage of target block as 0.5
