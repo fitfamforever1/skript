@@ -383,43 +383,43 @@ on block damage:
     add 1 to {-breakid::%uuid of player%}
     set {_id} to {-breakid::%uuid of player%}
 
-    wait 3 ticks
+    wait 1 tick
     if {-breakid::%uuid of player%} is not {_id}:
         stop
     make player see damage of {_b} as 0.1
-    wait 3 ticks
+    wait 1 tick
     if {-breakid::%uuid of player%} is not {_id}:
         stop
     make player see damage of {_b} as 0.2
-    wait 3 ticks
+    wait 1 tick
     if {-breakid::%uuid of player%} is not {_id}:
         stop
     make player see damage of {_b} as 0.3
-    wait 3 ticks
+    wait 1 tick
     if {-breakid::%uuid of player%} is not {_id}:
         stop
     make player see damage of {_b} as 0.4
-    wait 3 ticks
+    wait 1 tick
     if {-breakid::%uuid of player%} is not {_id}:
         stop
     make player see damage of {_b} as 0.5
-    wait 3 ticks
+    wait 1 tick
     if {-breakid::%uuid of player%} is not {_id}:
         stop
     make player see damage of {_b} as 0.6
-    wait 3 ticks
+    wait 1 tick
     if {-breakid::%uuid of player%} is not {_id}:
         stop
     make player see damage of {_b} as 0.7
-    wait 3 ticks
+    wait 1 tick
     if {-breakid::%uuid of player%} is not {_id}:
         stop
     make player see damage of {_b} as 0.8
-    wait 3 ticks
+    wait 1 tick
     if {-breakid::%uuid of player%} is not {_id}:
         stop
     make player see damage of {_b} as 0.9
-    wait 3 ticks
+    wait 1 tick
     if {-breakid::%uuid of player%} is not {_id}:
         stop
     make player see damage of {_b} as 1
