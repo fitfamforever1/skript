@@ -59,6 +59,10 @@ function stat(p: player):
     set number data tag "stat:crit_damage" of {_p} to {_critDamage}
     set number data tag "stat:mining_speed" of {_p} to {_miningSpeed}
     set number data tag "stat:mining_luck" of {_p} to {_miningFortune}
+    
+    
+    syncSpeed({_p})
+    syncMine({_p})
 
 #  HEALTH / MOVEMENT
 
