@@ -256,8 +256,8 @@ command /stat [<offlineplayer>]:
         send "%prefix()%&7ᴄʀɪᴛ ᴅᴀᴍᴀɢᴇ&8: &f%data tag "stat:crit_damage" of {_target}%%%" to player
         send "%prefix()%&8&m--------------------------------&r" to player
         send "%prefix()%&7ʜᴇᴀʟᴛʜ&8: &f%data tag "current:health" of {_target}%&8/&f%data tag "stat:health" of {_target}%" to player
-        send "%prefix()%&7ᴍɪɴɪɴɢ ꜱᴘᴇᴇᴅ&8: &f%data tag "stat:mining_speed" of {_target}%%%" to player
-        send "%prefix()%&7ᴍɪɴɪɴɢ ʟᴜᴄᴋ&8: &f%data tag "stat:mining_fortune" of {_target}%%%" to player
+        send "%prefix()%&7ᴍɪɴɪɴɢ ꜱᴘᴇᴇᴅ&8: &f%data tag "stat:mining_speed" of {_target}%%" to player
+        send "%prefix()%&7ᴍɪɴɪɴɢ ʟᴜᴄᴋ&8: &f%data tag "stat:mining_luck" of {_target}%%" to player
         send "%prefix()%&8&m--------------------------------&r" to player
 
 
