@@ -81,7 +81,7 @@ function regenPlayer(p: player):
 function syncMine(p: player):
     set {_speed} to number data tag "stat:mining_speed" of {_p}
 
-    set {_p}'s block break speed attribute to {_speed}
+    set {_p}'s block break speed attribute to {_speed} * 2
 
 function syncSpeed(p: player):
     set {_speed} to number data tag "stat:speed" of {_p}
