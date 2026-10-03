@@ -74,6 +74,10 @@ function regenPlayer(p: player):
         set {_newHealth} to {_maxHealth}
     set number data tag "current:health" of {_p} to round({_newHealth})
 
+function syncMine(p: player):
+    set {_speed} to number data tag "stat:mining_speed" of {_p}
+
+    set {_p}'s block break speed attribute to {_speed}
 
 function syncSpeed(p: player):
     set {_speed} to number data tag "stat:speed" of {_p}
