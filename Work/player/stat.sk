@@ -298,7 +298,7 @@ command /statadd <text> <number> [<offlineplayer>]:
             send "%prefix()%&cᴘʟᴀʏᴇʀ ɴᴏᴛ ꜰᴏᴜɴᴅ ᴏʀ ɴᴏᴛ ᴏɴʟɪɴᴇ." to player
             stop
 
-        if arg-1 is "damage", "defense", "speed", "health", "mining_speed", "mining_fortune" "crit_chance" or "crit_damage":
+        if arg-1 is "damage", "defense", "speed", "health", "mining_speed", "mining_fortune", "crit_chance" or "crit_damage":
             statAdd({_target}, arg-1, arg-2)
             stat({_target})
             send "%prefix()%&aᴀᴅᴅᴇᴅ &f%arg-2%&a ᴛᴏ &f%{_target}%&a's &f%arg-1%&a." to player
