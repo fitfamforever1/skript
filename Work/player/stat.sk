@@ -8,6 +8,8 @@ function reset(p: player):
     set number data tag "playerstat:health" of {_p} to 20
     set number data tag "playerstat:crit_chance" of {_p} to 30
     set number data tag "playerstat:crit_damage" of {_p} to 50
+    set number data tag "playerstat:mining_speed" of {_p} to 1
+    set number data tag "playerstat:mining_fortune" of {_p} to 0
 
     set number data tag "current:health" of {_p} to 20
 
@@ -22,6 +24,8 @@ function stat(p: player):
     set {_health} to number data tag "playerstat:health" of {_p}
     set {_critChance} to number data tag "playerstat:crit_chance" of {_p}
     set {_critDamage} to number data tag "playerstat:crit_damage" of {_p}
+    set {_miningSpeed} to number data tag "playerstat:mining_speed" of {_p}
+    set {_miningFortune} to number data tag "playerstat:mining_fortune" of {_p}
 
     loop helmet of {_p}, chestplate of {_p}, leggings of {_p} and boots of {_p}:
         if loop-value is not air:
@@ -31,17 +35,21 @@ function stat(p: player):
             add number data tag "itemstat:health" of loop-value to {_health}
             add number data tag "itemstat:crit_chance" of loop-value to {_critChance}
             add number data tag "itemstat:crit_damage" of loop-value to {_critDamage}
+            add number data tag "itemstat:mining_speed" of loop-value to {_miningSpeed}
+            add number data tag "itemstat:mining_fortune" of loop-value to {_miningFortune}
 
     set {_item} to {_p}'s tool
     if {_item} is not air:
         set {_itemType} to data tag "itemstat:type" of {_item}
-        if {_itemType} is "sword", "dagger" or "axe":
+        if {_itemType} is "sword", "dagger", "pickaxe" or "axe":
             add number data tag "itemstat:damage" of {_item} to {_damage}
             add number data tag "itemstat:defense" of {_item} to {_defense}
             add number data tag "itemstat:speed" of {_item} to {_speed}
             add number data tag "itemstat:health" of {_item} to {_health}
             add number data tag "itemstat:crit_chance" of {_item} to {_critChance}
             add number data tag "itemstat:crit_damage" of {_item} to {_critDamage}
+            add number data tag "itemstat:mining_speed" of {_item} to {_miningSpeed}
+            add number data tag "itemstat:mining_fortune" of {_item} to {_miningFortune}
 
     set number data tag "stat:damage" of {_p} to {_damage}
     set number data tag "stat:defense" of {_p} to {_defense}
@@ -49,6 +57,8 @@ function stat(p: player):
     set number data tag "stat:health" of {_p} to {_health}
     set number data tag "stat:crit_chance" of {_p} to {_critChance}
     set number data tag "stat:crit_damage" of {_p} to {_critDamage}
+    set number data tag "stat:mining_speed" of {_p} to {_miningSpeed}
+    set number data tag "stat:mining_luck" of {_p} to {_miningFortune}
 
 #  HEALTH / MOVEMENT
 
@@ -242,6 +252,8 @@ command /stat [<offlineplayer>]:
         send "%prefix()%&7ᴄʀɪᴛ ᴅᴀᴍᴀɢᴇ&8: &f%data tag "stat:crit_damage" of {_target}%%%" to player
         send "%prefix()%&8&m--------------------------------&r" to player
         send "%prefix()%&7ʜᴇᴀʟᴛʜ&8: &f%data tag "current:health" of {_target}%&8/&f%data tag "stat:health" of {_target}%" to player
+        send "%prefix()%&7ᴍɪɴɪɴɢ ꜱᴘᴇᴇᴅ&8: &f%data tag "stat:mining_speed" of {_target}%%%" to player
+        send "%prefix()%&7ᴍɪɴɪɴɢ ʟᴜᴄᴋ&8: &f%data tag "stat:mining_fortune" of {_target}%%%" to player
         send "%prefix()%&8&m--------------------------------&r" to player
 
 
@@ -282,7 +294,7 @@ command /statadd <text> <number> [<offlineplayer>]:
             send "%prefix()%&cᴘʟᴀʏᴇʀ ɴᴏᴛ ꜰᴏᴜɴᴅ ᴏʀ ɴᴏᴛ ᴏɴʟɪɴᴇ." to player
             stop
 
-        if arg-1 is "damage", "defense", "speed", "health", "crit_chance" or "crit_damage":
+        if arg-1 is "damage", "defense", "speed", "health", "mining_speed", "mining_fortune" "crit_chance" or "crit_damage":
             statAdd({_target}, arg-1, arg-2)
             stat({_target})
             send "%prefix()%&aᴀᴅᴅᴇᴅ &f%arg-2%&a ᴛᴏ &f%{_target}%&a's &f%arg-1%&a." to player
