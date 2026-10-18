@@ -279,7 +279,6 @@ command /stat [<offlineplayer>]:
             stop
 
         stat({_target})
-        realmStage({_target})
 
         send "%prefix()%&8&m--------------------------------&r" to player
         send "%prefix()%&7ᴘʟᴀʏᴇʀ&8: &f%{_target}%" to player
@@ -340,7 +339,6 @@ command /setlevel <number> [<offlineplayer>]:
 
         set number data tag "playerstat:lvl" of {_target} to arg-1
         stat({_target})
-        realmStage({_target})
 
         send "%prefix()%&asᴇᴛ &f%{_target}%&a's ʟᴇᴠᴇʟ ᴛᴏ &f%arg-1%&a." to player
         if {_target} is not player:
