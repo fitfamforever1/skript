@@ -195,7 +195,7 @@ function displayDamage(victim: entity, damage: number, isCrit: boolean):
 function death(p: player):
     delete {respawning::%{_p}%}
     set {_p}'s fall distance to 0
-    teleport {_p} to location(770.5, 138, 946.5, "world", -90)
+    teleport {_p} to location(-103, -58, 21, world "world", -38, 0)
     heal({_p})
     send title "&4ʏᴏᴜ ʜᴀᴠᴇ ᴅɪᴇᴅ!" with subtitle "&cʀᴇsᴘᴀᴡɴᴇᴅ ᴀᴛ sᴘᴀᴡɴ." to {_p} for 0.8 seconds with fadein 0.2 second and fade out 0.2 second
 
