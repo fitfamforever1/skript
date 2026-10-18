@@ -1,50 +1,6 @@
 function prefix() :: text:
     return "&8[<##57DE3F>ꜱᴛᴀᴛ&8]&7 "
 
-#  REALM / STAGE / LEVEL SYSTEM
-
-function realmStage(p: player) :: text:
-    set {_level} to number data tag "playerstat:lvl" of {_p}
-    set {_stage} to mod({_level} - 1, 5) + 1
-    set {_realm} to floor(({_level} - 1) / 5)
-    set {_realm} to mod({_realm}, 9) + 1
-
-    if {_realm} is 1:
-        set {_realmText} to "ᴏɴᴇ sᴛᴀʀ"
-    else if {_realm} is 2:
-        set {_realmText} to "ᴛᴡᴏ sᴛᴀʀ"
-    else if {_realm} is 3:
-        set {_realmText} to "ᴛʜʀᴇᴇ sᴛᴀʀ"
-    else if {_realm} is 4:
-        set {_realmText} to "ꜰᴏᴜʀ sᴛᴀʀ"
-    else if {_realm} is 5:
-        set {_realmText} to "ꜰɪᴠᴇ sᴛᴀʀ"
-    else if {_realm} is 6:
-        set {_realmText} to "sɪx sᴛᴀʀ"
-    else if {_realm} is 7:
-        set {_realmText} to "sᴇᴠᴇɴ sᴛᴀʀ"
-    else if {_realm} is 8:
-        set {_realmText} to "ᴇɪɢʜᴛ sᴛᴀʀ"
-    else if {_realm} is 9:
-        set {_realmText} to "ɴɪɴᴇ sᴛᴀʀ"
-
-    if {_stage} is 1:
-        set {_stageText} to "ᴇᴀʀʟʏ"
-    else if {_stage} is 2:
-        set {_stageText} to "ᴍɪᴅ"
-    else if {_stage} is 3:
-        set {_stageText} to "ʟᴀᴛᴇ"
-    else if {_stage} is 4:
-        set {_stageText} to "ᴘᴇᴀᴋ"
-    else if {_stage} is 5:
-        set {_stageText} to "ᴛʀᴀɴsꜰᴏʀᴍᴀᴛɪᴏɴ"
-
-    set text data tag "playerstat:realm" of {_p} to {_realmText}
-    set text data tag "playerstat:stage" of {_p} to {_stageText}
-
-    return "%{_realmText}%, %{_stageText}%"
-
-
 function reset(p: player):
     set number data tag "playerstat:lvl" of {_p} to 1
     set number data tag "playerstat:damage" of {_p} to 1
@@ -283,8 +239,7 @@ on damage:
 
 on join:
     if number data tag "playerstat:lvl" of player is not set:
-        set number data tag "playerstat:lvl" of player to 1
-        levelUp(player)
+        reset(player)
 
     stat(player)
     heal(player)
@@ -356,7 +311,7 @@ command /statreset [<offlineplayer>]:
             stop
 
         set number data tag "playerstat:lvl" of {_target} to 1
-        levelUp({_target})
+        reset({_target})
         stat({_target})
         heal({_target})
 
@@ -384,7 +339,6 @@ command /setlevel <number> [<offlineplayer>]:
             stop
 
         set number data tag "playerstat:lvl" of {_target} to arg-1
-        levelUp({_target})
         stat({_target})
         realmStage({_target})
 
