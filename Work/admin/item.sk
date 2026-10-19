@@ -45,6 +45,13 @@ function sword(level: number):: item:
     set {_item} to unbreakable {_item}
     set item flags of {_item} to all item flags
     
+    apply attribute modifier to {_item}:
+        id: "minecraft:base_attack_speed"
+        attribute: attack speed
+        amount: -2.4
+        slot: mainhand_slot_group
+        operation: add_number
+    
     set data tag "itemstat:type" of {_item} to "sword"
     set number data tag "itemstat:level" of {_item} to {_level}
     set number data tag "itemstat:damage" of {_item} to {_damage}
@@ -72,6 +79,13 @@ function axe(level: number):: item:
     set {_item} to unbreakable {_item}
     set item flags of {_item} to all item flags
     
+    apply attribute modifier to {_item}:
+        id: "minecraft:base_attack_speed"
+        attribute: attack speed
+        amount: -3.2
+        slot: mainhand_slot_group
+        operation: add_number
+    
     set data tag "itemstat:type" of {_item} to "axe"
     set number data tag "itemstat:level" of {_item} to {_level}
     set number data tag "itemstat:damage" of {_item} to {_damage}
@@ -98,6 +112,13 @@ function dagger(level: number):: item:
     
     set {_item} to unbreakable {_item}
     set item flags of {_item} to all item flags
+    
+    apply attribute modifier to {_item}:
+        id: "minecraft:base_attack_speed"
+        attribute: attack speed
+        amount: -2
+        slot: mainhand_slot_group
+        operation: add_number
     
     set data tag "itemstat:type" of {_item} to "dagger"
     set number data tag "itemstat:level" of {_item} to {_level}
