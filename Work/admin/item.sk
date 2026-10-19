@@ -278,3 +278,11 @@ command /modifyboots <number>:
     trigger:
         set {_item} to boots(arg-1)
         give {_item} to player
+        
+command /modifyset <number>:
+    permission: admin.item
+    trigger:
+        give helmet(arg-1) to player
+        give chestplate(arg-1) to player
+        give leggings(arg-1) to player
+        give boots(arg-1) to player
