@@ -173,7 +173,7 @@ function helmet(level: number):: item:
     
     return {_item}
 
-command /givehelmet <number>:
+command /modifyhelmet <number>:
     permission: admin.item
     trigger:
         set {_item} to helmet(arg-1)
@@ -204,7 +204,7 @@ function chestplate(level: number):: item:
     
     return {_item}
 
-command /givechestplate <number>:
+command /modifychestplate <number>:
     permission: admin.item
     trigger:
         set {_item} to chestplate(arg-1)
@@ -239,7 +239,7 @@ function leggings(level: number):: item:
     
     return {_item}
 
-command /giveleggings <number>:
+command /modifyleggings <number>:
     permission: admin.item
     trigger:
         set {_item} to leggings(arg-1)
@@ -273,7 +273,7 @@ function boots(level: number):: item:
     
     return {_item}
 
-command /giveboots <number>:
+command /modifyboots <number>:
     permission: admin.item
     trigger:
         set {_item} to boots(arg-1)
