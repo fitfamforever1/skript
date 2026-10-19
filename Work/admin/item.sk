@@ -35,13 +35,12 @@ function sword(level: number):: item:
     
     set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
     set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &eꜱᴡᴏʀᴅ"
-    set line 3 of lore of {_item} to "&8┃ &7ǫᴜᴀʟɪᴛʏ &8» %{_qualityLine}%"
-    set line 4 of lore of {_item} to "&8┃ &7ʟᴇᴠᴇʟ &8» &c%{_level}%"
-    set line 5 of lore of {_item} to ""
-    set line 6 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
-    set line 7 of lore of {_item} to "&8┃ &7ᴅᴀᴍᴀɢᴇ &8» &c+%{_damage}%"
-    set line 8 of lore of {_item} to "&8┃ &7ᴄʀɪᴛ ᴄʜᴀɴᴄᴇ &8» &9+%{_critchance}%%%"
-    set line 9 of lore of {_item} to "&8┃ &7ᴄʀɪᴛ ᴅᴀᴍᴀɢᴇ &8» &9+%{_critdamage}%%%"
+    set line 3 of lore of {_item} to "&8┃ &7ʟᴇᴠᴇʟ &8» &c%{_level}%"
+    set line 4 of lore of {_item} to ""
+    set line 5 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
+    set line 6 of lore of {_item} to "&8┃ &7ᴅᴀᴍᴀɢᴇ &8» &c+%{_damage}%"
+    set line 7 of lore of {_item} to "&8┃ &7ᴄʀɪᴛ ᴄʜᴀɴᴄᴇ &8» &9+%{_critchance}%%%"
+    set line 8 of lore of {_item} to "&8┃ &7ᴄʀɪᴛ ᴅᴀᴍᴀɢᴇ &8» &9+%{_critdamage}%%%"
     
     set {_item} to unbreakable {_item}
     set item flags of {_item} to all item flags
@@ -63,18 +62,17 @@ function axe(level: number):: item:
     
     set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
     set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &eᴀxᴇ"
-    set line 3 of lore of {_item} to "&8┃ &7ǫᴜᴀʟɪᴛʏ &8» %{_qualityLine}%"
-    set line 4 of lore of {_item} to "&8┃ &7ʟᴇᴠᴇʟ &8» &c%{_level}%"
-    set line 5 of lore of {_item} to ""
-    set line 6 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
-    set line 7 of lore of {_item} to "&8┃ &7ᴅᴀᴍᴀɢᴇ &8» &c+%{_damage}%"
-    set line 8 of lore of {_item} to "&8┃ &7ᴄʀɪᴛ ᴄʜᴀɴᴄᴇ &8» &9+%{_critchance}%%%"
-    set line 9 of lore of {_item} to "&8┃ &7ᴄʀɪᴛ ᴅᴀᴍᴀɢᴇ &8» &9+%{_critdamage}%%%"
+    set line 3 of lore of {_item} to "&8┃ &7ʟᴇᴠᴇʟ &8» &c%{_level}%"
+    set line 4 of lore of {_item} to ""
+    set line 5 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
+    set line 6 of lore of {_item} to "&8┃ &7ᴅᴀᴍᴀɢᴇ &8» &c+%{_damage}%"
+    set line 7 of lore of {_item} to "&8┃ &7ᴄʀɪᴛ ᴄʜᴀɴᴄᴇ &8» &9+%{_critchance}%%%"
+    set line 8 of lore of {_item} to "&8┃ &7ᴄʀɪᴛ ᴅᴀᴍᴀɢᴇ &8» &9+%{_critdamage}%%%"
     
     set {_item} to unbreakable {_item}
     set item flags of {_item} to all item flags
     
-    set data tag "itemstat:type" of {_item} to "sword"
+    set data tag "itemstat:type" of {_item} to "axe"
     set number data tag "itemstat:level" of {_item} to {_level}
     set number data tag "itemstat:damage" of {_item} to {_damage}
     set number data tag "itemstat:crit_chance" of {_item} to {_critchance}
@@ -82,14 +80,47 @@ function axe(level: number):: item:
     
     return {_item}
     
-command /givesword <number>:
+function dagger(level: number):: item:
+    set {_item} to iron sword
+    
+    set {_damage} to round(4 + ({_level} * 2.0))
+    set {_critchance} to round(8 + ({_level} * 0.4))
+    set {_critdamage} to round(60 + ({_level} * 1.0))
+    
+    set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
+    set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &eᴅᴀɢɢᴇʀ"
+    set line 3 of lore of {_item} to "&8┃ &7ʟᴇᴠᴇʟ &8» &c%{_level}%"
+    set line 4 of lore of {_item} to ""
+    set line 5 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
+    set line 6 of lore of {_item} to "&8┃ &7ᴅᴀᴍᴀɢᴇ &8» &c+%{_damage}%"
+    set line 7 of lore of {_item} to "&8┃ &7ᴄʀɪᴛ ᴄʜᴀɴᴄᴇ &8» &9+%{_critchance}%%%"
+    set line 8 of lore of {_item} to "&8┃ &7ᴄʀɪᴛ ᴅᴀᴍᴀɢᴇ &8» &9+%{_critdamage}%%%"
+    
+    set {_item} to unbreakable {_item}
+    set item flags of {_item} to all item flags
+    
+    set data tag "itemstat:type" of {_item} to "dagger"
+    set number data tag "itemstat:level" of {_item} to {_level}
+    set number data tag "itemstat:damage" of {_item} to {_damage}
+    set number data tag "itemstat:crit_chance" of {_item} to {_critchance}
+    set number data tag "itemstat:crit_damage" of {_item} to {_critdamage}
+    
+    return {_item}
+    
+command /modifysword <number>:
     permission: admin.item
     trigger:
         set {_item} to sword(arg-1)
         give {_item} to player
         
-command /giveaxe <number>:
+command /modifyaxe <number>:
     permission: admin.item
     trigger:
         set {_item} to axe(arg-1)
+        give {_item} to player
+        
+command /modifydagger <number>:
+    permission: admin.item
+    trigger:
+        set {_item} to dagger(arg-1)
         give {_item} to player
