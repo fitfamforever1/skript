@@ -84,7 +84,7 @@ function dagger(level: number):: item:
     set {_item} to iron sword
     
     set {_damage} to round(4 + ({_level} * 2.0))
-    set {_critchance} to round(8 + ({_level} * 0.4))
+    set {_critchance} to round(8 + ({_level} * 0.8))
     set {_critdamage} to round(60 + ({_level} * 1.0))
     
     set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
