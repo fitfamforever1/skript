@@ -149,8 +149,8 @@ command /modifydagger <number>:
 function helmet(level: number):: item:
     set {_item} to leather helmet
 
-    set {_health} to round((30 + ({_level} * 3)) * 1.15)
-    set {_defense} to round(8 + ({_level} * 1.2))
+    set {_health} to round(30 + ({_level} * 3))
+    set {_defense} to round(6 + ({_level} * 1.2))
     set {_mana} to round(15 + ({_level} * 4))
     
     set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
@@ -183,8 +183,8 @@ command /modifyhelmet <number>:
 function chestplate(level: number):: item:
     set {_item} to leather chestplate
     
-    set {_health} to round((40 + ({_level} * 3.5)) * 1.15)
-    set {_defense} to round(12 + ({_level} * 1.8))
+    set {_health} to round(40 + ({_level} * 3.5))
+    set {_defense} to round(10 + ({_level} * 1.8))
     
     set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
     set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &eᴄʜᴇꜱᴛᴘʟᴀᴛᴇ"
@@ -215,10 +215,10 @@ function leggings(level: number):: item:
     set {_item} to leather leggings
 
     
-    set {_health} to round((35 + ({_level} * 3)) * 1.15)
+    set {_health} to round(30 + ({_level} * 3))
     set {_damage} to round(3 + ({_level} * 0.8))
-    set {_critdamage} to round(10 + ({_level} * 0.3))
-    
+    set {_critdamage} to round(10 + ({_level} * 0.5))
+
     set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
     set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &eʟᴇɢɢɪɴɢꜱ"
     set line 3 of lore of {_item} to "&8┃ &7ʟᴇᴠᴇʟ &8» &c%{_level}%"
@@ -249,9 +249,9 @@ command /modifyleggings <number>:
 function boots(level: number):: item:
     set {_item} to leather boots
     
-    set {_health} to round((25 + ({_level} * 2.5)) * 1.15)
-    set {_speed} to round(2 + ({_level} * 0.15))
-    set {_critchance} to round(1 + ({_level} * 0.06))
+    set {_health} to round(20 + ({_level} * 2.5))
+    set {_speed} to round(2 + ({_level} * 0.2))
+    set {_critchance} to round(1 + ({_level} * 0.2))
     
     set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
     set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &eʙᴏᴏᴛꜱ"
