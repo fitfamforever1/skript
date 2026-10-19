@@ -250,7 +250,7 @@ function boots(level: number):: item:
     set {_item} to leather boots
     
     set {_health} to round(20 + ({_level} * 1.5))
-    set {_speed} to 2 + ({_level} * 0.05)
+    set {_speed} to round((2 + ({_level} * 0.05)) * 10) / 10
     set {_critchance} to 1 + ({_level} * 0.1)
     
     set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
