@@ -145,3 +145,136 @@ command /modifydagger <number>:
     trigger:
         set {_item} to dagger(arg-1)
         give {_item} to player
+        
+function helmet(level: number):: item:
+    set {_item} to leather helmet
+
+    set {_health} to round((30 + ({_level} * 3)) * 1.15)
+    set {_defense} to round(8 + ({_level} * 1.2))
+    set {_mana} to round(15 + ({_level} * 2))
+    
+    set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
+    set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &eʜᴇʟᴍᴇᴛ"
+    set line 3 of lore of {_item} to "&8┃ &7ʟᴇᴠᴇʟ &8» &c%{_level}%"
+    set line 4 of lore of {_item} to ""
+    set line 5 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
+    set line 6 of lore of {_item} to "&8┃ &7ʜᴇᴀʟᴛʜ &8» &c+%{_health}%"
+    set line 7 of lore of {_item} to "&8┃ &7ᴅᴇғᴇɴꜱᴇ &8» &a+%{_defense}%"
+    set line 8 of lore of {_item} to "&8┃ &7ᴍᴀɴᴀ &8» &b+%{_mana}%"
+    
+    set {_item} to unbreakable {_item}
+    set item flags of {_item} to all item flags
+    
+    set data tag "itemstat:type" of {_item} to "helmet"
+    set number data tag "itemstat:level" of {_item} to {_level}
+    set number data tag "itemstat:health" of {_item} to {_health}
+    set number data tag "itemstat:defense" of {_item} to {_defense}
+    set number data tag "itemstat:mana" of {_item} to {_mana}
+    
+    return {_item}
+
+command /givehelmet <number>:
+    permission: admin.item
+    trigger:
+        set {_item} to helmet(arg-1)
+        give {_item} to player
+
+
+function chestplate(level: number):: item:
+    set {_item} to leather chestplate
+    
+    set {_health} to round((40 + ({_level} * 3.5)) * 1.15)
+    set {_defense} to round(12 + ({_level} * 1.8))
+    
+    set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
+    set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &eᴄʜᴇꜱᴛᴘʟᴀᴛᴇ"
+    set line 3 of lore of {_item} to "&8┃ &7ʟᴇᴠᴇʟ &8» &c%{_level}%"
+    set line 4 of lore of {_item} to ""
+    set line 5 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
+    set line 6 of lore of {_item} to "&8┃ &7ʜᴇᴀʟᴛʜ &8» &c+%{_health}%"
+    set line 7 of lore of {_item} to "&8┃ &7ᴅᴇғᴇɴꜱᴇ &8» &a+%{_defense}%"
+    
+    set {_item} to unbreakable {_item}
+    set item flags of {_item} to all item flags
+    
+    set data tag "itemstat:type" of {_item} to "chestplate"
+    set number data tag "itemstat:level" of {_item} to {_level}
+    set number data tag "itemstat:health" of {_item} to {_health}
+    set number data tag "itemstat:defense" of {_item} to {_defense}
+    
+    return {_item}
+
+command /givechestplate <number>:
+    permission: admin.item
+    trigger:
+        set {_item} to chestplate(arg-1)
+        give {_item} to player
+
+
+function leggings(level: number):: item:
+    set {_item} to leather leggings
+
+    
+    set {_health} to round((35 + ({_level} * 3)) * 1.15)
+    set {_damage} to round(3 + ({_level} * 0.8))
+    set {_critdamage} to round(10 + ({_level} * 0.3))
+    
+    set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
+    set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &eʟᴇɢɢɪɴɢꜱ"
+    set line 3 of lore of {_item} to "&8┃ &7ʟᴇᴠᴇʟ &8» &c%{_level}%"
+    set line 4 of lore of {_item} to ""
+    set line 5 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
+    set line 6 of lore of {_item} to "&8┃ &7ʜᴇᴀʟᴛʜ &8» &c+%{_health}%"
+    set line 7 of lore of {_item} to "&8┃ &7ᴅᴀᴍᴀɢᴇ &8» &c+%{_damage}%"
+    set line 8 of lore of {_item} to "&8┃ &7ᴄʀɪᴛ ᴅᴀᴍᴀɢᴇ &8» &9+%{_critdamage}%%%"
+    
+    set {_item} to unbreakable {_item}
+    set item flags of {_item} to all item flags
+    
+    set data tag "itemstat:type" of {_item} to "leggings"
+    set number data tag "itemstat:level" of {_item} to {_level}
+    set number data tag "itemstat:health" of {_item} to {_health}
+    set number data tag "itemstat:damage" of {_item} to {_damage}
+    set number data tag "itemstat:crit_damage" of {_item} to {_critdamage}
+    
+    return {_item}
+
+command /giveleggings <number>:
+    permission: admin.item
+    trigger:
+        set {_item} to leggings(arg-1)
+        give {_item} to player
+
+
+function boots(level: number):: item:
+    set {_item} to leather boots
+    
+    set {_health} to round((25 + ({_level} * 2.5)) * 1.15)
+    set {_speed} to round(2 + ({_level} * 0.15))
+    set {_critchance} to round(1 + ({_level} * 0.06))
+    
+    set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
+    set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &eʙᴏᴏᴛꜱ"
+    set line 3 of lore of {_item} to "&8┃ &7ʟᴇᴠᴇʟ &8» &c%{_level}%"
+    set line 4 of lore of {_item} to ""
+    set line 5 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
+    set line 6 of lore of {_item} to "&8┃ &7ʜᴇᴀʟᴛʜ &8» &c+%{_health}%"
+    set line 7 of lore of {_item} to "&8┃ &7ꜱᴘᴇᴇᴅ &8» &f+%{_speed}%"
+    set line 8 of lore of {_item} to "&8┃ &7ᴄʀɪᴛ ᴄʜᴀɴᴄᴇ &8» &9+%{_critchance}%%%"
+    
+    set {_item} to unbreakable {_item}
+    set item flags of {_item} to all item flags
+    
+    set data tag "itemstat:type" of {_item} to "boots"
+    set number data tag "itemstat:level" of {_item} to {_level}
+    set number data tag "itemstat:health" of {_item} to {_health}
+    set number data tag "itemstat:speed" of {_item} to {_speed}
+    set number data tag "itemstat:crit_chance" of {_item} to {_critchance}
+    
+    return {_item}
+
+command /giveboots <number>:
+    permission: admin.item
+    trigger:
+        set {_item} to boots(arg-1)
+        give {_item} to player
