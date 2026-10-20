@@ -147,7 +147,7 @@ command /modifydagger <number>:
         give {_item} to player
         
 function helmet(level: number):: item:
-    set {_item} to iron helmet
+    set {_item} to copper helmet
 
     set {_health} to round(30 + ({_level} * 2))
     set {_defense} to round(5 + ({_level} * 0.8))
@@ -181,7 +181,7 @@ command /modifyhelmet <number>:
 
 
 function chestplate(level: number):: item:
-    set {_item} to iron chestplate
+    set {_item} to copper chestplate
     
     set {_health} to round(40 + ({_level} * 2.5))
     set {_defense} to round(8 + ({_level} * 1.2))
@@ -212,7 +212,7 @@ command /modifychestplate <number>:
 
 
 function leggings(level: number):: item:
-    set {_item} to iron leggings
+    set {_item} to copper leggings
 
     
     set {_health} to round(30 + ({_level} * 2))
@@ -247,7 +247,7 @@ command /modifyleggings <number>:
 
 
 function boots(level: number):: item:
-    set {_item} to iron boots
+    set {_item} to copper boots
     
     set {_health} to round(20 + ({_level} * 1.5))
     set {_speed} to round((2 + ({_level} * 0.05)) * 10) / 10
