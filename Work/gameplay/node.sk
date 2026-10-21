@@ -14,7 +14,7 @@ on break:
     if block is cobbled deepslate slab:
         cancel event
         dropOre(player)
-    if block is cobbled deepslate stair:
+    if block is cobbled deepslate stairs:
         cancel event
         dropOre(player)
         
