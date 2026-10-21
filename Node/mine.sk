@@ -1,0 +1,4 @@
+on break:
+    if block is pale oak log:
+        cancel event
+        give {item::mat1} to player
