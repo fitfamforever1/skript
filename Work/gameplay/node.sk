@@ -38,7 +38,7 @@ on break:
         play sound "sound:sound.ui.error" for player
 
     if {_id} is not 0:
-        wait 30 seconds
+        wait 8 seconds
         restoreBlock({_id})
 
 
