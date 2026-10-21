@@ -11,6 +11,12 @@ on break:
     if block is cobbled deepslate:
         cancel event
         dropOre(player)
+    if block is cobbled deepslate slab:
+        cancel event
+        dropOre(player)
+    if block is cobbled deepslate stair:
+        cancel event
+        dropOre(player)
         
 function dropOre(p: player):
     set {_random} to random number between 1 and 100
