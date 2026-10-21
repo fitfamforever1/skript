@@ -286,3 +286,31 @@ command /modifyset <number>:
         give chestplate(arg-1) to player
         give leggings(arg-1) to player
         give boots(arg-1) to player
+        
+function ore(item: item, level: number):: item:
+    set {_max} to {_level} * 5
+    
+    set {_min} to {_max} - 5
+    
+    if {_min} is 0:
+        set {_min} to 1
+    
+    set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
+    set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &eᴏʀᴇ"
+    set line 3 of lore of {_item} to "&8┃ &7ʟᴇᴠᴇʟ &8» &c%{_max}%"
+    
+    set {_item} to unbreakable {_item}
+    set item flags of {_item} to all item flags
+    
+    set data tag "itemstat:type" of {_item} to "ore"
+    set number data tag "itemstat:max" of {_item} to {_max}
+    set number data tag "itemstat:min" of {_item} to {_min}
+    
+    return {_item}
+    
+command /modifyore <number>:
+    permission: admin.item
+    trigger:
+        set {_item} to player's tool
+        set {_item} to ore({_item}, arg-1)
+        give {_item} to player
