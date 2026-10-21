@@ -18,6 +18,8 @@ on break:
         cancel event
         dropOre(player)
     else:
+        if player has permission "admin":
+            stop
         cancel event
         play sound "sound:sound.ui.error" for player
 function dropOre(p: player):
