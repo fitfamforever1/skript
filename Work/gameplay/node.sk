@@ -2,3 +2,9 @@ on break:
     if block is pale oak log:
         cancel event
         give {item::mat1} to player
+    if block is cobblestone:
+        cancel event
+        give {item::mat2} to player
+    if block is cobblestone slabs:
+        cancel event
+        give {item::mat2} to player
