@@ -8,3 +8,21 @@ on break:
     if block is cobblestone slabs:
         cancel event
         give {item::mat2} to player
+    if block is cobblestone slabs:
+        cancel event
+        give {item::mat2} to player
+        
+function dropOre(p: player):
+    set {_random} to random number between 1 and 100
+
+    if {_random} <= 50:
+        give {item::mat10} to {_p}
+    
+    else if {_random} <= 80:
+        give {item::mat3} to {_p}
+
+    else if {_random} <= 95:
+        give {item::mat4} to {_p}
+
+    else:
+        give {item::mat6} to {_p}
