@@ -33,6 +33,7 @@ on death of player:
         
 on chat:
     cancel event
-    broadcast "&7%player%&8: &f%message%"
+    set {_level} to number data tag "playerstat:lvl" of player
+    broadcast "&8[&a{_level}&8] &7%player%&8: &f%message%"
         
         
