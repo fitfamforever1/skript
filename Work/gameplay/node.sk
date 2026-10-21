@@ -1,33 +1,82 @@
 on break:
+    set {_id} to 0
+
     if block is pale oak log:
         cancel event
         give {item::mat1} to player
+        set {_id} to mineBlock(event-block)
+
     else if block is cobblestone:
         cancel event
         give {item::mat2} to player
-    else if block is cobblestone slabs:
+        set {_id} to mineBlock(event-block)
+
+    else if block is cobblestone slab:
         cancel event
         give {item::mat2} to player
+        set {_id} to mineBlock(event-block)
+
     else if block is cobbled deepslate:
         cancel event
         dropOre(player)
+        set {_id} to mineBlock(event-block)
+
     else if block is cobbled deepslate slab:
         cancel event
         dropOre(player)
+        set {_id} to mineBlock(event-block)
+
     else if block is cobbled deepslate stairs:
         cancel event
         dropOre(player)
+        set {_id} to mineBlock(event-block)
+
     else:
         if player has permission "admin":
             stop
         cancel event
         play sound "sound:sound.ui.error" for player
+
+    if {_id} is not 0:
+        wait 30 seconds
+        restoreBlock({_id})
+
+
+function mineBlock(b: block) :: number:
+    add 1 to {mining::next-id}
+    set {_id} to {mining::next-id}
+
+    set {mining::loc::%{_id}%} to location of {_b}
+    set {mining::data::%{_id}%} to block data of {_b}
+
+    set block at {mining::loc::%{_id}%} to bedrock
+
+    return {_id}
+
+
+function restoreBlock(id: number):
+    if {mining::loc::%{_id}%} is set:
+        set block at {mining::loc::%{_id}%} to {mining::data::%{_id}%}
+
+        delete {mining::loc::%{_id}%}
+        delete {mining::data::%{_id}%}
+
+
+on script load:
+    loop {mining::loc::*}:
+        set {_id} to loop-index parsed as number
+        set block at loop-value to {mining::data::%{_id}%}
+
+        delete {mining::loc::%{_id}%}
+        delete {mining::data::%{_id}%}
+
+
 function dropOre(p: player):
-    set {_random} to random number between 1 and 100
+    set {_random} to random integer between 1 and 100
 
     if {_random} <= 50:
         give {item::mat10} to {_p}
-    
+
     else if {_random} <= 80:
         give {item::mat3} to {_p}
 
