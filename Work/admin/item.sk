@@ -287,7 +287,9 @@ command /modifyset <number>:
         give leggings(arg-1) to player
         give boots(arg-1) to player
         
-function ore(item: item, level: number):: item:
+function ore(level: number):: item:
+    set {_item} to paper
+    
     set {_max} to {_level} * 5
     
     set {_min} to {_max} - 5
@@ -311,6 +313,5 @@ function ore(item: item, level: number):: item:
 command /modifyore <number>:
     permission: admin.item
     trigger:
-        set {_item} to player's tool
-        set {_item} to ore({_item}, arg-1)
+        set {_item} to ore(arg-1)
         give {_item} to player
