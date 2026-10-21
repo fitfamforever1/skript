@@ -19,7 +19,7 @@ on break:
         dropOre(player)
     else:
         cancel event
-        
+        play sound "sound:sound.ui.error" for player
 function dropOre(p: player):
     set {_random} to random number between 1 and 100
 
