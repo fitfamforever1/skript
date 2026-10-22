@@ -162,14 +162,10 @@ on inventory click:
         cancel event
         set {_temp} to data tag "forge:id" of event-item
         if {_temp} is "1":
-            openBlock(player)
+            craftCopper(player)
         if {_temp} is "2":
-            openMics(player)
+            craftIron(player)
         if {_temp} is "3":
-            openFood(player)
+            craftSteel(player)
         if {_temp} is "4":
-            openOre(player)
-        if {_temp} is "5":
-            openMob(player)
-        if {_temp} is "6":
-            openFarm(player)
+            craftMithril(player)
