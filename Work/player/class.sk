@@ -12,6 +12,9 @@ function className(p: player):: text:
 command /classset <number>:
     trigger:
         set number data tag "class:id" of {_p} to arg-1
+        set {_id} to number data tag "class:id" of {_p}
+        set {_name} to className(player)
+        send "&f%{_name}%"
         
 command /class:
     trigger:
