@@ -1,14 +1,14 @@
 function count(p: player, type: text) :: number:
     set {_count} to 0
     loop items in inventory of {_p}:
-        if data tag "mat:id" of loop-item is {_type}:
+        if data tag "itemstat:mat" of loop-item is {_type}:
             add amount of loop-item to {_count}
     return {_count}
 
 function remove(p: player, type: text, amount: integer) :: boolean:
     set {_remaining} to {_amount}
     loop items in inventory of {_p}:
-        if data tag "mat:id" of loop-item is {_type}:
+        if data tag "itemstat:mat" of loop-item is {_type}:
             if amount of loop-item >= {_remaining}:
                 remove {_remaining} of loop-item from inventory of {_p}
                 return true
