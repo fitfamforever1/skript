@@ -18,15 +18,15 @@ function remove(p: player, type: text, amount: integer) :: boolean:
     return false
 
 function craftSteel(p: player):
-    if count(player, "8") >= 1:
-        if count(player, "10") >= 3:
-            remove(player, "8", 1)
-            remove(player, "10", 3)
-            give player 1 of {loot::mat5}
+    if count({_p}, "8") >= 1:
+        if count({_p}, "10") >= 3:
+            remove({_p}, "8", 1)
+            remove({_p}, "10", 3)
+            give {_p} 1 of {loot::mat5}
         else:
-            send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀᴇǫᴜɪʀᴇᴅ ɪᴛᴇᴍꜱ ᴛᴏ ᴄʀᴀꜰᴛ."
+            send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀᴇǫᴜɪʀᴇᴅ ɪᴛᴇᴍꜱ ᴛᴏ ᴄʀᴀꜰᴛ." to {_p}
     else:
-        send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀᴇǫᴜɪʀᴇᴅ ɪᴛᴇᴍꜱ ᴛᴏ ᴄʀᴀꜰᴛ."
+        send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀᴇǫᴜɪʀᴇᴅ ɪᴛᴇᴍꜱ ᴛᴏ ᴄʀᴀꜰᴛ." to {_p}
 
 command /test2:
     trigger:
