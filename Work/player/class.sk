@@ -9,7 +9,6 @@ function className(p: player):: text:
     else:
         return "ᴜɴᴋɴᴏᴡɴ"
         
-
         
 command /classset <number>:
     permission: admin.class
@@ -45,9 +44,12 @@ on inventory click:
             craftIron(player)
         if {_temp} is "3":
             craftSteel(player)
-        if {_temp} is "4":
-            craftMithril(player)
             
 command /test:
     trigger:
         openClass(player)
+        
+command /test2:
+    trigger:
+        set {_gui} to chest inventory with 3 rows named "&f七七七七七七七七ㇺ"
+        open {_gui} to {_p}
