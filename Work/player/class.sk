@@ -12,11 +12,42 @@ function className(p: player):: text:
 
         
 command /classset <number>:
+    permission: admin.class
     trigger:
         set number data tag "class:id" of player to arg-1
         
 command /class:
+    permission: admin.class
     trigger:
         set {_id} to number data tag "class:id" of player
         set {_name} to className(player)
         send "&f%{_name}%"
+        
+function openClass(p: player):
+    set {_gui} to chest inventory with 3 rows named "<##26FFB3>ꜱᴇʟᴇᴄᴛ ᴀ ᴄʟᴀꜱꜱ"
+
+    loop 36 times:
+        set slot (loop-number - 1) of {_gui} to {item::space}
+    
+    set slot 11 of {_gui} to {item::class1}
+    set slot 13 of {_gui} to {item::class2}
+    set slot 15 of {_gui} to {item::class3}
+    
+    open {_gui} to {_p}
+    
+on inventory click:
+    if name of event-inventory is "<##26FFB3>ꜱᴇʟᴇᴄᴛ ᴀ ᴄʟᴀꜱꜱ"
+        cancel event
+        set {_temp} to data tag "classitem:id" of event-item
+        if {_temp} is "1":
+            craftCopper(player)
+        if {_temp} is "2":
+            craftIron(player)
+        if {_temp} is "3":
+            craftSteel(player)
+        if {_temp} is "4":
+            craftMithril(player)
+            
+command /test:
+    trigger:
+        openClass(player)
