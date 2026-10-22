@@ -36,12 +36,9 @@ function openClass(p: player):
     
 on inventory click:
     if name of event-inventory is "&f七七七七七七七七ㇺ":
-        send "gui work"
         cancel event
         set {_temp} to data tag "classitem:id" of event-item
-        send "%{_temp}%"
         if {_temp} is "1":
-            send "test"
             set number data tag "class:id2" of player to 1
             openClassConfirm(player)
             play sound "sound:sound.ui.click" for player
@@ -57,7 +54,7 @@ on inventory click:
             set {_class} to number data tag "class:id2" of player
             set number data tag "class:id" of player to {_class}
             set {_name} to className(player)
-            send "&8[<##26FFB3>ᴄʟᴀꜱꜱ&8] &7ʏᴏᴜ ʜᴀᴠᴇ ꜱᴇʟᴇᴄᴛᴇᴅ &e{_name} &7ᴀꜱ ʏᴏᴜʀ ᴄʟᴀꜱꜱ. ɪ ʜᴏᴘᴇ ʏᴏᴜ ᴅᴏɴ'ᴛ ʀᴇɢʀᴇᴛ ɪᴛ ʟᴀᴛᴇʀ."
+            send "&8[<##26FFB3>ᴄʟᴀꜱꜱ&8] &7ʏᴏᴜ ʜᴀᴠᴇ ꜱᴇʟᴇᴄᴛᴇᴅ &e%{_name}% &7ᴀꜱ ʏᴏᴜʀ ᴄʟᴀꜱꜱ. ɪ ʜᴏᴘᴇ ʏᴏᴜ ᴅᴏɴ'ᴛ ʀᴇɢʀᴇᴛ ɪᴛ ʟᴀᴛᴇʀ."
             close player's inventory
             play sound "sound:sound.ui.enable" for player
         if {_temp} is "5":
