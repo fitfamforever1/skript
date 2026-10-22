@@ -36,7 +36,7 @@ function openClass(p: player):
     open {_gui} to {_p}
     
 on inventory click:
-    if name of event-inventory is "<##26FFB3>ꜱᴇʟᴇᴄᴛ ᴀ ᴄʟᴀꜱꜱ"
+    if name of event-inventory is "<##26FFB3>ꜱᴇʟᴇᴄᴛ ᴀ ᴄʟᴀꜱꜱ":
         cancel event
         set {_temp} to data tag "classitem:id" of event-item
         if {_temp} is "1":
