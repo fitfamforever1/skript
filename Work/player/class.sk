@@ -37,7 +37,7 @@ function openClass(p: player):
 on inventory click:
     if name of event-inventory is "&f七七七七七七七七ㇺ":
         cancel event
-        set {_temp} to data tag "classitem:id" of event-item
+        set {_temp} to number data tag "classitem:id" of event-item
         send "%{_temp}%"
         if {_temp} is "1":
             send "test"
