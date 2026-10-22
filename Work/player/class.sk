@@ -69,5 +69,12 @@ command /class:
             send "&8[<##26FFB3>ᴄʟᴀꜱꜱ&8]&7 ʏᴏᴜ ʜᴀᴠᴇ ᴀʟʀᴇᴀᴅʏ ꜱᴇʟᴇᴄᴛᴇᴅ &e%{_name}%&7 ᴀꜱ ʏᴏᴜʀ ᴄʟᴀꜱꜱ."
             stop
         openClass(player)
+        
+command /classset <number> [<player>]:
+    permission: admin.class
+    trigger:
+        if arg-2 is set:
+            set number data tag "class:id" of arg-2 to arg-1
+        set number data tag "class:id" to arg-1
        
         
