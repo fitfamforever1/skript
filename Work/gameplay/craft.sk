@@ -169,3 +169,7 @@ on inventory click:
             craftSteel(player)
         if {_temp} is "4":
             craftMithril(player)
+           
+command /test:
+    trigger:
+        openForge(player)
