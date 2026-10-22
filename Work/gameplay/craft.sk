@@ -107,12 +107,14 @@ on right click on anvil:
     set {_newLevel} to {_level} + 1
     set {_material} to getUpgradeMaterial({_level})
     set {_amount} to getUpgradeAmount({_level})
+    
+    set {_temp} to data tag "itemstat:mat" of {_material}
 
-    if count(player, "%custom model data of {_material}%") < {_amount}:
+    if count(player, {_temp}) < {_amount}:
         send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴇɴᴏᴜɢʜ ᴍᴀᴛᴇʀɪᴀʟꜱ." to player
         stop
 
-    remove(player, "%custom model data of {_material}%", {_amount})
+    remove(player, {_temp}, {_amount})
 
     set {_newItem} to {item::%{_type}%%{_newLevel}%}
     if {_newItem} is not set:
