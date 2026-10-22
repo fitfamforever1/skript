@@ -117,21 +117,21 @@ on right click on anvil:
             set {_missing} to {_amount} - {_owned}
     
             if {_temp} is "1":
-                set {_name} to "Wood"
+                set {_name} to "ᴡᴏᴏᴅ"
             else if {_temp} is "2":
-                set {_name} to "Stone"
+                set {_name} to "ꜱᴛᴏɴᴇ"
             else if {_temp} is "7":
-                set {_name} to "Copper Ingot"
+                set {_name} to "ᴄᴏᴘᴘᴇʀ ɪɴɢᴏᴛ"
             else if {_temp} is "8":
-                set {_name} to "Iron Ingot"
+                set {_name} to "ɪʀᴏɴ ɪɴɢᴏᴛ"
             else if {_temp} is "5":
-                set {_name} to "Steel Ingot"
+                set {_name} to "ꜱᴛᴇᴇʟ ɪɴɢᴏᴛ"
             else if {_temp} is "9":
-                set {_name} to "Refined Mithril"
+                set {_name} to "ʀᴇꜰɪɴᴇᴅ ᴍɪᴛʜʀɪʟ"
             else:
                 set {_name} to "Unknown Material"
     
-            send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cɴᴏᴛ ᴇɴᴏᴜɢʜ %{_name}%! ᴍɪꜱꜱɪɴɢ: %{_missing}%." to player
+            send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cᴍɪꜱꜱɪɴɢ %{_missing}%x %{_name}%!" to player
             stop
 
     remove(player, {_temp}, {_amount})
