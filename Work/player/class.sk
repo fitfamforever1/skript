@@ -75,6 +75,6 @@ command /classset <number> [<player>]:
     trigger:
         if arg-2 is set:
             set number data tag "class:id" of arg-2 to arg-1
-        set number data tag "class:id" to arg-1
+        set number data tag "class:id" of player to arg-1
        
         
