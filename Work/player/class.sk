@@ -38,6 +38,7 @@ on inventory click:
     if name of event-inventory is "&f七七七七七七七七ㇺ":
         cancel event
         set {_temp} to data tag "classitem:id" of event-item
+        send "%{_temp}%"
         if {_temp} is "1":
             send "test"
             set number data tag "class:id2" of player to 1
