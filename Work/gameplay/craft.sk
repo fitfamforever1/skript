@@ -145,9 +145,9 @@ on right click on anvil:
     send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &aɪᴛᴇᴍ ᴜᴘɢʀᴀᴅᴇᴅ ᴛᴏ ʟᴇᴠᴇʟ %{_newLevel}%!" to player
     
 function openForge(p: player):
-    set {_gui} to chest inventory with 3 rows named "<##deb92b>ꜰᴏʀɢᴇ"
+    set {_gui} to chest inventory with 4 rows named "<##deb92b>ꜰᴏʀɢᴇ"
 
-    loop 27 times:
+    loop 34 times:
         set slot (loop-number - 1) of {_gui} to {item::space}
     
     set slot 10 of {_gui} to {item::forge1}
