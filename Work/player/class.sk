@@ -77,7 +77,7 @@ command /classset <number> [<player>]:
             set number data tag "class:id" of arg-2 to arg-1
         set number data tag "class:id" of player to arg-1
        
-command /classset [<player>]:
+command /classreset [<player>]:
     permission: admin.class
     trigger:
         if arg-1 is set:
@@ -85,7 +85,7 @@ command /classset [<player>]:
         delete number data tag "class:id" of player
        
 function starterKit(p: player):
-    set {_class} to number data tag "class:id" of player
+    set {_class} to number data tag "class:id" of {_p}
     give {_p} 1 of {item::helmet1}
     give {_p} 1 of {item::chestplate1}
     give {_p} 1 of {item::leggings1}
