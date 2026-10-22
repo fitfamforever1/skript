@@ -64,9 +64,9 @@ function craftMithril(p: player):
 on right click on anvil:
     cancel event
     set {_item} to player's tool
-        
-    set {_type} data tag "itemstat:type" of {_item}
-    set {_level} number data tag "itemstat:level" of {_item}
+
+    set {_type} to data tag "itemstat:type" of {_item}
+    set {_level} to number data tag "itemstat:level" of {_item}
     
     if {_type} is not "sword", "dagger", "axe", "helmet", "chestplate", "leggings" or "boots":
         send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cɪᴛᴇᴍ ᴄᴀɴ'ᴛ ʙᴇ ᴜᴘɢʀᴀᴅᴇᴅ." to {_p}
