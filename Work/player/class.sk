@@ -23,7 +23,7 @@ command /class:
         send "&f%{_name}%"
         
 function openClass(p: player):
-    set {_gui} to chest inventory with 3 rows named "<##26FFB3>ꜱᴇʟᴇᴄᴛ ᴀ ᴄʟᴀꜱꜱ"
+    set {_gui} to chest inventory with 3 rows named "&f七七七七七七七七ㇺ"
 
     loop 36 times:
         set slot (loop-number - 1) of {_gui} to {item::space}
@@ -35,7 +35,7 @@ function openClass(p: player):
     open {_gui} to {_p}
     
 on inventory click:
-    if name of event-inventory is "<##26FFB3>ꜱᴇʟᴇᴄᴛ ᴀ ᴄʟᴀꜱꜱ":
+    if name of event-inventory is "&f七七七七七七七七ㇺ":
         cancel event
         set {_temp} to data tag "classitem:id" of event-item
         if {_temp} is "1":
@@ -49,7 +49,3 @@ command /test:
     trigger:
         openClass(player)
         
-command /test2:
-    trigger:
-        set {_gui} to chest inventory with 3 rows named "&f七七七七七七七七ㇺ"
-        open {_gui} to player
