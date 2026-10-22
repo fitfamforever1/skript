@@ -91,6 +91,7 @@ function starterKit(p: player):
     give {_p} 1 of {item::chestplate1}
     give {_p} 1 of {item::leggings1}
     give {_p} 1 of {item::boots1}
+    give {_p} 1 of {item::tool1}
     if {_class} is 1:
         give {_p} 1 of {item::axe1}
     if {_class} is 2:
