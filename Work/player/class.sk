@@ -66,7 +66,7 @@ command /class:
         set {_id} to number data tag "class:id" of player
         if {_id} is set:
             set {_name} to className(player)
-            send "&8[<##26FFB3>ᴄʟᴀꜱꜱ&8] ʏᴏᴜ ʜᴀᴠᴇ ᴀʟʀᴇᴀᴅʏ ꜱᴇʟᴇᴄᴛᴇᴅ, &e%{_name}%&7 ᴀꜱ ʏᴏᴜʀ ᴄʟᴀꜱꜱ."
+            send "&8[<##26FFB3>ᴄʟᴀꜱꜱ&8] ʏᴏᴜ ʜᴀᴠᴇ ᴀʟʀᴇᴀᴅʏ ꜱᴇʟᴇᴄᴛᴇᴅ &e%{_name}%&7 ᴀꜱ ʏᴏᴜʀ ᴄʟᴀꜱꜱ."
         openClass(player)
        
         
