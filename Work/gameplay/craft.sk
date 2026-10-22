@@ -16,7 +16,7 @@ function remove(p: player, type: text, amount: integer) :: boolean:
                 subtract amount of loop-item from {_remaining}
                 remove loop-item from inventory of {_p}
     return false
-    
+
 function craftSteel(p: player)
     if count(player, "8") >= 1:
         if count(player, "10") >= 3:
@@ -24,10 +24,10 @@ function craftSteel(p: player)
             remove(player, "10", 3)
             give player 1 of {loot::mat5}
         else:
-            send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀᴇǫᴜɪʀᴇᴅ ɪᴛᴇᴍꜱ ᴛᴏ ᴄʀᴀꜰᴛ."     
+            send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀᴇǫᴜɪʀᴇᴅ ɪᴛᴇᴍꜱ ᴛᴏ ᴄʀᴀꜰᴛ."
     else:
         send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀᴇǫᴜɪʀᴇᴅ ɪᴛᴇᴍꜱ ᴛᴏ ᴄʀᴀꜰᴛ."
-            
+
 command /test2:
     trigger:
         craftSteel(player)
