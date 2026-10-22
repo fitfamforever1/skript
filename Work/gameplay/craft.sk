@@ -28,6 +28,51 @@ function craftSteel(p: player):
     else:
         send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀᴇǫᴜɪʀᴇᴅ ɪᴛᴇᴍꜱ ᴛᴏ ᴄʀᴀꜰᴛ." to {_p}
 
-command /test2:
+function craftCopper(p: player):
+    if count({_p}, "3") >= 1:
+        if count({_p}, "10") >= 1:
+            remove({_p}, "3", 1)
+            remove({_p}, "10", 1)
+            give {_p} 1 of {item::mat7}
+        else:
+            send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀᴇǫᴜɪʀᴇᴅ ɪᴛᴇᴍꜱ ᴛᴏ ᴄʀᴀꜰᴛ." to {_p}
+    else:
+        send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀᴇǫᴜɪʀᴇᴅ ɪᴛᴇᴍꜱ ᴛᴏ ᴄʀᴀꜰᴛ." to {_p}
+        
+function craftIron(p: player):
+    if count({_p}, "4") >= 1:
+        if count({_p}, "10") >= 1:
+            remove({_p}, "4", 1)
+            remove({_p}, "10", 1)
+            give {_p} 1 of {item::mat8}
+        else:
+            send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀᴇǫᴜɪʀᴇᴅ ɪᴛᴇᴍꜱ ᴛᴏ ᴄʀᴀꜰᴛ." to {_p}
+    else:
+        send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀᴇǫᴜɪʀᴇᴅ ɪᴛᴇᴍꜱ ᴛᴏ ᴄʀᴀꜰᴛ." to {_p}
+
+function craftMithril(p: player):
+    if count({_p}, "6") >= 1:
+        if count({_p}, "10") >= 2:
+            remove({_p}, "6", 1)
+            remove({_p}, "10", 2)
+            give {_p} 1 of {item::mat9}
+        else:
+            send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀᴇǫᴜɪʀᴇᴅ ɪᴛᴇᴍꜱ ᴛᴏ ᴄʀᴀꜰᴛ." to {_p}
+    else:
+        send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀᴇǫᴜɪʀᴇᴅ ɪᴛᴇᴍꜱ ᴛᴏ ᴄʀᴀꜰᴛ." to {_p}
+
+command /teststeel:
     trigger:
         craftSteel(player)
+
+command /testcopper:
+    trigger:
+        craftCopper(player)
+
+command /testiron:
+    trigger:
+        craftIron(player)
+
+command /testmithril:
+    trigger:
+        craftMithril(player)
