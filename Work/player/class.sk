@@ -52,4 +52,4 @@ command /test:
 command /test2:
     trigger:
         set {_gui} to chest inventory with 3 rows named "&f七七七七七七七七ㇺ"
-        open {_gui} to {_p}
+        open {_gui} to player
