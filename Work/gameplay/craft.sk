@@ -61,18 +61,13 @@ function craftMithril(p: player):
     else:
         send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀᴇǫᴜɪʀᴇᴅ ɪᴛᴇᴍꜱ ᴛᴏ ᴄʀᴀꜰᴛ." to {_p}
 
-command /teststeel:
-    trigger:
-        craftSteel(player)
-
-command /testcopper:
-    trigger:
-        craftCopper(player)
-
-command /testiron:
-    trigger:
-        craftIron(player)
-
-command /testmithril:
-    trigger:
-        craftMithril(player)
+on right click on anvil:
+    cancel event
+    set {_item} to player's tool
+        
+    set {_type} data tag "itemstat:type" of {_item}
+    set {_level} number data tag "itemstat:level" of {_item}
+    
+    if {_type} is not "sword", "dagger", "axe", "helmet", "chestplate", "leggings" or "boots":
+        send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cɪᴛᴇᴍ ᴄᴀɴ'ᴛ ʙᴇ ᴜᴘɢʀᴀᴅᴇᴅ." to {_p}
+        stop
