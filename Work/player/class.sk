@@ -28,9 +28,9 @@ function openClass(p: player):
     loop 36 times:
         set slot (loop-number - 1) of {_gui} to {item::space1}
     
-    set slot 3 of {_gui} to {item::class1}
-    set slot 5 of {_gui} to {item::class2}
-    set slot 7 of {_gui} to {item::class3}
+    set slot 2 of {_gui} to {item::class1}
+    set slot 4 of {_gui} to {item::class2}
+    set slot 6 of {_gui} to {item::class3}
     
     open {_gui} to {_p}
     
