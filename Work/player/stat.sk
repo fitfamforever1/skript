@@ -52,6 +52,18 @@ function stat(p: player):
                 add number data tag "itemstat:crit_chance" of {_item} to {_critChance}
                 add number data tag "itemstat:crit_damage" of {_item} to {_critDamage}
 
+    set {_classId} to number data tag "class:id" of {_p}
+        
+    if {_classId} is 1:
+        add {_damage} * 0.15 to {_damage}
+    else if {_classId} is 2:
+        add {_defense} * 0.10 to {_defense}
+        add {_health} * 0.10 to {_health}
+    else if {_classId} is 3:
+        add {_speed} * 0.10 to {_speed}
+        add {_critChance} * 0.15 to {_critChance}
+        add {_critDamage} * 0.20 to {_critDamage}
+
     set number data tag "stat:damage" of {_p} to {_damage}
     set number data tag "stat:defense" of {_p} to {_defense}
     set number data tag "stat:speed" of {_p} to {_speed}
