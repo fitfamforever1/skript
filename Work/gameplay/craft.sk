@@ -154,6 +154,7 @@ function openForge(p: player):
     set slot 12 of {_gui} to {item::forge2}
     set slot 14 of {_gui} to {item::forge3}
     set slot 16 of {_gui} to {item::forge4}
+    set slot 31 of {_gui} to {item::forge5}
     
     open {_gui} to {_p}
     
