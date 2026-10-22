@@ -61,15 +61,65 @@ function craftMithril(p: player):
     else:
         send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀᴇǫᴜɪʀᴇᴅ ɪᴛᴇᴍꜱ ᴛᴏ ᴄʀᴀꜰᴛ." to {_p}
 
+function getUpgradeMaterial(level: number) :: item:
+    if {_level} <= 5:
+        return {item::mat1}
+    else if {_level} <= 10:
+        return {item::mat2}
+    else if {_level} <= 15:
+        return {item::mat7}
+    else if {_level} <= 20:
+        return {item::mat8}
+    else if {_level} <= 25:
+        return {item::mat5}
+    else if {_level} <= 30:
+        return {item::mat9}
+
+
+function getUpgradeAmount(level: number) :: number:
+    set {_tierLevel} to ({_level} - 1) mod 5
+
+    if {_tierLevel} = 0:
+        return 4
+    else if {_tierLevel} = 1:
+        return 8
+    else if {_tierLevel} = 2:
+        return 16
+    else if {_tierLevel} = 3:
+        return 32
+    else:
+        return 64
+
+
 on right click on anvil:
     cancel event
     set {_item} to player's tool
 
     set {_type} to data tag "itemstat:type" of {_item}
     set {_level} to number data tag "itemstat:level" of {_item}
-    
+
     if {_type} is not "sword", "dagger", "axe", "helmet", "chestplate", "leggings" or "boots":
-        send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cɪᴛᴇᴍ ᴄᴀɴ'ᴛ ʙᴇ ᴜᴘɢʀᴀᴅᴇᴅ."
+        send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cɪᴛᴇᴍ ᴄᴀɴ'ᴛ ʙᴇ ᴜᴘɢʀᴀᴅᴇᴅ." to player
         stop
-        
-    send "pass"
+
+    if {_level} >= 30:
+        send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cɪᴛᴇᴍ ɪꜱ ᴀʟʀᴇᴀᴅʏ ᴀᴛ ᴍᴀx ʟᴇᴠᴇʟ." to player
+        stop
+
+    set {_newLevel} to {_level} + 1
+    set {_material} to getUpgradeMaterial({_level})
+    set {_amount} to getUpgradeAmount({_level})
+
+    if count(player, "%custom model data of {_material}%") < {_amount}:
+        send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴇɴᴏᴜɢʜ ᴍᴀᴛᴇʀɪᴀʟꜱ." to player
+        stop
+
+    remove(player, "%custom model data of {_material}%", {_amount})
+
+    set {_newItem} to {item::%{_type}%%{_newLevel}%}
+    if {_newItem} is not set:
+        send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cᴜᴘɢʀᴀᴅᴇᴅ ɪᴛᴇᴍ ɴᴏᴛ ꜰᴏᴜɴᴅ." to player
+        stop
+
+    set player's tool to {_newItem}
+    send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &aɪᴛᴇᴍ ᴜᴘɢʀᴀᴅᴇᴅ ᴛᴏ ʟᴇᴠᴇʟ %{_newLevel}%!" to player
