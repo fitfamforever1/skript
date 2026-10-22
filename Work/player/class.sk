@@ -77,4 +77,16 @@ command /classset <number> [<player>]:
             set number data tag "class:id" of arg-2 to arg-1
         set number data tag "class:id" of player to arg-1
        
+function starterKit(p: player):
+    set {_class} to number data tag "class:id" of player
+    give {_p} 1 of {item::helmet1}
+    give {_p} 1 of {item::chestplate1}
+    give {_p} 1 of {item::leggings1}
+    give {_p} 1 of {item::boots1}
+    if {_class} is 1:
+        give {_p} 1 of {item::axe1}
+    if {_class} is 2:
+        give {_p} 1 of {item::sword1}
+    if {_class} is 3:
+        give {_p} 1 of {item::dagger1}
         
