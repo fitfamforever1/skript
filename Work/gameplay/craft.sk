@@ -69,5 +69,7 @@ on right click on anvil:
     set {_level} to number data tag "itemstat:level" of {_item}
     
     if {_type} is not "sword", "dagger", "axe", "helmet", "chestplate", "leggings" or "boots":
-        send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cɪᴛᴇᴍ ᴄᴀɴ'ᴛ ʙᴇ ᴜᴘɢʀᴀᴅᴇᴅ." to {_p}
+        send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cɪᴛᴇᴍ ᴄᴀɴ'ᴛ ʙᴇ ᴜᴘɢʀᴀᴅᴇᴅ."
         stop
+        
+    send "pass"
