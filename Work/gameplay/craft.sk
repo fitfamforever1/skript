@@ -171,6 +171,7 @@ on inventory click:
         if {_temp} is "4":
             craftMithril(player)
            
-command /test:
-    trigger:
+on right click on entity:
+    if uuid of event-entity is "0874e0e7-a131-4b7e-b55f-a47976f992cd":
+        cancel event
         openForge(player)
