@@ -23,7 +23,7 @@ command /class:
         send "&f%{_name}%"
         
 function openClass(p: player):
-    set {_gui} to chest inventory with 3 rows named "&f七七七七七七七七ㇺ"
+    set {_gui} to chest inventory with 1 rows named "&f七七七七七七七七ㇺ"
 
     loop 36 times:
         set slot (loop-number - 1) of {_gui} to {item::space1}
