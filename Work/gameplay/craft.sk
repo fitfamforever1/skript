@@ -22,7 +22,7 @@ function craftSteel(p: player):
         if count({_p}, "10") >= 3:
             remove({_p}, "8", 1)
             remove({_p}, "10", 3)
-            give {_p} 1 of {loot::mat5}
+            give {_p} 1 of {item::mat5}
         else:
             send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀᴇǫᴜɪʀᴇᴅ ɪᴛᴇᴍꜱ ᴛᴏ ᴄʀᴀꜰᴛ." to {_p}
     else:
