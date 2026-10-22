@@ -26,7 +26,7 @@ function openClass(p: player):
     set {_gui} to chest inventory with 3 rows named "&f七七七七七七七七ㇺ"
 
     loop 36 times:
-        set slot (loop-number - 1) of {_gui} to {item::space}
+        set slot (loop-number - 1) of {_gui} to {item::space1}
     
     set slot 11 of {_gui} to {item::class1}
     set slot 13 of {_gui} to {item::class2}
