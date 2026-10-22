@@ -1,0 +1,20 @@
+function className(p: player):: text:
+    set {_id} to number data tag "class:id" of {_p}
+    if {_id} is 1:
+        return "ᴡᴀʀʀɪᴏʀ"
+    else if {_id} is 2:
+        return "ᴋɴɪɢʜᴛ"
+    else if {_id} is 3:
+        return "ᴀꜱꜱᴀꜱꜱɪɴ"
+    else:
+        return "ᴜɴᴋɴᴏᴡɴ"
+        
+command /classset <number>:
+    trigger:
+        set number data tag "class:id" of {_p} to arg-1
+        
+command /class:
+    trigger:
+        set {_id} to number data tag "class:id" of {_p}
+        set {_name} to className(player)
+        send "&f%{_name}%"
