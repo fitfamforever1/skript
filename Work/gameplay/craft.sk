@@ -147,7 +147,7 @@ on right click on anvil:
 function openForge(p: player):
     set {_gui} to chest inventory with 4 rows named "<##deb92b>ꜰᴏʀɢᴇ"
 
-    loop 34 times:
+    loop 36 times:
         set slot (loop-number - 1) of {_gui} to {item::space}
     
     set slot 10 of {_gui} to {item::forge1}
