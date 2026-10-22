@@ -17,7 +17,7 @@ function remove(p: player, type: text, amount: integer) :: boolean:
                 remove loop-item from inventory of {_p}
     return false
 
-function craftSteel(p: player)
+function craftSteel(p: player):
     if count(player, "8") >= 1:
         if count(player, "10") >= 3:
             remove(player, "8", 1)
