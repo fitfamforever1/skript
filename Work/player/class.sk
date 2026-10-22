@@ -10,18 +10,6 @@ function className(p: player):: text:
         return "ᴜɴᴋɴᴏᴡɴ"
         
         
-command /classset <number>:
-    permission: admin.class
-    trigger:
-        set number data tag "class:id" of player to arg-1
-        
-command /class:
-    permission: admin.class
-    trigger:
-        set {_id} to number data tag "class:id" of player
-        set {_name} to className(player)
-        send "&f%{_name}%"
-        
 function openClass(p: player):
     set {_gui} to chest inventory with 1 rows named "&f七七七七七七七七ㇺ"
 
