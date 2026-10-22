@@ -51,8 +51,8 @@ function openClassConfirm(p: player):
     loop 36 times:
         set slot (loop-number - 1) of {_gui} to {item::space1}
     
-    set slot 2 of {_gui} to {item::class4}
-    set slot 4 of {_gui} to {item::class5}
+    set slot 3 of {_gui} to {item::class4}
+    set slot 6 of {_gui} to {item::class5}
     
     open {_gui} to {_p}
        
