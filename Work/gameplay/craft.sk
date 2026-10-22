@@ -111,7 +111,27 @@ on right click on anvil:
     set {_temp} to data tag "itemstat:mat" of {_material}
 
     if count(player, {_temp}) < {_amount}:
-        send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴇɴᴏᴜɢʜ ᴍᴀᴛᴇʀɪᴀʟꜱ." to player
+            set {_owned} to count(player, {_temp})
+
+    if {_owned} < {_amount}:
+        set {_missing} to {_amount} - {_owned}
+
+        if {_temp} is "1":
+            set {_name} to "Wood"
+        else if {_temp} is "2":
+            set {_name} to "Stone"
+        else if {_temp} is "7":
+            set {_name} to "Copper Ingot"
+        else if {_temp} is "8":
+            set {_name} to "Iron Ingot"
+        else if {_temp} is "5":
+            set {_name} to "Steel Ingot"
+        else if {_temp} is "9":
+            set {_name} to "Refined Mithril"
+        else:
+            set {_name} to "Unknown Material"
+
+        send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &cɴᴏᴛ ᴇɴᴏᴜɢʜ %{_name}%! ᴍɪꜱꜱɪɴɢ: %{_missing}%." to player
         stop
 
     remove(player, {_temp}, {_amount})
