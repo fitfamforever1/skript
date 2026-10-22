@@ -37,8 +37,7 @@ function openClass(p: player):
 on inventory click:
     if name of event-inventory is "&f七七七七七七七七ㇺ":
         cancel event
-        set {_temp} to number data tag "classitem:id" of event-item
-        send "%{_temp}%"
+        set {_temp} to data tag "classitem:id" of event-item
         if {_temp} is "1":
             send "test"
             set number data tag "class:id2" of player to 1
@@ -52,6 +51,16 @@ on inventory click:
             set number data tag "class:id2" of player to 3
             openClassConfirm(player)
             play sound "sound:sound.ui.click" for player
+        if {_temp} is "4":
+            set {_class} to number data tag "class:id2" of player
+            set number data tag "class:id" of player to {_class}
+            set {_name} to className(player)
+            send "&8[<##26FFB3>ᴄʟᴀꜱꜱ&8] &7ʏᴏᴜ ʜᴀᴠᴇ ꜱᴇʟᴇᴄᴛᴇᴅ &e{_name} &7ᴀꜱ ʏᴏᴜʀ ᴄʟᴀꜱꜱ. ɪ ʜᴏᴘᴇ ʏᴏᴜ ᴅᴏɴ'ᴛ ʀᴇɢʀᴇᴛ ɪᴛ ʟᴀᴛᴇʀ."
+            close player's inventory
+            play sound "sound:sound.ui.enable" for player
+        if {_temp} is "5":
+            openClass(player)
+            play sound "sound:sound.ui.go_back" for player
         
 function openClassConfirm(p: player):
     set {_gui} to chest inventory with 1 rows named "&f七七七七七七七七ㇺ"
@@ -63,21 +72,7 @@ function openClassConfirm(p: player):
     set slot 5 of {_gui} to {item::class5}
     
     open {_gui} to {_p}
-       
-on inventory click:
-    if name of event-inventory is "&f七七七七七七七七ㇺ":
-        cancel event
-        set {_temp} to data tag "classitem:id" of event-item
-        if {_temp} is "4":
-            set {_class} to number data tag "class:id2" of player
-            set number data tag "class:id" of player to {_class}
-            set {_name} to className(player)
-            send "&8[<##26FFB3>ᴄʟᴀꜱꜱ&8] &7ʏᴏᴜ ʜᴀᴠᴇ ꜱᴇʟᴇᴄᴛᴇᴅ &e{_name} &7ᴀꜱ ʏᴏᴜʀ ᴄʟᴀꜱꜱ. ɪ ʜᴏᴘᴇ ʏᴏᴜ ᴅᴏɴ'ᴛ ʀᴇɢʀᴇᴛ ɪᴛ ʟᴀᴛᴇʀ."
-            close player's inventory
-            play sound "sound:sound.ui.enable" for player
-        if {_temp} is "5":
-            openClass(player)
-            play sound "sound:sound.ui.go_back" for player
+      
        
 command /test:
     trigger:
