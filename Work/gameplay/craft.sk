@@ -143,3 +143,33 @@ on right click on anvil:
 
     set player's tool to {_newItem}
     send "&8[<##deb92b>ᴄʀᴀꜰᴛ&8] &aɪᴛᴇᴍ ᴜᴘɢʀᴀᴅᴇᴅ ᴛᴏ ʟᴇᴠᴇʟ %{_newLevel}%!" to player
+    
+function openForge(p: player):
+    set {_gui} to chest inventory with 3 rows named "<##deb92b>ʀɪɢʜᴛ ᴄʟɪᴄᴋ ᴀɴᴠɪʟ ᴛᴏ ᴜᴘɢʀᴀᴅᴇ ɢᴇᴀʀ"
+
+    loop 27 times:
+        set slot (loop-number - 1) of {_gui} to {item::space}
+    
+    set slot 10 of {_gui} to {item::forge1}
+    set slot 12 of {_gui} to {item::forge2}
+    set slot 14 of {_gui} to {item::forge3}
+    set slot 16 of {_gui} to {item::forge4}
+    
+    open {_gui} to {_p}
+    
+on inventory click:
+    if name of event-inventory is "<##E9BF35>ꜱᴇʟᴇᴄᴛ ᴄᴀᴛᴇɢᴏʀʏ":
+        cancel event
+        set {_temp} to data tag "forge:id" of event-item
+        if {_temp} is "1":
+            openBlock(player)
+        if {_temp} is "2":
+            openMics(player)
+        if {_temp} is "3":
+            openFood(player)
+        if {_temp} is "4":
+            openOre(player)
+        if {_temp} is "5":
+            openMob(player)
+        if {_temp} is "6":
+            openFarm(player)
