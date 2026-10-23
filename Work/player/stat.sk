@@ -250,17 +250,16 @@ on damage:
             set damage to {_dmg}
             displayDamage(victim, {_dmg}, {_isCrit})
 
-    else if attacker is a player:
-        set {_critChance} to number data tag "stat:crit_chance" of attacker
-        set {_roll} to a random number between 1 and 100
-
-        if {_roll} <= {_critChance}:
-            set {_temp} to calculateCrit(attacker)
+    else if victim is a player:
+        cancel event
+        if projectile is an arrow:
+            set {_dmg} to number data tag "mobstat:damage" of projectile
+            delete projectile
         else:
-            set {_temp} to calculateAttack(attacker)
-        
-        displayDamage(victim, {_temp})
-        set damage to {_temp}
+            set {_dmg} to number data tag "mobstat:damage" of attacker
+            if {_dmg} is not set:
+                set {_dmg} to 0
+        damagePlayer(victim, {_dmg})
 
 
 #  EVENT
