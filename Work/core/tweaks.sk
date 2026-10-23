@@ -41,6 +41,6 @@ import:
 
 on clientbound particle netty processed:
     set {_particle} to event-packet.getParticle().getType()
-    if "%{_particle}%" contains "DAMAGE_INDICATOR" or "%{_particle}%" contains "CRIT":
+    if "%{_particle}%" contains "DAMAGE_INDICATOR" or "CRIT":
         cancel packet
         
