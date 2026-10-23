@@ -71,6 +71,9 @@ function stat(p: player):
     set number data tag "stat:mana" of {_p} to {_mana}
     set number data tag "stat:crit_chance" of {_p} to {_critChance}
     set number data tag "stat:crit_damage" of {_p} to {_critDamage}
+    
+    
+    syncSpeed({_p})
 
 
 function levelReq(p: player, item: item) :: boolean:
@@ -144,12 +147,7 @@ function actionBar(p: player):
 every 1 second in "world":
     loop all players:
         if loop-player is alive:
-            syncSpeed(loop-player)
             regenPlayer(loop-player)
-
-every 2 tick in "world":
-    loop all players:
-        if loop-player is alive:
             actionBar(loop-player)
 
 #  COMBAT
@@ -157,7 +155,7 @@ every 2 tick in "world":
 function removeHealth(p: player, amount: number):
     set {_current} to (number data tag "current:health" of {_p}) - {_amount}
     set number data tag "current:health" of {_p} to {_current}
-
+    actionBar({_p})
     if {_current} <= 0:
         if {respawning::%{_p}%} is set:
             stop
@@ -179,10 +177,11 @@ function damagePlayer(p: player, damage: number):
 
 function removeMana(p: player, amount: number) :: boolean:
     set {_current} to number data tag "current:mana" of {_p}
-
+    
     if {_current} >= {_amount}:
         set {_current} to {_current} - {_amount}
         set number data tag "current:mana" of {_p} to {_current}
+        actionBar({_p})
         return true
     else:
         send "%prefix()%&cɴᴏᴛ ᴇɴᴏᴜɢʜ ᴍᴀɴᴀ." to {_p}
@@ -253,14 +252,7 @@ on damage:
 
     else if victim is a player:
         cancel event
-        if projectile is an arrow:
-            set {_dmg} to number data tag "mobstat:damage" of projectile
-            delete projectile
-        else:
-            set {_dmg} to number data tag "mobstat:damage" of attacker
-            if {_dmg} is not set:
-                set {_dmg} to 0
-        damagePlayer(victim, {_dmg})
+        damagePlayer(victim, damage)
 
 
 #  EVENT
