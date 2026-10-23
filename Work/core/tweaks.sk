@@ -40,5 +40,5 @@ import:
     org.bukkit.Particle
 
 on clientbound particle netty processed:
-    send "Particle packet detected" to console
+    send "%event-packet%" to console
         
