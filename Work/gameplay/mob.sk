@@ -17,7 +17,7 @@ function spawnBasic(loc: location) :: entity:
 
     return {_e}
     
-command /test2:
+command /spawnmob:
     trigger:
         set {_loc} to player's location
         spawnBasic({_loc})
