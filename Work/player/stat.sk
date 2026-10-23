@@ -287,7 +287,6 @@ on food level change:
 
 command /stat [<offlineplayer>]:
     permission: admin.stat
-    permission message: %prefix()%&cʏᴏᴜ ᴅᴏ ɴᴏᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪssɪᴏɴ ᴛᴏ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ.
     usage: %prefix()%&cᴜsᴀɢᴇ: /stat [player]
     trigger:
         if arg-1 is set:
@@ -318,7 +317,6 @@ command /stat [<offlineplayer>]:
 
 command /statreset [<offlineplayer>]:
     permission: admin.stat
-    permission message: %prefix()%&cʏᴏᴜ ᴅᴏ ɴᴏᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪssɪᴏɴ ᴛᴏ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ.
     usage: %prefix()%&cᴜsᴀɢᴇ: /statreset [player]
     trigger:
         if arg-1 is set:
@@ -342,7 +340,6 @@ command /statreset [<offlineplayer>]:
 
 command /setlevel <number> [<offlineplayer>]:
     permission: admin.stat
-    permission message: %prefix()%&cʏᴏᴜ ᴅᴏ ɴᴏᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪssɪᴏɴ ᴛᴏ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ.
     usage: %prefix()%&cᴜsᴀɢᴇ: /setlevel <level> [player]
     trigger:
         if arg-2 is set:
@@ -368,7 +365,6 @@ command /setlevel <number> [<offlineplayer>]:
 
 command /statadd <text> <number> [<offlineplayer>]:
     permission: admin.stat
-    permission message: %prefix()%&cʏᴏᴜ ᴅᴏ ɴᴏᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪssɪᴏɴ ᴛᴏ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ.
     usage: %prefix()%&cᴜsᴀɢᴇ: /statadd <stat> <amount> [player]
     trigger:
         if arg-3 is set:
@@ -390,7 +386,6 @@ command /statadd <text> <number> [<offlineplayer>]:
 
 command /removemana <number> [<offlineplayer>]:
     permission: admin.stat
-    permission message: %prefix()%&cʏᴏᴜ ᴅᴏ ɴᴏᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪssɪᴏɴ ᴛᴏ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ.
     usage: %prefix()%&cᴜsᴀɢᴇ: /removemana <amount> [player]
     trigger:
         if arg-2 is set:
@@ -410,7 +405,6 @@ command /removemana <number> [<offlineplayer>]:
 
 command /removehealth <number> [<offlineplayer>]:
     permission: admin.stat
-    permission message: %prefix()%&cʏᴏᴜ ᴅᴏ ɴᴏᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪssɪᴏɴ ᴛᴏ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ.
     usage: %prefix()%&cᴜsᴀɢᴇ: /removehealth <amount> [player]
     trigger:
         if arg-2 is set:
@@ -428,7 +422,6 @@ command /removehealth <number> [<offlineplayer>]:
 
 command /damage <number> [<offlineplayer>]:
     permission: admin.stat
-    permission message: %prefix()%&cʏᴏᴜ ᴅᴏ ɴᴏᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪssɪᴏɴ ᴛᴏ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ.
     usage: %prefix()%&cᴜsᴀɢᴇ: /damage <amount> [player]
     trigger:
         if arg-2 is set:
