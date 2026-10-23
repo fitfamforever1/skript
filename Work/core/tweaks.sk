@@ -39,9 +39,10 @@ on chat:
 import:
     org.bukkit.Particle
 
-on packet event play_server_world_particles:
-    set {_p} to field 9 of event-packet
+import:
+    org.bukkit.Particle
+
+on packet play_server_world_particles:
     if event-packet.getNewParticles().read(0).getParticle() is Particle.DAMAGE_INDICATOR:
         cancel event
-        
         
