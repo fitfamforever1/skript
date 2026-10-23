@@ -40,5 +40,7 @@ import:
     org.bukkit.Particle
 
 on clientbound particle netty processed:
-    send "%event-packet%" to console
+    set {_particle} to event-packet.getParticle().getType()
+    if "%{_particle}%" contains "DAMAGE_INDICATOR":
+        cancel packet
         
