@@ -35,14 +35,12 @@ on chat:
     cancel event
     set {_level} to number data tag "playerstat:lvl" of player
     broadcast "&8[&a%{_level}%&8] &7%player%&8: &f%message%"
-    
-import:
-    org.bukkit.Particle
 
 import:
     org.bukkit.Particle
 
-on packet play_server_world_particles:
-    if event-packet.getNewParticles().read(0).getParticle() is Particle.DAMAGE_INDICATOR:
-        cancel event
+on clientbound particle netty processed:
+    set {_particle} to event-packet.getNewParticles().read(0).getParticle()
+    if "%{_particle}%" is "DAMAGE_INDICATOR":
+        cancel packet
         
