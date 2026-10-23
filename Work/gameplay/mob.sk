@@ -1,0 +1,19 @@
+function spawnUndead1(loc: location) :: entity:
+    spawn zombie at {_loc}
+    set {_e} to last spawned entity
+
+    set tool of {_e} to air
+    set custom name of {_e} to "&c "
+    set max health of {_e} to {_health}
+    set health of {_e} to {_health}
+    set movement speed attribute of {_e} to {_speed}
+    set age of {_e} to 0
+    set knockback resistance attribute of {_e} to 100
+    set entity interaction range attribute of {_e} to 5
+    set block interaction range attribute of {_e} to 5
+
+    set number data tag "mobstat:damage" of {_e} to {_damage}
+    set number data tag "mobstat:level" of {_e} to {_level}
+    set text data tag "mobstat:category" of {_e} to {_category}
+
+    return {_e}
