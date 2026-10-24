@@ -18,7 +18,7 @@ function spawnBasic(loc: location) :: entity:
     
 function prog(percentage: number, length: integer) :: string:
     set {_fill} to "&a&l&m%(character at codepoint 8204)%" repeated floor(({_percentage}/100)*{_length}) times
-    set {_empty} to "&7&l&m%(character at codepoint 8204)%" repeated floor((1- {_percentage}/100)*{_length}) times
+    set {_empty} to "&8&l&m%(character at codepoint 8204)%" repeated floor((1- {_percentage}/100)*{_length}) times
     return "%{_fill}%%{_empty}%"
 
 function mobHealth(m: entity):
