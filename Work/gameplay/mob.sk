@@ -24,6 +24,8 @@ function prog(percentage: number, length: integer) :: string:
 function mobHealth(m: entity):
     set {_max} to max health of {_m}
     set {_current} to health of {_m}
+    if {_current} is 0:
+        set {_current} to 1
     set {_percentage} to ({_current}/{_max})*100
     set {_bar} to prog({_percentage}, 40)
 
