@@ -21,25 +21,34 @@ function prog(percentage: number, length: integer) :: string:
     set {_empty} to "&7&l&m%(character at codepoint 8204)%" repeated floor((1- {_percentage}/100)*{_length}) times
     return "%{_fill}%%{_empty}%"
 
-function mobHealth(m: entity):
+ffunction mobHealth(m: entity):
+    if {_m} is dead:
+        stop
+
     set {_max} to max health of {_m}
     set {_current} to health of {_m}
+
+    if {_max} <= 0:
+        stop
+
     set {_percentage} to ({_current}/{_max})*100
     if {_percentage} < 1:
         set {_percentage} to 2
-    set {_bar} to prog({_percentage}, 40)
 
-    if passengers of {_m} contains a text display:
-        loop passengers of {_m}:
-            if loop-entity is a text display:
-                set {_display} to loop-entity
-                stop loop
-    else:
+    set {_bar} to prog({_percentage}, 40)
+    delete {_display}
+
+    loop passengers of {_m}:
+        if loop-entity is a text display:
+            set {_display} to loop-entity
+            stop loop
+
+    if {_display} is not set:
         spawn text display at location of {_m}
         set {_display} to last spawned text display
-        add {_display} to passengers of {_m}
         set billboard of {_display} to center
         set color of {_display} to rgb(0, 0, 0, 0)
+        add {_display} to passengers of {_m}
 
     set text of {_display} to "&a%{_bar}%"
    
