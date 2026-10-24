@@ -112,7 +112,7 @@ every 1 second:
             if distance between loop-entity and {_target} <= 2:
                 broadcast "reached"
             else:
-                make loop-entity pathfind towards {_target} at speed 1.5
+                make loop-entity pathfind towards {_target} at speed 1.8
             
 on pathfind:
     if the pathfinding target entity is a player:
