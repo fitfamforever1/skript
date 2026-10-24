@@ -65,15 +65,14 @@ function spawnBasic(loc: location) :: entity:
     set max health of {_e} to 100
     set health of {_e} to 100
     
-    make {_e} pathfind towards {_target} at speed 1.5
+    make {_e} pathfind towards location(-82, -63, 35) at speed 1.5
     
     return {_e}
    
 command /spawnmob:
     trigger:
         set {_loc} to player's location
-        loop 100 times:
-            spawnBasic({_loc})
+        spawnBasic({_loc})
         
 every 1 second:
     loop all living entities:
