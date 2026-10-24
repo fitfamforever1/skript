@@ -435,7 +435,14 @@ command /damage <number> [<offlineplayer>]:
 
         damagePlayer({_target}, arg-1)
         send "%prefix()%&cᴅᴇᴀʟᴛ &f%arg-1%&c ᴅᴀᴍᴀɢᴇ ᴛᴏ &f%{_target}%&c." to player
-        
+      
+command /heal <player>:
+    permission: admin.heal
+    trigger:
+        if arg-1 is set:
+            heal(arg-1)
+        heal(player)
+     
 command /speedcap [<text>]:
     usage: %prefix()%&cᴜsᴀɢᴇ: /speedcap [amount|reset]
     trigger:
