@@ -28,9 +28,6 @@ function mobHealth(m: entity):
     set {_max} to max health of {_m}
     set {_current} to health of {_m}
 
-    if {_max} <= 0:
-        stop
-
     set {_percentage} to ({_current}/{_max})*100
     if {_percentage} < 1:
         set {_percentage} to 2.5
