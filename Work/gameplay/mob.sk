@@ -26,7 +26,18 @@ function mobHealth(m: entity):
     set {_current} to health of {_m}
     set {_percentage} to ({_current}/{_max})*100
     set {_bar} to prog({_percentage}, 40)
-    set name of {_m} to "&f%{_bar}%"
+
+    if passenger of {_m} is a text display:
+        set {_display} to passenger of {_m}
+    else:
+        spawn text display at location of {_m}
+        set {_display} to last spawned text display
+        add {_display} as passenger of {_m}
+        set billboard of {_display} to center
+        set color of {_display} to rgb(0, 0, 0, 0)
+        set text display background color of {_display} to rgb(0, 0, 0, 0)
+
+    set text of {_display} to "&f%{_bar}%"
    
 on damage:
     if victim is not player:
