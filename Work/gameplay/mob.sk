@@ -65,8 +65,6 @@ function spawnBasic(loc: location) :: entity:
     set max health of {_e} to 100
     set health of {_e} to 100
     
-    make {_e} pathfind towards location(-82, -63, 35) at speed 1.5
-    
     return {_e}
    
 command /spawnmob:
@@ -84,3 +82,7 @@ every 1 second:
 on pathfind:
     if the pathfinding target entity is a player:
         cancel event
+        
+on spawn:
+    make {_e} pathfind towards location(-82, -63, 35) at speed 1.5
+    
