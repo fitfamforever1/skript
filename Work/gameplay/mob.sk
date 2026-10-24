@@ -27,12 +27,15 @@ function mobHealth(m: entity):
     set {_percentage} to ({_current}/{_max})*100
     set {_bar} to prog({_percentage}, 40)
 
-    if passenger of {_m} is a text display:
-        set {_display} to passenger of {_m}
+    if passengers of {_m} contains a text display:
+        loop passengers of {_m}:
+            if loop-entity is a text display:
+                set {_display} to loop-entity
+                stop loop
     else:
         spawn text display at location of {_m}
         set {_display} to last spawned text display
-        add {_display} as passenger of {_m}
+        add {_display} to passengers of {_m}
         set billboard of {_display} to center
         set color of {_display} to rgb(0, 0, 0, 0)
         set text display background color of {_display} to rgb(0, 0, 0, 0)
