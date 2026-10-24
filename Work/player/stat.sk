@@ -282,7 +282,7 @@ on player's held item change:
 on food level change:
     cancel event
 
-on attempt to attack:
+on attempt attack:
     if attack cooldown of attacker < 1:
         cancel event
 
