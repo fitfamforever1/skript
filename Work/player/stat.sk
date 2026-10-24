@@ -248,8 +248,10 @@ on damage:
             stop
         else:
             set damage to {_dmg}
-            mobHealth(victim)
             displayDamage(victim, {_dmg}, {_isCrit})
+            wait 1 tick
+            
+            mobHealth(victim)
 
     else if victim is a player:
         cancel event
