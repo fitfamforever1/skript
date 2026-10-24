@@ -78,16 +78,15 @@ command /spawnmob:
         
 command /entityinfo:
     trigger:
-        set {_e} to entity with uuid "5abdde6b-1cb8-4fd7-9e16-7fde72008be8"
+        set {_e} to targeted entity of player
         if {_e} is not set:
-            send "&cEntity not found."
+            send "&cYou are not looking at an entity."
             stop
 
         send "&6&m----------&e Entity Info &6&m----------"
         send "&eUUID: &f%uuid of {_e}%"
         send "&eType: &f%type of {_e}%"
         send "&eName: &f%name of {_e}%"
-        send "&eWorld: &f%world of {_e}%"
         send "&eLocation: &f%location of {_e}%"
         send "&eHealth: &f%health of {_e}% / %max health of {_e}%"
         send "&eDead: &f%{_e} is dead%"
