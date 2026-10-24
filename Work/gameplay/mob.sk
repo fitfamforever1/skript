@@ -33,7 +33,7 @@ function mobHealth(m: entity):
 
     set {_percentage} to ({_current}/{_max})*100
     if {_percentage} < 1:
-        set {_percentage} to 2
+        set {_percentage} to 2.5
 
     set {_bar} to prog({_percentage}, 40)
     delete {_display}
