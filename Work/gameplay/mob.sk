@@ -76,9 +76,11 @@ command /spawnmob:
 every 1 second:
     loop all living entities:
         if loop-entity is not a player:
-            make loop-entity pathfind towards location(-82, -63, 35) at speed 1.8
-            if loop-entity's location is within radius 2 of location(-82, -63, 35):
+            set {_target} to location(-82, -63, 35)
+            if distance between loop-entity and {_target} <= 2:
                 broadcast "reached"
+            else:
+                make loop-entity pathfind towards {_target} at speed 1.8
             
 on pathfind:
     if the pathfinding target entity is a player:
