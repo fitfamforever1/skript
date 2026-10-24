@@ -48,6 +48,10 @@ on damage:
         if {_mob} is dead:
             stop
         mobHealth({_mob})
+        
+        loop passengers of entity:
+            if loop-entity is a text display:
+                kill loop-entity
    
 command /spawnmob:
     trigger:
