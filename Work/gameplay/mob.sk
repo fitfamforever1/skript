@@ -62,9 +62,10 @@ function spawnBasic(loc: location) :: entity:
     set block interaction range attribute of {_e} to 5
 
     set number data tag "mobstat:damage" of {_e} to 20
-    set movement speed attribute of {_e} to 0.1
     set max health of {_e} to 100
     set health of {_e} to 100
+    
+    make {_e} pathfind towards {_target} at speed 1.5
     
     return {_e}
    
@@ -80,8 +81,6 @@ every 1 second:
             set {_target} to location(-82, -63, 35)
             if distance between loop-entity and {_target} <= 2:
                 broadcast "reached"
-            else:
-                make loop-entity pathfind towards {_target} at speed 1.8
             
 on pathfind:
     if the pathfinding target entity is a player:
