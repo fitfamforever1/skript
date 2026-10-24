@@ -26,7 +26,7 @@ function mobHealth(m: entity):
     set {_current} to health of {_m}
     set {_percentage} to ({_current}/{_max})*100
     if {_percentage} < 1:
-        set {_percentage} to 1
+        set {_percentage} to 2
     set {_bar} to prog({_percentage}, 40)
 
     if passengers of {_m} contains a text display:
