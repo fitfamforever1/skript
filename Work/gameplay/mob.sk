@@ -71,8 +71,7 @@ function spawnBasic(loc: location) :: entity:
 command /spawnmob:
     trigger:
         set {_loc} to player's location
-        loop 100 times:
-            spawnBasic({_loc})
+        pawnBasic({_loc})
         
 every 1 second:
     loop all living entities:
