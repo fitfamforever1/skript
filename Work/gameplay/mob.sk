@@ -53,11 +53,16 @@ function mobHealth(m: entity):
     set text of {_display} to "&a%{_bar}%"
    
 on damage:
-    if victim is not player:
+    if victim is not a player:
         set {_mob} to victim
+        if health of {_mob} - damage >= max health of {_mob}:
+            stop
+
         wait 1 tick
+
         if {_mob} is dead:
             stop
+
         mobHealth({_mob})
         
 on death:
