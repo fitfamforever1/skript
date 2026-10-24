@@ -73,7 +73,7 @@ command /spawnmob:
         set {_loc} to player's location
         spawnBasic({_loc})
         
-every 2 second:
+every 1 second:
     loop all living entities:
         if loop-entity is not a player:
             set {_target} to location(-82, -63, 35)
