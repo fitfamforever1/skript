@@ -248,6 +248,7 @@ on damage:
             stop
         else:
             set damage to {_dmg}
+            mobHealth(victim)
             displayDamage(victim, {_dmg}, {_isCrit})
 
     else if victim is a player:

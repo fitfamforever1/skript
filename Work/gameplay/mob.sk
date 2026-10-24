@@ -3,7 +3,6 @@ function spawnBasic(loc: location) :: entity:
     set {_e} to last spawned entity
 
     set tool of {_e} to air
-    set custom name of {_e} to ""
     set age of {_e} to 0
     
     set knockback resistance attribute of {_e} to 100
@@ -17,6 +16,18 @@ function spawnBasic(loc: location) :: entity:
 
     return {_e}
     
+function prog(percentage: number, length: integer) :: string:
+    set {_fill} to "&f&l&m%(character at codepoint 8204)%" repeated floor(({_percentage}/100)*{_length}) times
+    set {_empty} to "&7&l&m%(character at codepoint 8204)%" repeated floor((1- {_percentage}/100)*{_length}) times
+    return "%{_fill}%%{_empty}%"
+
+function mobHealth(m: entity):
+    set {_max} to max health of {_m}
+    set {_current} to health of {_m}
+    set {_percentage} to ({_current}/{_max})*100
+    set {_bar} to prog({_percentage}, 20)
+    set name of {_m} to "&f%round({_current})%&7/&c%round({_max})%&8] &8[%{_bar}%"
+   
 command /spawnmob:
     trigger:
         set {_loc} to player's location
