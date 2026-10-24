@@ -1,0 +1,25 @@
+function node1(level: number):
+    set {_center} to location(-89, -60, 86, world("world"))
+
+    set {_loc} to {_center}
+    add -2 to z-coordinate of {_loc}
+    spawnBasic({_loc}, {_level})
+
+    set {_loc} to {_center}
+    add 2 to x-coordinate of {_loc}
+    spawnBasic({_loc}, {_level})
+
+    set {_loc} to {_center}
+    add 2 to z-coordinate of {_loc}
+    spawnBasic({_loc}, {_level})
+
+    set {_loc} to {_center}
+    add -2 to x-coordinate of {_loc}
+    spawnElite({_loc}, {_level})
+
+    spawnBasic({_center}, {_level})
+    
+command /testnode1:
+    permission: admin.wave
+    trigger:
+        node1(arg-1)

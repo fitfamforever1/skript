@@ -50,29 +50,61 @@ on death:
             if loop-entity is a text display:
                 kill loop-entity
    
-function spawnBasic(loc: location) :: entity:
+function spawnBasic(loc: location, level: number) :: entity:
     spawn zombie at {_loc}
     set {_e} to last spawned entity
 
     set tool of {_e} to air
     set age of {_e} to 0
-    
+
     set knockback resistance attribute of {_e} to 100
     set entity interaction range attribute of {_e} to 5
     set block interaction range attribute of {_e} to 5
-
-    set number data tag "mobstat:damage" of {_e} to 20
     set movement speed attribute of {_e} to 0.1
-    set max health of {_e} to 100
-    set health of {_e} to 100
-        
+
+    set {_health} to 100 + ({_level} - 1) * 20
+    set {_damage} to 20 + ({_level} - 1) * 2
+
+    set number data tag "mobstat:damage" of {_e} to {_damage}
+    set max health of {_e} to {_health}
+    set health of {_e} to {_health}
+
     return {_e}
-   
-command /spawnmob:
+
+
+function spawnElite(loc: location, level: number) :: entity:
+    spawn zombie at {_loc}
+    set {_e} to last spawned entity
+
+    set tool of {_e} to air
+    set age of {_e} to 0
+
+    set knockback resistance attribute of {_e} to 100
+    set entity interaction range attribute of {_e} to 5
+    set block interaction range attribute of {_e} to 5
+    set movement speed attribute of {_e} to 0.1
+
+    set {_health} to 250 + ({_level} - 1) * 50
+    set {_damage} to 50 + ({_level} - 1) * 4
+
+    set number data tag "mobstat:damage" of {_e} to {_damage}
+    set max health of {_e} to {_health}
+    set health of {_e} to {_health}
+
+    return {_e}
+  
+command /spawnmob <number>:
+    permission: admin.mob
     trigger:
         set {_loc} to player's location
-        spawnBasic({_loc})
-        
+        spawnBasic({_loc}, arg-1)
+    
+command /spawnmob2 <number>:
+    permission: admin.mob
+    trigger:
+        set {_loc} to player's location
+        spawnElite({_loc}, arg-1)
+    
 every 1 second:
     loop all living entities:
         if loop-entity is not a player:
