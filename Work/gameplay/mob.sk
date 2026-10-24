@@ -50,8 +50,8 @@ on damage:
         mobHealth({_mob})
         
 on death:
-    if entity is not player:
-        loop passengers of entity:
+    if victim is not player:
+        loop passengers of victim:
             if loop-entity is a text display:
                 kill loop-entity
    
