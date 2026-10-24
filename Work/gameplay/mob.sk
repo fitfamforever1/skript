@@ -73,7 +73,7 @@ command /spawnmob:
         set {_loc} to player's location
         spawnBasic({_loc})
         
-every 1 second:
-    loop all entities:
+every 2 tick:
+    loop all living entities:
         if loop-entity is not a player:
-            make loop-entity pathfind towards location(-82, -63, 35)
+            make loop-entity pathfind towards location(-82, -63, 35) at speed 2
