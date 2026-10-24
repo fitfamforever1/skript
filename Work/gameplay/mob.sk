@@ -38,7 +38,6 @@ function mobHealth(m: entity):
         add {_display} to passengers of {_m}
         set billboard of {_display} to center
         set color of {_display} to rgb(0, 0, 0, 0)
-        set text display background color of {_display} to rgb(0, 0, 0, 0)
 
     set text of {_display} to "&f%{_bar}%"
    
