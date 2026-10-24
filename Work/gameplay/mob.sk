@@ -25,7 +25,7 @@ function mobHealth(m: entity):
     set {_max} to max health of {_m}
     set {_current} to health of {_m}
     set {_percentage} to ({_current}/{_max})*100
-    set {_bar} to prog({_percentage}, 30)
+    set {_bar} to prog({_percentage}, 40)
     set name of {_m} to "&f%{_bar}%"
    
 on damage:
