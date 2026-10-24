@@ -28,6 +28,14 @@ function mobHealth(m: entity):
     set {_bar} to prog({_percentage}, 100)
     set name of {_m} to "&f%{_bar}%"
    
+on damage:
+    if victim is not player:
+        set {_mob} to victim
+        wait 1 tick
+        if {_mob} is dead:
+            stop
+        mobHealth({_mob})
+   
 command /spawnmob:
     trigger:
         set {_loc} to player's location
