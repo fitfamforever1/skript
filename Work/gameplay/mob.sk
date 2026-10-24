@@ -77,6 +77,8 @@ every 1 second:
     loop all living entities:
         if loop-entity is not a player:
             make loop-entity pathfind towards location(-82, -63, 35) at speed 1.8
+            if the pathfinding target location is within radius 2 of location(-82, -63, 35):
+                broadcast "reached"
             
 on pathfind:
     if the pathfinding target entity is a player:
