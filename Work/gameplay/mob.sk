@@ -24,7 +24,8 @@ function prog(percentage: number, length: integer) :: string:
 function mobHealth(m: entity):
     set {_max} to max health of {_m}
     set {_current} to health of {_m}
-    set {_bar} to prog({_current}, 100)
+    set {_percentage} to ({_current}/{_max})*100
+    set {_bar} to prog({_percentage}, 100)
     set name of {_m} to "&f%{_bar}%"
    
 command /spawnmob:
