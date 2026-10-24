@@ -1,21 +1,3 @@
-function spawnBasic(loc: location) :: entity:
-    spawn zombie at {_loc}
-    set {_e} to last spawned entity
-
-    set tool of {_e} to air
-    set age of {_e} to 0
-    
-    set knockback resistance attribute of {_e} to 100
-    set entity interaction range attribute of {_e} to 5
-    set block interaction range attribute of {_e} to 5
-
-    set number data tag "mobstat:damage" of {_e} to 20
-    set movement speed attribute of {_e} to 0.1
-    set max health of {_e} to 100
-    set health of {_e} to 100
-
-    return {_e}
-    
 function prog(percentage: number, length: integer) :: string:
     set {_fill} to "&a&l&m%(character at codepoint 8204)%" repeated floor(({_percentage}/100)*{_length}) times
     set {_empty} to "&8&l&m%(character at codepoint 8204)%" repeated floor((1- {_percentage}/100)*{_length}) times
@@ -68,7 +50,30 @@ on death:
             if loop-entity is a text display:
                 kill loop-entity
    
+function spawnBasic(loc: location) :: entity:
+    spawn zombie at {_loc}
+    set {_e} to last spawned entity
+
+    set tool of {_e} to air
+    set age of {_e} to 0
+    
+    set knockback resistance attribute of {_e} to 100
+    set entity interaction range attribute of {_e} to 5
+    set block interaction range attribute of {_e} to 5
+
+    set number data tag "mobstat:damage" of {_e} to 20
+    set movement speed attribute of {_e} to 0.1
+    set max health of {_e} to 100
+    set health of {_e} to 100
+
+    return {_e}
+   
 command /spawnmob:
     trigger:
         set {_loc} to player's location
         spawnBasic({_loc})
+        
+loop every 1 second:
+    loop all entities:
+        if loop-entity is not a player:
+            make loop-entity pathfind towards location(-82, -63, 35)
