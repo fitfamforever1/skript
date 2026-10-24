@@ -49,7 +49,9 @@ on damage:
             stop
         mobHealth({_mob})
         
-        loop passengers of victim:
+on death:
+    if entity is not player:
+        loop passengers of entity:
             if loop-entity is a text display:
                 kill loop-entity
    
