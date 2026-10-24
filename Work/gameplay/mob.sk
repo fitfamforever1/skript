@@ -65,7 +65,7 @@ function spawnBasic(loc: location) :: entity:
     set movement speed attribute of {_e} to 0.1
     set max health of {_e} to 100
     set health of {_e} to 100
-
+    
     return {_e}
    
 command /spawnmob:
@@ -76,7 +76,7 @@ command /spawnmob:
 every 1 second:
     loop all living entities:
         if loop-entity is not a player:
-            make loop-entity pathfind towards location(-82, -63, 35) at speed 2
+            make loop-entity pathfind towards location(-82, -63, 35) at speed 1.8
             
 on pathfind:
     if the pathfinding target entity is a player:
