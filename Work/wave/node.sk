@@ -19,7 +19,7 @@ function node1(level: number):
 
     spawnBasic({_center}, {_level})
     
-command /testnode1:
+command /testnode1 <number>:
     permission: admin.wave
     trigger:
         node1(arg-1)
