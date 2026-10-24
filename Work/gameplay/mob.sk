@@ -26,7 +26,7 @@ function mobHealth(m: entity):
     set {_current} to health of {_m}
     set {_percentage} to ({_current}/{_max})*100
     set {_bar} to prog({_percentage}, 20)
-    set name of {_m} to "&f%round({_current})%&7/&c%round({_max})%&8] &8[%{_bar}%"
+    set name of {_m} to "&f%{_bar}%"
    
 command /spawnmob:
     trigger:
