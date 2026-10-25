@@ -167,7 +167,28 @@ function node8(level: number):
     spawnBasic({_center}, {_level})
 
 function node9(level: number):
-    set {_center} to location(-7 -60 38, world("world"))
+    set {_center} to location(-7, -60, 38, world("world"))
+
+    set {_loc} to {_center}
+    add -2 to z-coordinate of {_loc}
+    spawnBasic({_loc}, {_level})
+
+    set {_loc} to {_center}
+    add 2 to x-coordinate of {_loc}
+    spawnBasic({_loc}, {_level})
+
+    set {_loc} to {_center}
+    add 2 to z-coordinate of {_loc}
+    spawnBasic({_loc}, {_level})
+
+    set {_loc} to {_center}
+    add -2 to x-coordinate of {_loc}
+    spawnElite({_loc}, {_level})
+
+    spawnBasic({_center}, {_level})
+
+function node10(level: number):
+    set {_center} to location(-8, -60, 69, world("world"))
 
     set {_loc} to {_center}
     add -2 to z-coordinate of {_loc}
