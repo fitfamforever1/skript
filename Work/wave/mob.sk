@@ -121,5 +121,5 @@ on pathfind:
 every 1 second:
     loop all players:
         loop all living entities in radius 4 around loop-player:
-            if loop-entity is a zombie:
-                make loop-entity attack player
+            if loop-entity-2 is zombie:
+                make loop-entity-2 attack player
