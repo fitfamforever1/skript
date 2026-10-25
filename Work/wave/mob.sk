@@ -93,6 +93,28 @@ function spawnElite(loc: location, level: number) :: entity:
 
     return {_e}
   
+function spawnRandomMob(level: number):
+    set {_x} to random integer between 1 and 4
+    set {_loc} to location(-92, -60, 161, world("world"))
+
+    if {_x} is 2:
+        set x-coordinate of {_loc} to -93
+    else if {_x} is 3:
+        set x-coordinate of {_loc} to -94
+    else if {_x} is 4:
+        set x-coordinate of {_loc} to -95
+
+    set {_type} to random integer between 1 and 5
+    if {_type} is 1:
+        spawnElite({_loc}, {_level})
+    else:
+        spawnBasic({_loc}, {_level})
+  
+command /spawnrandom <number>:
+    permission: admin.mob
+    trigger:
+        spawnRandomMob(arg-1)
+  
 command /spawnmob <number>:
     permission: admin.mob
     trigger:
