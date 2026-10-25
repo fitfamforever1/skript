@@ -11,7 +11,7 @@ function mobHealth(m: entity):
     set {_current} to health of {_m}
 
     set {_percentage} to ({_current}/{_max})*100
-    if {_percentage} < 1:
+    if {_percentage} < 2.5:
         set {_percentage} to 2.5
 
     set {_bar} to prog({_percentage}, 40)
