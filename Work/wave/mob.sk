@@ -117,9 +117,3 @@ every 1 second:
 on pathfind:
     if the pathfinding target entity is a player:
         cancel event
-
-every 1 second:
-    loop all players:
-        loop all living entities in radius 4 around loop-player:
-            if loop-entity-2 is zombie:
-                make loop-entity-2 attack loop-player
