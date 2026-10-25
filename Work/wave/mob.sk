@@ -122,4 +122,4 @@ every 1 second:
     loop all players:
         loop all living entities in radius 4 around loop-player:
             if loop-entity-2 is zombie:
-                make loop-entity-2 attack player
+                make loop-entity-2 attack loop-player
