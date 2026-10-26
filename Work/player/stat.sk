@@ -11,6 +11,7 @@ function reset(p: player):
     set number data tag "playerstat:crit_chance" of {_p} to 30
     set number data tag "playerstat:crit_damage" of {_p} to 50 
 
+
     set number data tag "current:health" of {_p} to number data tag "playerstat:health" of {_p}
     set number data tag "current:mana" of {_p} to number data tag "playerstat:mana" of {_p}
 

@@ -82,6 +82,7 @@ command /gma:
     trigger:
         set player's gamemode to adventure
 
+
 command /bcast <text>:
     permission: admin.bcast
     trigger:
