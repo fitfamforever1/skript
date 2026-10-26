@@ -15,6 +15,7 @@ command /spawn [<player>]:
         send title "&a✔ &aTeleported to spawn!" to player for 1.6 seconds
 
 on join:
+    
     wait 1 tick
     teleport player to location(-103, -58, 21, world "world", -38, 0)
     send title "&a✔ &aWelcome to the server!" to player for 1.6 seconds
