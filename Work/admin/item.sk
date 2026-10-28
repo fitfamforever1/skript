@@ -23,7 +23,7 @@ command /pdcset <text> <text>:
         set {_item} to player's tool
 
 
-        set data tag "%arg-1%" of {_item} to "%arg-2%"
+        set data tag %arg-1% of {_item} to %arg-2%
         set player's tool to {_item}
 
         send "&aSet &e%arg-1% &a= &e%arg-2% &aon held item."
