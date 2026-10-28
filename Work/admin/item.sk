@@ -16,7 +16,7 @@ command /giveitem <text>:
         else:
             send "&cNo item found with id &e%arg-1%" to player  
             
-command /pdcset [<text>] [<number>]:
+command /pdcset [<text>] [<text>]:
     permission: admin.create
     trigger:
         set {_item} to player's held item
