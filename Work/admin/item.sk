@@ -15,12 +15,22 @@ command /giveitem <text>:
             send "&aGave you item &e%arg-1%" to player
         else:
             send "&cNo item found with id &e%arg-1%" to player  
-            
+     
+command /giveitemid <text>:
+    permission: admin.save
+    trigger:
+        if {item::%arg-1%} is set:
+            give {itemid::%arg-1%} to player
+            send "&aGave you item &e%arg-1%" to player
+        else:
+            send "&cNo item found with id &e%arg-1%" to player  
+     
 command /itemid [<number>]:
     permission: admin.create
     trigger:
         set {_item} to player's held item
         set {_key} to arg-1
         set data tag "item:id" of {_item} to {_key}
+        set {itemid::%{_key}%} to {_item}
         set player's held item to {_item}
         send "&aSet &eitem:id &a= &e%{_key}%&a on held item."
