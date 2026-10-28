@@ -16,12 +16,11 @@ command /giveitem <text>:
         else:
             send "&cNo item found with id &e%arg-1%" to player  
             
-command /pdcset [<text>] [<text>]:
+command /itemid [<number>]:
     permission: admin.create
     trigger:
         set {_item} to player's held item
         set {_key} to arg-1
-        set {_val} to arg-2
-        set data tag {_key} of {_item} to {_val}
+        set data tag "item:id" of {_item} to {_val}
         set player's held item to {_item}
-        send "&aSet &e%{_key}% &a= &e%{_val}%&a on held item."
+        send "&aSet &eitem:id &a= &e%{_val}%&a on held item."
