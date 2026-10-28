@@ -3,6 +3,8 @@ on load:
         load world "spawn"
         send "[Skript] Spawn world loaded!" to console
 
+
+
 function spawn(p: player):
     teleport {_p} to location(26.5, 69, 19.5, world "spawn", 90, 0)
 

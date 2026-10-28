@@ -125,3 +125,8 @@ command /flyspeed [<number>]:
     trigger:
         set the player's fly speed to arg-1 * 0.1
         
+command /world:
+    permission: admin
+    trigger:
+        teleport player to spawn location of world "world"
+        
