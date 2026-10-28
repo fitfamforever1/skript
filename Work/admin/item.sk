@@ -17,12 +17,15 @@ command /itemid [<number>]:
         set player's held item to {_item}
         send "&aSet &eitem:id &a= &e%{_key}%&a on held item."
         
-command /pdcset [<text>] [<text>]:
+command /pdcset <text> <text>:
     permission: admin.create
     trigger:
-        set {_item} to player's held item
+        set {_item} to player's tool
+
         set {_key} to arg-1
         set {_val} to arg-2
-        set data tag "%{_key}%" of {_item} to {_val}
-        set player's held item to {_item}
-        send "&aSet &e%{_key}% &a= &e%{_val}%&a on held item."
+
+        set persistent data tag "%{_key}%" of {_item} to "%{_val}%"
+        set player's tool to {_item}
+
+        send "&aSet &e%{_key}% &a= &e%{_val}% &aon held item."
