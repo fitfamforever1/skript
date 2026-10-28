@@ -21,6 +21,6 @@ command /itemid [<number>]:
     trigger:
         set {_item} to player's held item
         set {_key} to arg-1
-        set data tag "item:id" of {_item} to {_val}
+        set data tag "item:id" of {_item} to {_key}
         set player's held item to {_item}
         send "&aSet &eitem:id &a= &e%{_val}%&a on held item."
