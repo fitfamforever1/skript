@@ -1,0 +1,13 @@
+on load:
+    if world "spawn" is not loaded:
+        load world "spawn"
+        send "[Skript] Spawn world loaded!" to console
+        
+command /spawn:
+    trigger:
+        if world "spawn" is not set:
+            send "&cThe spawn world is not loaded!" to player
+            stop
+
+        teleport player to spawn location of world "spawn"
+        send "&aTeleported to the spawn world!" to player
