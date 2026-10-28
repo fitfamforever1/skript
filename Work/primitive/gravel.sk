@@ -1,3 +1,0 @@
-on right click on stone with flint:
-    remove 1 flint from player's inventory
-    give {itemid::1} to player
