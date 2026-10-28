@@ -33,15 +33,4 @@ on death of player:
         set death message to "&8[&4☠&8] &c%{_v}% &7ʜᴀꜱ ᴅɪᴇᴅ."
         
 on chat:
-    cancel event
-    set {_level} to number data tag "playerstat:lvl" of player
     broadcast "&8[&a%{_level}%&8] &7%player%&8: &f%message%"
-
-import:
-    org.bukkit.Particle
-
-on clientbound particle netty processed:
-    set {_particle} to event-packet.getParticle().getType()
-    if "%{_particle}%" contains "DAMAGE_INDICATOR" or "critical hit emitter ":
-        cancel packet
-        
