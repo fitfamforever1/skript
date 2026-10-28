@@ -1,6 +1,7 @@
 function spawn(p: player):
     teleport {_p} to location(26.5, 69, 19.5, world "spawn", 90, 0)
 
+
 command /spawn [<player>]:
     description: Teleports you or another player to spawn
     trigger:

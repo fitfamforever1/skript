@@ -9,7 +9,8 @@ command /reach <number>:
             max_creative_reach: arg-1
             hitbox_margin: 0.3
         set player's tool to {_i}
-        
+      
+      
 command /durability <integer>:
     permission: admin
     trigger:

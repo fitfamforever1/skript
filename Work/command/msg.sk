@@ -1,7 +1,6 @@
 command /msg [<player>] [<text>]:
     trigger:
       
-      
         set {_target} to arg-1
         
         if arg-1 is not set:

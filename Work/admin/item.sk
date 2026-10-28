@@ -17,3 +17,4 @@ command /itemid [<number>]:
         set player's held item to {_item}
         send "&aSet &eitem:id &a= &e%{_key}%&a on held item."
        
+       

@@ -5,7 +5,6 @@ on join:
     set {_p} to SmallCaps("%player%")
     set join message to "&8[&a+&8] &7%{_p}%"
 
-
 on quit:
     set {_p} to SmallCaps("%player%")
     set quit message to "&8[&c-&8] &7%{_p}%"
