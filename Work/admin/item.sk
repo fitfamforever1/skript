@@ -22,10 +22,8 @@ command /pdcset <text> <text>:
     trigger:
         set {_item} to player's tool
 
-        set {_key} to arg-1
-        set {_val} to arg-2
 
-        set persistent data tag "%{_key}%" of {_item} to "%{_val}%"
+        set data tag "%arg-1%" of {_item} to "%arg-2%"
         set player's tool to {_item}
 
-        send "&aSet &e%{_key}% &a= &e%{_val}% &aon held item."
+        send "&aSet &e%arg-1% &a= &e%arg-2% &aon held item."
