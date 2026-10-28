@@ -1,0 +1,27 @@
+command /saveitem <text>:
+    permission: admin.save
+    trigger:
+        if player's tool is air:
+            send "&cYou're not holding anything!" to player
+            stop
+        set {item::%arg-1%} to player's tool
+        send "&aSaved item as &e%arg-1%" to player
+
+command /giveitem <text>:
+    permission: admin.save
+    trigger:
+        if {item::%arg-1%} is set:
+            give {item::%arg-1%} to player
+            send "&aGave you item &e%arg-1%" to player
+        else:
+            send "&cNo item found with id &e%arg-1%" to player  
+            
+command /pdcset <text> <number>:
+    permission: admin.create
+    trigger:
+        set {_item} to player's held item
+        set {_key} to arg-1
+        set {_val} to arg-2
+        set number data tag {_key} of {_item} to {_val}
+        set player's held item to {_item}
+        send "&aSet &e%{_key}% &a= &e%{_val}%&a on held item."
