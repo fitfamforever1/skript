@@ -1,0 +1,5 @@
+on right click on stone:
+    chance of 50%:
+        if player's inventory contains flint:
+            remove 1 flint from player's inventory
+            give {itemid::1} to player
