@@ -1,4 +1,51 @@
+command /itemid <text> [<number>]:
+    permission: admin.create
+    trigger:
+        if arg-1 is "get":
+            set {_item} to player's held item
+            set {_id} to data tag "item:id" of {_item}
 
+            if {_id} is not set:
+                send "&cThis item has no ID set."
+            else:
+                send "&aItem ID: &e%{_id}%"
+
+        else if arg-1 is "give":
+            if arg-2 is not set:
+                send "&cUsage: /itemid give <id>"
+                stop
+
+            if {itemid::%arg-2%} is set:
+                give {itemid::%arg-2%} to player
+                send "&aGave you item &e%arg-2%&a."
+            else:
+                send "&cNo item found with ID &e%arg-2%&c."
+
+        else if arg-1 is "set":
+            if arg-2 is not set:
+                send "&cUsage: /itemid set <id>"
+                stop
+
+            set {_item} to player's held item
+            set {_key} to arg-2
+            set data tag "item:id" of {_item} to {_key}
+            set {itemid::%{_key}%} to {_item}
+            set player's held item to {_item}
+            send "&aSet item ID to &e%{_key}%&a."
+
+        else if arg-1 is "max":
+            set {_highest} to -1
+
+            loop {itemid::*}:
+                if loop-index parsed as number > {_highest}:
+                    set {_highest} to loop-index parsed as number
+
+            if {_highest} < 0:
+                send "&cNo items have been saved."
+            else:
+                send "&aHighest ID: &e%{_highest}%&a."
+                
+        
         else if arg-1 is "update":
             set {_item} to player's held item
 
@@ -19,6 +66,8 @@
             set {itemid::%{_id}%} to {_item}
             send "&aUpdated saved item with ID &e%{_id}%&a."
 
+        else:
+            send "&cUsage: /itemid <get|give|set|max|update>"
      
 on tab complete of "/itemid":
     set tab completions for position 1 to "get", "give", "set", "update" and "max"
