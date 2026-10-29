@@ -81,5 +81,5 @@ command /test:
 command /testitem <text>:
     permission: op
     trigger:
-        loop integers from 7 to 36:
+        loop integers from 7 to 43:
             give {itemid::%loop-value%} to player
