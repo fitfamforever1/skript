@@ -49,12 +49,15 @@ command /itemid <text> [<number>]:
      
 on tab complete of "/itemid":
     set tab completions for position 1 to "get", "give", "set" and "max"
-
-    if tab arg-1 is "give":
-        set tab completions for position 2 to indexes of {itemid::*}
-
-    else if tab arg-1 is "set":
-        set tab completions for position 2 to "1", "2", "3", "4", "5"
+     
+command /scrapset [<text>]:
+    permission: admin.create
+    trigger:
+        set {_item} to player's held item
+        set {_val} to arg-1
+        set data tag "scrap:id" of {_item} to {_val}
+        set player's held item to {_item}
+        send "%{_val}%"
      
 function getRarityLine(rarity: text) :: text:
     if {_rarity} is "trash":
