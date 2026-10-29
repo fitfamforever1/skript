@@ -47,6 +47,15 @@ command /itemid <text> [<number>]:
         else:
             send "&cUsage: /itemid <get|give|set|max>"
      
+on tab complete of "/itemid":
+    set tab completions for position 1 to "get", "give", "set" and "max"
+
+    if tab arg-1 is "give":
+        set tab completions for position 2 to indexes of {itemid::*}
+
+    else if tab arg-1 is "set":
+        set tab completions for position 2 to "1", "2", "3", "4", "5"
+     
 function getRarityLine(rarity: text) :: text:
     if {_rarity} is "trash":
         return "&8ᴛʀᴀꜱʜ "
