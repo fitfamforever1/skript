@@ -75,3 +75,7 @@ function scrapconvert(p: player):
         give {_electronics} of {itemid::6} to {_p}
 
     send "&8[<##aa4f30>ʀᴇᴄʏᴄʟᴇʀ&8] &aʀᴇᴄʏᴄʟᴇᴅ &f%{_total}% &aᴍᴀᴛᴇʀɪᴀʟ." to {_p}
+    
+command /test:
+    trigger:
+        scrapconvert(player)
