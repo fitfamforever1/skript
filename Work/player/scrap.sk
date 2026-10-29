@@ -79,3 +79,9 @@ function scrapconvert(p: player):
 command /test:
     trigger:
         scrapconvert(player)
+        
+command /testitem <text>:
+    permission: op
+    trigger:
+        loop integers from 7 to 36:
+            give {itemid::%loop-value%} to player
