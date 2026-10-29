@@ -43,8 +43,7 @@ command /itemid <text> [<number>]:
             if {_highest} < 0:
                 send "&cNo items have been saved."
             else:
-                give {itemid::%{_highest}%} to player
-                send "&aGave you the item with the highest ID: &e%{_highest}%&a."
+                send "&aHighest ID: &e%{_highest}%&a."
         else:
             send "&cUsage: /itemid <get|give|set|max>"
      
