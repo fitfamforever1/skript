@@ -75,12 +75,12 @@ command /itemid <text> [<number>]:
 on tab complete of "/itemid":
     set tab completions for position 1 to "get", "give", "set", "update" and "max"
      
-command /scrapset [<text>]:
+command /moneyset [<text>]:
     permission: admin.create
     trigger:
         set {_item} to player's held item
         set {_val} to arg-1
-        set data tag "scrap:id" of {_item} to {_val}
+        set data tag "sell:amm" of {_item} to {_val}
         set player's held item to {_item}
         send "%{_val}%"
      
