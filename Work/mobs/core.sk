@@ -6,7 +6,12 @@ function eligible(entity: entity):: boolean:
 command /testeligible:
     trigger:
         set {_entity} to targeted entity of player
+
         if eligible({_entity}) is true:
             send "&a%type of {_entity}% is eligible."
         else:
             send "&c%type of {_entity}% is not eligible."
+            
+on spawn:
+    if eligible({_entity}) is true:
+        broadcast ""
