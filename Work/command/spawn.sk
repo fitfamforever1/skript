@@ -5,6 +5,9 @@ on load:
 function spawn(p: player):
     teleport {_p} to location(-100.5, -32, 52.5, world "spawn", -130, 0)
 
+command /world:
+    trigger:
+        teleport player to spawn point of world "world"
 
 command /spawn [<player>]:
     description: Teleports you or another player to spawn
