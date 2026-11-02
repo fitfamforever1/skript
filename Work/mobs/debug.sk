@@ -1,0 +1,14 @@
+command /testmoblevel:
+    trigger:
+        set {_entity} to targeted entity of player
+
+        if {_entity} is not set:
+            send "&cYou must be looking at an entity."
+            stop
+
+        set {_level} to number data tag "mob:level" of {_entity}
+        send "&aMob level: &f%{_level}%"
+        
+command /setlevel <number>:
+    trigger:
+        set number data tag "player:level" of player to arg-1

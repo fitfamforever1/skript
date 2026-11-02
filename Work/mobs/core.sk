@@ -29,18 +29,3 @@ on spawn:
         set {_p} to nearest player
         if {_p} is set:
             assignLevel(event-entity, {_p})
-    
-command /testmoblevel:
-    trigger:
-        set {_entity} to targeted entity of player
-
-        if {_entity} is not set:
-            send "&cYou must be looking at an entity."
-            stop
-
-        set {_level} to number data tag "mob:level" of {_entity}
-        send "&aMob level: &f%{_level}%"
-        
-command /setlevel <number>:
-    trigger:
-        set number data tag "player:level" of player to arg-1
