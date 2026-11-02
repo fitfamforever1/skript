@@ -5,7 +5,10 @@ function eligible(entity: entity):: boolean:
          
 on spawn:
     set {_distance} to distance between location of event-entity and location(0, 0, 0, world of event-entity)
-    set {_level} to floor({_distance} / 1000) + 1
+    set {_min} to floor({_distance} / 1000) + 1
+    
+    set {_p} to nearest player
+    set {_max} to number data tag "player:level" of {_p}
 
     set number data tag "mob:level" of event-entity to {_level}
     
@@ -19,3 +22,7 @@ command /testmoblevel:
 
         set {_level} to number data tag "mob:level" of {_entity}
         send "&aMob level: &f%{_level}%"
+        
+command /setlevel <number>:
+    trigger:
+        set number data tag "player:level" of player to arg-1
