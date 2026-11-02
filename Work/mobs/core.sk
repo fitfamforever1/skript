@@ -1,10 +1,15 @@
-function eligible(entity: entity):: boolean:
+function eligible1(entity: entity):: boolean:
+    if type of {_entity} is armor stand or ender dragon or experience orb or eye of ender or falling block or fireball or glow item frame or item or item frame or item display or block display or leash hitch or lightning bolt or marker or minecart or painting or splash potion or small fireball or snowball or text display or tnt or tnt minecart or trident:
+        return false
+    return true
+
+function eligible2(entity: entity):: boolean:
     if type of {_entity} is zombie or husk or drowned or zombie villager or skeleton or stray or wither skeleton or bogged or creeper or spider or cave spider or slime or magma cube or phantom or witch or blaze or ghast or guardian or shulker or evoker or vindicator or pillager or ravager or hoglin or zoglin or piglin brute or breeze:
         return true
     return false
-         
-on spawn:
-    set {_distance} to distance between location of event-entity and location(0, 0, 0, world of event-entity)
+       
+function assignLevel(entity: entity):
+    set {_distance} to distance between location of {_entity} and location(0, 0, 0, world of {_entity})
     set {_min} to floor({_distance} / 1000) + 1
 
     set {_p} to nearest player
@@ -18,16 +23,11 @@ on spawn:
 
     set {_level} to {_min} + floor(({_max} - {_min}) * 0.5)
 
-    set number data tag "mob:level" of event-entity to {_level}
-
-    broadcast "&8&m-----------------------------"
-    broadcast "&eMob: &f%type of event-entity%"
-    broadcast "&eDistance: &f%{_distance}%"
-    broadcast "&eArea minimum: &f%{_min}%"
-    broadcast "&eNearest player: &f%name of {_p}%"
-    broadcast "&ePlayer level: &f%{_max}%"
-    broadcast "&eFinal mob level: &a%{_level}%"
-    broadcast "&8&m-----------------------------"
+    set number data tag "mob:level" of {_entity} to {_level}
+       
+on spawn:
+    if eligible1(event-entity) is true:
+        assignLevel(event-entity)
     
 command /testmoblevel:
     trigger:
