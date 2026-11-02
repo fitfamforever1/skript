@@ -2,7 +2,9 @@ function eligible(entity: entity):: boolean:
     if type of {_entity} is zombie or husk or drowned or zombie villager or skeleton or stray or wither skeleton or bogged or creeper or spider or cave spider or silverfish or endermite or slime or magma cube or phantom or witch or blaze or ghast or guardian or elder guardian or shulker or vex or evoker or vindicator or pillager or ravager or hoglin or zoglin or piglin brute or warden or breeze or wither or ender dragon:
         return true
     return false
-            
+         
+         
+         
 on spawn:
-    if eligible({_entity}) is true:
+    if eligible(monster) is true:
         broadcast "pass"
