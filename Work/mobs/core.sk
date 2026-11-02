@@ -8,3 +8,14 @@ on spawn:
     set {_level} to floor({_distance} / 1000) + 1
 
     set number data tag "mob:level" of event-entity to {_level}
+    
+command /testmoblevel:
+    trigger:
+        set {_entity} to targeted entity of player
+
+        if {_entity} is not set:
+            send "&cYou must be looking at an entity."
+            stop
+
+        set {_level} to number data tag "mob:level" of {_entity}
+        send "&aMob level: &f%{_level}%"
