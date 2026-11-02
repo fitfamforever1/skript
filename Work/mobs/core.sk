@@ -20,8 +20,8 @@ function assignLevel(entity: entity, p: player):
     if {_max} < {_min}:
         set {_max} to {_min}
 
-    set {_level} to {_min} + floor(({_max} - {_min}) * 0.5)
-
+    set {_level} to random integer between {_min} and {_max}
+    
     set number data tag "mob:level" of {_entity} to {_level}
        
 on spawn:
