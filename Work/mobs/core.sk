@@ -8,11 +8,10 @@ function eligible2(entity: entity):: boolean:
         return true
     return false
        
-function assignLevel(entity: entity):
+function assignLevel(entity: entity, p: player):
     set {_distance} to distance between location of {_entity} and location(0, 0, 0, world of {_entity})
     set {_min} to floor({_distance} / 1000) + 1
 
-    set {_p} to nearest player
     set {_max} to number data tag "player:level" of {_p}
 
     if {_max} is not set:
@@ -27,7 +26,9 @@ function assignLevel(entity: entity):
        
 on spawn:
     if eligible1(event-entity) is true:
-        assignLevel(event-entity)
+        set {_p} to nearest player
+        if {_p} is set:
+            assignLevel(event-entity, {_p})
     
 command /testmoblevel:
     trigger:
