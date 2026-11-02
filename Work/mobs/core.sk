@@ -24,8 +24,50 @@ function assignLevel(entity: entity, p: player):
     
     set number data tag "mob:level" of {_entity} to {_level}
        
+function assignRank(entity: entity):
+    set {_level} to number data tag "mob:level" of {_entity}
+    set {_moon} to number data tag "event:moon" of world "world"
+
+    set {_moonMult} to 1
+    if {_moon} is true:
+        set {_moonMult} to 2
+
+    set {_levelMult} to 1 + ({_level} / 50)
+
+    if {_level} >= 30:
+        set {_chance} to 0.0003 * {_levelMult} * {_moonMult}
+        set {_roll} to random number between 0 and 1
+        if {_roll} <= {_chance}:
+            set number data tag "mob:rank" of {_entity} to 5
+            stop
+
+    if {_level} >= 15:
+        set {_chance} to 0.003 * {_levelMult} * {_moonMult}
+        set {_roll} to random number between 0 and 1
+        if {_roll} <= {_chance}:
+            set number data tag "mob:rank" of {_entity} to 4
+            stop
+
+    if {_level} >= 8:
+        set {_chance} to 0.015 * {_levelMult} * {_moonMult}
+        set {_roll} to random number between 0 and 1
+        if {_roll} <= {_chance}:
+            set number data tag "mob:rank" of {_entity} to 3
+            stop
+
+    if {_level} >= 1:
+        set {_chance} to 0.06 * {_levelMult} * {_moonMult}
+        set {_roll} to random number between 0 and 1
+        if {_roll} <= {_chance}:
+            set number data tag "mob:rank" of {_entity} to 2
+            stop
+            
+    set number data tag "mob:rank" of {_entity} to 1
+       
 on spawn:
     if eligible1(event-entity) is true:
         set {_p} to nearest player
         if {_p} is set:
             assignLevel(event-entity, {_p})
+            if eligible2(event-entity) is true:
+                assignRank(event-entity)

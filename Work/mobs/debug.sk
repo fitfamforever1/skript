@@ -1,4 +1,4 @@
-command /testmoblevel:
+command /mobinfo:
     trigger:
         set {_entity} to targeted entity of player
 
@@ -7,7 +7,9 @@ command /testmoblevel:
             stop
 
         set {_level} to number data tag "mob:level" of {_entity}
+        set {_rank} to number data tag "mob:rank" of {_entity}
         send "&aMob level: &f%{_level}%"
+        send "&aMob rank: &f%{_rank}%"
         
 command /setlevel <number>:
     trigger:
