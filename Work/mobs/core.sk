@@ -6,9 +6,17 @@ function eligible(entity: entity):: boolean:
 on spawn:
     set {_distance} to distance between location of event-entity and location(0, 0, 0, world of event-entity)
     set {_min} to floor({_distance} / 1000) + 1
-    
+
     set {_p} to nearest player
     set {_max} to number data tag "player:level" of {_p}
+
+    if {_max} is not set:
+        set {_max} to {_min}
+
+    if {_max} < {_min}:
+        set {_max} to {_min}
+
+    set {_level} to {_min} + floor(({_max} - {_min}) * 0.5)
 
     set number data tag "mob:level" of event-entity to {_level}
     
