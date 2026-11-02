@@ -19,6 +19,15 @@ on spawn:
     set {_level} to {_min} + floor(({_max} - {_min}) * 0.5)
 
     set number data tag "mob:level" of event-entity to {_level}
+
+    broadcast "&8&m-----------------------------"
+    broadcast "&eMob: &f%type of event-entity%"
+    broadcast "&eDistance: &f%{_distance}%"
+    broadcast "&eArea minimum: &f%{_min}%"
+    broadcast "&eNearest player: &f%name of {_p}%"
+    broadcast "&ePlayer level: &f%{_max}%"
+    broadcast "&eFinal mob level: &a%{_level}%"
+    broadcast "&8&m-----------------------------"
     
 command /testmoblevel:
     trigger:
