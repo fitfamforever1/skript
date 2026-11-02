@@ -6,5 +6,5 @@ function eligible(entity: entity):: boolean:
          
          
 on spawn:
-    if eligible(monster) is true:
+    if eligible(event-entity) is true:
         broadcast "pass"
