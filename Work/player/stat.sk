@@ -154,5 +154,53 @@ command /statadd <text> <number>:
     trigger:
         statAdd(player, arg-1, arg-2)
         stat(player)
+        
+command /stat [<offlineplayer>]:
+    permission: admin.stat
+    usage: %prefix()%&cUsage: /stat [player]
+    trigger:
+        if arg-1 is set:
+            set {_target} to arg-1
+        else:
+            set {_target} to player
+
+        if {_target} is not online:
+            send "%prefix()%&cPlayer not found or not online." to player
+            stop
+
+        stat({_target})
+
+        send "%prefix()%&8&m--------------------------------&r" to player
+        send "%prefix()%&7Player&8: &f%{_target}%" to player
+        send "%prefix()%&7Level&8: &f%data tag "playerstat:lvl" of {_target}%" to player
+
+        # Combat Stats
+        send "%prefix()%&8&m--------------------------------&r" to player
+        send "%prefix()%&c&lCombat Stats" to player
+        send "%prefix()%&7Damage&8: &f%data tag "stat:damage" of {_target}%" to player
+        send "%prefix()%&7Defense&8: &f%data tag "stat:defense" of {_target}%" to player
+        send "%prefix()%&7Speed&8: &f%data tag "stat:speed" of {_target}%" to player
+        send "%prefix()%&7Crit Chance&8: &f%data tag "stat:crit_chance" of {_target}%%%" to player
+        send "%prefix()%&7Crit Damage&8: &f%data tag "stat:crit_damage" of {_target}%%%" to player
+
+        # Health & Mana
+        send "%prefix()%&8&m--------------------------------&r" to player
+        send "%prefix()%&c&lHealth & Mana" to player
+        send "%prefix()%&7Health&8: &f%data tag "current:health" of {_target}%&8/&f%data tag "stat:health" of {_target}%" to player
+        send "%prefix()%&7Health Regeneration&8: &f%data tag "stat:health_regeneration" of {_target}%" to player
+        send "%prefix()%&7Mana&8: &f%data tag "current:mana" of {_target}%&8/&f%data tag "stat:mana" of {_target}%" to player
+        send "%prefix()%&7Mana Regeneration&8: &f%data tag "stat:mana_regeneration" of {_target}%" to player
+
+        # Gathering Stats
+        send "%prefix()%&8&m--------------------------------&r" to player
+        send "%prefix()%&a&lGathering Stats" to player
+        send "%prefix()%&7Mining Speed&8: &f%data tag "stat:mining_speed" of {_target}%" to player
+        send "%prefix()%&7Mining Fortune&8: &f%data tag "stat:mining_fortune" of {_target}%" to player
+        send "%prefix()%&7Farming Fortune&8: &f%data tag "stat:farming_fortune" of {_target}%" to player
+        send "%prefix()%&7Foraging Fortune&8: &f%data tag "stat:foraging_fortune" of {_target}%" to player
+        send "%prefix()%&7Fishing Fortune&8: &f%data tag "stat:fishing_fortune" of {_target}%" to player
+        send "%prefix()%&7Fishing Speed&8: &f%data tag "stat:fishing_speed" of {_target}%" to player
+
+        send "%prefix()%&8&m--------------------------------&r" to player
 
          
