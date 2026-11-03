@@ -152,7 +152,7 @@ command /statreset:
 command /statadd <text> <number>:
     permission: admin.stat
     trigger:
-        statAdd({_target}, arg-1, arg-2)
-        stat({_target})
+        statAdd(player, arg-1, arg-2)
+        stat(player)
 
          
