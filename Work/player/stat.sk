@@ -146,3 +146,4 @@ every 1 second in "world":
 command /statreset:
     trigger:
         reset(player)
+        stat(player)
