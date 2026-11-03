@@ -186,9 +186,7 @@ command /stat [<offlineplayer>]:
         send "%prefix()%&8&m--------------------------------&r" to player
         send "%prefix()%&c&lHealth & Mana" to player
         send "%prefix()%&7Health&8: &f%data tag "current:health" of {_target}%&8/&f%data tag "stat:health" of {_target}%" to player
-        send "%prefix()%&7Health Regeneration&8: &f%data tag "stat:health_regeneration" of {_target}%" to player
         send "%prefix()%&7Mana&8: &f%data tag "current:mana" of {_target}%&8/&f%data tag "stat:mana" of {_target}%" to player
-        send "%prefix()%&7Mana Regeneration&8: &f%data tag "stat:mana_regeneration" of {_target}%" to player
 
         # Gathering Stats
         send "%prefix()%&8&m--------------------------------&r" to player
