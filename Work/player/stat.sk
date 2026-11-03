@@ -129,7 +129,7 @@ function syncSpeed(p: player):
     
 function syncHealth(p: player):
     set {_health} to number data tag "stat:health" of {_p}
-    set {_p}'s movement speed attribute to {_health}
+    set {_p}'s max health attribute to {_health}
     
 function actionBar(p: player):
     set {_maxMana} to number data tag "stat:mana" of {_p}
