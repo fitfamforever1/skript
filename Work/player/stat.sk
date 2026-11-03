@@ -172,7 +172,6 @@ command /stat [<offlineplayer>]:
 
         send "%prefix()%&8&m--------------------------------&r" to player
         send "%prefix()%&7Player&8: &f%{_target}%" to player
-        send "%prefix()%&7Level&8: &f%data tag "playerstat:lvl" of {_target}%" to player
 
         # Combat Stats
         send "%prefix()%&8&m--------------------------------&r" to player
