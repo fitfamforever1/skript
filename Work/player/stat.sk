@@ -122,6 +122,7 @@ function regenPlayer(p: player):
     if {_newHealth} >= {_maxHealth}:
         set {_newHealth} to {_maxHealth}
     set number data tag "current:health" of {_p} to round({_newHealth})
+    syncHealth({_p})
     
 function syncSpeed(p: player):
     set {_speed} to number data tag "stat:speed" of {_p}
@@ -147,3 +148,11 @@ command /statreset:
     trigger:
         reset(player)
         stat(player)
+        
+command /statadd <text> <number>:
+    permission: admin.stat
+    trigger:
+        statAdd({_target}, arg-1, arg-2)
+        stat({_target})
+
+         

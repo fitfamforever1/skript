@@ -374,10 +374,7 @@ command /statadd <text> <number> [<offlineplayer>]:
             set {_target} to arg-3
         else:
             set {_target} to player
-
-        if {_target} is not online:
-            send "%prefix()%&cᴘʟᴀʏᴇʀ ɴᴏᴛ ꜰᴏᴜɴᴅ ᴏʀ ɴᴏᴛ ᴏɴʟɪɴᴇ." to player
-            stop
+   stop
 
         if arg-1 is "damage", "defense", "speed", "health", "mana", "crit_chance" or "crit_damage":
             statAdd({_target}, arg-1, arg-2)
@@ -385,6 +382,9 @@ command /statadd <text> <number> [<offlineplayer>]:
             send "%prefix()%&aᴀᴅᴅᴇᴅ &f%arg-2%&a ᴛᴏ &f%{_target}%&a's &f%arg-1%&a." to player
         else:
             send "%prefix()%&cɪɴᴠᴀʟɪᴅ sᴛᴀᴛ ᴛʏᴘᴇ. ᴠᴀʟɪᴅ: ᴅᴀᴍᴀɢᴇ, ᴅᴇꜰᴇɴsᴇ, sᴘᴇᴇᴅ, ʜᴇᴀʟᴛʜ, ᴍᴀɴᴀ, ᴄʀɪᴛ_ᴄʜᴀɴᴄᴇ, ᴄʀɪᴛ_ᴅᴀᴍᴀɢᴇ." to player
+        if {_target} is not online:
+            send "%prefix()%&cᴘʟᴀʏᴇʀ ɴᴏᴛ ꜰᴏᴜɴᴅ ᴏʀ ɴᴏᴛ ᴏɴʟɪɴᴇ." to player
+         
 
 
 command /removemana <number> [<offlineplayer>]:
