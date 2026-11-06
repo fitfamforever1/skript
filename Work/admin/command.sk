@@ -42,7 +42,6 @@ function SmallCaps(input: text) :: text:
                 set {_result} to "%{_result}%%loop-value%"
     return {_result}
 
-
 command /admin:
     permission: admin.area
     trigger:

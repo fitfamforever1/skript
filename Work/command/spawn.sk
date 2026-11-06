@@ -8,7 +8,7 @@ function spawn(p: player):
 command /world:
     trigger:
         teleport player to spawn point of world "world"
-
+ 
 command /spawn [<player>]:
     description: Teleports you or another player to spawn
     trigger:
