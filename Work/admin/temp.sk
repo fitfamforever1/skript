@@ -10,7 +10,6 @@ command /reach <number>:
             hitbox_margin: 0.3
         set player's tool to {_i}
     
-      
 command /durability <integer>:
     permission: admin
     trigger:

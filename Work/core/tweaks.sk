@@ -32,6 +32,7 @@ on death of player:
         set death message to "&8[&4☠&8] &c%{_v}% &7ʜᴀꜱ ᴅɪᴇᴅ."
       
      
+     
 on chat:
     cancel event
     broadcast "&8[&a%{_level}%&8] &7%player%&8: &f%message%"
