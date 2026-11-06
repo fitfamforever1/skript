@@ -1,0 +1,2 @@
+on join:
+    set block break speed attribute of player to 0
