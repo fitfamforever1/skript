@@ -14,9 +14,9 @@ function showBlockDamage(ticks: number, p: player, loc: location):
 
     make {_p} see damage of block at {_loc} as 0 from {_id}
     
-#on block damage:
-#    set number data tag "mine:status" of player to 1
-#    showBlockDamage(20, player, target block)
+on block damage:
+    set number data tag "mine:status" of player to 1
+    showBlockDamage(20, player, target block)
     
 on block damage abort:
     send "stop"
