@@ -11,6 +11,5 @@ function showBlockDamage(ticks: number, p: player, loc: location):
 
     make {_p} see damage of block at {_loc} as 0 from {_id}
     
-on left click on stone:
-    send "test"
-    showBlockDamage(50, player, target block)
+on block damage:
+    showBlockDamage(20, player, target block)
