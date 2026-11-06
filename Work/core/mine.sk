@@ -13,4 +13,4 @@ function showBlockDamage(ticks: number, p: player, loc: location):
     
 on left click on stone:
     send "test"
-    showBlockDamage(20, player, target block)
+    showBlockDamage(50, player, target block)
