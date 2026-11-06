@@ -6,7 +6,7 @@ function showBlockDamage(ticks: number, p: player, loc: location):
 
     loop {_ticks} times:
         set {_temp} to number data tag "mine:status" of {_p}
-        if {_temp} is 0:
+        if {_temp} is "0":
             stop
         set {_damage} to loop-number / {_ticks}
         make {_p} see damage of block at {_loc} as {_damage} from {_id}
@@ -19,5 +19,4 @@ on block damage:
     showBlockDamage(20, player, target block)
     
 on block damage abort:
-    
-    set number data tag "mine:status" of player to 1
+    set number data tag "mine:status" of player to 0
