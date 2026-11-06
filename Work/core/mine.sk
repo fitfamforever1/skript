@@ -12,4 +12,5 @@ function showBlockDamage(ticks: number, p: player, loc: location):
     make {_p} see damage of block at {_loc} as 0 from {_id}
     
 on breaking of stone:
+    send "test"
     showBlockDamage(20, player, target block)
