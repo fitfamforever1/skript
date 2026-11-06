@@ -1,2 +1,15 @@
 on join:
     set block break speed attribute of player to 0
+    
+function showBlockDamage(ticks: number, p: player, loc: location):
+    set {_id} to random integer between 1 and 1000000
+
+    loop {_ticks} times:
+        set {_damage} to loop-number / {_ticks}
+        make {_p} see damage of block at {_loc} as {_damage} from {_id}
+        wait 1 tick
+
+    make {_p} see damage of block at {_loc} as 0 from {_id}
+    
+on breaking of stone:
+    showBlockDamage(20, player, target block)
