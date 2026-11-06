@@ -19,4 +19,5 @@ on block damage:
     showBlockDamage(20, player, target block)
     
 on block damage abort:
+    send "stop"
     set number data tag "mine:status" of player to 0
