@@ -1,0 +1,3 @@
+on load:
+    set {block::stone::toughness} to 10
+    set {block::stone::drop} to 10
