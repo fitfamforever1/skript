@@ -1,10 +1,19 @@
 function getToughness(loc: location):: number:
     if block at {_loc} is stone:
-        return 1
+        return 200
     else if block at {_loc} is copper ore:
-        return 1
+        return 500
     else if block at {_loc} is iron ore:
-        return 1
+        return 1000
     else if block at {_loc} is gold ore:
-        return 1
+        return 1500
+    
+function getMiningTicks(p: player, loc: location):: number:
+    set {_toughness} to getToughness({_loc})
+    set {_speed} to number data tag "playerstat:mining_speed" of {_p}
+
+    if {_speed} <= 0:
+        return 999999
+
+    return max(1, round({_toughness} / {_speed}))
     

@@ -18,7 +18,8 @@ function showBlockDamage(ticks: number, p: player, loc: location):
     
 on block damage:
     set number data tag "mine:status" of player to 1
-    showBlockDamage(20, player, target block)
+    set {_ticks} to getMiningTicks(player, target block)
+    showBlockDamage({_ticks}, player, target block)
     
 on block damage abort:
     set number data tag "mine:status" of player to 0
