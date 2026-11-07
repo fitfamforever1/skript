@@ -5,15 +5,17 @@ function showBlockDamage(ticks: number, p: player, loc: location):
     set {_id} to random integer between 1 and 1000000
 
     loop {_ticks} times:
-        set {_temp} to number data tag "mine:status" of {_p}
+        if number data tag "mine:status" of {_p} = 0:
+            make {_p} see damage of block at {_loc} as 0 from {_id}
+            stop
 
-        if {_temp} = 0:
+        if targeted block of {_p} is not block at {_loc}:
+            set number data tag "mine:status" of {_p} to 0
             make {_p} see damage of block at {_loc} as 0 from {_id}
             stop
 
         set {_damage} to loop-number / {_ticks}
         make {_p} see damage of block at {_loc} as {_damage} from {_id}
-
         wait 1 tick
 
     make {_p} see damage of block at {_loc} as 0 from {_id}
