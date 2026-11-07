@@ -19,7 +19,6 @@ function showBlockDamage(ticks: number, p: player, loc: location):
         if {_hit} is not block at {_loc}:
             set number data tag "mine:status" of {_p} to 0
             make {_p} see damage of block at {_loc} as 0 from {_id}
-            stop
 
         set {_damage} to loop-number / {_ticks}
         make {_p} see damage of block at {_loc} as {_damage} from {_id}
