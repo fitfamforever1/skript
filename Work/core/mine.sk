@@ -39,6 +39,10 @@ function showBlockDamage(ticks: number, p: player, loc: location):
 
 
 on block damage:
+    if {-tempblock::%uuid of player%::%location of target block%} is set:
+        cancel event
+        stop
+
     set number data tag "mine:status" of player to 1
     set {_ticks} to getMiningTicks(player, target block)
     showBlockDamage({_ticks}, player, target block)
