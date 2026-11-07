@@ -1,5 +1,5 @@
 function reset(p: player):
-    set number data tag "playerstat:mining_speed" of {_p} to 10
+    set number data tag "playerstat:mining_speed" of {_p} to 0
     set number data tag "playerstat:mining_fortune" of {_p} to 0
     set number data tag "playerstat:defense" of {_p} to 0
     set number data tag "playerstat:strength" of {_p} to 0
