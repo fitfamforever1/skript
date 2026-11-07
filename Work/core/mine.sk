@@ -44,7 +44,7 @@ on block damage:
         stop
 
     set number data tag "mine:status" of player to 1
-    set {_ticks} to getMiningTicks(player, target block)=
+    set {_ticks} to getMiningTicks(player, target block)
     if {_ticks} <= 1:
         temporaryBedrock(player, target block)
         stop
