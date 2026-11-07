@@ -5,13 +5,14 @@ function temporaryBedrock(p: player, loc: location):
     set {_id} to random integer between 1 and 1000000
 
     set {-tempblock::%{_p}%::%{_loc}%} to {_id}
-    make {_p} see block at {_loc} as bedrock
+
+    make {_p} see {_loc} as bedrock
 
     wait 15 seconds
 
     if {-tempblock::%{_p}%::%{_loc}%} is {_id}:
         delete {-tempblock::%{_p}%::%{_loc}%}
-        make {_p} see block at {_loc} as original
+        make {_p} see {_loc} as original
         
 on block change packet:
     if {-tempblock::%player%::%event-location%} is set:
@@ -53,20 +54,3 @@ on block damage:
 on block damage abort:
     set number data tag "mine:status" of player to 0
     
-command /testbedrock:
-    trigger:
-        set {_block} to targeted block of player
-
-        if {_block} is air:
-            send "&cNo block targeted."
-            stop
-
-        set {_loc} to location of {_block}
-
-        make player see {_loc} as bedrock
-        send "&aSent fake bedrock at %{_loc}%!"
-
-        wait 3 seconds
-
-        make player see {_loc} as original
-        send "&aRestored original block."
