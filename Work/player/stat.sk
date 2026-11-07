@@ -5,5 +5,118 @@ function reset(p: player):
     set number data tag "playerstat:strength" of {_p} to 0
     set number data tag "playerstat:luck" of {_p} to 0
     
-on join:
+on first join:
     reset(player)
+    
+function statAdd(p: player, statName: text, amount: number):
+    set {_current} to number data tag "playerstat:%{_statName}%" of {_p}
+    set number data tag "playerstat:%{_statName}%" of {_p} to {_current} + {_amount}
+    
+function stat(p: player):
+    set {_miningSpeed} to number data tag "playerstat:mining_speed" of {_p}
+    set {_miningFortune} to number data tag "playerstat:mining_fortune" of {_p}
+    set {_defense} to number data tag "playerstat:defense" of {_p}
+    set {_strength} to number data tag "playerstat:strength" of {_p}
+    set {_luck} to number data tag "playerstat:luck" of {_p}
+
+    loop helmet of {_p}, chestplate of {_p}, leggings of {_p} and boots of {_p}:
+        if loop-value is not air:
+            add number data tag "itemstat:mining_speed" of loop-value to {_miningSpeed}
+            add number data tag "itemstat:mining_fortune" of loop-value to {_miningFortune}
+            add number data tag "itemstat:defense" of loop-value to {_defense}
+            add number data tag "itemstat:strength" of loop-value to {_strength}
+            add number data tag "itemstat:luck" of loop-value to {_luck}
+
+    set {_item} to {_p}'s tool
+    if {_item} is not air:
+        add number data tag "itemstat:mining_speed" of {_item} to {_miningSpeed}
+        add number data tag "itemstat:mining_fortune" of {_item} to {_miningFortune}
+        add number data tag "itemstat:defense" of {_item} to {_defense}
+        add number data tag "itemstat:strength" of {_item} to {_strength}
+        add number data tag "itemstat:luck" of {_item} to {_luck}
+
+    set number data tag "stat:mining_speed" of {_p} to {_miningSpeed}
+    set number data tag "stat:mining_fortune" of {_p} to {_miningFortune}
+    set number data tag "stat:defense" of {_p} to {_defense}
+    set number data tag "stat:strength" of {_p} to {_strength}
+    set number data tag "stat:luck" of {_p} to {_luck}
+    
+on join:
+    stat(player)
+    
+on armor change:
+    wait 1 tick
+    stat(player)
+
+on player's held item change:
+    wait 1 tick
+    stat(player)
+
+on food level change:
+    cancel event
+    
+on attack attempt:
+    if attack cooldown of attacker < 1:
+        cancel event
+        
+command /stat [<offlineplayer>]:
+    permission: admin.stat
+    trigger:
+        if arg-1 is set:
+            set {_target} to arg-1
+        else:
+            set {_target} to player
+
+        if {_target} is not online:
+            send "&8[<##57DE3F>ꜱᴛᴀᴛ&8]&7 ᴘʟᴀʏᴇʀ ɴᴏᴛ ꜰᴏᴜɴᴅ ᴏʀ ɴᴏᴛ ᴏɴʟɪɴᴇ." to player
+            stop
+
+        stat({_target})
+
+        send "&8&m--------------------------------&r" to player
+        send "&8[<##57DE3F>ꜱᴛᴀᴛ&8]&7 ᴘʟᴀʏᴇʀ&8: &f%{_target}%" to player
+        send "&8&m--------------------------------&r" to player
+        send "&7ᴍɪɴɪɴɢ sᴘᴇᴇᴅ&8: &f%data tag "stat:mining_speed" of {_target}%" to player
+        send "&7ᴍɪɴɪɴɢ ꜰᴏʀᴛᴜɴᴇ&8: &f%data tag "stat:mining_fortune" of {_target}%" to player
+        send "&7ᴅᴇꜰᴇɴsᴇ&8: &f%data tag "stat:defense" of {_target}%" to player
+        send "&7sᴛʀᴇɴɢᴛʜ&8: &f%data tag "stat:strength" of {_target}%" to player
+        send "&7ʟᴜᴄᴋ&8: &f%data tag "stat:luck" of {_target}%" to player
+        send "&8&m--------------------------------&r" to player
+        
+command /statreset [<offlineplayer>]:
+    permission: admin.stat
+    trigger:
+        if arg-1 is set:
+            set {_target} to arg-1
+        else:
+            set {_target} to player
+
+        if {_target} is not online:
+            send "%prefix()%&cᴘʟᴀʏᴇʀ ɴᴏᴛ ꜰᴏᴜɴᴅ ᴏʀ ɴᴏᴛ ᴏɴʟɪɴᴇ." to player
+            stop
+
+        reset({_target})
+        stat({_target})
+
+        send "%prefix()%&aʀᴇsᴇᴛ &f%{_target}%&a's sᴛᴀᴛs" to player
+        if {_target} is not player:
+            send "%prefix()%&eʏᴏᴜʀ sᴛᴀᴛs ᴡᴇʀᴇ ʀᴇsᴇᴛ ʙʏ ᴀɴ ᴀᴅᴍɪɴ." to {_target}
+            
+command /statadd <text> <number> [<offlineplayer>]:
+    permission: admin.stat
+    trigger:
+        if arg-3 is set:
+            set {_target} to arg-3
+        else:
+            set {_target} to player
+
+        if {_target} is not online:
+            send "&8[<##57DE3F>ꜱᴛᴀᴛ&8]&7 ᴘʟᴀʏᴇʀ ɴᴏᴛ ꜰᴏᴜɴᴅ ᴏʀ ɴᴏᴛ ᴏɴʟɪɴᴇ." to player
+            stop
+
+        if arg-1 is "mining_speed", "mining_fortune", "defense", "strength" or "luck":
+            statAdd({_target}, arg-1, arg-2)
+            stat({_target})
+            send "&8[<##57DE3F>ꜱᴛᴀᴛ&8]&7 ᴀᴅᴅᴇᴅ &f%arg-2%&7 ᴛᴏ &f%{_target}%&7's &f%arg-1%&7." to player
+        else:
+            send "&8[<##57DE3F>ꜱᴛᴀᴛ&8]&7 ɪɴᴠᴀʟɪᴅ sᴛᴀᴛ ᴛʏᴘᴇ. ᴠᴀʟɪᴅ: ᴍɪɴɪɴɢ_sᴘᴇᴇᴅ, ᴍɪɴɪɴɢ_ꜰᴏʀᴛᴜɴᴇ, ᴅᴇꜰᴇɴsᴇ, sᴛʀᴇɴɢᴛʜ, ʟᴜᴄᴋ." to player
