@@ -11,23 +11,6 @@ function showBlockDamage(ticks: number, p: player, loc: location):
             make {_p} see damage of block at {_loc} as 0 from {_id}
             stop
 
-        set {_origin} to eye location of {_p}
-        set {_direction} to vector from yaw (yaw of {_p}) and pitch (pitch of {_p})
-        set {_ray} to ray trace from {_origin} along {_direction} with max distance 5
-        set {_hit} to ray trace hit block of {_ray}
-
-        if {_hit} is not set:
-            send "&c[DEBUG] RayTrace found no block!" to {_p}
-            set number data tag "mine:status" of {_p} to 0
-            make {_p} see damage of block at {_loc} as 0 from {_id}
-            stop
-
-        if {_hit} is not block at {_loc}:
-            send "&c[DEBUG] Target mismatch: %{_hit}%" to {_p}
-            set number data tag "mine:status" of {_p} to 0
-            make {_p} see damage of block at {_loc} as 0 from {_id}
-            stop
-
         set {_damage} to loop-number / {_ticks}
         make {_p} see damage of block at {_loc} as {_damage} from {_id}
 
@@ -37,18 +20,12 @@ function showBlockDamage(ticks: number, p: player, loc: location):
 
 
 on block damage:
-    send "&e[DEBUG] Block damage event triggered" to player
-
     set number data tag "mine:status" of player to 1
 
     set {_ticks} to getMiningTicks(player, target block)
-
-    send "&e[DEBUG] Mining ticks: %{_ticks}%" to player
-    send "&e[DEBUG] Target block: %target block%" to player
 
     showBlockDamage({_ticks}, player, target block)
 
 
 on block damage abort:
-    send "&c[DEBUG] Block damage aborted" to player
     set number data tag "mine:status" of player to 0
