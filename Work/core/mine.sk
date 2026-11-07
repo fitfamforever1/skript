@@ -1,35 +1,25 @@
 on join:
     set block break speed attribute of player to 0
 
-function temporaryBedrock(loc: location):
-    add 1 to {tempblock::id}
-    set {_id} to {tempblock::id}
+function temporaryBedrock(p: player, loc: location):
+    set {_id} to random integer between 1 and 1000000
 
-    set {tempblock::%{_id}%::loc} to {_loc}
-    set {tempblock::%{_id}%::original} to type of block at {_loc}
+    set {-tempblock::%{_p}%::%{_loc}%} to {_id}
+    make {_p} see block at {_loc} as bedrock
 
-    set block at {_loc} to bedrock
+    wait 30 seconds
 
-    wait 15 seconds
-
-    if {tempblock::%{_id}%::loc} is set:
-        if block at {_loc} is bedrock:
-            set block at {_loc} to {tempblock::%{_id}%::original}
-
-        delete {tempblock::%{_id}%::*}
+    if {-tempblock::%{_p}%::%{_loc}%} is {_id}:
+        delete {-tempblock::%{_p}%::%{_loc}%}
+        make {_p} see block at {_loc} as original
         
-on load:
-    loop {tempblock::*}:
-        if loop-index is "id":
-            continue
+on block change packet:
+    if {-tempblock::%player%::%event-location%} is set:
+        cancel event
 
-        set {_loc} to {tempblock::%loop-index%::loc}
-        set {_original} to {tempblock::%loop-index%::original}
-
-        if {_loc} is set:
-            set block at {_loc} to {_original}
-
-        delete {tempblock::%loop-index%::*}
+on join:
+    loop {-tempblock::%player%::*}:
+        delete {-tempblock::%player%::%loop-index%}
 
 function showBlockDamage(ticks: number, p: player, loc: location):
     set {_id} to random integer between 1 and 1000000
