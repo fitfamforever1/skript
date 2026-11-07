@@ -1,0 +1,6 @@
+function reset(p: player):
+    set number data tag "playerstat:mining_speed" of player to 10
+    set number data tag "playerstat:mining_fortune" of player to 0
+    set number data tag "playerstat:defense" of player to 0
+    set number data tag "playerstat:strength" of player to 0
+    set number data tag "playerstat:luck" of player to 0

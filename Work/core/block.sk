@@ -1,3 +1,10 @@
-on load:
-    set {block::stone::toughness} to 10
-    set {block::stone::drop} to 10
+function getToughness(loc: location):: number:
+    if block at {_loc} is stone:
+        return 1
+    else if block at {_loc} is copper ore:
+        return 1
+    else if block at {_loc} is iron ore:
+        return 1
+    else if block at {_loc} is gold ore:
+        return 1
+    
