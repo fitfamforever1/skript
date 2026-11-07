@@ -4,46 +4,36 @@ on join:
 function showBlockDamage(ticks: number, p: player, loc: location):
     set {_id} to random integer between 1 and 1000000
 
-    send "&e[DEBUG] Function started. Ticks: %{_ticks}%" to {_p}
-    send "&e[DEBUG] Target: %{_loc}%" to {_p}
-
     loop {_ticks} times:
         set {_temp} to number data tag "mine:status" of {_p}
 
-        send "&7[DEBUG] Loop %{_loop-number}% | Status: %{_temp}%" to {_p}
-
         if {_temp} = 0:
-            send "&c[DEBUG] Mining stopped: status is 0" to {_p}
             make {_p} see damage of block at {_loc} as 0 from {_id}
             stop
 
         set {_origin} to eye location of {_p}
         set {_direction} to vector from yaw (yaw of {_p}) and pitch (pitch of {_p})
-
-        send "&7[DEBUG] Origin: %{_origin}%" to {_p}
-        send "&7[DEBUG] Direction: %{_direction}%" to {_p}
-
         set {_ray} to ray trace from {_origin} along {_direction} with max distance 5
-        send "&7[DEBUG] Raytrace created" to {_p}
-
         set {_hit} to ray trace hit block of {_ray}
-        send "&7[DEBUG] Hit block: %{_hit}%" to {_p}
+
+        if {_hit} is not set:
+            send "&c[DEBUG] RayTrace found no block!" to {_p}
+            set number data tag "mine:status" of {_p} to 0
+            make {_p} see damage of block at {_loc} as 0 from {_id}
+            stop
 
         if {_hit} is not block at {_loc}:
-            send "&c[DEBUG] Mining stopped: target mismatch" to {_p}
+            send "&c[DEBUG] Target mismatch: %{_hit}%" to {_p}
             set number data tag "mine:status" of {_p} to 0
             make {_p} see damage of block at {_loc} as 0 from {_id}
             stop
 
         set {_damage} to loop-number / {_ticks}
-
-        send "&a[DEBUG] Applying damage: %{_damage}%" to {_p}
-
         make {_p} see damage of block at {_loc} as {_damage} from {_id}
+
         wait 1 tick
 
     make {_p} see damage of block at {_loc} as 0 from {_id}
-    send "&a[DEBUG] Animation finished" to {_p}
 
 
 on block damage:
