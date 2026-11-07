@@ -11,7 +11,11 @@ function showBlockDamage(ticks: number, p: player, loc: location):
             make {_p} see damage of block at {_loc} as 0 from {_id}
             stop
 
-        if location of target block of {_p} is not {_loc}:
+        set {_ray} to ray trace from {_p}'s eyes along {_p}'s view direction with max distance 5
+        set {_hit} to ray trace hit block of {_ray}
+
+        if {_hit} is not block at {_loc}:
+            set number data tag "mine:status" of player to 0
             make {_p} see damage of block at {_loc} as 0 from {_id}
             stop
 
