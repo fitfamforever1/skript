@@ -10,7 +10,7 @@ function temporaryBedrock(loc: location):
 
     set block at {_loc} to bedrock
 
-    wait 30 seconds
+    wait 15 seconds
 
     if {tempblock::%{_id}%::loc} is set:
         if block at {_loc} is bedrock:
