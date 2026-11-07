@@ -47,15 +47,3 @@ on block damage:
 on block damage abort:
     set number data tag "mine:status" of player to 0
     
-command /testbedrock:
-    trigger:
-        set {_block} to targeted block of player
-
-        if {_block} is air:
-            send "&cNo block targeted."
-            stop
-
-        set {_loc} to location of {_block}
-
-        temporaryBedrock(player, {_loc})
-        send "&aTemporary bedrock activated for 15 seconds!"
