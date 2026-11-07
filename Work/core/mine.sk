@@ -45,6 +45,7 @@ on block damage:
 
     set number data tag "mine:status" of player to 1
     set {_ticks} to getMiningTicks(player, target block)
+    send "%{_ticks}%"
     if {_ticks} > 2:
         send "instant"
         temporaryBedrock(player, target block)
