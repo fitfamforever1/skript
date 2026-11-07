@@ -38,7 +38,7 @@ function showBlockDamage(ticks: number, p: player, loc: location):
         wait 1 tick
 
     make {_p} see damage of block at {_loc} as 0 from {_id}
-    temporaryBedrock(player, location of target block of player)
+    temporaryBedrock({_p}, {_loc})
 
 
 on block damage:
