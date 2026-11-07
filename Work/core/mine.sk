@@ -10,7 +10,7 @@ function temporaryBedrock(p: player, loc: location):
 
     make {_p} see {_loc} as bedrock
 
-    wait 15 seconds
+    wait 30 seconds
 
     if {-tempblock::%uuid of {_p}%::%{_loc}%} is true:
         delete {-tempblock::%uuid of {_p}%::%{_loc}%}
@@ -45,9 +45,10 @@ on block damage:
 
     set number data tag "mine:status" of player to 1
     set {_ticks} to getMiningTicks(player, target block)
+    if {_ticks} > 2:
+        temporaryBedrock(player, target block)
     showBlockDamage({_ticks}, player, target block)
 
 
 on block damage abort:
     set number data tag "mine:status" of player to 0
-    
