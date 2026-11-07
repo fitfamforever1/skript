@@ -52,3 +52,15 @@ on block damage:
 
 on block damage abort:
     set number data tag "mine:status" of player to 0
+    
+command /testbedrock:
+    trigger:
+        set {_loc} to target block of player
+
+        make player see block at {_loc} as bedrock
+        send "&aBlock changed to fake bedrock!"
+
+        wait 3 seconds
+
+        make player see block at {_loc} as original
+        send "&aOriginal block restored!"
