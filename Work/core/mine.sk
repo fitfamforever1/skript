@@ -2,16 +2,14 @@ on join:
     set block break speed attribute of player to 0
 
 function temporaryBedrock(p: player, loc: location):
-    set {_id} to random integer between 1 and 1000000
-
-    set {-tempblock::%{_p}%::%{_loc}%} to {_id}
+    set {-tempblock::%uuid of {_p}%::%{_loc}%} to true
 
     make {_p} see {_loc} as bedrock
 
     wait 15 seconds
 
-    if {-tempblock::%{_p}%::%{_loc}%} is {_id}:
-        delete {-tempblock::%{_p}%::%{_loc}%}
+    if {-tempblock::%uuid of {_p}%::%{_loc}%} is true:
+        delete {-tempblock::%uuid of {_p}%::%{_loc}%}
         make {_p} see {_loc} as original
         
 on block change packet:
@@ -40,7 +38,7 @@ function showBlockDamage(ticks: number, p: player, loc: location):
         wait 1 tick
 
     make {_p} see damage of block at {_loc} as 0 from {_id}
-    temporaryBedrock({_p}, {_loc})
+    temporaryBedrock(player, location of target block of player)
 
 
 on block damage:
