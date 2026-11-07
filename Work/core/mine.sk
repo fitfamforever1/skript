@@ -1,6 +1,36 @@
 on join:
     set block break speed attribute of player to 0
 
+function temporaryBedrock(loc: location):
+    add 1 to {tempblock::id}
+    set {_id} to {tempblock::id}
+
+    set {tempblock::%{_id}%::loc} to {_loc}
+    set {tempblock::%{_id}%::original} to type of block at {_loc}
+
+    set block at {_loc} to bedrock
+
+    wait 30 seconds
+
+    if {tempblock::%{_id}%::loc} is set:
+        if block at {_loc} is bedrock:
+            set block at {_loc} to {tempblock::%{_id}%::original}
+
+        delete {tempblock::%{_id}%::*}
+        
+on load:
+    loop {tempblock::*}:
+        if loop-index is "id":
+            continue
+
+        set {_loc} to {tempblock::%loop-index%::loc}
+        set {_original} to {tempblock::%loop-index%::original}
+
+        if {_loc} is set:
+            set block at {_loc} to {_original}
+
+        delete {tempblock::%loop-index%::*}
+
 function showBlockDamage(ticks: number, p: player, loc: location):
     set {_id} to random integer between 1 and 1000000
 
@@ -19,6 +49,7 @@ function showBlockDamage(ticks: number, p: player, loc: location):
         wait 1 tick
 
     make {_p} see damage of block at {_loc} as 0 from {_id}
+    temporaryBedrock({_loc})
 
 
 on block damage:
