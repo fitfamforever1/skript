@@ -7,7 +7,7 @@ function temporaryBedrock(p: player, loc: location):
     set {-tempblock::%{_p}%::%{_loc}%} to {_id}
     make {_p} see block at {_loc} as bedrock
 
-    wait 30 seconds
+    wait 15 seconds
 
     if {-tempblock::%{_p}%::%{_loc}%} is {_id}:
         delete {-tempblock::%{_p}%::%{_loc}%}
