@@ -1,6 +1,10 @@
 on join:
     set block break speed attribute of player to 0
 
+    loop {-tempblock::%uuid of player%::*}:
+        delete {-tempblock::%uuid of player%::%loop-index%}
+
+
 function temporaryBedrock(p: player, loc: location):
     set {-tempblock::%uuid of {_p}%::%{_loc}%} to true
 
@@ -11,14 +15,12 @@ function temporaryBedrock(p: player, loc: location):
     if {-tempblock::%uuid of {_p}%::%{_loc}%} is true:
         delete {-tempblock::%uuid of {_p}%::%{_loc}%}
         make {_p} see {_loc} as original
-        
+
+
 on block change packet:
-    if {-tempblock::%player%::%event-location%} is set:
+    if {-tempblock::%uuid of player%::%event-location%} is set:
         cancel event
 
-on join:
-    loop {-tempblock::%player%::*}:
-        delete {-tempblock::%player%::%loop-index%}
 
 function showBlockDamage(ticks: number, p: player, loc: location):
     set {_id} to random integer between 1 and 1000000
@@ -34,7 +36,7 @@ function showBlockDamage(ticks: number, p: player, loc: location):
             stop
 
         set {_damage} to loop-number / {_ticks}
-        make {_p} see damage of block at {_loc} as {_damage} from {_id}
+        make {_p} see damage of block at {_loc} as {_damage}
         wait 1 tick
 
     make {_p} see damage of block at {_loc} as 0 from {_id}
@@ -43,12 +45,9 @@ function showBlockDamage(ticks: number, p: player, loc: location):
 
 on block damage:
     set number data tag "mine:status" of player to 1
-
     set {_ticks} to getMiningTicks(player, target block)
-
     showBlockDamage({_ticks}, player, target block)
 
 
 on block damage abort:
     set number data tag "mine:status" of player to 0
-    
