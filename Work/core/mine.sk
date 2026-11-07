@@ -16,7 +16,7 @@ function showBlockDamage(ticks: number, p: player, loc: location):
             stop
 
         set {_damage} to loop-number / {_ticks}
-        make {_p} see damage of block at {_loc} as {_damage}
+        make {_p} see damage of block at {_loc} as {_damage} from {_id}
         wait 1 tick
 
     make {_p} see damage of block at {_loc} as 0 from {_id}
