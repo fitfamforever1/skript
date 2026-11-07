@@ -92,15 +92,15 @@ command /statreset [<offlineplayer>]:
             set {_target} to player
 
         if {_target} is not online:
-            send "%prefix()%&cᴘʟᴀʏᴇʀ ɴᴏᴛ ꜰᴏᴜɴᴅ ᴏʀ ɴᴏᴛ ᴏɴʟɪɴᴇ." to player
+            send "&8[<##57DE3F>ꜱᴛᴀᴛ&8]&7 &cᴘʟᴀʏᴇʀ ɴᴏᴛ ꜰᴏᴜɴᴅ ᴏʀ ɴᴏᴛ ᴏɴʟɪɴᴇ." to player
             stop
 
         reset({_target})
         stat({_target})
 
-        send "%prefix()%&aʀᴇsᴇᴛ &f%{_target}%&a's sᴛᴀᴛs" to player
+        send "&8[<##57DE3F>ꜱᴛᴀᴛ&8]&7 &aʀᴇsᴇᴛ &f%{_target}%&a's sᴛᴀᴛs" to player
         if {_target} is not player:
-            send "%prefix()%&eʏᴏᴜʀ sᴛᴀᴛs ᴡᴇʀᴇ ʀᴇsᴇᴛ ʙʏ ᴀɴ ᴀᴅᴍɪɴ." to {_target}
+            send "&8[<##57DE3F>ꜱᴛᴀᴛ&8]&7 &eʏᴏᴜʀ sᴛᴀᴛs ᴡᴇʀᴇ ʀᴇsᴇᴛ ʙʏ ᴀɴ ᴀᴅᴍɪɴ." to {_target}
             
 command /statadd <text> <number> [<offlineplayer>]:
     permission: admin.stat
