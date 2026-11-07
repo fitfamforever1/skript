@@ -11,8 +11,9 @@ function showBlockDamage(ticks: number, p: player, loc: location):
             make {_p} see damage of block at {_loc} as 0 from {_id}
             stop
 
-        set {_direction} to direction vector of {_p}
-        set {_ray} to ray trace from eye location of {_p} along {_direction} with max distance 5
+        set {_origin} to eye location of {_p}
+        set {_direction} to vector from yaw (yaw of {_p}) and pitch (pitch of {_p})
+        set {_ray} to ray trace from {_origin} along {_direction} with max distance 5
         set {_hit} to ray trace hit block of {_ray}
 
         if {_hit} is not block at {_loc}:
