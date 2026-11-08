@@ -39,7 +39,7 @@ function getRarityLevel(rarity: text) :: number:
 function helmet(level: number):: item:
     set {_item} to leather helmet
 
-    set {_defense} to round(8 + ({_level} * 1.2))
+    set {_defense} to round({_level} * 2)
     set {_strength} to round(1 + ({_level} * 0.25))
     set {_luck} to round(1 + ({_level} * 0.2))
     
@@ -76,7 +76,7 @@ command /modifyhelmet <number>:
 function chestplate(level: number):: item:
     set {_item} to leather chestplate
     
-    set {_defense} to round(18 + ({_level} * 2.5))
+    set {_defense} to round({_level} * 4)
     
     set {_rarity} to getRarityLevel({_level})
     set {_rarityLine} to getRarityLine({_rarity})
@@ -108,7 +108,7 @@ function leggings(level: number):: item:
     set {_item} to leather leggings
 
     
-    set {_defense} to round(12 + ({_level} * 1.7))
+    set {_defense} to round({_level} * 2.5)
     set {_strength} to round(2 + ({_level} * 0.3))
     
     set {_rarity} to getRarityLevel({_level})
@@ -142,7 +142,7 @@ command /modifyleggings <number>:
 function boots(level: number):: item:
     set {_item} to leather boots
     
-    set {_defense} to round(6 + ({_level} * 0.8))
+    set {_defense} to round({_level} * 1.5)
     set {_luck} to round(2 + ({_level} * 0.3))
     
     set {_rarity} to getRarityLevel({_level})
