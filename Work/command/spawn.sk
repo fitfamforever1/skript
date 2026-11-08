@@ -10,12 +10,12 @@ command /spawn [<player>]:
                 stop
             spawn(arg-1)
             send title "&a✔ &aTeleported &e%arg-1% &ato spawn!" to player for 1.6 seconds
-            play sound "entity.enderman.teleport" at arg-1 for arg-1
+            play sound "sound:sound.effect.blink" at arg-1 for arg-1
             stop
 
         spawn(player)
         send title "&a✔ &aTeleported to spawn!" to player for 1.6 seconds
-        play sound "entity.enderman.teleport" at player for player
+        play sound "sound:sound.effect.blink" at player for player
 
 on respawn:
     wait 20 tick
