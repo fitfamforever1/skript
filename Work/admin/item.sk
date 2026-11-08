@@ -17,28 +17,12 @@ function getRarityLine(rarity: text) :: text:
         return "&fᴄᴏᴍᴍᴏɴ"
     return ""
 
-function getRarityLevel(level: number) :: text:
-    if {_level} <= 3:
-        return "common"
-    if {_level} <= 6:
-        return "uncommon"
-    if {_level} <= 9:
-        return "rare"
-    if {_level} <= 12:
-        return "epic"
-    if {_level} <= 15:
-        return "legendary"
-    if {_level} <= 18:
-        return "mythic"
-    if {_level} <= 21:
-        return "divine"
-    if {_level} <= 24:
-        return "special"
-    return "unknown"
 function helmet(level: number):: item:
     set {_item} to leather helmet
 
-    set {_defense} to round({_level} * 2)
+    set {_baseDefense} to getBaseDefense({_level})
+    set {_defense} to getRandomStat({_baseDefense} * 0.2)
+    
     set {_strength} to round(1 + ({_level} * 0.25))
     set {_luck} to round(1 + ({_level} * 0.2))
     
@@ -64,117 +48,149 @@ function helmet(level: number):: item:
     set number data tag "itemstat:luck" of {_item} to {_luck}
     
     return {_item}
-
-command /modifyhelmet <number>:
-    permission: admin.item
+    
+command /modifyitem:
+    permission: admin.create
     trigger:
-        set {_item} to helmet(arg-1)
-        give {_item} to player
+        if player's tool is air:
+            send "&cYou must hold an item to modify."
+            stop
+
+        openItemDialog(player)
 
 
-function chestplate(level: number):: item:
-    set {_item} to leather chestplate
-    
-    set {_defense} to round({_level} * 4)
-    
-    set {_rarity} to getRarityLevel({_level})
+function openItemDialog(p: player):
+    open new multi action dialog to {_p}:
+        title: "&bItem Editor"
+        external_title: "Item Editor"
+        can_close_with_escape: true
+        after_action: "close"
+        inputs:
+            add text input:
+                key: "rarity"
+                label: "Rarity *"
+                width: 200
+                max_length: 16
+
+            add text input:
+                key: "item_type"
+                label: "Item Type *"
+                width: 200
+                max_length: 32
+
+            add text input:
+                key: "mining_speed"
+                label: "Mining Speed"
+                initial: "0"
+                width: 200
+
+            add text input:
+                key: "mining_fortune"
+                label: "Mining Fortune"
+                initial: "0"
+                width: 200
+
+            add text input:
+                key: "defense"
+                label: "Defense"
+                initial: "0"
+                width: 200
+
+            add text input:
+                key: "strength"
+                label: "Strength"
+                initial: "0"
+                width: 200
+
+            add text input:
+                key: "luck"
+                label: "Luck"
+                initial: "0"
+                width: 200
+
+        columns: 1
+        actions:
+            add callback action button:
+                label: "&aSubmit"
+                width: 200
+                trigger:
+                    set {_nbt} to event-nbt
+                    set {_p} to event-player
+
+                    set {_rarity} to string tag "rarity" of {_nbt}
+                    set {_type} to string tag "item_type" of {_nbt}
+
+                    set {_miningSpeed} to string tag "mining_speed" of {_nbt}
+                    set {_miningFortune} to string tag "mining_fortune" of {_nbt}
+                    set {_defense} to string tag "defense" of {_nbt}
+                    set {_strength} to string tag "strength" of {_nbt}
+                    set {_luck} to string tag "luck" of {_nbt}
+
+                    if {_rarity} is "":
+                        send "&cYou must enter a rarity." to {_p}
+                        stop
+
+                    if {_type} is "":
+                        send "&cYou must enter an item type." to {_p}
+                        stop
+
+                    set {_item} to {_p}'s tool
+
+                    if {_item} is air:
+                        send "&cYou must hold an item to modify." to {_p}
+                        stop
+
+                    set {_item} to modifyItem({_item}, {_rarity}, {_type}, {_miningSpeed} parsed as a number, {_miningFortune} parsed as a number, {_defense} parsed as a number, {_strength} parsed as a number, {_luck} parsed as a number)
+
+                    set {_p}'s tool to {_item}
+                    send "&aSuccessfully modified your item!" to {_p}
+
+function modifyItem(item: item, rarity: text, type: text, miningSpeed: number, miningFortune: number, defense: number, strength: number, luck: number) :: item:
+    set {_item} to {_item}
+
     set {_rarityLine} to getRarityLine({_rarity})
-    
-    set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
-    set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &eᴄʜᴇꜱᴛᴘʟᴀᴛᴇ"
-    set line 3 of lore of {_item} to "&8┃ &7ʀᴀʀɪᴛʏ &8» &c%{_rarityLine}%"
-    set line 4 of lore of {_item} to ""
-    set line 5 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
-    set line 6 of lore of {_item} to "&8┃ &7ᴅᴇғᴇɴꜱᴇ &8» &a+%{_defense}%"
-    
+    set {_typeLine} to SmallCaps({_type})
+
     set {_item} to unbreakable {_item}
     set item flags of {_item} to all item flags
-    
-    set data tag "itemstat:type" of {_item} to "chestplate"
-    set number data tag "itemstat:level" of {_item} to {_level}
-    set number data tag "itemstat:defense" of {_item} to {_defense}
-    
-    return {_item}
 
-command /modifychestplate <number>:
-    permission: admin.item
-    trigger:
-        set {_item} to chestplate(arg-1)
-        give {_item} to player
-
-
-function leggings(level: number):: item:
-    set {_item} to leather leggings
-
-    
-    set {_defense} to round({_level} * 2.5)
-    set {_strength} to round(2 + ({_level} * 0.3))
-    
-    set {_rarity} to getRarityLevel({_level})
-    set {_rarityLine} to getRarityLine({_rarity})
+    clear lore of {_item}
 
     set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
-    set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &eʟᴇɢɢɪɴɢꜱ"
-    set line 3 of lore of {_item} to "&8┃ &7ʀᴀʀɪᴛʏ &8» &c%{_rarityLine}%"
+    set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &e%{_typeLine}%"
+    set line 3 of lore of {_item} to "&8┃ &7ʀᴀʀɪᴛʏ &8» %{_rarityLine}%"
+
+    set data tag "itemstat:type" of {_item} to {_type}
+    set data tag "itemstat:rarity" of {_item} to {_rarity}
+
     set line 4 of lore of {_item} to ""
     set line 5 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
-    set line 6 of lore of {_item} to "&8┃ &7ᴅᴇғᴇɴꜱᴇ &8» &a+%{_defense}%"
-    set line 7 of lore of {_item} to "&8┃ &7ꜱᴛʀᴇɴɢᴛʜ &8» &c+%{_strength}%"
-    
-    set {_item} to unbreakable {_item}
-    set item flags of {_item} to all item flags
-    
-    set data tag "itemstat:type" of {_item} to "leggings"
-    set number data tag "itemstat:level" of {_item} to {_level}
-    set number data tag "itemstat:strength" of {_item} to {_strength}
-    set number data tag "itemstat:defense" of {_item} to {_defense}
-    
+    set {_line} to 5
+
+    if {_miningSpeed} > 0:
+        add 1 to {_line}
+        set line {_line} of lore of {_item} to "&8┃ &7ᴍɪɴɪɴɢ ꜱᴘᴇᴇᴅ &8» &b+%{_miningSpeed}%"
+        set number data tag "itemstat:mining_speed" of {_item} to {_miningSpeed}
+
+    if {_miningFortune} > 0:
+        add 1 to {_line}
+        set line {_line} of lore of {_item} to "&8┃ &7ᴍɪɴɪɴɢ ꜰᴏʀᴛᴜɴᴇ &8» &6+%{_miningFortune}%"
+        set number data tag "itemstat:mining_fortune" of {_item} to {_miningFortune}
+
+    if {_defense} > 0:
+        add 1 to {_line}
+        set line {_line} of lore of {_item} to "&8┃ &7ᴅᴇғᴇɴꜱᴇ &8» &a+%{_defense}%"
+        set number data tag "itemstat:defense" of {_item} to {_defense}
+
+    if {_strength} > 0:
+        add 1 to {_line}
+        set line {_line} of lore of {_item} to "&8┃ &7ꜱᴛʀᴇɴɢᴛʜ &8» &c+%{_strength}%"
+        set number data tag "itemstat:strength" of {_item} to {_strength}
+
+    if {_luck} > 0:
+        add 1 to {_line}
+        set line {_line} of lore of {_item} to "&8┃ &7ʟᴜᴄᴋ &8» &d+%{_luck}%"
+        set number data tag "itemstat:luck" of {_item} to {_luck}
+
     return {_item}
 
-command /modifyleggings <number>:
-    permission: admin.item
-    trigger:
-        set {_item} to leggings(arg-1)
-        give {_item} to player
-
-
-function boots(level: number):: item:
-    set {_item} to leather boots
-    
-    set {_defense} to round({_level} * 1.5)
-    set {_luck} to round(2 + ({_level} * 0.3))
-    
-    set {_rarity} to getRarityLevel({_level})
-    set {_rarityLine} to getRarityLine({_rarity})
-    
-    set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
-    set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &eʙᴏᴏᴛꜱ"
-    set line 3 of lore of {_item} to "&8┃ &7ʀᴀʀɪᴛʏ &8» &c%{_rarityLine}%"
-    set line 4 of lore of {_item} to ""
-    set line 5 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
-    set line 6 of lore of {_item} to "&8┃ &7ᴅᴇғᴇɴꜱᴇ &8» &a+%{_defense}%"
-    set line 7 of lore of {_item} to "&8┃ &7ʟᴜᴄᴋ &8» &b+%{_luck}%"
-    
-    set {_item} to unbreakable {_item}
-    set item flags of {_item} to all item flags
-    
-    set data tag "itemstat:type" of {_item} to "boots"
-    set number data tag "itemstat:level" of {_item} to {_level}
-    set number data tag "itemstat:defense" of {_item} to {_defense}
-    set number data tag "itemstat:luck" of {_item} to {_luck}
-    
-    return {_item}
-
-command /modifyboots <number>:
-    permission: admin.item
-    trigger:
-        set {_item} to boots(arg-1)
-        give {_item} to player
-        
-command /modifyset <number>:
-    permission: admin.item
-    trigger:
-        give helmet(arg-1) to player
-        give chestplate(arg-1) to player
-        give leggings(arg-1) to player
-        give boots(arg-1) to player
