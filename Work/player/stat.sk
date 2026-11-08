@@ -29,11 +29,13 @@ function stat(p: player):
 
     set {_item} to {_p}'s tool
     if {_item} is not air:
-        add number data tag "itemstat:mining_speed" of {_item} to {_miningSpeed}
-        add number data tag "itemstat:mining_fortune" of {_item} to {_miningFortune}
-        add number data tag "itemstat:defense" of {_item} to {_defense}
-        add number data tag "itemstat:strength" of {_item} to {_strength}
-        add number data tag "itemstat:luck" of {_item} to {_luck}
+        set {_itemType} to data tag "itemstat:type" of {_item}
+        if {_itemType} is "pickaxe":
+            add number data tag "itemstat:mining_speed" of {_item} to {_miningSpeed}
+            add number data tag "itemstat:mining_fortune" of {_item} to {_miningFortune}
+            add number data tag "itemstat:defense" of {_item} to {_defense}
+            add number data tag "itemstat:strength" of {_item} to {_strength}
+            add number data tag "itemstat:luck" of {_item} to {_luck}
 
     set number data tag "stat:mining_speed" of {_p} to {_miningSpeed}
     set number data tag "stat:mining_fortune" of {_p} to {_miningFortune}
