@@ -133,11 +133,11 @@ on inventory click:
             openItemIDGUI(player, {_page} + 1)
             stop
 
-        if clicked item is air:
+        if event-item is air:
             stop
 
         if click type is right mouse button:
-            set {_id} to number data tag "item:id" of clicked item
+            set {_id} to number data tag "item:id" of event-item
 
             if {_id} is set:
                 send "&aItem ID: &e%{_id}%" to player
