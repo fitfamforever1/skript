@@ -132,34 +132,48 @@ function modifyItem(item: item, rarity: text, type: text, miningSpeed: number, m
     set data tag "itemstat:type" of {_item} to {_type}
     set data tag "itemstat:rarity" of {_item} to {_rarity}
 
-    set line 4 of lore of {_item} to ""
-    set line 5 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
-    set {_line} to 5
+    set {_hasStats} to false
 
     if {_miningSpeed} > 0:
-        add 1 to {_line}
-        set line {_line} of lore of {_item} to "&8┃ &7ᴍɪɴɪɴɢ ꜱᴘᴇᴇᴅ &8» &b+%{_miningSpeed}%"
-        set number data tag "itemstat:mining_speed" of {_item} to {_miningSpeed}
-
+        set {_hasStats} to true
     if {_miningFortune} > 0:
-        add 1 to {_line}
-        set line {_line} of lore of {_item} to "&8┃ &7ᴍɪɴɪɴɢ ꜰᴏʀᴛᴜɴᴇ &8» &6+%{_miningFortune}%"
-        set number data tag "itemstat:mining_fortune" of {_item} to {_miningFortune}
-
+        set {_hasStats} to true
     if {_defense} > 0:
-        add 1 to {_line}
-        set line {_line} of lore of {_item} to "&8┃ &7ᴅᴇғᴇɴꜱᴇ &8» &a+%{_defense}%"
-        set number data tag "itemstat:defense" of {_item} to {_defense}
-
+        set {_hasStats} to true
     if {_strength} > 0:
-        add 1 to {_line}
-        set line {_line} of lore of {_item} to "&8┃ &7ꜱᴛʀᴇɴɢᴛʜ &8» &c+%{_strength}%"
-        set number data tag "itemstat:strength" of {_item} to {_strength}
-
+        set {_hasStats} to true
     if {_luck} > 0:
-        add 1 to {_line}
-        set line {_line} of lore of {_item} to "&8┃ &7ʟᴜᴄᴋ &8» &d+%{_luck}%"
-        set number data tag "itemstat:luck" of {_item} to {_luck}
+        set {_hasStats} to true
+
+    if {_hasStats} is true:
+        set line 4 of lore of {_item} to ""
+        set line 5 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
+        set {_line} to 5
+    
+        if {_miningSpeed} > 0:
+            add 1 to {_line}
+            set line {_line} of lore of {_item} to "&8┃ &7ᴍɪɴɪɴɢ ꜱᴘᴇᴇᴅ &8» &b+%{_miningSpeed}%"
+            set number data tag "itemstat:mining_speed" of {_item} to {_miningSpeed}
+    
+        if {_miningFortune} > 0:
+            add 1 to {_line}
+            set line {_line} of lore of {_item} to "&8┃ &7ᴍɪɴɪɴɢ ꜰᴏʀᴛᴜɴᴇ &8» &6+%{_miningFortune}%"
+            set number data tag "itemstat:mining_fortune" of {_item} to {_miningFortune}
+    
+        if {_defense} > 0:
+            add 1 to {_line}
+            set line {_line} of lore of {_item} to "&8┃ &7ᴅᴇғᴇɴꜱᴇ &8» &a+%{_defense}%"
+            set number data tag "itemstat:defense" of {_item} to {_defense}
+    
+        if {_strength} > 0:
+            add 1 to {_line}
+            set line {_line} of lore of {_item} to "&8┃ &7ꜱᴛʀᴇɴɢᴛʜ &8» &c+%{_strength}%"
+            set number data tag "itemstat:strength" of {_item} to {_strength}
+    
+        if {_luck} > 0:
+            add 1 to {_line}
+            set line {_line} of lore of {_item} to "&8┃ &7ʟᴜᴄᴋ &8» &d+%{_luck}%"
+            set number data tag "itemstat:luck" of {_item} to {_luck}
 
     return {_item}
 
