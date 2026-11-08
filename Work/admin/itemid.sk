@@ -156,3 +156,9 @@ on inventory click:
                 send "&aItem ID: &e%{_id}%" to player
             else:
                 send "&cThis item has no ID!" to player
+                
+on tab complete of "/itemid":
+    set tab completions for position 1 to "set", "give", "high", "update", "get" and "gui"
+
+    if tab arg-1 is "give":
+        set tab completions for position 2 to (indexes of {loot::*})
