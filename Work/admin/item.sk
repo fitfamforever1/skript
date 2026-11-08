@@ -177,3 +177,29 @@ function modifyItem(item: item, rarity: text, type: text, miningSpeed: number, m
 
     return {_item}
 
+command /modifybasic [<text>] [<text>]:
+    permission: admin.item
+    trigger:
+        if arg-1 is not set:
+            send "&cUsage: /modifyitem <rarity> <type>"
+            stop
+        set {_rarity} to arg-1
+        set {_type} to arg-2
+
+        set {_rarityLine} to getRarityLine({_rarity})
+        set {_typeLine} to SmallCaps({_type})
+
+        set player's held item to unbreakable tool
+        set item flags of player's tool to all item flags
+        force the player's held item to stop glinting
+
+        set line 1 of lore of player's tool to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
+        set line 2 of lore of player's tool to "&8┃ &7ᴛʏᴘᴇ &8» &e%{_typeLine}%"
+        set line 3 of lore of player's tool to "&8┃ &7ʀᴀʀɪᴛʏ &8» %{_rarityLine}%"
+        
+        set data tag "itemstat:type" of {_item} to {_type}
+        set data tag "itemstat:rarity" of {_item} to {_rarity}
+
+        send "&aItem modified"
+        
+        

@@ -1,0 +1,145 @@
+command /itemid <text> [<number>]:
+    permission: admin.save
+    usage: /itemid <set/give/high/update/get/gui> [id/page]
+    trigger:
+        if arg-1 is "set":
+            if arg-2 is not set:
+                send "&cUsage: /itemid set <id>" to player
+                stop
+
+            if player's tool is air:
+                send "&cYou're not holding anything!" to player
+                stop
+
+            set {_item} to player's tool
+            set {_id} to arg-2
+
+            set data tag "item:id" of {_item} to {_id}
+            set {loot::%{_id}%} to {_item}
+
+            send "&aSaved held item as ID &e%{_id}%&a." to player
+
+        else if arg-1 is "give":
+            if arg-2 is not set:
+                send "&cUsage: /itemid give <id>" to player
+                stop
+
+            if {loot::%arg-2%} is set:
+                give {loot::%arg-2%} to player
+                send "&aGave you item ID &e%arg-2%&a." to player
+            else:
+                send "&cNo item found with ID &e%arg-2%&c." to player
+
+        else if arg-1 is "high":
+            set {_highest} to 0
+
+            loop {loot::*}:
+                if loop-index parsed as integer > {_highest}:
+                    set {_highest} to loop-index parsed as integer
+
+            send "&aHighest saved item ID: &e%{_highest}%" to player
+
+        else if arg-1 is "update":
+            if player's tool is air:
+                send "&cYou're not holding anything!" to player
+                stop
+
+            set {_item} to player's tool
+            set {_id} to number data tag "item:id" of {_item}
+
+            if {_id} is not set:
+                send "&cThis item doesn't have an ID!" to player
+                stop
+
+            set {loot::%{_id}%} to {_item}
+            send "&aUpdated item ID &e%{_id}%&a." to player
+
+        else if arg-1 is "get":
+            if player's tool is air:
+                send "&cYou're not holding anything!" to player
+                stop
+
+            set {_id} to number data tag "item:id" of player's tool
+
+            if {_id} is not set:
+                send "&cThis item doesn't have an ID!" to player
+                stop
+
+            send "&aItem ID: &e%{_id}%" to player
+
+        else if arg-1 is "gui":
+            set {_page} to arg-2
+
+            if {_page} is not set:
+                set {_page} to 1
+
+            if {_page} < 1:
+                set {_page} to 1
+
+            openItemIDGUI(player, {_page})
+
+        else:
+            send "&cUsage: /itemid <set/give/high/update/get/gui> [id/page]" to player
+
+
+function openItemIDGUI(p: player, page: number):
+    set {_page} to {_page}
+    set {_start} to (({_page} - 1) * 45) + 1
+    set {_end} to {_start} + 44
+
+    set {_ids::*} to indices of {loot::*}
+    sort {_ids::*} in ascending order
+
+    open chest inventory with 6 rows named "&8Item Browser &7(Page %{_page}%)" to {_p}
+
+    set {_slot} to 0
+    set {_index} to 1
+
+    loop {_ids::*}:
+        if {_index} >= {_start}:
+            if {_index} <= {_end}:
+                set {_id} to loop-value
+                set {_item} to {loot::%{_id}%}
+
+                set slot {_slot} of {_p}'s current inventory to {_item}
+                add 1 to {_slot}
+
+        add 1 to {_index}
+
+    set slot 45 of {_p}'s current inventory to arrow named "&ePrevious Page" with lore "&7Go to the previous page"
+    set slot 49 of {_p}'s current inventory to barrier named "&cClose"
+    set slot 53 of {_p}'s current inventory to arrow named "&eNext Page" with lore "&7Go to the next page"
+
+
+on inventory click:
+    if name of event-inventory contains "&8Item Browser":
+        cancel event
+
+        set {_title} to uncolored name of event-inventory
+        replace all "Item Browser (Page " with "" in {_title}
+        replace all ")" with "" in {_title}
+        set {_page} to {_title} parsed as integer
+
+        if clicked slot is 45:
+            if {_page} > 1:
+                openItemIDGUI(player, {_page} - 1)
+            stop
+
+        if clicked slot is 49:
+            close player's inventory
+            stop
+
+        if clicked slot is 53:
+            openItemIDGUI(player, {_page} + 1)
+            stop
+
+        if clicked item is air:
+            stop
+
+        if click type is right mouse button:
+            set {_id} to number data tag "item:id" of clicked item
+
+            if {_id} is set:
+                send "&aItem ID: &e%{_id}%" to player
+            else:
+                send "&cThis item has no ID!" to player
