@@ -1,5 +1,5 @@
 function spawn(p: player):
-    teleport {_p} to location(27.5, 105, -72.5, world "world", -130, 0)
+    teleport {_p} to location(27.5, 105, -72.5, world "world", 90, 0)
 
 command /spawn [<player>]:
     description: Teleports you or another player to spawn
