@@ -17,25 +17,24 @@ function getRarityLine(rarity: text) :: text:
         return "&fᴄᴏᴍᴍᴏɴ"
     return ""
 
-function getRarityLevel(rarity: text) :: number:
-    if {_rarity} is "common":
-        return random integer between 1 and 3
-    if {_rarity} is "uncommon":
-        return random integer between 4 and 6
-    if {_rarity} is "rare":
-        return random integer between 7 and 9
-    if {_rarity} is "epic":
-        return random integer between 10 and 12
-    if {_rarity} is "legendary":
-        return random integer between 13 and 15
-    if {_rarity} is "mythic":
-        return random integer between 16 and 18
-    if {_rarity} is "divine":
-        return random integer between 19 and 21
-    if {_rarity} is "special":
-        return random integer between 22 and 24
-    return 0
-
+function getRarityLevel(level: number) :: text:
+    if {_level} <= 3:
+        return "common"
+    if {_level} <= 6:
+        return "uncommon"
+    if {_level} <= 9:
+        return "rare"
+    if {_level} <= 12:
+        return "epic"
+    if {_level} <= 15:
+        return "legendary"
+    if {_level} <= 18:
+        return "mythic"
+    if {_level} <= 21:
+        return "divine"
+    if {_level} <= 24:
+        return "special"
+    return "unknown"
 function helmet(level: number):: item:
     set {_item} to leather helmet
 
