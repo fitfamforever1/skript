@@ -17,38 +17,7 @@ function getRarityLine(rarity: text) :: text:
         return "&fᴄᴏᴍᴍᴏɴ"
     return ""
 
-function helmet(level: number):: item:
-    set {_item} to leather helmet
 
-    set {_baseDefense} to getBaseDefense({_level})
-    set {_defense} to getRandomStat({_baseDefense} * 0.2)
-    
-    set {_strength} to round(1 + ({_level} * 0.25))
-    set {_luck} to round(1 + ({_level} * 0.2))
-    
-    set {_rarity} to getRarityLevel({_level})
-    set {_rarityLine} to getRarityLine({_rarity})
-    
-    set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
-    set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &eʜᴇʟᴍᴇᴛ"
-    set line 3 of lore of {_item} to "&8┃ &7ʀᴀʀɪᴛʏ &8» &c%{_rarityLine}%"
-    set line 4 of lore of {_item} to ""
-    set line 5 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
-    set line 6 of lore of {_item} to "&8┃ &7ᴅᴇғᴇɴꜱᴇ &8» &a+%{_defense}%"
-    set line 7 of lore of {_item} to "&8┃ &7ꜱᴛʀᴇɴɢᴛʜ &8» &c+%{_strength}%"
-    set line 8 of lore of {_item} to "&8┃ &7ʟᴜᴄᴋ &8» &b+%{_luck}%"
-    
-    set {_item} to unbreakable {_item}
-    set item flags of {_item} to all item flags
-    
-    set data tag "itemstat:type" of {_item} to "helmet"
-    set number data tag "itemstat:level" of {_item} to {_level}
-    set number data tag "itemstat:strength" of {_item} to {_strength}
-    set number data tag "itemstat:defense" of {_item} to {_defense}
-    set number data tag "itemstat:luck" of {_item} to {_luck}
-    
-    return {_item}
-    
 command /modifyitem:
     permission: admin.create
     trigger:
