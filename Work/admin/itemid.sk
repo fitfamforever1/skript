@@ -25,10 +25,14 @@ function itemIDSet(p: player, id: number):
     if {_p}'s tool is air:
         send "&cYou're not holding anything!" to {_p}
         stop
-
+    
+    if {itemid::%{_id}%} is set:
+        send "&cItem Id already exist!" to {_p}
+        stop
+    
     set {_item} to {_p}'s tool
     set data tag "item:id" of {_item} to {_id}
-    set {loot::%{_id}%} to {_item}
+    set {itemid::%{_id}%} to {_item}
 
     send "&aSaved held item as ID &e%{_id}%&a." to {_p}
 
@@ -38,18 +42,18 @@ function itemIDGive(p: player, id: number):
         send "&cUsage: /itemid give <id>" to {_p}
         stop
 
-    if {loot::%{_id}%} is not set:
+    if {itemid::%{_id}%} is not set:
         send "&cNo item found with ID &e%{_id}%&c." to {_p}
         stop
 
-    give {loot::%{_id}%} to {_p}
+    give {itemid::%{_id}%} to {_p}
     send "&aGave you item ID &e%{_id}%&a." to {_p}
 
 
 function itemIDHigh(p: player):
     set {_highest} to 0
 
-    loop {loot::*}:
+    loop {itemid::*}:
         if loop-index parsed as integer > {_highest}:
             set {_highest} to loop-index parsed as integer
 
@@ -68,7 +72,7 @@ function itemIDUpdate(p: player):
         send "&cThis item doesn't have an ID!" to {_p}
         stop
 
-    set {loot::%{_id}%} to {_item}
+    set {itemid::%{_id}%} to {_item}
     send "&aUpdated item ID &e%{_id}%&a." to {_p}
 
 
@@ -100,7 +104,7 @@ function openItemIDGUI(p: player, page: number):
     set {_start} to (({_page} - 1) * 45) + 1
     set {_end} to {_start} + 44
 
-    set {_ids::*} to indices of {loot::*}
+    set {_ids::*} to indices of {itemid::*}
     sort {_ids::*} in ascending order
 
     open chest inventory with 6 rows named "&bItem Browser &7(Page %{_page}%)" to {_p}
@@ -112,7 +116,7 @@ function openItemIDGUI(p: player, page: number):
         if {_index} >= {_start}:
             if {_index} <= {_end}:
                 set {_id} to loop-value
-                set {_item} to {loot::%{_id}%}
+                set {_item} to {itemid::%{_id}%}
 
                 set slot {_slot} of {_p}'s current inventory to {_item}
                 add 1 to {_slot}
@@ -161,4 +165,4 @@ on tab complete of "/itemid":
     set tab completions for position 1 to "set", "give", "high", "update", "get" and "gui"
 
     if tab arg-1 is "give":
-        set tab completions for position 2 to (indexes of {loot::*})
+        set tab completions for position 2 to (indexes of {itemid::*})
