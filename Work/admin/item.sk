@@ -1,0 +1,181 @@
+function getRarityLine(rarity: text) :: text:
+    if {_rarity} is "special":
+        return "&cꜱᴘᴇᴄɪᴀʟ"
+    if {_rarity} is "divine":
+        return "&bᴅɪᴠɪɴᴇ"
+    if {_rarity} is "mythic":
+        return "&dᴍʏᴛʜɪᴄᴀʟ"
+    if {_rarity} is "legendary":
+        return "&6ʟᴇɢᴇɴᴅᴀʀʏ"
+    if {_rarity} is "epic":
+        return "&5ᴇᴘɪᴄ"
+    if {_rarity} is "rare":
+        return "&9ʀᴀʀᴇ"
+    if {_rarity} is "uncommon":
+        return "&aᴜɴᴄᴏᴍᴍᴏɴ"
+    if {_rarity} is "common":
+        return "&fᴄᴏᴍᴍᴏɴ"
+    return ""
+
+function getRarityLevel(rarity: text) :: number:
+    if {_rarity} is "common":
+        return random integer between 1 and 3
+    if {_rarity} is "uncommon":
+        return random integer between 4 and 6
+    if {_rarity} is "rare":
+        return random integer between 7 and 9
+    if {_rarity} is "epic":
+        return random integer between 10 and 12
+    if {_rarity} is "legendary":
+        return random integer between 13 and 15
+    if {_rarity} is "mythic":
+        return random integer between 16 and 18
+    if {_rarity} is "divine":
+        return random integer between 19 and 21
+    if {_rarity} is "special":
+        return random integer between 22 and 24
+    return 0
+
+function helmet(level: number):: item:
+    set {_item} to leather helmet
+
+    set {_defense} to round(8 + ({_level} * 1.2))
+    set {_strength} to round(1 + ({_level} * 0.25))
+    set {_luck} to round(1 + ({_level} * 0.2))
+    
+    set {_rarity} to getRarityLevel({_level})
+    set {_rarityLine} to getRarityLine({_rarity})
+    
+    set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
+    set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &eʜᴇʟᴍᴇᴛ"
+    set line 3 of lore of {_item} to "&8┃ &7ʀᴀʀɪᴛʏ &8» &c%{_rarityLine}%"
+    set line 4 of lore of {_item} to ""
+    set line 5 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
+    set line 6 of lore of {_item} to "&8┃ &7ᴅᴇғᴇɴꜱᴇ &8» &a+%{_defense}%"
+    set line 7 of lore of {_item} to "&8┃ &7ꜱᴛʀᴇɴɢᴛʜ &8» &c+%{_strength}%"
+    set line 8 of lore of {_item} to "&8┃ &7ʟᴜᴄᴋ &8» &b+%{_luck}%"
+    
+    set {_item} to unbreakable {_item}
+    set item flags of {_item} to all item flags
+    
+    set data tag "itemstat:type" of {_item} to "helmet"
+    set number data tag "itemstat:level" of {_item} to {_level}
+    set number data tag "itemstat:strength" of {_item} to {_strength}
+    set number data tag "itemstat:defense" of {_item} to {_defense}
+    set number data tag "itemstat:luck" of {_item} to {_luck}
+    
+    return {_item}
+
+command /modifyhelmet <number>:
+    permission: admin.item
+    trigger:
+        set {_item} to helmet(arg-1)
+        give {_item} to player
+
+
+function chestplate(level: number):: item:
+    set {_item} to leather chestplate
+    
+    set {_defense} to round(18 + ({_level} * 2.5))
+    
+    set {_rarity} to getRarityLevel({_level})
+    set {_rarityLine} to getRarityLine({_rarity})
+    
+    set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
+    set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &eᴄʜᴇꜱᴛᴘʟᴀᴛᴇ"
+    set line 3 of lore of {_item} to "&8┃ &7ʀᴀʀɪᴛʏ &8» &c%{_rarityLine}%"
+    set line 4 of lore of {_item} to ""
+    set line 5 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
+    set line 6 of lore of {_item} to "&8┃ &7ᴅᴇғᴇɴꜱᴇ &8» &a+%{_defense}%"
+    
+    set {_item} to unbreakable {_item}
+    set item flags of {_item} to all item flags
+    
+    set data tag "itemstat:type" of {_item} to "chestplate"
+    set number data tag "itemstat:level" of {_item} to {_level}
+    set number data tag "itemstat:defense" of {_item} to {_defense}
+    
+    return {_item}
+
+command /modifychestplate <number>:
+    permission: admin.item
+    trigger:
+        set {_item} to chestplate(arg-1)
+        give {_item} to player
+
+
+function leggings(level: number):: item:
+    set {_item} to leather leggings
+
+    
+    set {_defense} to round(12 + ({_level} * 1.7))
+    set {_strength} to round(2 + ({_level} * 0.3))
+    
+    set {_rarity} to getRarityLevel({_level})
+    set {_rarityLine} to getRarityLine({_rarity})
+
+    set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
+    set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &eʟᴇɢɢɪɴɢꜱ"
+    set line 3 of lore of {_item} to "&8┃ &7ʀᴀʀɪᴛʏ &8» &c%{_rarityLine}%"
+    set line 4 of lore of {_item} to ""
+    set line 5 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
+    set line 6 of lore of {_item} to "&8┃ &7ᴅᴇғᴇɴꜱᴇ &8» &a+%{_defense}%"
+    set line 7 of lore of {_item} to "&8┃ &7ꜱᴛʀᴇɴɢᴛʜ &8» &c+%{_strength}%"
+    
+    set {_item} to unbreakable {_item}
+    set item flags of {_item} to all item flags
+    
+    set data tag "itemstat:type" of {_item} to "leggings"
+    set number data tag "itemstat:level" of {_item} to {_level}
+    set number data tag "itemstat:strength" of {_item} to {_strength}
+    set number data tag "itemstat:defense" of {_item} to {_defense}
+    
+    return {_item}
+
+command /modifyleggings <number>:
+    permission: admin.item
+    trigger:
+        set {_item} to leggings(arg-1)
+        give {_item} to player
+
+
+function boots(level: number):: item:
+    set {_item} to leather boots
+    
+    set {_defense} to round(6 + ({_level} * 0.8))
+    set {_luck} to round(2 + ({_level} * 0.3))
+    
+    set {_rarity} to getRarityLevel({_level})
+    set {_rarityLine} to getRarityLine({_rarity})
+    
+    set line 1 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ɪɴғᴏ"
+    set line 2 of lore of {_item} to "&8┃ &7ᴛʏᴘᴇ &8» &eʙᴏᴏᴛꜱ"
+    set line 3 of lore of {_item} to "&8┃ &7ʀᴀʀɪᴛʏ &8» &c%{_rarityLine}%"
+    set line 4 of lore of {_item} to ""
+    set line 5 of lore of {_item} to "&8┃ &7» ɪᴛᴇᴍ ꜱᴛᴀᴛꜱ"
+    set line 6 of lore of {_item} to "&8┃ &7ᴅᴇғᴇɴꜱᴇ &8» &a+%{_defense}%"
+    set line 7 of lore of {_item} to "&8┃ &7ʟᴜᴄᴋ &8» &b+%{_luck}%"
+    
+    set {_item} to unbreakable {_item}
+    set item flags of {_item} to all item flags
+    
+    set data tag "itemstat:type" of {_item} to "boots"
+    set number data tag "itemstat:level" of {_item} to {_level}
+    set number data tag "itemstat:defense" of {_item} to {_defense}
+    set number data tag "itemstat:luck" of {_item} to {_luck}
+    
+    return {_item}
+
+command /modifyboots <number>:
+    permission: admin.item
+    trigger:
+        set {_item} to boots(arg-1)
+        give {_item} to player
+        
+command /modifyset <number>:
+    permission: admin.item
+    trigger:
+        give helmet(arg-1) to player
+        give chestplate(arg-1) to player
+        give leggings(arg-1) to player
+        give boots(arg-1) to player
