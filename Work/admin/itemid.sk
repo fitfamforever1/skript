@@ -103,7 +103,7 @@ function openItemIDGUI(p: player, page: number):
     set {_ids::*} to indices of {loot::*}
     sort {_ids::*} in ascending order
 
-    open chest inventory with 6 rows named "&8Item Browser &7(Page %{_page}%)" to {_p}
+    open chest inventory with 6 rows named "&bItem Browser &7(Page %{_page}%)" to {_p}
 
     set {_slot} to 0
     set {_index} to 1
