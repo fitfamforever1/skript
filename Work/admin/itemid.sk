@@ -96,6 +96,7 @@ function itemIDGUI(p: player, page: number):
     openItemIDGUI({_p}, {_page})
     
 function openItemIDGUI(p: player, page: number):
+    set {_page} to {_page}
     set {_start} to (({_page} - 1) * 45) + 1
     set {_end} to {_start} + 44
 
@@ -111,40 +112,16 @@ function openItemIDGUI(p: player, page: number):
         if {_index} >= {_start}:
             if {_index} <= {_end}:
                 set {_id} to loop-value
-                set slot {_slot} of {_p}'s current inventory to {loot::%{_id}%}
+                set {_item} to {loot::%{_id}%}
+
+                set slot {_slot} of {_p}'s current inventory to {_item}
                 add 1 to {_slot}
 
         add 1 to {_index}
 
-    set slot 45 of {_p}'s current inventory to arrow named "&ePrevious Page"
+    set slot 45 of {_p}'s current inventory to arrow named "&ePrevious Page" with lore "&7Go to the previous page"
     set slot 49 of {_p}'s current inventory to barrier named "&cClose"
-    set slot 53 of {_p}'s current inventory to arrow named "&eNext Page"
-
-
-function handleItemIDClick(p: player, slot: number, item: item, page: number):
-    if {_slot} is 45:
-        if {_page} > 1:
-            openItemIDGUI({_p}, {_page} - 1)
-        stop
-
-    if {_slot} is 49:
-        close {_p}'s inventory
-        stop
-
-    if {_slot} is 53:
-        openItemIDGUI({_p}, {_page} + 1)
-        stop
-
-    if {_item} is air:
-        stop
-
-    if click type is right mouse button:
-        set {_id} to number data tag "item:id" of {_item}
-
-        if {_id} is set:
-            send "&aItem ID: &e%{_id}%" to {_p}
-        else:
-            send "&cThis item has no ID!" to {_p}
+    set slot 53 of {_p}'s current inventory to arrow named "&eNext Page" with lore "&7Go to the next page"
 
 
 on inventory click:
@@ -156,4 +133,26 @@ on inventory click:
         replace all ")" with "" in {_title}
         set {_page} to {_title} parsed as integer
 
-        handleItemIDClick(player, clicked slot, event-item, {_page})
+        if clicked slot is 45:
+            if {_page} > 1:
+                openItemIDGUI(player, {_page} - 1)
+            stop
+
+        if clicked slot is 49:
+            close player's inventory
+            stop
+
+        if clicked slot is 53:
+            openItemIDGUI(player, {_page} + 1)
+            stop
+
+        if event-item is air:
+            stop
+
+        if click type is right mouse button:
+            set {_id} to number data tag "item:id" of event-item
+
+            if {_id} is set:
+                send "&aItem ID: &e%{_id}%" to player
+            else:
+                send "&cThis item has no ID!" to player
