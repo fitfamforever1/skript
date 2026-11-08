@@ -125,7 +125,7 @@ function openItemIDGUI(p: player, page: number):
 
 
 on inventory click:
-    if name of event-inventory contains "&8Item Browser":
+    if name of event-inventory contains "&bItem Browser":
         cancel event
 
         set {_title} to uncolored name of event-inventory
