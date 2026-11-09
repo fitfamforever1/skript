@@ -39,5 +39,5 @@ on chat:
     broadcast "&8[&a%{_level}%&8] &7%player%&8: &f%message%"
     
 on on sound packet:
-    if event.getId() is "minecraft:ambient.cave":
+    if event.getId() is "minecraft:block.glass.break":
         event.setCancelled(true)
