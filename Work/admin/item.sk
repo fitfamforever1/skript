@@ -16,7 +16,7 @@ function getRarityLine(rarity: text) :: text:
     if {_rarity} is "common":
         return "&fᴄᴏᴍᴍᴏɴ"
     if {_rarity} is "trash":
-        return "&7ᴛʀᴀꜱʜ"
+        return "&8ᴛʀᴀꜱʜ"
     return ""
 
 
