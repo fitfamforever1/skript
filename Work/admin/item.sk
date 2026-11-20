@@ -204,9 +204,9 @@ command /modifybasic [<text>] [<text>]:
 
         send "&aItem modified"
         
-command /setscrap <number>:
+command /setmat <number>:
     permission: admin.item
     trigger:
-        set data tag "scrap:id" of {_item} to arg-1
+        set data tag "mat:id" of {_item} to arg-1
         
         
