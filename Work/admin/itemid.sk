@@ -25,10 +25,10 @@ function itemIDSet(p: player, id: number):
     if {_p}'s tool is air:
         send "&cYou're not holding anything!" to {_p}
         stop
-
-
-
-
+    
+    if {itemid::%{_id}%} is set:
+        send "&cItem Id already exist!" to {_p}
+        stop
     
     set {_item} to {_p}'s tool
     set data tag "item:id" of {_item} to {_id}
