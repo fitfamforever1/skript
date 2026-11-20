@@ -12,7 +12,6 @@ function rollScrap() :: item:
 
 function openSmallCrate(p: player):
     set {_gui} to chest inventory with 1 row named "&8&lꜱᴍᴀʟʟ ᴄʀᴀᴛᴇ"
-    GainXP({_p}, 10)
     open {_gui} to {_p}
     wait 1 tick
 
@@ -22,7 +21,6 @@ function openSmallCrate(p: player):
 
 function openLargeCrate(p: player):
     set {_gui} to chest inventory with 2 rows named "&8&lʟᴀʀɢᴇ ᴄʀᴀᴛᴇ"
-    GainXP({_p}, 40)
     open {_gui} to {_p}
     wait 1 tick
 
