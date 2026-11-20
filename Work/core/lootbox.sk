@@ -54,7 +54,8 @@ on right click on a barrel:
     set {loot::cooldown::%player%::%location of event-block%} to now
 
     openLootGUI(player)
-    play sound "sound:sound.player.loot.stereo" with volume 1 to the player
+    
+    play sound "sound:sound.effect.looting" with volume 1 to the player for 2 seconds
 
 
 command /loot [<text>]:
