@@ -34,7 +34,7 @@ function itemIDSet(p: player, id: number):
     set data tag "item:id" of {_item} to {_id}
     set {itemid::%{_id}%} to {_item}
     
-    set player's tool to {_item}
+    set {_p}'s tool to {_item}
     
     send "&aSaved held item as ID &e%{_id}%&a." to {_p}
 
