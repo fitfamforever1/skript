@@ -1,0 +1,74 @@
+function placeRandomItem(gui: inventory, item: item, slots: number):
+    set {_slot} to a random integer between 0 and ({_slots} - 1)
+    while slot {_slot} of {_gui} is not air:
+        set {_slot} to a random integer between 0 and ({_slots} - 1)
+    set slot {_slot} of {_gui} to {_item}
+
+
+function rollScrap() :: item:
+    set {_id} to a random integer between 1 and 40
+    return {itemid::%{_id}%}
+
+
+function openSmallCrate(p: player):
+    set {_gui} to chest inventory with 1 row named "&8&lꜱᴍᴀʟʟ ᴄʀᴀᴛᴇ"
+    GainXP({_p}, 10)
+    open {_gui} to {_p}
+    wait 1 tick
+
+    loop 3 times:
+        placeRandomItem({_gui}, rollScrap(), 9)
+
+
+function openLargeCrate(p: player):
+    set {_gui} to chest inventory with 2 rows named "&8&lʟᴀʀɢᴇ ᴄʀᴀᴛᴇ"
+    GainXP({_p}, 40)
+    open {_gui} to {_p}
+    wait 1 tick
+
+    loop 5 times:
+        placeRandomItem({_gui}, rollScrap(), 18)
+
+
+function openLootGUI(p: player):
+    set {_roll} to a random integer between 1 and 100
+
+    if {_roll} <= 70:
+        openSmallCrate({_p})
+    else:
+        openLargeCrate({_p})
+
+
+every 10 minutes:
+    loop {loot::cooldown::*}:
+        if difference between loop-value and now is more than 10 minutes:
+            delete {loot::cooldown::%loop-index%}
+
+
+on right click on a barrel:
+    cancel event
+
+    if {loot::cooldown::%player%::%location of event-block%} is set:
+        if difference between {loot::cooldown::%player%::%location of event-block%} and now is less than 10 minutes:
+            send action bar "&cᴛʜɪꜱ ʟᴏᴏᴛᴄʀᴀᴛᴇ ʜᴀꜱ ᴀʟʀᴇᴀᴅʏ ʙᴇᴇɴ ʟᴏᴏᴛᴇᴅ. ᴛʀʏ ᴀɢᴀɪɴ ʟᴀᴛᴇʀ." to player
+            stop
+
+    set {loot::cooldown::%player%::%location of event-block%} to now
+
+    openLootGUI(player)
+    play sound "sound:sound.player.loot.stereo" with volume 1 to the player
+
+
+command /loot [<text>]:
+    permission: admin
+    trigger:
+        if arg-1 is not set:
+            openLootGUI(player)
+            stop
+
+        if arg-1 is "small":
+            openSmallCrate(player)
+        else if arg-1 is "large":
+            openLargeCrate(player)
+        else:
+            send "&cUnknown crate type. Use: small, large" to player
