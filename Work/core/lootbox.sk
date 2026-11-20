@@ -4,11 +4,9 @@ function placeRandomItem(gui: inventory, item: item, slots: number):
         set {_slot} to a random integer between 0 and ({_slots} - 1)
     set slot {_slot} of {_gui} to {_item}
 
-
 function rollScrap() :: item:
     set {_id} to a random integer between 1 and 40
     return {itemid::%{_id}%}
-
 
 function openSmallCrate(p: player):
     set {_gui} to chest inventory with 1 row named "&8&lꜱᴍᴀʟʟ ᴄʀᴀᴛᴇ"
@@ -42,6 +40,8 @@ every 10 minutes:
         if difference between loop-value and now is more than 10 minutes:
             delete {loot::cooldown::%loop-index%}
 
+on load:
+    delete {loot::cooldown::*}
 
 on right click on a barrel:
     cancel event
@@ -55,7 +55,7 @@ on right click on a barrel:
 
     openLootGUI(player)
     
-    play sound "sound:sound.effect.looting" with volume 1 to the player
+    play sound "sound:sound.effect.looting" with volume 1 with pitch 0.5 to the player
 
 
 command /loot [<text>]:
