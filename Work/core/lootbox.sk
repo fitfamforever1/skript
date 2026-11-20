@@ -55,7 +55,7 @@ on right click on a barrel:
 
     openLootGUI(player)
     
-    play sound "sound:sound.effect.looting" with volume 1 to the player for 2 seconds
+    play sound "sound:sound.effect.looting" with volume 1 to the player
 
 
 command /loot [<text>]:
