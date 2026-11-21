@@ -12,16 +12,10 @@ function openScrap(p: player):
 
 
 on inventory click:
-    if name of event-inventory is "&f七七七七七七七七ㇺ":
-        if clicked inventory is event-inventory:
-            if clicked slot is between 0 and 8:
-                set {_item} to cursor slot of player
-
-                if data tag "item:id" of {_item} is not between 1 and 40:
-                    cancel event
-
-            if clicked slot is between 9 and 17:
-                cancel event
+    if name of event-inventory is "&f\u4e03\u4e03\u4e03\u4e03\u4e03\u4e03\u4e03\u4e03\u31fa":
+        send "Clicked slot: %clicked slot%" to player
+        send "Clicked item: %event-item%" to player
+        send "Cursor item: %item of cursor slot of player%" to player
           
 command /test:
     trigger:
