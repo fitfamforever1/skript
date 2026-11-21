@@ -3,7 +3,9 @@ function openScrap(p: player):
 
     loop integers from 9 to 17:
         set slot loop-integer of {_gui} to {itemid::46}
-
+    
+    set slot 26 of {_gui} to {itemid::47}
+    
     open {_gui} to {_p}
             
 on inventory click:
