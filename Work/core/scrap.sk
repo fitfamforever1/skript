@@ -15,7 +15,7 @@ on inventory click:
     if name of event-inventory is "&f\u4e03\u4e03\u4e03\u4e03\u4e03\u4e03\u4e03\u4e03\u31fa":
         send "Clicked slot: %clicked slot%" to player
         send "Clicked item: %event-item%" to player
-        send "Cursor item: %item of cursor slot of player%" to player
+        send "Cursor item: %cursor slot of player%" to player
           
 command /test:
     trigger:
