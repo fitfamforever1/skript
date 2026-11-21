@@ -14,7 +14,7 @@ on inventory click:
     if name of event-inventory is "&f七七七七七七七七ㇺ":
         if clicked inventory is event-inventory:
             if clicked slot is between 0 and 8:
-                set {_temp} to data tag "item:id" of cursor-item
+                set {_temp} to data tag "item:id" of cursor item
 
                 if {_temp} is not between 1 and 40:
                     send "%{_temp}%"
