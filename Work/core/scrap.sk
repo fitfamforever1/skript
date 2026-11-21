@@ -17,12 +17,12 @@ on inventory click:
                 set {_temp} to data tag "item:id" of event-item
 
                 if {_temp} is not between 1 and 40:
+                    send "%{_temp}%"
                     cancel event
         set {_temp} to data tag "item:id" of event-item
         if {_temp} is 46 or 47:
             cancel event
-        if {_temp} is between 1 and 40:
-            send "yes" to player
+
           
 command /test:
     trigger:
