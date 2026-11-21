@@ -9,19 +9,19 @@ function openScrap(p: player):
     set slot 1 of {_gui} to {itemid::4}
     
     open {_gui} to {_p}
-            
+
+
 on inventory click:
     if name of event-inventory is "&f七七七七七七七七ㇺ":
-        if data tag "cursor:id" of event-item is set:
-            stop
-        if data tag "scrap:id" of event-item is set:
-            stop
-        send "pass"
-        cancel event
-        set {_temp} to data tag "item:id" of event-item
-        if {_temp} is 46 or 47:
-            cancel event
+        if clicked inventory is event-inventory:
+            if clicked slot is between 0 and 8:
+                set {_item} to item of cursor slot of player
 
+                if data tag "item:id" of {_item} is not between 1 and 40:
+                    cancel event
+
+            if clicked slot is between 9 and 17:
+                cancel event
           
 command /test:
     trigger:
