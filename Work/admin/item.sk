@@ -207,6 +207,8 @@ command /modifybasic [<text>] [<text>]:
 command /setid <number>:
     permission: admin.item
     trigger:
+        set {_item} to player's tool
         set data tag "item:id" of {_item} to arg-1
+        set player's tool to {_item}
         
         
