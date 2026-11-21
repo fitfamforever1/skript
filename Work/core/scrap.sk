@@ -2,41 +2,10 @@ function openScrap(p: player):
     set {_gui} to chest inventory with 3 rows named "&f七七七七七七七七ㇺ"
 
     loop 36 times:
-        set slot (loop-number - 1) of {_gui} to dirt
-    
-    set slot 2 of {_gui} to {item::class1}
-    set slot 4 of {_gui} to {item::class2}
-    set slot 6 of {_gui} to {item::class3}
+        set slot (loop-number - 1) of {_gui} to air
     
     open {_gui} to {_p}
 
-on inventory click:
-    if name of event-inventory is "&f七七七七七七七七ㇺ":
-        cancel event
-        set {_temp} to data tag "classitem:id" of event-item
-        if {_temp} is "1":
-            set number data tag "class:id2" of player to 1
-            openClassConfirm(player)
-            play sound "sound:sound.ui.click" for player
-        if {_temp} is "2":
-            set number data tag "class:id2" of player to 2
-            openClassConfirm(player)
-            play sound "sound:sound.ui.click" for player
-        if {_temp} is "3":
-            set number data tag "class:id2" of player to 3
-            openClassConfirm(player)
-            play sound "sound:sound.ui.click" for player
-        if {_temp} is "4":
-            set {_class} to number data tag "class:id2" of player
-            set number data tag "class:id" of player to {_class}
-            set {_name} to className(player)
-            send "&8[<##26FFB3>ᴄʟᴀꜱꜱ&8] &7ʏᴏᴜ ʜᴀᴠᴇ ꜱᴇʟᴇᴄᴛᴇᴅ &e%{_name}% &7ᴀꜱ ʏᴏᴜʀ ᴄʟᴀꜱꜱ. ɪ ʜᴏᴘᴇ ʏᴏᴜ ᴅᴏɴ'ᴛ ʀᴇɢʀᴇᴛ ɪᴛ ʟᴀᴛᴇʀ."
-            close player's inventory
-            starterKit(player)
-            play sound "sound:sound.ui.enable" for player
-        if {_temp} is "5":
-            openClass(player)
-            play sound "sound:sound.ui.go_back" for player
             
 command /test:
     trigger:
