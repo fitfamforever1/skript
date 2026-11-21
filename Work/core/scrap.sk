@@ -6,6 +6,8 @@ function openScrap(p: player):
     
     set slot 26 of {_gui} to {itemid::47}
     
+    set slot 1 of {_gui} to {itemid::4}
+    
     open {_gui} to {_p}
             
 on inventory click:
