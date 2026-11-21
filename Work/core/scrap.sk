@@ -2,7 +2,7 @@ function openScrap(p: player):
     set {_gui} to chest inventory with 3 rows named "&f七七七七七七七七ㇺ"
 
     loop integers from 9 to 17:
-        set slot loop-integer of {_gui} to {itemid:46}
+        set slot loop-integer of {_gui} to {itemid::46}
 
     open {_gui} to {_p}
             
