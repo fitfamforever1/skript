@@ -2,7 +2,7 @@ function openScrap(p: player):
     set {_gui} to chest inventory with 3 rows named "&f七七七七七七七七ㇺ"
 
     loop 36 times:
-        set slot (loop-number - 1) of {_gui} to {item::space1}
+        set slot (loop-number - 1) of {_gui} to dirt
     
     set slot 2 of {_gui} to {item::class1}
     set slot 4 of {_gui} to {item::class2}
