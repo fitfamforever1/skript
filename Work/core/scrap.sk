@@ -12,6 +12,8 @@ function openScrap(p: player):
             
 on inventory click:
     if name of event-inventory is "&f七七七七七七七七ㇺ":
+        if data tag "cursor:id" of event-item is set:
+            stop
         if data tag "scrap:id" of event-item is set:
             stop
         cancel event
