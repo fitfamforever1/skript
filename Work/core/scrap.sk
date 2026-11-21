@@ -11,7 +11,7 @@ function openScrap(p: player):
 on inventory click:
     if name of event-inventory is "&f七七七七七七七七ㇺ":
         set {_temp} to data tag "item:id" of event-item
-        if {_temp} is 46:
+        if {_temp} is 46 or 47:
             cancel event
           
 command /test:
