@@ -1,11 +1,10 @@
 function openScrap(p: player):
     set {_gui} to chest inventory with 3 rows named "&f七七七七七七七七ㇺ"
 
-    loop 36 times:
-        set slot (loop-number - 1) of {_gui} to air
-    
-    open {_gui} to {_p}
+    loop integers from 9 to 18:
+        set slot loop-integer of {_gui} to bedrock
 
+    open {_gui} to {_p}
             
 command /test:
     trigger:
