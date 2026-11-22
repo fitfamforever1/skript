@@ -35,6 +35,7 @@ on inventory click:
       
 on inventory drag:
     if event-inventory is {gui}:
+        send "drag cancel"
         cancel event
       
 command /test:
