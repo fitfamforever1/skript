@@ -1,11 +1,11 @@
-function calculateScrap(p: player) :: objects:
+function calculateScrap(p: player, gui: inventory) :: objects:
     set {_scrap::chemical} to 0
     set {_scrap::fabric} to 0
     set {_scrap::plastic} to 0
     set {_scrap::metal} to 0
 
     loop integers from 0 to 8:
-        set {_item} to slot loop-value of {_p}'s inventory
+        set {_item} to slot loop-value of {_gui}
 
         if {_item} is air:
             continue
@@ -55,7 +55,7 @@ on inventory click:
             if {_temp} is not between 1 and 40:
                 cancel event
                 stop
-            set {_scrap::*} to calculateScrap(player)
+            set {_scrap::*} to calculateScrap(player, {gui})
             
             send "Chemical: %{_scrap::chemical}%"
             send "Fabric: %{_scrap::fabric}%"
