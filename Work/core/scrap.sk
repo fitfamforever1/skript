@@ -8,6 +8,9 @@ function openScrap(p: player):
     
     open {gui::%uuid of {_p}%} to {_p}
       
+function scrap(gui: inventory, plastic: number, chemical: number, fabric: number, rubber: number, metal: number):
+    set slot 18 of {_gui} to {itemid::41}
+      
 on inventory click:
     if player's current inventory is {gui::%uuid of player%}:
         if click type is right mouse with shift, number key or left mouse with shift:
@@ -71,6 +74,8 @@ on inventory click:
             send "&fFabric: &a%{_fabric}%" to player
             send "&fRubber: &a%{_rubber}%" to player
             send "&fMetal: &a%{_metal}%" to player
+                
+            scrap({_gui}, {_plastic}, {_chemical}, {_fabric}, {_rubber}, {_metal})
                 
             if data tag "cursor:id" of player is 1:
                 send "scrap input"
