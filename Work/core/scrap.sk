@@ -142,8 +142,8 @@ on inventory click:
         
         if event-slot is 26:
             scrapget({_gui}, true, player)
-            close player's inventory
             delete {gui::%uuid of player%}
+            close player's inventory
             
         cancel event
       
