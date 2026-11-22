@@ -87,27 +87,27 @@ function scrap(gui: inventory, plastic: number, chemical: number, fabric: number
       
 function scrapgive(p: player, plastic: number, chemical: number, fabric: number, rubber: number, metal: number):
     if {_plastic} > 0:
-        set {_item} to {loot::mat1}
+        set {_item} to {itemid::41}
         set amount of {_item} to {_plastic}
         give {_item} to {_p}
 
     if {_chemical} > 0:
-        set {_item} to {loot::mat2}
+        set {_item} to {itemid::42}
         set amount of {_item} to {_chemical}
         give {_item} to {_p}
 
     if {_fabric} > 0:
-        set {_item} to {loot::mat3}
+        set {_item} to {itemid::43}
         set amount of {_item} to {_fabric}
         give {_item} to {_p}
 
     if {_rubber} > 0:
-        set {_item} to {loot::mat4}
+        set {_item} to {itemid::44}
         set amount of {_item} to {_rubber}
         give {_item} to {_p}
 
     if {_metal} > 0:
-        set {_item} to {loot::mat5}
+        set {_item} to {itemid::45}
         set amount of {_item} to {_metal}
         give {_item} to {_p}
       
