@@ -8,6 +8,44 @@ function openScrap(p: player):
     
     open {gui::%uuid of {_p}%} to {_p}
       
+function scrapget(gui: inventory):
+    set {_plastic} to 0
+    set {_chemical} to 0
+    set {_fabric} to 0
+    set {_rubber} to 0
+    set {_metal} to 0
+    set {_total} to 0
+
+    loop integers from 0 to 8:
+        set {_item} to slot loop-value of {_gui}
+
+        if {_item} is air:
+            continue
+
+        set {_tag} to number data tag "scrap:id" of {_item}
+
+        if {_tag} is not set:
+            continue
+
+        set {_stack} to amount of {_item}
+
+        if {_tag} is 1:
+            add {_stack} to {_plastic}
+        else if {_tag} is 2:
+            add {_stack} to {_chemical}
+        else if {_tag} is 3:
+            add {_stack} to {_fabric}
+        else if {_tag} is 4:
+            add {_stack} to {_rubber}
+        else if {_tag} is 5:
+            add {_stack} to {_metal}
+        else:
+            continue
+
+        add {_stack} to {_total}
+
+    scrap({_gui}, {_plastic}, {_chemical}, {_fabric}, {_rubber}, {_metal})
+      
 function scrap(gui: inventory, plastic: number, chemical: number, fabric: number, rubber: number, metal: number):
     set slot 18 of {_gui} to {itemid::41}
       
@@ -34,48 +72,7 @@ on inventory click:
                
             wait 1 tick
             
-            set {_plastic} to 0
-            set {_chemical} to 0
-            set {_fabric} to 0
-            set {_rubber} to 0
-            set {_metal} to 0
-            set {_total} to 0
-                
-            loop integers from 0 to 8:
-                set {_item} to slot loop-value of {_gui}
-        
-                if {_item} is air:
-                    continue
-        
-                set {_tag} to number data tag "scrap:id" of {_item}
-        
-                if {_tag} is not set:
-                    continue
-        
-                set {_stack} to amount of {_item}
-        
-                if {_tag} is 1:
-                    add {_stack} to {_plastic}
-                else if {_tag} is 2:
-                    add {_stack} to {_chemical}
-                else if {_tag} is 3:
-                    add {_stack} to {_fabric}
-                else if {_tag} is 4:
-                    add {_stack} to {_rubber}
-                else if {_tag} is 5:
-                    add {_stack} to {_metal}
-                else:
-                    continue
-        
-                add {_stack} to {_total}
-        
-            send "&fPlastic: &a%{_plastic}%" to player
-            send "&fChemical: &a%{_chemical}%" to player
-            send "&fFabric: &a%{_fabric}%" to player
-            send "&fRubber: &a%{_rubber}%" to player
-            send "&fMetal: &a%{_metal}%" to player
-                
-            scrap({_gui}, {_plastic}, {_chemical}, {_fabric}, {_rubber}, {_metal})
+            scrapget({_gui})
                 
             if data tag "cursor:id" of player is 1:
                 send "scrap input"
