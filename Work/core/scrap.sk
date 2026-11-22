@@ -17,6 +17,7 @@ on inventory click:
         if clicked inventory is player's inventory:
             if click type is shift+lmb, number key or shift+rmb:
                 cancel event
+                send "deny"
             stop
 
         set {_temp} to data tag "item:id" of event-item
@@ -35,7 +36,6 @@ on inventory click:
       
 on inventory drag:
     if event-inventory is {gui}:
-        send "drag cancel"
         cancel event
       
 command /test:
