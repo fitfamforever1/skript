@@ -36,6 +36,14 @@ on inventory click:
       
 on inventory drag:
     if event-inventory is {gui}:
+        set {_temp} to data tag "item:id" of event-item
+
+        if cursor slot of player is not air:
+            set {_temp} to data tag "item:id" of cursor slot of player
+            
+        if {_temp} is between 1 and 40:
+            stop
+            
         cancel event
       
 command /test:
