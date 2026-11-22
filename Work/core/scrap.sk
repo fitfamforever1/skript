@@ -24,7 +24,7 @@ function junkconvert(p: player):
         if {_item} is air:
             continue
 
-        set {_tag} to data tag "junk:id" of {_item}
+        set {_tag} to data tag "scrap:id" of {_item}
 
         if {_tag} is not set:
             continue
