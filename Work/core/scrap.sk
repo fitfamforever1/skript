@@ -2,17 +2,17 @@ function openScrap(p: player):
     set {_gui} to chest inventory with 3 rows named "&f七七七七七七七七ㇺ"
 
     loop integers from 9 to 17:
-        set slot loop-integer of {_gui} to {itemid::46}
+        set slot loop-integer of {gui} to {itemid::46}
     
-    set slot 26 of {_gui} to {itemid::47}
+    set slot 26 of {gui} to {itemid::47}
     
-    set slot 1 of {_gui} to {itemid::4}
+    set slot 1 of {gui} to {itemid::4}
     
-    open {_gui} to {_p}
+    open {gui} to {_p}
 
       
 on inventory click:
-    if name of event-inventory is "&f七七七七七七七七ㇺ":
+    if event-inventory is {gui}:
 
         if clicked inventory is player's inventory:
             if click type is shift+lmb, number key or shift+rmb:
@@ -34,7 +34,7 @@ on inventory click:
         cancel event
       
 on inventory drag:
-    if name of event-inventory is "&f七七七七七七七七ㇺ":
+    if event-inventory is {gui}:
         cancel event
       
 command /test:
