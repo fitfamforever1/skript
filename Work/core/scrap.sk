@@ -1,19 +1,19 @@
 function openScrap(p: player):
-    set {gui} to chest inventory with 3 rows named "&f七七七七七七七七ㇺ"
+    set {gui::%uuid of {_p}%} to chest inventory with 3 rows named "&f七七七七七七七七ㇺ"
 
     loop integers from 9 to 17:
-        set slot loop-integer of {gui} to {itemid::46}
+        set slot loop-integer of {gui::%uuid of {_p}%} to {itemid::46}
     
-    set slot 26 of {gui} to {itemid::47}
+    set slot 26 of {gui::%uuid of {_p}%} to {itemid::47}
     
-    open {gui} to {_p}
+    open {gui::%uuid of {_p}%} to {_p}
 
       
 on inventory click:
-    if player's current inventory is {gui}:
+    if player's current inventory is {gui::%uuid of {_p}%}:
         if click type is right mouse with shift, number key or left mouse with shift:
             cancel event
-    if event-inventory is {gui}:
+    if event-inventory is {gui::%uuid of {_p}%}:
 
         set {_temp} to data tag "item:id" of event-item
         
@@ -39,7 +39,7 @@ on inventory click:
         cancel event
       
 on inventory drag:
-    if event-inventory is {gui}:
+    if event-inventory is {gui::%uuid of {_p}%}:
         set {_temp} to data tag "item:id" of event-item
 
         if cursor slot of player is not air:
