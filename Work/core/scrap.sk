@@ -8,7 +8,7 @@ function openScrap(p: player):
     
     open {gui::%uuid of {_p}%} to {_p}
       
-function scrapget(gui: inventory):
+function scrapget(gui: inventory, accept: boolean):
     set {_plastic} to 0
     set {_chemical} to 0
     set {_fabric} to 0
@@ -43,8 +43,11 @@ function scrapget(gui: inventory):
             continue
 
         add {_stack} to {_total}
-
+    
     scrap({_gui}, {_plastic}, {_chemical}, {_fabric}, {_rubber}, {_metal})
+    
+    if {_accept} is true:
+        scrapgive(player, {_plastic}, {_chemical}, {_fabric}, {_rubber}, {_metal})
       
 function scrap(gui: inventory, plastic: number, chemical: number, fabric: number, rubber: number, metal: number):
     set {_slot} to 18
@@ -82,6 +85,32 @@ function scrap(gui: inventory, plastic: number, chemical: number, fabric: number
     loop integers from {_slot} to 22:
         clear slot loop-value of {_gui}
       
+function scrapgive(p: player, plastic: number, chemical: number, fabric: number, rubber: number, metal: number):
+    if {_plastic} > 0:
+        set {_item} to {loot::mat1}
+        set amount of {_item} to {_plastic}
+        add {_item} to {_p}'s inventory
+
+    if {_chemical} > 0:
+        set {_item} to {loot::mat2}
+        set amount of {_item} to {_chemical}
+        add {_item} to {_p}'s inventory
+
+    if {_fabric} > 0:
+        set {_item} to {loot::mat3}
+        set amount of {_item} to {_fabric}
+        add {_item} to {_p}'s inventory
+
+    if {_rubber} > 0:
+        set {_item} to {loot::mat4}
+        set amount of {_item} to {_rubber}
+        add {_item} to {_p}'s inventory
+
+    if {_metal} > 0:
+        set {_item} to {loot::mat5}
+        set amount of {_item} to {_metal}
+        add {_item} to {_p}'s inventory
+      
 on inventory click:
     if player's current inventory is {gui::%uuid of player%}:
         if click type is right mouse with shift, number key or left mouse with shift:
@@ -92,11 +121,8 @@ on inventory click:
         
         set {_temp} to data tag "item:id" of event-item
         
-        set data tag "cursor:id" of player to 0
-        
         if cursor slot of player is not air:
             set {_temp} to data tag "item:id" of cursor slot of player
-            set data tag "cursor:id" of player to 1
         
         if event-slot is between 0 and 8:
             if {_temp} is not between 1 and 40:
@@ -105,16 +131,14 @@ on inventory click:
                
             wait 1 tick
             
-            scrapget({_gui})
+            scrapget({_gui}, false)
                 
-            if data tag "cursor:id" of player is 1:
-                send "scrap input"
-                
-            if data tag "cursor:id" of player is 0:
-                send "scrap output"
-            
             stop
-
+        
+        if event-slot is 26:
+            scrapget({_gui}, true)
+            close player's inventory
+            
         cancel event
       
 on inventory drag:
