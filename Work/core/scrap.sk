@@ -17,7 +17,9 @@ on inventory click:
         set {_temp} to data tag "item:id" of event-item
         if event-item is not set:
             set {_temp} to data tag "item:id" of cursor slot of player
-        send "%{_temp}%"
+        if event-slot is between 0 and 8
+            stop
+        cancel event
           
 command /test:
     trigger:
