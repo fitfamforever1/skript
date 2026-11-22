@@ -13,7 +13,7 @@ on inventory click:
         if click type is right mouse with shift, number key or left mouse with shift:
             cancel event
     if event-inventory is {gui::%uuid of player%}:
-        
+        wait 1 tick
         set {_gui} to event-inventory
         
         set {_temp} to data tag "item:id" of event-item
