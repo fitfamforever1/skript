@@ -13,45 +13,30 @@ function openScrap(p: player):
       
 on inventory click:
     if event-inventory is {gui}:
-        send "&7[DEBUG] Inventory click detected."
 
         if clicked inventory is player's inventory:
-            send "&e[DEBUG] Clicked player inventory."
-            send "&7[DEBUG] Click type: %click type%"
-
             if click type is shift+lmb, number key or shift+rmb:
-                send "&c[DEBUG] Blocked player inventory action."
                 cancel event
             stop
 
-        send "&7[DEBUG] Clicked GUI slot: %index of event-slot%"
-
         set {_temp} to data tag "item:id" of event-item
-        send "&7[DEBUG] Event item ID: %{_temp}%"
 
         if cursor slot of player is not air:
             set {_temp} to data tag "item:id" of item of cursor slot of player
-            send "&7[DEBUG] Cursor item ID: %{_temp}%"
+            send "%{_temp}%"
 
         if event-slot is between 0 and 8:
-            send "&7[DEBUG] Target is scrap slot (0-8)."
-
             if {_temp} is not between 1 and 40:
-                send "&c[DEBUG] Invalid item ID. Cancelling."
                 cancel event
                 stop
 
-            send "&a[DEBUG] Valid scrap item. Allowing click."
             stop
 
-        send "&c[DEBUG] Protected GUI slot. Cancelling."
         cancel event
-
+      
 on inventory drag:
     if event-inventory is {gui}:
-        send "&c[DEBUG] Inventory drag detected. Cancelling."
-        send "&7[DEBUG] Dragged item: %event-item stack%"
-        send "&7[DEBUG] Affected slots: %event-slots%"
+        send "drag cancel"
         cancel event
       
 command /test:
