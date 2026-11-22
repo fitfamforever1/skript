@@ -10,30 +10,30 @@ function openScrap(p: player):
     
     open {_gui} to {_p}
 
-
-          
+      
 on inventory click:
     if name of event-inventory is "&f七七七七七七七七ㇺ":
+
         if clicked inventory is player's inventory:
             if click type is shift+lmb or shift+rmb:
                 cancel event
             stop
-            
+
         set {_temp} to data tag "item:id" of event-item
-        if event-item is not set:
-            set {_temp} to data tag "item:id" of cursor slot of player
-            
-        if {_temp} is between 1 and 45:
-            if {_temp} is between 1 and 40:
-                if event-slot is between 0 and 8:
-                    send "scrap"
-                    stop
-                    
-            cancel event
+
+        if cursor slot of player is not air:
+            set {_temp} to data tag "item:id" of item of cursor slot of player
+
+        if event-slot is between 0 and 8:
+            if {_temp} is not between 1 and 40:
+                cancel event
+                stop
+
             stop
-            
+
+        # All other GUI slots are protected
         cancel event
-          
+      
 command /test:
     trigger:
         openScrap(player)
