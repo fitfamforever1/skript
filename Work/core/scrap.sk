@@ -14,7 +14,7 @@ on inventory click:
             cancel event
     if event-inventory is {gui::%uuid of player%}:
         
-        set {_gui} to {gui::%uuid of player%}
+        set {_gui} to event-inventory
         
         set {_temp} to data tag "item:id" of event-item
         
