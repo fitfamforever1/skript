@@ -47,7 +47,40 @@ function scrapget(gui: inventory):
     scrap({_gui}, {_plastic}, {_chemical}, {_fabric}, {_rubber}, {_metal})
       
 function scrap(gui: inventory, plastic: number, chemical: number, fabric: number, rubber: number, metal: number):
-    set slot 18 of {_gui} to {itemid::41}
+    set {_slot} to 18
+
+    if {_plastic} > 0:
+        set {_item} to {itemid::41}
+        set amount of {_item} to {_plastic}
+        set slot {_slot} of {_gui} to {_item}
+        add 1 to {_slot}
+
+    if {_chemical} > 0:
+        set {_item} to {itemid::42}
+        set amount of {_item} to {_chemical}
+        set slot {_slot} of {_gui} to {_item}
+        add 1 to {_slot}
+
+    if {_fabric} > 0:
+        set {_item} to {itemid::43}
+        set amount of {_item} to {_fabric}
+        set slot {_slot} of {_gui} to {_item}
+        add 1 to {_slot}
+
+    if {_rubber} > 0:
+        set {_item} to {itemid::44}
+        set amount of {_item} to {_rubber}
+        set slot {_slot} of {_gui} to {_item}
+        add 1 to {_slot}
+
+    if {_metal} > 0:
+        set {_item} to {itemid::45}
+        set amount of {_item} to {_metal}
+        set slot {_slot} of {_gui} to {_item}
+        add 1 to {_slot}
+
+    loop integers from {_slot} to 22:
+        clear slot loop-value of {_gui}
       
 on inventory click:
     if player's current inventory is {gui::%uuid of player%}:
