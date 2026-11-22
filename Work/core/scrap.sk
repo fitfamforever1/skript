@@ -52,15 +52,15 @@ on inventory click:
         
                 set {_stack} to amount of {_item}
         
-                if {_tag} is "1":
+                if {_tag} is 1:
                     add {_stack} to {_plastic}
-                else if {_tag} is "2":
+                else if {_tag} is 2:
                     add {_stack} to {_chemical}
-                else if {_tag} is "3":
+                else if {_tag} is 3:
                     add {_stack} to {_fabric}
-                else if {_tag} is "4":
+                else if {_tag} is 4:
                     add {_stack} to {_rubber}
-                else if {_tag} is "5":
+                else if {_tag} is 5:
                     add {_stack} to {_metal}
                 else:
                     continue
