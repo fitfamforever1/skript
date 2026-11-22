@@ -13,7 +13,7 @@ on inventory click:
         if click type is right mouse with shift, number key or left mouse with shift:
             cancel event
     if event-inventory is {gui::%uuid of player%}:
-        wait 1 tick
+    
         set {_gui} to event-inventory
         
         set {_temp} to data tag "item:id" of event-item
@@ -45,7 +45,7 @@ on inventory click:
                     send "test" to player
                     continue
         
-                set {_tag} to data tag "scrap:id" of {_item}
+                set {_tag} to number data tag "scrap:id" of {_item}
         
                 if {_tag} is not set:
                     continue
