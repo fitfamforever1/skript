@@ -33,6 +33,9 @@ on inventory click:
                 
             if data tag "cursor:id" of player is 1:
                 send "scrap input"
+                
+            if data tag "cursor:id" of player is 0:
+                send "scrap output"
             
             
             stop
