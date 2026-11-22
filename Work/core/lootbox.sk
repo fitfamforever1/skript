@@ -9,7 +9,7 @@ function rollScrap() :: item:
     return {itemid::%{_id}%}
 
 function openSmallCrate(p: player):
-    set {_gui} to chest inventory with 1 row named "&8&lꜱᴍᴀʟʟ ᴄʀᴀᴛᴇ"
+    set {_gui} to chest inventory with 1 row named "&e&lꜱᴍᴀʟʟ ᴄʀᴀᴛᴇ"
     open {_gui} to {_p}
     wait 1 tick
 
@@ -18,7 +18,7 @@ function openSmallCrate(p: player):
 
 
 function openLargeCrate(p: player):
-    set {_gui} to chest inventory with 2 rows named "&8&lʟᴀʀɢᴇ ᴄʀᴀᴛᴇ"
+    set {_gui} to chest inventory with 2 rows named "&e&lʟᴀʀɢᴇ ᴄʀᴀᴛᴇ"
     open {_gui} to {_p}
     wait 1 tick
 
@@ -73,6 +73,5 @@ command /loot [<text>]:
             send "&cUnknown crate type. Use: small, large" to player
             
 on inventory close:
-    if name of event-inventory is "&8&lʟᴀʀɢᴇ ᴄʀᴀᴛᴇ" or "&8&lꜱᴍᴀʟʟ ᴄʀᴀᴛᴇ":
-        send "stop"
+    if name of event-inventory is "&e&lʟᴀʀɢᴇ ᴄʀᴀᴛᴇ" or "&e&lꜱᴍᴀʟʟ ᴄʀᴀᴛᴇ":
         stop sound "sound:sound.effect.looting" for player
