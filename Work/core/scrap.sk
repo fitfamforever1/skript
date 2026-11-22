@@ -70,6 +70,8 @@ on inventory click:
             if {_temp} is not between 1 and 40:
                 cancel event
                 stop
+               
+            junkconvert(player)
                 
             if data tag "cursor:id" of player is 1:
                 send "scrap input"
