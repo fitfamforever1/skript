@@ -73,5 +73,5 @@ command /loot [<text>]:
             send "&cUnknown crate type. Use: small, large" to player
             
 on inventory close:
-    if event-inventory is a barrel inventory:
+    if type of event-inventory is barrel inventory:
         stop sound "sound:sound.effect.looting" for the player
