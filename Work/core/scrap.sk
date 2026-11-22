@@ -22,6 +22,7 @@ function junkconvert(p: player):
         set {_item} to slot loop-value of {_gui}
 
         if {_item} is air:
+            send "test" to {_p}
             continue
 
         set {_tag} to data tag "scrap:id" of {_item}
