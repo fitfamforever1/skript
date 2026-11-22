@@ -10,6 +10,7 @@ function openScrap(p: player):
       
 on inventory click:
     if player's current inventory is {gui::%uuid of player%}:
+        if event-item has data ta
         if click type is right mouse with shift, number key or left mouse with shift:
             cancel event
     if event-inventory is {gui::%uuid of player%}:
@@ -42,7 +43,6 @@ on inventory click:
                 set {_item} to slot loop-value of {_gui}
         
                 if {_item} is air:
-                    send "test" to player
                     continue
         
                 set {_tag} to number data tag "scrap:id" of {_item}
