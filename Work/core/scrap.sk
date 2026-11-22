@@ -1,3 +1,31 @@
+function calculateScrap(p: player) :: objects:
+    set {_scrap::chemical} to 0
+    set {_scrap::fabric} to 0
+    set {_scrap::plastic} to 0
+    set {_scrap::metal} to 0
+
+    loop integers from 0 to 8:
+        set {_item} to slot loop-value of {_p}'s inventory
+
+        if {_item} is air:
+            continue
+
+        set {_tag} to data tag "scrap:id" of {_item}
+        set {_amount} to amount of {_item}
+
+        if {_tag} is "1":
+            add {_amount} to {_scrap::plastic}
+        else if {_tag} is "2":
+            add {_amount} to {_scrap::chemical}
+        else if {_tag} is "3":
+            add {_amount} to {_scrap::fabric}
+        else if {_tag} is "4":
+            add {_amount} to {_scrap::rubber}
+        else if {_tag} is "4":
+            add {_amount} to {_scrap::metal}
+
+    return {_scrap::*}
+
 function openScrap(p: player):
     set {gui} to chest inventory with 3 rows named "&f七七七七七七七七ㇺ"
 
@@ -5,8 +33,6 @@ function openScrap(p: player):
         set slot loop-integer of {gui} to {itemid::46}
     
     set slot 26 of {gui} to {itemid::47}
-    
-    set slot 1 of {gui} to {itemid::4}
     
     open {gui} to {_p}
 
@@ -29,7 +55,12 @@ on inventory click:
             if {_temp} is not between 1 and 40:
                 cancel event
                 stop
-
+            set {_scrap::*} to calculateScrap(player)
+            
+            send "Chemical: %{_scrap::chemical}%"
+            send "Fabric: %{_scrap::fabric}%"
+            send "Plastic: %{_scrap::plastic}%"
+            send "Metal: %{_scrap::metal}%"
             stop
 
         cancel event
