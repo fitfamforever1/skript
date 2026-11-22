@@ -77,7 +77,7 @@ on inventory click:
             set {_metal} to 0
             set {_total} to 0
                 
-            loop integers from 0 to 8:
+            loop integers from 0 to 26:
                 set {_item} to slot loop-value of {gui::%uuid of player%}
         
                 if {_item} is air:
