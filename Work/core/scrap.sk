@@ -146,6 +146,17 @@ on inventory click:
             
         cancel event
       
+on inventory close:
+    if event-inventory is {gui::%uuid of player%}:
+        loop integers from 0 to 8:
+            set {_item} to slot loop-value of event-inventory
+            if {_item} is not air:
+                give {_item} to player
+                clear slot loop-value of event-inventory
+    
+      
+      
+      
 on inventory drag:
     if event-inventory is {gui::%uuid of player%}:
         set {_temp} to data tag "item:id" of event-item
