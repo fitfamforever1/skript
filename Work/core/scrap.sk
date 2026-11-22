@@ -84,7 +84,7 @@ function scrap(gui: inventory, plastic: number, chemical: number, fabric: number
             remove {_stack} from {_amount}
             add 1 to {_slot}
 
-        if {_slot} > 25:
+        if {_slot} > 24:
             stop
 
     loop integers from {_slot} to 25:
