@@ -78,10 +78,10 @@ on inventory click:
             set {_total} to 0
                 
             loop integers from 0 to 8:
-                set {_item} to slot loop-value of {_p}'s inventory
+                set {_item} to slot loop-value of {gui::%uuid of player%}
         
                 if {_item} is air:
-                    send "test" to {_p}
+                    send "test" to player
                     continue
         
                 set {_tag} to data tag "scrap:id" of {_item}
@@ -106,11 +106,11 @@ on inventory click:
         
                 add {_stack} to {_total}
         
-            send "&fPlastic: &a%{_plastic}%" to {_p}
-            send "&fChemical: &a%{_chemical}%" to {_p}
-            send "&fFabric: &a%{_fabric}%" to {_p}
-            send "&fRubber: &a%{_rubber}%" to {_p}
-            send "&fMetal: &a%{_metal}%" to {_p}
+            send "&fPlastic: &a%{_plastic}%" to player
+            send "&fChemical: &a%{_chemical}%" to player
+            send "&fFabric: &a%{_fabric}%" to player
+            send "&fRubber: &a%{_rubber}%" to player
+            send "&fMetal: &a%{_metal}%" to player
                 
             if data tag "cursor:id" of player is 1:
                 send "scrap input"
