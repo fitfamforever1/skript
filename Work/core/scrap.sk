@@ -10,10 +10,10 @@ function openScrap(p: player):
 
       
 on inventory click:
-    if player's current inventory is {gui::%uuid of {_p}%}:
+    if player's current inventory is {gui::%uuid of player%}:
         if click type is right mouse with shift, number key or left mouse with shift:
             cancel event
-    if event-inventory is {gui::%uuid of {_p}%}:
+    if event-inventory is {gui::%uuid of player%}:
 
         set {_temp} to data tag "item:id" of event-item
         
@@ -39,7 +39,7 @@ on inventory click:
         cancel event
       
 on inventory drag:
-    if event-inventory is {gui::%uuid of {_p}%}:
+    if event-inventory is {gui::%uuid of player%}:
         set {_temp} to data tag "item:id" of event-item
 
         if cursor slot of player is not air:
