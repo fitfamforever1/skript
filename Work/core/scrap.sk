@@ -174,3 +174,7 @@ on inventory drag:
 command /test:
     trigger:
         openScrap(player)
+        
+on right click:
+    if event-block is birch leaves or pale oak leaves:
+        openScrap(player)
