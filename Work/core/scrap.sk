@@ -47,6 +47,7 @@ function scrapget(gui: inventory, accept: boolean, p: player):
     scrap({_gui}, {_plastic}, {_chemical}, {_fabric}, {_rubber}, {_metal})
     
     if {_accept} is true:
+        send "accepted" to {_p}
         scrapgive({_p}, {_plastic}, {_chemical}, {_fabric}, {_rubber}, {_metal})
       
 function scrap(gui: inventory, plastic: number, chemical: number, fabric: number, rubber: number, metal: number):
@@ -136,7 +137,7 @@ on inventory click:
             stop
         
         if event-slot is 26:
-            scrapget({_gui}, true, {_p})
+            scrapget({_gui}, true, player)
             close player's inventory
             
         cancel event
