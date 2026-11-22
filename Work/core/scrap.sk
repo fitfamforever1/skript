@@ -20,7 +20,7 @@ on inventory click:
 
         set {_temp} to data tag "item:id" of event-item
         
-        delete data tag "cursor:id" of player
+        set data tag "cursor:id" of player to 0
         
         if cursor slot of player is not air:
             set {_temp} to data tag "item:id" of cursor slot of player
@@ -31,7 +31,7 @@ on inventory click:
                 cancel event
                 stop
                 
-            if data tag "cursor:id" of player is set:
+            if data tag "cursor:id" of player is 1:
                 send "scrap input"
             
             
