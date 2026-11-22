@@ -10,7 +10,8 @@ function openScrap(p: player):
 
       
 on inventory click:
-    if player has {gui}:
+    if player's inventory contains {gui} open:
+        send "test"
     if event-inventory is {gui}:
         if click type is right mouse with shift, number key or left mouse with shift:
             send "cancel"
