@@ -74,4 +74,5 @@ command /loot [<text>]:
             
 on inventory close:
     if type of event-inventory is barrel inventory:
+        send "stop"
         stop sound "sound:sound.effect.looting" for the player
