@@ -15,7 +15,7 @@ function openScrap(p: player):
 on inventory click:
     if name of event-inventory is "&f七七七七七七七七ㇺ":
         if clicked inventory is player's inventory:
-            if click type is shift+lmb or click type is shift+rmb:
+            if click type is shift+lmb or shift+rmb:
                 cancel event
             stop
             
