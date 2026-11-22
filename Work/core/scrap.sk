@@ -131,7 +131,7 @@ on inventory click:
                
             wait 1 tick
             
-            scrapget({_gui}, false, {_p})
+            scrapget({_gui}, false, player)
                 
             stop
         
