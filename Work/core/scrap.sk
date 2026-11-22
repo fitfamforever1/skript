@@ -47,7 +47,6 @@ function scrapget(gui: inventory, accept: boolean, p: player):
     scrap({_gui}, {_plastic}, {_chemical}, {_fabric}, {_rubber}, {_metal})
     
     if {_accept} is true:
-        send "accepted" to {_p}
         scrapgive({_p}, {_plastic}, {_chemical}, {_fabric}, {_rubber}, {_metal})
       
 function scrap(gui: inventory, plastic: number, chemical: number, fabric: number, rubber: number, metal: number):
@@ -90,27 +89,27 @@ function scrapgive(p: player, plastic: number, chemical: number, fabric: number,
     if {_plastic} > 0:
         set {_item} to {loot::mat1}
         set amount of {_item} to {_plastic}
-        add {_item} to {_p}'s inventory
+        give {_item} to {_p}
 
     if {_chemical} > 0:
         set {_item} to {loot::mat2}
         set amount of {_item} to {_chemical}
-        add {_item} to {_p}'s inventory
+        give {_item} to {_p}
 
     if {_fabric} > 0:
         set {_item} to {loot::mat3}
         set amount of {_item} to {_fabric}
-        add {_item} to {_p}'s inventory
+        give {_item} to {_p}
 
     if {_rubber} > 0:
         set {_item} to {loot::mat4}
         set amount of {_item} to {_rubber}
-        add {_item} to {_p}'s inventory
+        give {_item} to {_p}
 
     if {_metal} > 0:
         set {_item} to {loot::mat5}
         set amount of {_item} to {_metal}
-        add {_item} to {_p}'s inventory
+        give {_item} to {_p}
       
 on inventory click:
     if player's current inventory is {gui::%uuid of player%}:
