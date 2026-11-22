@@ -33,6 +33,10 @@ on inventory click:
 
         cancel event
       
+on inventory drag:
+    if name of event-inventory is "&f七七七七七七七七ㇺ":
+        cancel event
+      
 command /test:
     trigger:
         openScrap(player)
