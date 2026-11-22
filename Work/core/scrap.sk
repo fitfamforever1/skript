@@ -26,9 +26,6 @@ on inventory click:
             set {_temp} to data tag "item:id" of cursor slot of player
             set data tag "cursor:id" of player to 1
         
-        send {_temp1} to data tag "cursor:id" of player
-        send "%{_temp1}%"
-        
         if event-slot is between 0 and 8:
             if {_temp} is not between 1 and 40:
                 cancel event
