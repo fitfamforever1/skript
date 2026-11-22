@@ -72,7 +72,7 @@ on inventory click:
             send "&fMetal: &a%{_metal}%" to player
                 
             if data tag "cursor:id" of player is 1:
-                send "%cursor-slot%"
+                send "%cursor-slot of player%"
                 
             if data tag "cursor:id" of player is 0:
                 send "%event-slot%"
