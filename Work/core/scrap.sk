@@ -15,7 +15,7 @@ on inventory click:
     if name of event-inventory is "&f七七七七七七七七ㇺ":
 
         if clicked inventory is player's inventory:
-            if click type is shift+lmb or shift+rmb:
+            if click type is shift+lmb, number key or shift+rmb:
                 cancel event
             stop
 
@@ -31,7 +31,6 @@ on inventory click:
 
             stop
 
-        # All other GUI slots are protected
         cancel event
       
 command /test:
