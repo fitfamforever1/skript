@@ -9,8 +9,6 @@ function openScrap(p: player):
     open {gui::%uuid of {_p}%} to {_p}
 
 function junkconvert(p: player):
-    set {_gui} to {gui::%uuid of {_p}%}
-
     set {_plastic} to 0
     set {_chemical} to 0
     set {_fabric} to 0
