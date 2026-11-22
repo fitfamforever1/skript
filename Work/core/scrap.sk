@@ -143,7 +143,7 @@ on inventory click:
         if event-slot is 26:
             scrapget({_gui}, true, player)
             delete {gui::%uuid of player%}
-            play sound "sound:sound.effect.recycle" with volume 1 with pitch 0.8 to the player
+            play sound "sound:sound.effect.recycle" with volume 1 with pitch 0.5 to the player
             close player's inventory
             
         cancel event
