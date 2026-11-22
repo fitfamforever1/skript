@@ -7,49 +7,6 @@ function openScrap(p: player):
     set slot 26 of {gui::%uuid of {_p}%} to {itemid::47}
     
     open {gui::%uuid of {_p}%} to {_p}
-
-function junkconvert(p: player):
-    set {_plastic} to 0
-    set {_chemical} to 0
-    set {_fabric} to 0
-    set {_rubber} to 0
-    set {_metal} to 0
-    set {_total} to 0
-
-    loop integers from 0 to 8:
-        set {_item} to slot loop-value of {_p}'s inventory
-
-        if {_item} is air:
-            send "test" to {_p}
-            continue
-
-        set {_tag} to data tag "scrap:id" of {_item}
-
-        if {_tag} is not set:
-            continue
-
-        set {_stack} to amount of {_item}
-
-        if {_tag} is "1":
-            add {_stack} to {_plastic}
-        else if {_tag} is "2":
-            add {_stack} to {_chemical}
-        else if {_tag} is "3":
-            add {_stack} to {_fabric}
-        else if {_tag} is "4":
-            add {_stack} to {_rubber}
-        else if {_tag} is "5":
-            add {_stack} to {_metal}
-        else:
-            continue
-
-        add {_stack} to {_total}
-
-    send "&fPlastic: &a%{_plastic}%" to {_p}
-    send "&fChemical: &a%{_chemical}%" to {_p}
-    send "&fFabric: &a%{_fabric}%" to {_p}
-    send "&fRubber: &a%{_rubber}%" to {_p}
-    send "&fMetal: &a%{_metal}%" to {_p}
       
 on inventory click:
     if player's current inventory is {gui::%uuid of player%}:
@@ -77,8 +34,8 @@ on inventory click:
             set {_metal} to 0
             set {_total} to 0
                 
-            loop integers from 0 to 26:
-                set {_item} to slot loop-value of {gui::%uuid of player%}
+            loop integers from 0 to 8:
+                set {_item} to slot loop-value of player's inventory
         
                 if {_item} is air:
                     send "test" to player
