@@ -19,7 +19,8 @@ on inventory click:
             set {_temp} to data tag "item:id" of cursor slot of player
         if {_temp} is between 1 and 40:
             send "scrap"
-        send "pass"
+            stop
+        cancel event
           
 command /test:
     trigger:
