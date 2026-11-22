@@ -10,13 +10,10 @@ function openScrap(p: player):
 
       
 on inventory click:
-    if event-inventory is {gui}:
-        if click type is shift+lmb, number key or shift+rmb:
+    if click type is shift+lmb, number key or shift+rmb:
             cancel event
-        if clicked inventory is player's inventory:
-            if click type is shift+lmb, number key or shift+rmb:
-                cancel event
-            stop
+    if event-inventory is {gui}:
+       
 
         set {_temp} to data tag "item:id" of event-item
         
