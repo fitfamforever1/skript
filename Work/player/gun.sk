@@ -1,9 +1,9 @@
 on right click with honeycomb:
     set {_item} to player's tool
+    set {_fire} to data tag "gun:single" of {_item}
     set {_speed} to data tag "gun:firerate" of {_item}
 
-    set {_cooldown} to {_speed} / 20
-    set {_cooldown} to {_cooldown} seconds
+    set {_cooldown} to timespan({_speed}, ticks)
 
     if {gun::cooldown::%player%} is set:
         if difference between {gun::cooldown::%player%} and now is less than {_cooldown}:
