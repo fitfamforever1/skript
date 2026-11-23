@@ -242,7 +242,7 @@ command /gun <text> <number>:
         send "&aSet gun:%arg-1% to %arg-2%."
         
 on tab complete of "/gun":
-    set tab completions for position 1 to "firerate", "damage", "recoil", "mag", "ammo", "mag2" and "reload"
+    set tab completions for position 1 to "firerate", "damage", "recoil", "mag", "ammo" and "mag2"
         
 command /guninfo:
     trigger:
@@ -258,7 +258,6 @@ command /guninfo:
         set {_mag} to data tag "gun:mag" of {_item}
         set {_ammo} to data tag "gun:ammo" of {_item}
         set {_mag2} to data tag "gun:mag2" of {_item}
-        set {_reload} to data tag "gun:reload" of {_item}
 
         send "&8&m----------&r &6&lGUN INFO &8&m----------"
         send "&eDamage: &f%{_damage}%"

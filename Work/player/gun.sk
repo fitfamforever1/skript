@@ -23,15 +23,12 @@ function ReloadGun(p: player, item: item):
     set {_id} to number data tag "gun:ammo" of {_item}
     set {_magazine} to number data tag "gun:mag" of {_item}
     set {_ammo} to number data tag "gun:mag2" of {_item}
-    set {_reloadSpeed} to number data tag "gun:reload" of {_item}
 
     if {_ammo} >= {_magazine}:
         stop
 
     set {_reloadAmmo} to countAmmo({_p}, {_id})
-    
-    send "%{_reloadAmmo}% %{_id}%" to {_p}
-    
+
     if {_reloadAmmo} <= 0:
         send title "&4&lᴏᴜᴛ ᴏꜰ ᴀᴍᴍᴏ" with subtitle "&cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴇɴᴏᴜɢʜ ᴀᴍᴍᴏ!" to {_p} for 1 seconds
         stop
@@ -46,9 +43,9 @@ function ReloadGun(p: player, item: item):
     play sound "sound:sound.effect.reload" with volume 1 to {_p}
     send action bar "&eʀᴇʟᴏᴀᴅɪɴɢ..." to {_p}
 
-     removeAmmo({_p}, {_id}, {_reloadAmmo})
+    removeAmmo({_p}, {_id}, {_reloadAmmo})
 
-    wait timespan({_reloadSpeed}, ticks)
+    wait 4 seconds
 
     if {_p} is offline:
         delete {gun::reloading::%uuid of {_p}%}
