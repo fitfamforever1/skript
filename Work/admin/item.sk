@@ -268,3 +268,13 @@ command /guninfo:
         send "&eAmmo Type: &f%{_ammo}%"
         send "&eReload: &f%{_reload}% ticks"
         send "&8&m-------------------------------"
+        
+command /ammo <number>:
+    permission: gun.admin
+    trigger:
+        set {_item} to player's tool
+
+        set data tag "ammo:id" of {_item} to arg-1
+        set player's tool to {_item}
+
+        send "&aSet ammo:id to %arg-1%."
