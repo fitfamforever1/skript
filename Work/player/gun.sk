@@ -45,7 +45,7 @@ function ReloadGun(p: player, item: item):
 
     removeAmmo({_p}, {_id}, {_reloadAmmo})
 
-    wait 4 seconds
+    wait 70 ticks
 
     if {_p} is offline:
         delete {gun::reloading::%uuid of {_p}%}
