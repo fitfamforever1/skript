@@ -65,6 +65,7 @@ function ReloadGun(p: player):
     
 on drop of honeycomb:
     ReloadGun(player)
+    cancel event
 
 on right click with honeycomb:
     set {_item} to player's tool
