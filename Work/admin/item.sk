@@ -211,11 +211,13 @@ command /setid <number>:
         set data tag "scrap:id" of {_item} to arg-1
         set player's tool to {_item}
         
-command /gunfire <booleon>:
+command /gunfire <text>:
     permission: admin.item
     trigger:
         set {_item} to player's tool
-        set data tag "gun:single" of {_item} to arg-1
+        set data tag "gun:single" of {_item} to false
+        if arg-1 is "true":
+            set data tag "gun:single" of {_item} to true
         set player's tool to {_item}
         
 command /gunspeed <number>:
