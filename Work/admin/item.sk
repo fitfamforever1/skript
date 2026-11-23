@@ -216,8 +216,8 @@ command /gun <text> <number>:
     trigger:
         set {_item} to player's tool
 
-        if {_item} is air:
-            send "&cYou must be holding an item."
+        if {_item} is not honeycomb:
+            send "&cYou must be holding a gun."
             stop
 
         if arg-1 is "firerate":
@@ -244,4 +244,27 @@ command /gun <text> <number>:
 on tab complete of "/gun":
     set tab completions for position 1 to "firerate", "damage", "recoil", "mag", "ammo", "mag2" and "reload"
         
-        
+command /guninfo:
+    trigger:
+        set {_item} to player's tool
+
+        if {_item} is not honeycomb:
+            send "&cYou must be holding a gun."
+            stop
+
+        set {_firerate} to data tag "gun:firerate" of {_item}
+        set {_damage} to data tag "gun:damage" of {_item}
+        set {_recoil} to data tag "gun:recoil" of {_item}
+        set {_mag} to data tag "gun:mag" of {_item}
+        set {_ammo} to data tag "gun:ammo" of {_item}
+        set {_mag2} to data tag "gun:mag2" of {_item}
+        set {_reload} to data tag "gun:reload" of {_item}
+
+        send "&8&m----------&r &6&lGUN INFO &8&m----------"
+        send "&eDamage: &f%{_damage}%"
+        send "&eFirerate: &f%{_firerate}% ticks"
+        send "&eRecoil: &f%{_recoil}%"
+        send "&eMagazine: &f%{_mag2}%&7/&f%{_mag}%"
+        send "&eAmmo Type: &f%{_ammo}%"
+        send "&eReload: &f%{_reload}% ticks"
+        send "&8&m-------------------------------"
