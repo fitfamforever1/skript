@@ -1,6 +1,7 @@
 on right click with honeycomb:
     set {_item} to player's tool
-    set {_fire} to data tag "gun:single" of {_item}
+    
+    # Fire Rate Calculation
     set {_speed} to data tag "gun:firerate" of {_item}
 
     set {_cooldown} to timespan({_speed}, ticks)
@@ -10,4 +11,12 @@ on right click with honeycomb:
             stop
 
     set {gun::cooldown::%player%} to now
+    
+    set {_fire} to data tag "gun:single" of {_item}
+    
+    if {_fire} is true:
+        send "single"
+    
+    else:
+        send "auto"
     send "pass"
