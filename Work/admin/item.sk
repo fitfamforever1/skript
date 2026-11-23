@@ -224,7 +224,7 @@ command /gunspeed <number>:
     permission: admin.item
     trigger:
         set {_item} to player's tool
-        set data tag "gun:firerate" of {_item} to arg-1
+        set number data tag "gun:firerate" of {_item} to arg-1
         set player's tool to {_item}
         
         
