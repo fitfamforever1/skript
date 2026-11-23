@@ -43,17 +43,16 @@ function ReloadGun(p: player, item: item):
 
     set {gun::reloading::%uuid of {_p}%} to true
 
-
     play sound "sound:sound.effect.reload" with volume 1 to {_p}
     send action bar "&eʀᴇʟᴏᴀᴅɪɴɢ..." to {_p}
+
+     removeAmmo({_p}, {_id}, {_reloadAmmo})
 
     wait timespan({_reloadSpeed}, ticks)
 
     if {_p} is offline:
         delete {gun::reloading::%uuid of {_p}%}
         stop
-
-    removeAmmo({_p}, {_id}, {_reloadAmmo})
 
     set {_item} to tool of {_p}
     set {_ammo} to data tag "gun:mag2" of {_item}
