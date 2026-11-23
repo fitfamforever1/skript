@@ -1,12 +1,10 @@
 on right click with honeycomb:
     set {_item} to player's tool
-
-    set {_fire} to data tag "gun:single" of {_item}
     set {_speed} to data tag "gun:firerate" of {_item}
 
-    if difference between now and {gun:lastclick::%uuid of player%} is less than {_speed} ticks:
-        stop
+    if {gun:lastclick::%uuid of player%} is set:
+        if difference between now and {gun:lastclick::%uuid of player%} < {_speed} / 20 seconds:
+            stop
 
     set {gun:lastclick::%uuid of player%} to now
-
     send "pass"
