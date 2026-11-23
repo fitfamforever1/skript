@@ -32,7 +32,7 @@ function ReloadGun(p: player):
 
     set {_reloadAmmo} to countAmmo({_p}, {_id})
     
-    send "%{_reloadAmmo}%"
+    send "%{_reloadAmmo}%" to {_p}
     
     if {_reloadAmmo} <= 0:
         send title "&4&lᴏᴜᴛ ᴏꜰ ᴀᴍᴍᴏ" with subtitle "&cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴇɴᴏᴜɢʜ ᴀᴍᴍᴏ!" to {_p} for 1 seconds
