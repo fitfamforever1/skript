@@ -1,4 +1,4 @@
-on right click on honeycomb:
+on right click with honeycomb:
     set {_item} to player's tool
     
     set {_fire} to data tag "gun:single" of {_item}
