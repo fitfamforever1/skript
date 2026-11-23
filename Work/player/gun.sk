@@ -12,4 +12,9 @@ on right click with honeycomb:
 
     set {gun::cooldown::%player%} to now
     
+    # Magazine Check
+    set {_mag2} to data tag "gun:mag2" of {_item}
+    if {_mag2} <= 0:
+        stop
+    
     send "pass"
