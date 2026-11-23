@@ -20,12 +20,12 @@ function removeAmmo(p: player, type: number, amount: integer) :: boolean:
     return false
 
 function ReloadGun(p: player):
-    set {_item} to tool of {_p}
+    set {_item} to {_p}'s tool
 
     set {_id} to number data tag "gun:ammo" of {_item}
     set {_magazine} to number data tag "gun:mag" of {_item}
     set {_ammo} to number data tag "gun:mag2" of {_item}
-    set {_reloadSpeed} to data tag "gun:reload" of {_item}
+    set {_reloadSpeed} to number data tag "gun:reload" of {_item}
 
     if {_ammo} >= {_magazine}:
         stop
