@@ -25,6 +25,7 @@ function ReloadGun(p: player):
     set {_id} to data tag "gun:ammo" of {_item}
     set {_magazine} to data tag "gun:mag" of {_item}
     set {_ammo} to data tag "gun:mag2" of {_item}
+    set {_reloadSpeed} to data tag "gun:reload" of {_item}
 
     if {_ammo} >= {_magazine}:
         stop
@@ -32,37 +33,50 @@ function ReloadGun(p: player):
     set {_ammoType} to {gun::ammotable::%{_id}%}
     set {_reloadAmmo} to countAmmo({_p}, {_ammoType})
 
-    set {_needed} to {_magazine} - {_ammo}
-
     if {_reloadAmmo} <= 0:
         send title "&4&lᴏᴜᴛ ᴏꜰ ᴀᴍᴍᴏ" with subtitle "&cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴇɴᴏᴜɢʜ ᴀᴍᴍᴏ!" to {_p} for 1 seconds
         stop
 
+    set {_needed} to {_magazine} - {_ammo}
+
     if {_reloadAmmo} > {_needed}:
         set {_reloadAmmo} to {_needed}
 
-    removeAmmo({_p}, {_ammoType}, {_reloadAmmo})
-
-    add {_reloadAmmo} to {_ammo}
-    set data tag "gun:mag2" of {_item} to {_ammo}
-
-    set tool of {_p} to {_item}
+    set {gun::reloading::%uuid of {_p}%} to true
 
     play sound "sound:sound.gun.reload" with volume 1 to {_p}
-    send action bar "&a\u0280\u1d07\u029f\u1d0f\u1d00\u1d05\u1d07\u1d05!" to {_p}
+    send action bar "&eʀᴇʟᴏᴀᴅɪɴɢ..." to {_p}
+
+    wait timespan({_reloadSpeed}, ticks)
+
+    if {_p} is offline:
+        delete {gun::reloading::%uuid of {_p}%}
+        stop
+
+    removeAmmo({_p}, {_ammoType}, {_reloadAmmo})
+
+    set {_item} to tool of {_p}
+    set {_ammo} to data tag "gun:mag2" of {_item}
+    add {_reloadAmmo} to {_ammo}
+    set data tag "gun:mag2" of {_item} to {_ammo}
+    set tool of {_p} to {_item}
+
+    delete {gun::reloading::%uuid of {_p}%}
+    send action bar "&aʀᴇʟᴏᴀᴅᴇᴅ!" to {_p}
     
 
 on right click with honeycomb:
+    if {gun::reloading::%uuid of player%} is set:
+        stop
+
     set {_item} to player's tool
 
-    # Magazine Check
     set {_mag2} to data tag "gun:mag2" of {_item}
 
     if {_mag2} <= 0:
         ReloadGun(player)
         stop
 
-    # Fire Rate Calculation
     set {_speed} to data tag "gun:firerate" of {_item}
     set {_cooldown} to timespan({_speed}, ticks)
 
