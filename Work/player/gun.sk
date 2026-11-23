@@ -19,4 +19,3 @@ on right click with honeycomb:
     
     else:
         send "auto"
-    send "pass"
