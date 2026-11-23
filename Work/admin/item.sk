@@ -211,20 +211,37 @@ command /setid <number>:
         set data tag "scrap:id" of {_item} to arg-1
         set player's tool to {_item}
         
-command /gunfire <text>:
-    permission: admin.item
+command /gun <text> <number>:
+    permission: gun.admin
     trigger:
         set {_item} to player's tool
-        set data tag "gun:single" of {_item} to false
-        if arg-1 is "true":
-            set data tag "gun:single" of {_item} to true
+
+        if {_item} is air:
+            send "&cYou must be holding an item."
+            stop
+
+        if arg-1 is "firerate":
+            set data tag "gun:firerate" of {_item} to arg-2
+        else if arg-1 is "damage":
+            set data tag "gun:damage" of {_item} to arg-2
+        else if arg-1 is "recoil":
+            set data tag "gun:recoil" of {_item} to arg-2
+        else if arg-1 is "mag":
+            set data tag "gun:mag" of {_item} to arg-2
+        else if arg-1 is "ammo":
+            set data tag "gun:ammo" of {_item} to arg-2
+        else if arg-1 is "mag2":
+            set data tag "gun:mag2" of {_item} to arg-2
+        else if arg-1 is "reload":
+            set data tag "gun:reload" of {_item} to arg-2
+        else:
+            send "&cInvalid stat."
+            stop
+
         set player's tool to {_item}
+        send "&aSet gun:%arg-1% to %arg-2%."
         
-command /gunspeed <number>:
-    permission: admin.item
-    trigger:
-        set {_item} to player's tool
-        set number data tag "gun:firerate" of {_item} to arg-1
-        set player's tool to {_item}
+on tab complete of "/gun":
+    set tab completions for position 1 to "firerate", "damage", "recoil", "mag", "ammo", "mag2" and "reload"
         
         

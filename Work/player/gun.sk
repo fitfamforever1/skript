@@ -12,10 +12,4 @@ on right click with honeycomb:
 
     set {gun::cooldown::%player%} to now
     
-    set {_fire} to data tag "gun:single" of {_item}
-    
-    if {_fire} is true:
-        send "single"
-    
-    else:
-        send "auto"
+    send "pass"
