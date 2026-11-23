@@ -1,0 +1,7 @@
+on right click on honeycomb:
+    set {_item} to player's tool
+    
+    set {_fire} to data tag "gun:single" of {_item}
+    set {_speed} data tag "gun:firerate" of {_item}
+    
+    send "%{_fire}% %{_speed}%"
