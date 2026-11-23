@@ -30,8 +30,7 @@ function ReloadGun(p: player):
     if {_ammo} >= {_magazine}:
         stop
 
-    set {_ammoType} to {gun::ammotable::%{_id}%}
-    set {_reloadAmmo} to countAmmo({_p}, {_ammoType})
+    set {_reloadAmmo} to countAmmo({_p}, {_id})
 
     if {_reloadAmmo} <= 0:
         send title "&4&lᴏᴜᴛ ᴏꜰ ᴀᴍᴍᴏ" with subtitle "&cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴇɴᴏᴜɢʜ ᴀᴍᴍᴏ!" to {_p} for 1 seconds
@@ -53,7 +52,7 @@ function ReloadGun(p: player):
         delete {gun::reloading::%uuid of {_p}%}
         stop
 
-    removeAmmo({_p}, {_ammoType}, {_reloadAmmo})
+    removeAmmo({_p}, {_id}, {_reloadAmmo})
 
     set {_item} to tool of {_p}
     set {_ammo} to data tag "gun:mag2" of {_item}
@@ -64,18 +63,20 @@ function ReloadGun(p: player):
     delete {gun::reloading::%uuid of {_p}%}
     send action bar "&aʀᴇʟᴏᴀᴅᴇᴅ!" to {_p}
     
+on drop of honeycomb:
+    ReloadGun(player)
 
 on right click with honeycomb:
-    if {gun::reloading::%uuid of player%} is set:
-        stop
-
     set {_item} to player's tool
+
+# Mag Check
 
     set {_mag2} to data tag "gun:mag2" of {_item}
 
     if {_mag2} <= 0:
-        ReloadGun(player)
         stop
+
+# Fire Rate
 
     set {_speed} to data tag "gun:firerate" of {_item}
     set {_cooldown} to timespan({_speed}, ticks)
